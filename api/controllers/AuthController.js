@@ -59,7 +59,8 @@ module.exports = {
             return res.view({
                 enableLocalAuth: enableLocalAuth,
                 enableTwitterAuth: enableTwitterAuth,
-                enableFacebookAuth: enableFacebookAuth
+                enableFacebookAuth: enableFacebookAuth,
+                enableHeaderUser:false
             });
         }
     },
