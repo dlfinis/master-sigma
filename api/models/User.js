@@ -9,7 +9,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 module.exports = {
 
-    adapter: 'mongo',
+    adapter: 'sigmaDv',
 
     attributes: {
         provider: 'STRING',
@@ -18,7 +18,8 @@ module.exports = {
         name: 'STRING',
         email: 'STRING',
         firstname: 'STRING',
-        lastname: 'STRING'
+        lastname: 'STRING',
+        password: 'STRING'
     },
 
     // Generating a hash
