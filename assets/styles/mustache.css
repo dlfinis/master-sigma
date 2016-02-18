@@ -266,11 +266,29 @@ footer p {
   margin-bottom: 0px;
 }
 .post .social-bar{
-  background: rgb(235, 237, 244);
-  min-height: 30px;
+  display:table;
+  width: 100%;
+  background: rgb(142, 160, 196);
+  background: rgba(58, 87, 149, 0.54);
   border-top: 1px solid #CCCCCC;
+
 }
 
-.post .btn{
+.post .social-bar .section-btn{
+  background: rgb(160, 175, 206);
+  background: rgba(168,182,211,0.70);
+  float:right;
+  display: table-row;
+/*  padding: 0.25%;*/
+    width: 15%;
+}
+.post .social-bar .section-btn .btn img{
+  height: 20px;
+}
 
+.post .social-bar .section-btn .btn{
+    opacity:0.50;
+}
+.post .social-bar .section-btn .btn:hover{
+    opacity:1;
 }

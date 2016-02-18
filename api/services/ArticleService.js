@@ -6,16 +6,17 @@
  */
 
 var graph = require('fbgraph');
+var dateFormat = require('dateformat');
 module.exports = {
 
-  createArticles:function(options){
-      var options = {
-          timeout:  3000
-        , pool:     { maxSockets:  Infinity }
-        , headers:  { connection:  "keep-alive" }
-      };
+  createArticles:function(){
+      // var options = {
+      //     timeout:  3000
+      //   , pool:     { maxSockets:  Infinity }
+      //   , headers:  { connection:  "keep-alive" }
+      // };
 
-      Article.find().exec(function (err,articles){
+/*      Article.find().exec(function (err,articles){
           if(err){
             console.log(err);
             return next(err);
@@ -45,7 +46,9 @@ module.exports = {
                     // console.log(Object.keys(graph.post()); // { id: xxxxx}
               });
 
-      });
+      });*/
+
+
             // var wallPost = {
       //   message: "I'm gonna come at you like a spider monkey, chip!"
       // };
@@ -53,9 +56,23 @@ module.exports = {
       // graph.post("/feed", wallPost, function(err, res) {
       //   // returns the post id
       //   console.log(res); // { id: xxxxx}
-      // });
+  },
+  getArticles: function(res){
+      Article.find(function articleFounded(err,articles){
+        if(err){
+          console.log(err);
+          return next(err);
+        }
+        console.log(_.each(articles,function(){}));
+        _.each( articles, function(article,index){
+          // articles[index].updateAt = new Date().toISOString().slice(0, 10);
+          articles[index].updateAt = dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy");
+          console.log( "TEst",dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy"));
+        });
 
-
+        //console.log(articles);
+        res.view({articles:articles});
+      });
   }
 
-}
+};

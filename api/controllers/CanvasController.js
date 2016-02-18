@@ -63,7 +63,7 @@ module.exports = {
 
       // console.log("+ Token ",graph.getAccessToken());
 
-      //ArticleService. createArticles();
+
       // var wallPost = {
       //   message: "I'm gonna come at you like a spider monkey, chip!"
       // };
@@ -72,8 +72,12 @@ module.exports = {
       //   // returns the post id
       //   console.log(res); // { id: xxxxx}
       // });
-
-        return res.view();
+        // console.log(ArticleService. getArticles());
+        var articles = (ArticleService. getArticles(res));
+        // res.view({ articles : articles});
     },
+    test:function(req,res){
+      return res.view();
+    }
 
 };

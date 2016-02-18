@@ -8,6 +8,7 @@
     "bcrypt-nodejs": "0.0.3",
     "connect-ensure-login": "^0.1.1",
     "connect-mongo": "^0.7.x",
+    "dateformat": "^1.0.12",
     "ejs": "~0.8.4",
     "fb": "^1.0.2",
     "fbgraph": "^1.1.0",
