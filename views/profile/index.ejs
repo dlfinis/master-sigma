@@ -1,0 +1,12 @@
+ <h1>
+Perfil de Usuario
+ </h1>
+<p>
+UID: <%= user.uid %><br/>
+UID: <%= user.id %><br/>
+Nombre de Usuario: <%= user.displayName %><br/>
+Nombre: <%= user.name %><br/>
+<% if (user.emails) { %>
+Email: <%= user.emails[0].value %><br/>
+<% } %>
+</p>

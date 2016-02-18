@@ -1,5 +1,5 @@
 # The MIT License (MIT)
-**Copyright &copy; 2014-2015 [ICENodes](http://icenodes.com)**
+**Copyright &copy; 2014-2015 **
 
 * * *
 

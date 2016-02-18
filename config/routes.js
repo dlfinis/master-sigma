@@ -36,11 +36,10 @@ module.exports.routes = {
     //    sails.log.info(req.method, req.url);
     //    next();
     //},
-
     '/': {
         controller: 'home',
         action: 'index'
-    }
+    },
 
     /***************************************************************************
      *                                                                          *

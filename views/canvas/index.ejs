@@ -1,0 +1,63 @@
+<script>
+// Only works after `FB.init` is called
+function myFacebookLogin() {
+FB.login(function(){
+  // Note: The call will only work if you accept the permission request
+  FB.api('/me/feed', 'post', {message: 'Hello, world!'});
+}, {scope: 'publish_actions'});
+};
+function testShare(){
+  FB.ui(
+ {
+  method: 'share',
+  href: 'https://developers.facebook.com/docs/'
+}, function(response){});
+}
+function testJS(){
+  console.log("Hello JS");
+}
+</script>
+
+
+    <div class="container">
+        <div class="row">
+          <button onclick="myFacebookLogin()">Login with Facebook</button>
+          <button onclick="testShare()">Share with Facebook</button>
+          <button onclick="testJS()">Test JS</button>
+        </div>
+        <div class="row">
+
+                <div class="col-lg-12 text-center post">
+                    <img class="img-responsive img-full" src="images/submarine.png" alt="">
+                    <div class="title"><h3>Título de Post</h3></div>
+                    <div class="box">
+                    <h5>October 13, 2013</h5>
+                    <p>Lid est laborum dolo rumes fugats untras. Etharums ser quidem rerum facilis dolores nemis omnis fugats vitaes nemo minima rerums unsers sadips amets. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                    <a href="#" class="btn btn-default btn-lg">Leer más</a>
+                    </div>
+                    <div class="social-bar">
+                    </div>
+                </div>
+                <div class="col-lg-12 text-center">
+                    <img class="img-responsive img-border img-full" src="img/slide-1.jpg" alt="">
+                    <div>
+                      <div class="post title"><h3>Título de Post</h3></div>
+                        <h5>October 13, 2013</h5>
+                    </div>
+                    <p>Lid est laborum dolo rumes fugats untras. Etharums ser quidem rerum facilis dolores nemis omnis fugats vitaes nemo minima rerums unsers sadips amets. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+                    <a href="#" class="btn btn-default btn-lg">Leer más</a>
+                    <hr>
+                </div>
+                <div class="col-lg-12 text-center">
+                    <ul class="pager">
+                        <li class="previous"><a href="#">&larr; Older</a>
+                        </li>
+                        <li class="next"><a href="#">Newer &rarr;</a>
+                        </li>
+                    </ul>
+                </div>
+
+        </div>
+
+    </div>
+    <!-- /.container -->

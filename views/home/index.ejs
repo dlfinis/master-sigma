@@ -1,21 +1,8 @@
-<div class="accountmenu-container clearfix">
-  <p class="appname-text"><a href="/">Master-Sigma</a></p>
-  <a class="btn-signin" href="/auth/login">Inicio de Sesión</a>
-</div>
-
-<div class="container">
+<div class="container-fluid">
   <div class="row"></div>
+  <div class="col-md-6 auth-cont center">
+  <a class="sociallogin-btn sociallogin-facebook" href="/auth/facebook">Instalar Aplicación</a></div>
     <div class="col-md-12">
-
-      <a class="twitter-share" href="<%= twitterShareMessage %>">Twitter</a>
-      <a class="fb-share" href="<%= facebookShareMessage %>">Facebook</a>
-      <a class="fb-share" href="https://github.com/dlfinis/master-delta.git"><i class="fa fa-github"></i> GitHub Repositorio</a>
-
-      <p class="share-text">
-          <b></b><br>
-          GitHub Project: <b><a href="https://github.com/dlfinis/master-delta.git">https://github.com/dlfinis/master-delta.git</a></b>
-      </p>
-
       <div class="config-text">
         <p><b>Estado</b>:</p>
         <p>- Email auth: <%= localAuthMsg %><br>
@@ -23,10 +10,6 @@
            - Twitter auth: <%= twitterAuthMsg %></p>
       </div>
 
-      <img class="sails-js-image" src="/images/sails-js.png">
-
     </div>
   </div>
 </div>
-
-<img class="grass-image" src="/images/grass.png">

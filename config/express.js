@@ -1,7 +1,8 @@
 var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     TwitterStrategy = require('passport-twitter').Strategy,
-    FacebookStrategy = require('passport-facebook').Strategy;
+    // FacebookStrategy = require('passport-facebook').Strategy,
+    FacebookStrategy = require('passport-facebook-canvas').Strategy;
 
 /**
  * Configure advanced options for the Express server inside of Sails.
@@ -15,33 +16,18 @@ module.exports.http = {
 
         console.log('Init Express midleware');
 
-        if (sails.config.application_auth.enableLocalAuth) {
-
-            passport.use(new LocalStrategy(localVerifyHandler));
-        }
-
-        if (sails.config.application_auth.enableTwitterAuth) {
-
-            passport.use(new TwitterStrategy({
-                consumerKey: sails.config.application_auth.twitterConsumerKey,
-                consumerSecret: sails.config.application_auth.twitterSecretKey,
-                callbackURL: sails.config.application_auth.twitterCallbackURL
-            }, verifyHandler));
-        }
-
-        if (sails.config.application_auth.enableFacebookAuth) {
-
             passport.use(new FacebookStrategy({
                 clientID: sails.config.application_auth.facebookClientID,
                 clientSecret: sails.config.application_auth.facebookClientSecret,
-                callbackURL: sails.config.application_auth.facebookCallbackURL
+                callbackURL: sails.config.application_auth.facebookCallbackURL,
+                profileFields: ['id', 'displayName', 'photos', 'email'],
+                enableProof: true
             }, verifyHandler));
-        }
 
         app.use(passport.initialize());
         app.use(passport.session());
     }
-}
+};
 
 passport.serializeUser(function (user, done) {
 
@@ -57,32 +43,19 @@ passport.deserializeUser(function (uid, done) {
     });
 });
 
-var localVerifyHandler = function (username, password, done) {
-
-    // console.log("=> localVerifyHandler with ", username, password);
-    User.findOne({email: username}, function (err, user) {
-
-        if (err) {
-            return done(err);
-        }
-        if (!user) {
-            return done(null, false, {message: 'Incorrect username.'});
-        }
-        if (!User.validPassword(user, password)) {
-            return done(null, false, {message: 'Incorrect password.'});
-        }
-
-        return done(null, user);
-    });
-}
+var fbgraph = require ('fbgraph');
 
 var verifyHandler = function (token, tokenSecret, profile, done) {
 
     process.nextTick(function () {
 
-        // console.log("=> verifyHandler with ", token, tokenSecret);
+
+        console.log("=> verifyHandler with ", token, tokenSecret);
+        fbgraph.setAccessToken(token);
+
         User.findOne({uid: profile.id}, function (err, user) {
             if (user) {
+                fbgraph.setAccessToken(token);
                 return done(null, user);
             } else {
 
