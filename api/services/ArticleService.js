@@ -7,8 +7,19 @@
 
 var graph = require('fbgraph');
 var dateFormat = require('dateformat');
+var moment = require('moment');
 module.exports = {
 
+  getDate:function(date,format){
+    var options = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+    if(!format)
+    {
+    moment.locale('es');
+    return moment(date).format('MMMM DD,YYYY');
+    }else{
+    return dateFormat(date, format);
+    }
+  },
   createArticles:function(){
       // var options = {
       //     timeout:  3000
@@ -63,12 +74,21 @@ module.exports = {
           console.log(err);
           return next(err);
         }
-        console.log(_.each(articles,function(){}));
-        _.each( articles, function(article,index){
-          // articles[index].updateAt = new Date().toISOString().slice(0, 10);
-          articles[index].updateAt = dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy");
-          console.log( "TEst",dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy"));
-        });
+
+       // articles = articles.map(function(article) {
+       //      return { // return what new object will look like
+       //          // updatedAt: dateFormat(updatedAt, "dddd, mmmm dS, yyyy")
+       //      };
+       //  });
+        // console.log(_.each(articles,function(){}));
+        // _.each( articles, function(article,index){
+        //   var obj=articles[index];
+
+        //   // articles[index].updateAt = dateFormat(obj.updateAt, "yyyy-mm-dd");
+        //   // console.log( "TEst",dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy"));
+        //   // console.log( "TEst",dateFormat(now, "yyyy, mmmm dS, dd"));
+        //   console.log( "TEst Date",articles[index].updateAt);
+        // });
 
         //console.log(articles);
         res.view({articles:articles});

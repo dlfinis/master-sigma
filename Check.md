@@ -17,6 +17,10 @@ OpenGraph
 
     https://github.com/samholmes/node-open-graph
 
+Socke.io & AJAX
+  https://bocoup.com/weblog/synchronizing-html5-slides-with-node-js
+  http://mherman.org/blog/2014/04/15/handling-ajax-calls-with-node-dot-js-and-express-part-5/#.VsYDWUKVtHs
+  http://atendesigngroup.com/blog/using-nodejs-create-real-time-web-applications
 
 OAuth redireccion valida, configuracions avanzadas de la aplicacion
   https://developers.facebook.com/docs/facebook-login/security

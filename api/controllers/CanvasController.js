@@ -12,7 +12,6 @@ module.exports = {
 
     // Facebook login screen
     login: function (req, res) {
-
         console.log("+ AUTH.FACEBOOK.CANVAS");
         passport.authenticate('facebook-canvas',
         {
@@ -60,7 +59,8 @@ module.exports = {
     index: function (req, res) {
 
       console.log("+ CANVAS.INDEX");
-
+              console.log(req.headers);
+        console.log("REQ ",Object.keys(req));
       // console.log("+ Token ",graph.getAccessToken());
 
 

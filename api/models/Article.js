@@ -35,8 +35,8 @@ module.exports = {
     },
     toJSON : function(){
        var obj = this.Object();
-      obj.updateAt =  dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy");
-      console.log(obj.updateAt ,'-' ,dateFormat(obj.updateAt, "dddd, mmmm, yyyy"));
+      // obj.updateAt =  dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy");
+      // console.log(obj.updateAt ,'-' ,dateFormat(obj.updateAt, "dddd, mmmm, yyyy"));
        return obj;
     }
 };
