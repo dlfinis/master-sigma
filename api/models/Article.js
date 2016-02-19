@@ -5,7 +5,6 @@
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
 var uuid = require('node-uuid');
-var dateFormat = require('dateformat');
 module.exports = {
     adapter: 'sigmaDv',
     attributes: {
@@ -22,7 +21,8 @@ module.exports = {
         },
         description:{
           type: 'string',
-          defaultsTo: ' '
+          defaultsTo: ' ',
+          required: true
         },
         url:{
           type: 'string',
@@ -35,8 +35,6 @@ module.exports = {
     },
     toJSON : function(){
        var obj = this.Object();
-      // obj.updateAt =  dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy");
-      // console.log(obj.updateAt ,'-' ,dateFormat(obj.updateAt, "dddd, mmmm, yyyy"));
        return obj;
     }
 };

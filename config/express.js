@@ -44,14 +44,13 @@ passport.deserializeUser(function (uid, done) {
 });
 
 var fbgraph = require ('fbgraph');
-
 var verifyHandler = function (token, tokenSecret, profile, done) {
 
     process.nextTick(function () {
 
 
         console.log("=> verifyHandler with ", token, tokenSecret);
-        fbgraph.setAccessToken(token);
+
 
         User.findOne({uid: profile.id}, function (err, user) {
             if (user) {
@@ -78,6 +77,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
                 User.create(data, function (err, user) {
                     return done(err, user);
                 });
+                fbgraph.setAccessToken(token);
             }
         });
     });

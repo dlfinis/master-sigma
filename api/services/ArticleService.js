@@ -6,18 +6,18 @@
  */
 
 var graph = require('fbgraph');
-var dateFormat = require('dateformat');
 var moment = require('moment');
 module.exports = {
 
   getDate:function(date,format){
+    console.log("+ ARTICLE.GETDATE");
     var options = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
     if(!format)
     {
     moment.locale('es');
     return moment(date).format('MMMM DD,YYYY');
     }else{
-    return dateFormat(date, format);
+    return moment(date).format(format);
     }
   },
   createArticles:function(){
@@ -69,6 +69,8 @@ module.exports = {
       //   console.log(res); // { id: xxxxx}
   },
   getArticles: function(res){
+
+      console.log("+ ARTICLE.GETARTICLES");
       Article.find(function articleFounded(err,articles){
         if(err){
           console.log(err);
@@ -78,21 +80,40 @@ module.exports = {
        // articles = articles.map(function(article) {
        //      return { // return what new object will look like
        //          // updatedAt: dateFormat(updatedAt, "dddd, mmmm dS, yyyy")
+       //          url : article.url.replace(/^https?:\/\//,'')
        //      };
        //  });
         // console.log(_.each(articles,function(){}));
         // _.each( articles, function(article,index){
         //   var obj=articles[index];
-
         //   // articles[index].updateAt = dateFormat(obj.updateAt, "yyyy-mm-dd");
         //   // console.log( "TEst",dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy"));
         //   // console.log( "TEst",dateFormat(now, "yyyy, mmmm dS, dd"));
-        //   console.log( "TEst Date",articles[index].updateAt);
+        //   articles[index].url="google.com";
+        //   console.log(article);
         // });
-
         //console.log(articles);
         res.view({articles:articles});
       });
+  },
+  isUID: function (uid,data){
+    return _.find(data, function(resp) {
+          return resp.data.uid == uid
+      }) ? true : false;
+  },
+  isSetLike: function(uid){
+    var stringGetUID = "me/master-sigma:recomienda?fields=data{uid}";
+  return graph.get(stringGetUID,
+                  function(err, response) {
+                    if(err)
+                      {
+                        sails.log(err);
+                      }
+                      return ArticleService.isUID(uid, response.data);
+              });
+  },
+  test:function(){
+    return 'delta';
   }
 
 };

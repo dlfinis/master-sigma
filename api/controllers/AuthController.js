@@ -6,6 +6,7 @@
  */
 
 var passport = require('passport');
+var fbgraph = require ('fbgraph');
 module.exports = {
 
     // Index page

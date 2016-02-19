@@ -13,6 +13,52 @@ function testShare(){
   href: 'https://developers.facebook.com/docs/'
 }, function(response){});
 }
+function getOpenGraphObject(article){
+
+        var articleObj= {
+                'og:url': article.url,
+                'og:title': article.title,
+                'og:type': 'master-sigma:articulo',
+                'og:image': article.image ,
+                'og:description': article.description,
+                'master-sigma:description': article.description,
+              };
+        console.log(articleObj);
+        return articleObj;
+}
+function testShareGraphRecomienda(){
+var article ={
+  url:'http://www.genbeta.com/seguridad/un-hospital-paga-mas-de-15-000-euros-en-bitcoins-para-recuperar-su-sistema-secuestrado',
+  title:'Un hospital paga más de 15.000 euros en bitcoins para recuperar su sistema "secuestrado"',
+  image:'http://i.blogs.es/3ed030/hosp/1366_2000.jpg',
+  description:'Esta semana se ha sabido que a principios de febrero, el Centro Médico Presbiteriano de Hollywood sufrió un ataque , que dejó su sistema informático inservible.'
+};
+
+  console.log(article);
+FB.ui({
+  method: 'share_open_graph',
+  action_type: 'master-sigma:recomienda',
+  action_properties: JSON.stringify({
+    'uid': 'z123',
+    'articulo': getOpenGraphObject(article)
+  })
+}, function(response){
+  // Debug response (optional)
+  console.log(response);
+});
+}
+function testShareGraphLike(){
+FB.ui({
+  method: 'share_open_graph',
+  action_type: 'og.likes',
+  action_properties: JSON.stringify({
+    object:'http://www.genbeta.com/seguridad/un-hospital-paga-mas-de-15-000-euros-en-bitcoins-para-recuperar-su-sistema-secuestrado',
+  })
+}, function(response){
+  // Debug response (optional)
+  console.log(response);
+});
+}
 function testJS(){
   console.log("Hello JS");
 }
@@ -23,6 +69,9 @@ function testJS(){
         <div class="col-lg-12 text-center">
           <button onclick="myFacebookLogin()">Login with Facebook</button>
           <button onclick="testShare()">Share with Facebook</button>
+          <button onclick="testShareGraphLike()">Share Graph Like with Facebook</button>
+          <button onclick="testShareGraphRecomienda()">Share Graph Recomienda with Facebook</button>
+          </div>
           <button onclick="testJS()">Test JS</button>
         </div>
         <div class="row">
