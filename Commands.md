@@ -6,3 +6,9 @@ https://localhost:1337/article?title=Play Store y los Colegios&url=http://hipert
 https://localhost:1337/article?title=Bitcoin y secuestro&url=http://www.genbeta.com/seguridad/un-hospital-paga-mas-de-15-000-euros-en-bitcoins-para-recuperar-su-sistema-secuestrado&image=http://i.blogs.es/3ed030/hosp/1366_2000.jpg&description=Esta semana se ha sabido que a principios de febrero, el Centro Médico Presbiteriano de Hollywood sufrió un ataque de este tipo, que dejó su sistema informático inservible. Los autores del ataque bloquearon el acceso a todo el sistema y pidieron un rescate de 40 bitcoins - más de 15.000 euros.
 
 NODE_TLS_REJECT_UNAUTHORIZED = "0"
+
+  ssl: {
+    ca: require('fs').readFileSync(__dirname + '/ssl/server.crt'),
+    key: require('fs').readFileSync(__dirname + '/ssl/server.key'),
+    cert: require('fs').readFileSync(__dirname + '/ssl/server.crt')
+  },
