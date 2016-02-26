@@ -7,6 +7,7 @@
 
 var graph = require('fbgraph');
 var passport = require('passport');
+var FB = require('fb');
 module.exports = {
 
 
@@ -21,8 +22,7 @@ module.exports = {
             'user_posts',
             'user_location',
             'publish_actions'
-            ],
-            failureRedirect: '/auth/facebook'
+            ]
         },
         function (err, user)
         {
@@ -36,24 +36,36 @@ module.exports = {
                             return res.view('500');
                         }
                             console.log('+ REDIRECT ','/canvas/index');
-                        return res.redirect('/canvas');
+                        return res.redirect('/canvas/index');
 
                     });
                 } else {
-                  console.log('+ REDIRECT ','/auth/facebook');
-                    return res.redirect('/auth/facebook');
-                   // return res.send( '<!DOCTYPE html>' +
-                   //                  '<body>' +
-                   //                    '<script type="text/javascript">' +
-                   //                      'top.location.href = "/auth/facebook";' +
-                   //                    '</script>' +
-                   //                  '</body>' +
-                   //                '</html>'
-                   //                );
+                        return res.redirect('/canvas/autologin');
+                        // return res.redirect('/auth/autologin');
                 }
 
         }
         )(req, res);
+    },
+    autologin: function(req,res){
+      console.log('+ POPUP ','/auth/facebook/canvas');
+
+      alfa= FB.getLoginUrl({
+        display: 'popup',
+          scope: 'email,publish_actions',
+          client_id: sails.config.application_auth.facebookClientID,
+          redirect_uri: sails.config.application_auth.facebookAppURL
+      });
+      console.log(alfa);
+
+      var redirect_popup = ('<!DOCTYPE html>' +
+                            '<body>'+
+                            '<script type="text/javascript">'+
+                            'top.location.href = "$alfa";'+
+                            '</script>' +
+                            '</body>' +
+                            '</html>').replace('$alfa',alfa);
+       return res.send(redirect_popup);
     },
     // Index page
     index: function (req, res) {

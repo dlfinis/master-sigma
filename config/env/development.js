@@ -15,7 +15,7 @@ module.exports = {
     grunt: {
         _hookTimeout: 60000
     },
-
+    // livereloadPath: 'http://localhost:35729/livereload.js',
     connections: {
       sigmadbDv: {
         adapter: 'sails-mysql',
@@ -44,7 +44,8 @@ module.exports = {
         enableFacebookAuth: true,
         facebookClientID: "1267766483237355",
         facebookClientSecret: "a2f5e3a27b74a64bc0d1ecc2d3a9ec31",
-        facebookCallbackURL: "https://localhost:1337/auth/facebook/callback"
+        facebookCallbackURL: "https://master.sigma/auth/facebook/callback",
+        facebookAppURL: "https://apps.facebook.com/master-sigma/",
     },
 
 };

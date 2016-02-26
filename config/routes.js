@@ -40,6 +40,10 @@ module.exports.routes = {
         controller: 'home',
         action: 'index'
     },
+    'post /auth/facebook/canvas': {
+        controller: 'canvas',
+        action: 'login'
+    }
 
     /***************************************************************************
      *                                                                          *

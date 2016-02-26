@@ -48,5 +48,8 @@
     "url": "git://github.com/bmustata/sails-social-login.git"
   },
   "author": "bmustata",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "connect-livereload": "^0.5.4"
+  }
 }
