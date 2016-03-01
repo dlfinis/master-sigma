@@ -10,7 +10,7 @@ module.exports = {
     // Index page
     index: function (req, res) {
 
-        console.log("+ HOME.INDEX");
+        sails.log("+ HOME.INDEX");
 
         var enableLocalAuth = sails.config.application_auth.enableLocalAuth;
         var enableTwitterAuth = sails.config.application_auth.enableTwitterAuth;
@@ -37,4 +37,3 @@ module.exports = {
         });
     }
 };
-

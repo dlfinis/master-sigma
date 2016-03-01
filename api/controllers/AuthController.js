@@ -48,41 +48,4 @@ module.exports = {
         }
         )(req, res);
     },
-    autologin: function (req, res) {
-
-        console.log("+ AUTH.FACEBOOK.Autologin");
-        passport.authenticate('facebook-canvas',
-        {
-            scope: [
-            'user_about_me',
-            'user_likes',
-            'user_posts',
-            'user_location',
-            'publish_actions'
-            ],
-            display:'popup',
-            failureRedirect: '/'
-        },
-        function (err, user)
-        {
-                console.log("Facebook Auth Response error=", err, "user=", user);
-
-                if (user) {
-                    req.logIn(user, function (err) {
-
-                        if (err) {
-                            console.log("Auth Error", err);
-                            return res.view('500');
-                        }
-
-                        return res.redirect('/canvas');
-
-                    });
-                } else {
-                    return res.redirect('/');
-                }
-
-        }
-        )(req, res);
-    }
 };

@@ -1,6 +1,6 @@
 var passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy,
-    TwitterStrategy = require('passport-twitter').Strategy,
+    // LocalStrategy = require('passport-local').Strategy,
+    // TwitterStrategy = require('passport-twitter').Strategy,
     // FacebookStrategy = require('passport-facebook').Strategy,
     FacebookStrategy = require('passport-facebook-canvas').Strategy;
 
@@ -14,7 +14,7 @@ module.exports.http = {
 
     customMiddleware: function (app) {
 
-        console.log('Init Express midleware');
+        sails.log('+ Init Express midleware');
 
             passport.use(new FacebookStrategy({
                 clientID: sails.config.application_auth.facebookClientID,
@@ -31,13 +31,13 @@ module.exports.http = {
 
 passport.serializeUser(function (user, done) {
 
-    // console.log("serializeUser", user);
+    // sails.log("serializeUser", user);
     done(null, user.uid);
 });
 
 passport.deserializeUser(function (uid, done) {
 
-    // console.log("deserializeUser", uid);
+    // sails.log("deserializeUser", uid);
     User.findOne({uid: uid}, function (err, user) {
         done(err, user);
     });
@@ -49,7 +49,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
     process.nextTick(function () {
 
 
-        console.log("=> verifyHandler with ", token, tokenSecret);
+        sails.log("=> verifyHandler with ", token, tokenSecret);
 
 
         User.findOne({uid: profile.id}, function (err, user) {

@@ -10,7 +10,7 @@ var moment = require('moment');
 module.exports = {
 
   getDate:function(date,format){
-    console.log("+ ARTICLE.GETDATE");
+    sails.log("+ ARTICLE.GETDATE");
     var options = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
     if(!format)
     {
@@ -29,7 +29,7 @@ module.exports = {
 
 /*      Article.find().exec(function (err,articles){
           if(err){
-            console.log(err);
+            sails.log(err);
             return next(err);
           }
 
@@ -44,17 +44,17 @@ module.exports = {
                   'og:description': article.description,
                   'fb:app_id': sails.config.application_auth.facebookClientID
                 };
-                console.log(JSON.stringify(articleObj));
+                sails.log(JSON.stringify(articleObj));
 
                  // graph.post("me/objects/article", {object:JSON.stringify(articleObj)}, function(err, res) {
-                 //    console.log(res);
+                 //    sails.log(res);
                  // });
                  graph.post("me/og.likes", {object:JSON.stringify(articleObj)}, function(err, res) {
-                    console.log(res);
+                    sails.log(res);
                  });
                     // returns the post id
-                    //console.log(graph.post()); // { id: xxxxx}
-                    // console.log(Object.keys(graph.post()); // { id: xxxxx}
+                    //sails.log(graph.post()); // { id: xxxxx}
+                    // sails.log(Object.keys(graph.post()); // { id: xxxxx}
               });
 
       });*/
@@ -66,14 +66,14 @@ module.exports = {
 
       // graph.post("/feed", wallPost, function(err, res) {
       //   // returns the post id
-      //   console.log(res); // { id: xxxxx}
+      //   sails.log(res); // { id: xxxxx}
   },
   getArticles: function(res){
 
-      console.log("+ ARTICLE.GETARTICLES");
+      sails.log("+ ARTICLE.GETARTICLES");
       Article.find(function articleFounded(err,articles){
         if(err){
-          console.log(err);
+          sails.log(err);
           return next(err);
         }
 
@@ -83,16 +83,16 @@ module.exports = {
        //          url : article.url.replace(/^https?:\/\//,'')
        //      };
        //  });
-        // console.log(_.each(articles,function(){}));
+        // sails.log(_.each(articles,function(){}));
         // _.each( articles, function(article,index){
         //   var obj=articles[index];
         //   // articles[index].updateAt = dateFormat(obj.updateAt, "yyyy-mm-dd");
-        //   // console.log( "TEst",dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy"));
-        //   // console.log( "TEst",dateFormat(now, "yyyy, mmmm dS, dd"));
+        //   // sails.log( "TEst",dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy"));
+        //   // sails.log( "TEst",dateFormat(now, "yyyy, mmmm dS, dd"));
         //   articles[index].url="google.com";
-        //   console.log(article);
+        //   sails.log(article);
         // });
-        //console.log(articles);
+        //sails.log(articles);
         res.view({articles:articles});
       });
   },

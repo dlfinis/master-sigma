@@ -13,29 +13,33 @@ module.exports = {
 
     // Facebook login screen
     login: function (req, res) {
-        console.log("+ AUTH.FACEBOOK.CANVAS");
+        sails.log("+ .CANVAS");
+
+        if(req.user)
+        {
+          sails.log('+ REDIRECT ','/canvas/index');
+          return res.redirect('/canvas/index');
+        }
+
         passport.authenticate('facebook-canvas',
         {
             scope: [
-            'user_about_me',
-            'user_likes',
-            'user_posts',
-            'user_location',
+            'email',
             'publish_actions'
             ]
         },
         function (err, user)
         {
-                console.log("Facebook Auth Response error=", err, "user=", user);
+                sails.log("Facebook Auth Response error=", err, "user=", user);
 
                 if (user) {
                     req.logIn(user, function (err) {
 
                         if (err) {
-                            console.log("Auth Error", err);
+                            sails.log("Auth Error", err);
                             return res.view('500');
                         }
-                            console.log('+ REDIRECT ','/canvas/index');
+                        sails.log('+ REDIRECT ','/canvas/index');
                         return res.redirect('/canvas/index');
 
                     });
@@ -48,15 +52,15 @@ module.exports = {
         )(req, res);
     },
     autologin: function(req,res){
-      console.log('+ POPUP ','/auth/facebook/canvas');
+      sails.log('+ POPUP ','/auth/facebook/canvas');
 
       alfa= FB.getLoginUrl({
         display: 'popup',
           scope: 'email,publish_actions',
-          client_id: sails.config.application_auth.facebookClientID,
-          redirect_uri: sails.config.application_auth.facebookAppURL
+          client_id: sails.config.application_ClientID,
+          redirect_uri: sails.config.application_AppURL
       });
-      console.log(alfa);
+      sails.log(alfa);
 
       var redirect_popup = ('<!DOCTYPE html>' +
                             '<body>'+
@@ -70,9 +74,9 @@ module.exports = {
     // Index page
     index: function (req, res) {
 
-      console.log("+ CANVAS.INDEX");
+      sails.log("+ CANVAS.INDEX");
 
-      // console.log("+ Token ",graph.getAccessToken());
+      // sails.log("+ Token ",graph.getAccessToken());
 
 
       // var wallPost = {
@@ -81,9 +85,9 @@ module.exports = {
 
       // graph.post("/feed", wallPost, function(err, res) {
       //   // returns the post id
-      //   console.log(res); // { id: xxxxx}
+      //   sails.log(res); // { id: xxxxx}
       // });
-        // console.log(ArticleService. getArticles());
+        // sails.log(ArticleService. getArticles());
         var articles = (ArticleService. getArticles(res));
         // res.view({ articles : articles});
     },

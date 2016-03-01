@@ -9,29 +9,48 @@ module.exports = {
     adapter: 'sigmaDv',
     attributes: {
         uid: {
-        type: 'string',
+        type: 'STRING',
         defaultsTo: function (){ return uuid.v4(); },
         unique: true,
         index: true,
         uuidv4: true
         },
         title: {
-        type: 'string',
+        type: 'STRING',
         required: true
         },
         description:{
-          type: 'string',
+          type: 'TEXT',
           defaultsTo: ' ',
           required: true
         },
         url:{
-          type: 'string',
-          required: true
+          type: 'STRING',
+          required: true,
+          // unique: true
         },
         image:{
-          type: 'string',
+          type: 'STRING',
           required: false
         },
+        // Add a reference to User
+        categories: {
+          collection: 'category',
+          via: 'articles',
+          dominant: true,
+          required: true
+        },
+        // Add a reference to Like
+        likes: {
+          collection: 'like',
+          via: 'article',
+        },
+        // Add a reference to Share
+        shares: {
+          collection: 'share',
+          via: 'articles',
+          dominant: true
+        }
     },
     toJSON : function(){
        var obj = this.Object();

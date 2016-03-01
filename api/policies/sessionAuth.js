@@ -17,6 +17,11 @@ module.exports = function (req, res, next) {
 
     // User is not allowed
     // (default res.forbidden() behavior can be overridden in `config/403.js`)
-    return res.redirect('/');
+    var redirect =
+    (req.url.indexOf('canvas') > -1) ? '/canvas/login' : '/';
+
+    sails.log('+ REDIRECT ',redirect);
+
+    return res.redirect(redirect);
     // return res.redirect('/login');
 };

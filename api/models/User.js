@@ -19,7 +19,18 @@ module.exports = {
         email: 'STRING',
         firstname: 'STRING',
         lastname: 'STRING',
-        password: 'STRING'
+        password: 'STRING',
+
+        // Add a reference to Like
+        likes: {
+          collection: 'like',
+          via: 'user',
+        },
+        // Add a reference to Like
+        shares: {
+          collection: 'share',
+          via: 'user',
+        },
     },
 
     // Generating a hash

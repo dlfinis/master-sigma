@@ -11,10 +11,10 @@ var graph = require('fbgraph');
 module.exports = {
   index: function (req, res) {
 
-      console.log("+ PROFILE.INDEX");
-      // console.log("+ PROFILE.INDEX token "+graph.getAccessToken());
-      // console.log(graph.getAccessToken());
-      // console.log("+ PROFILE.INDEX token ",JSON.stringify(req.token));
+      sails.log("+ PROFILE.INDEX");
+      // sails.log("+ PROFILE.INDEX token "+graph.getAccessToken());
+      // sails.log(graph.getAccessToken());
+      // sails.log("+ PROFILE.INDEX token ",JSON.stringify(req.token));
       var options = {
           timeout:  3000
         , pool:     { maxSockets:  Infinity }
@@ -24,7 +24,7 @@ module.exports = {
       graph
         .setOptions(options)
         .get("me?fields=likes,posts", function(err, res) {
-        console.log(res); // { id: '4', name: 'Mark Zuckerberg'... }
+        sails.log(res); // { id: '4', name: 'Mark Zuckerberg'... }
       });
 
 

@@ -10,11 +10,11 @@ module.exports = {
     // Account main page
     index: function (req, res) {
 
-        console.log("+ ACCOUNT.INDEX");
+        sails.log("+ ACCOUNT.INDEX");
 
         var accountLabel = "U"; // Empty User
 
-        console.log(req.user);
+        sails.log(req.user);
 
         if (req.user) {
 

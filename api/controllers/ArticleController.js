@@ -26,25 +26,25 @@ module.exports = {
   },
   testID: function (req, res) {
     var nameID = req.param('name');
-    console.log(req.param(nameID));
+    sails.log(req.param(nameID));
     return res.json({ status: 'OKID' });
   },
   setLike: function(req,res){
 
-      console.log("+ Article.SETLIKE");
+      sails.log("+ Article.SETLIKE");
       var uid = (req.param('uid'));
       var idLike;
 
-      console.log("+ Article.NOTLIKE.BEFORE");
+      sails.log("+ Article.NOTLIKE.BEFORE");
       var stringGetUID = "me/master-sigma:recomienda?fields=data{uid}";
       var opt = false;
       graph.get(stringGetUID,
                   function(err, response) {
                     if(err)
                       {
-                        console.log(err);
+                        sails.log(err);
                       }
-                        //console.log(ArticleService.isSetLike(uid));
+                        //sails.log(ArticleService.isSetLike(uid));
                         if(!isSetLike(uid, response.data))
                         {
 
@@ -70,7 +70,7 @@ module.exports = {
                                       'og:updated_time': article.updatedAt,
                                       'fb:app_id': sails.config.application_auth.facebookClientID
                                     };
-                                      console.log("+ Article.SETLIKE");
+                                      sails.log("+ Article.SETLIKE");
                                       graph.post("me/master-sigma:recomienda",
                                       {
                                           uid:article.uid,
@@ -97,10 +97,10 @@ module.exports = {
   },
   delLike: function(req,res){
 
-      console.log("+ Article.DELLIKE");
+      sails.log("+ Article.DELLIKE");
       var uid = (req.param('uid'));
 
-      console.log("+ Article.ISLIKE.BEFORE");
+      sails.log("+ Article.ISLIKE.BEFORE");
       var stringGetUID = "me/master-sigma:recomienda?fields=data{uid}";
 
       graph.get(stringGetUID,
