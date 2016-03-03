@@ -36,14 +36,9 @@ module.exports.routes = {
     //    sails.log.info(req.method, req.url);
     //    next();
     //},
-    '/': {
-        controller: 'home',
-        action: 'index'
-    },
-    'post /auth/facebook/canvas': {
-        controller: 'canvas',
-        action: 'login'
-    }
+    // '/': {
+    //   view: 'homepage'
+    // }
 
     /***************************************************************************
      *                                                                          *

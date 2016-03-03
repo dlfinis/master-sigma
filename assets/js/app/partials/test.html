@@ -1,0 +1,58 @@
+<!-- <div class="container" ng-controller="mainController"> -->
+<div class="container">
+
+  <h4>Single toggle</h4>
+     <pre>{{singleModel}}</pre>
+     <button type="button" class="btn btn-primary" ng-model="singleModel" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+         Single Toggle
+     </button>
+
+  <div class="text-center">
+    <p>Example of Angular and the normal Bootstrap JavaScript components</p>
+    <p class="text-success">This will work</p>
+  </div>
+
+  <h2>Buttons</h2>
+  <div class="btn-group" data-toggle="buttons">
+    <label class="btn btn-primary" ng-model="bigData.breakfast" uib-btn-checkbox>
+      Breakfast
+    </label>
+    <label class="btn btn-primary" ng-model="bigData.lunch" uib-btn-checkbox>
+      Lunch
+    </label>
+    <label class="btn btn-primary" ng-model="bigData.dinner" uib-btn-checkbox>
+      Dinner
+    </label>
+    <button ng-click="myFunction()">Click me!</button>
+    <p>{{ count }}</p>
+  </div>
+
+  <pre><code>{{ bigData | json }}</code></pre>
+  <div>
+    <form>
+      Check to show a header:
+      <input type="checkbox" ng-model="myVar">
+    </form>
+    <h1 ng-show="myVar">My Header</h1>
+  </div>
+
+  <div class="btn-group-justified">
+      <label ng-repeat="service in availability.services" class="btn btn-primary" ng-model="service.selected" btn-checkbox>{{service.name}}</label>
+    </div>
+    <div ng-repeat="service in availability.services">{{service.name}} <span ng-show="service.selected">- selected</span></div>
+</div>
+<div>
+    <h4>Default</h4>
+    <uib-rating ng-model="rate" max="max" read-only="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></uib-rating>
+    <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span>
+
+    <pre style="margin:15px 0;">Rate: <b>{{rate}}</b> - Readonly is: <i>{{isReadonly}}</i> - Hovering over: <b>{{overStar || "none"}}</b></pre>
+
+    <button type="button" class="btn btn-sm btn-danger" ng-click="rate = 0" ng-disabled="isReadonly">Clear</button>
+    <button type="button" class="btn btn-sm btn-default" ng-click="isReadonly = ! isReadonly">Toggle Readonly</button>
+    <hr />
+
+    <h4>Custom icons</h4>
+    <div ng-init="x = 5"><uib-rating ng-model="x" max="15" state-on="'glyphicon-ok-sign'" state-off="'glyphicon-ok-circle'" aria-labelledby="custom-icons-1"></uib-rating> <b>(<i>Rate:</i> {{x}})</b></div>
+    <div ng-init="y = 2"><uib-rating ng-model="y" rating-states="ratingStates" aria-labelledby="custom-icons-2"></uib-rating> <b>(<i>Rate:</i> {{y}})</b></div>
+</div>

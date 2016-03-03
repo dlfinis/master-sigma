@@ -92,7 +92,10 @@ module.exports = {
         // res.view({ articles : articles});
     },
     test:function(req,res){
-      return res.view();
+      return res.json("OK!");
+    },
+    testpage:function(req,res){
+      return res.redirect('/#/delta');
     }
 
 };
