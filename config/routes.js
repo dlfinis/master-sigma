@@ -40,6 +40,10 @@ module.exports.routes = {
     //   view: 'homepage'
     // }
 
+    '/getUser': {
+      controller: 'UserController',
+      action: 'getUser'
+    }
     /***************************************************************************
      *                                                                          *
      * Custom routes here...                                                    *

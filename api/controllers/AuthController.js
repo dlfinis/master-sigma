@@ -38,7 +38,7 @@ module.exports = {
                             return res.view('500');
                         }
 
-                        return res.redirect('/canvas');
+                        return res.redirect('#/canvas');
 
                     });
                 } else {
@@ -48,4 +48,8 @@ module.exports = {
         }
         )(req, res);
     },
+    logout: function(req,res){
+      req.logout();
+      res.redirect('/');
+    }
 };

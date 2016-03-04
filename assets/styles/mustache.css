@@ -203,6 +203,7 @@ footer p {
 .navbar-default{
     background-color: #3B5998;
     border-color: #6D84B4;
+    background-image: none;
 }
 
 .navbar-brand{

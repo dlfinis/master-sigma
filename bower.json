@@ -20,6 +20,7 @@
     "angular-bootstrap": "^1.2.1",
     "angular-animate": "^1.5.0",
     "angular-bootstrap-ratings": "^0.11.2",
-    "angular-ui-bootstrap": "^1.2.1"
+    "angular-ui-bootstrap": "^1.2.1",
+    "components-font-awesome": "^4.5.0"
   }
 }

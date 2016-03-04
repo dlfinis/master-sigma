@@ -18,6 +18,11 @@ angular.module("app.controllers", ["app.factories"])
 
 })
 
+.controller("canvasCtrl", function($scope)
+{
+
+})
+
 .controller("testCtrl", function($scope)
 {
   // BUTTONS ======================
@@ -44,7 +49,7 @@ angular.module("app.controllers", ["app.factories"])
 
 $scope.availability = { services:services };
   $scope.singleModel = 1;
-  
+
 $scope.rate = 3;
   $scope.max = 5;
   $scope.isReadonly = false;
