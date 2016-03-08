@@ -34,6 +34,10 @@ module.exports = {
           required: false
         },
         // Add a reference to User
+        creator: {
+          model: 'user'
+        }
+        // Add a reference to Categories
         categories: {
           collection: 'category',
           via: 'articles',

@@ -21,6 +21,11 @@ module.exports = {
         lastname: 'STRING',
         password: 'STRING',
 
+        // Add a reference to Article
+        articles: {
+          collection: 'article',
+          via: 'creator',
+        },
         // Add a reference to Like
         likes: {
           collection: 'like',

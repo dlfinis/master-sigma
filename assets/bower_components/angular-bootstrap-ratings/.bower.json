@@ -1,0 +1,24 @@
+{
+  "author": {
+    "name": "Evgeny Bogdanov"
+  },
+  "name": "angular-bootstrap-ratings",
+  "version": "0.11.2",
+  "main": [
+    "./ui-bootstrap-ratings.js"
+  ],
+  "dependencies": {
+    "angular": ">=1"
+  },
+  "homepage": "https://github.com/graspeo/angular-bootstrap-ratings",
+  "_release": "0.11.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.11.2",
+    "commit": "d699544dfc0a2ae1abee04b487177936cfecb89e"
+  },
+  "_source": "git://github.com/graspeo/angular-bootstrap-ratings.git",
+  "_target": "^0.11.2",
+  "_originalSource": "angular-bootstrap-ratings",
+  "_direct": true
+}

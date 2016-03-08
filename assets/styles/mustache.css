@@ -259,6 +259,8 @@ footer p {
   margin-bottom: 0;
   padding: 1% 2% 2.5% 2%;
 }
+
+
 .post .btn{
   font-size: 1.1em;
 }
@@ -266,13 +268,39 @@ footer p {
 .post hr{
   margin-bottom: 0px;
 }
+
 .post .social-bar{
-  display:table;
+  display:inline-block;
   width: 100%;
   background: rgb(142, 160, 196);
   background: rgba(58, 87, 149, 0.54);
   border-top: 1px solid #CCCCCC;
 
+}
+
+.post .social-bar .categories{
+  float: left;
+  text-align: left;
+  padding: 1% 2.5%;
+}
+
+.post .social-bar .categories .category{
+  display: inline-block;
+
+  margin: 5px 2px;
+  padding: 1px 5px;
+
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  
+  font-weight: 300;
+  font-style: italic;
+  font-size: small;
 }
 
 .post .social-bar .section-btn{
@@ -288,8 +316,8 @@ footer p {
 }
 
 .post .social-bar .section-btn .btn{
-    opacity:0.50;
+    /*opacity:0.50;*/
 }
 .post .social-bar .section-btn .btn:hover{
-    opacity:1;
+    /*opacity:1;*/
 }

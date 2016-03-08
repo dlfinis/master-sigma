@@ -16,11 +16,11 @@
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
   'fonts/**/*.css',
-  'components/components-font-awesome/css/font-awesome.css',
-  'components/angular/*.css',
-  'components/angular-bootstrap/*.css',
-  'components/bootstrap-css/**/bootstrap-theme.css',
-  'components/bootstrap-css/**/bootstrap.css',
+  'bower_components/components-font-awesome/css/font-awesome.css',
+  'bower_components/angular/*.css',
+  'bower_components/angular-bootstrap/*.css',
+  'bower_components/bootstrap-css/**/bootstrap-theme.css',
+  'bower_components/bootstrap-css/**/bootstrap.css',
   'styles/**/*.css',
 ];
 
@@ -33,15 +33,23 @@ var jsFilesToInject = [
   'js/dependencies/sails.io.js',
 
   // Load Angular
-  'components/angular/angular.min.js',
-  'components/angular-route/angular-route.min.js',
-  'components/angular-animate/angular-animate.min.js',
-  'components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+  'bower_components/angular/angular.js',
+  'bower_components/angular-i18n/angular-locale_es-ec.js',
+  'bower_components/angular-route/angular-route.js',
+  'bower_components/angular-animate/angular-animate.js',
+  'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
 
 
 
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/**/*.js',
+
+  //Load Angular app
+  'angular/app.config.js',
+  'angular/components/main/**/*.js',
+  'angular/components/core/**/*.js',
+  'angular/components/*.js',
+  'angular/app.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
