@@ -1,5 +1,9 @@
 #Sails.js Master-Sigma
 
+# Screenshots
+
+![Sails Auth Login Screen](/screenshot/screenshot-demo.jpg?raw=true "Sails Auth Login Screen")
+
 # Requirements
 
 - Sails.js >= 0.11.0
