@@ -6,7 +6,7 @@
 .rigging
 .tmp
 .assets
-assets/components/
+assets/bower_components/
 
 
 ########################
