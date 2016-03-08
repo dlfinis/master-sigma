@@ -10,7 +10,8 @@ module.exports = {
 
         name: {
         type: 'string',
-        required: true
+        required: true,
+        index:true
         },
 
         description:{

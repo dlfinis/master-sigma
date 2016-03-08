@@ -35,8 +35,10 @@ module.exports = {
         },
         // Add a reference to User
         creator: {
-          model: 'user'
-        }
+          model: 'user',
+          required: true,
+          index: true
+        },
         // Add a reference to Categories
         categories: {
           collection: 'category',
