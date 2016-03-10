@@ -19,9 +19,11 @@ var cssFilesToInject = [
   'bower_components/components-font-awesome/css/font-awesome.css',
   'bower_components/angular/*.css',
   'bower_components/angular-bootstrap/*.css',
-  'bower_components/bootstrap-css/**/bootstrap-theme.css',
   'bower_components/bootstrap-css/**/bootstrap.css',
+  'bower_components/bootstrap-css/**/bootstrap-theme.css',
+  'bower_components/ui-select/**/select.css',
   'styles/**/*.css',
+
 ];
 
 
@@ -35,8 +37,10 @@ var jsFilesToInject = [
   // Load Angular
   'bower_components/angular/angular.js',
   'bower_components/angular-i18n/angular-locale_es-ec.js',
+  'bower_components/angular-sanitize/angular-sanitize.js',
   'bower_components/angular-route/angular-route.js',
   'bower_components/angular-animate/angular-animate.js',
+  'bower_components/ui-select/dist/select.js',
   'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
 
 

@@ -239,6 +239,50 @@ footer p {
   background: #6D84B4;
 }
 
+.sort-bar{
+  /*background:white;*/
+}
+
+.sort-bar .sort-search {
+  padding: 10px 15px;
+  /*line-height: 40px;*/
+}
+.sort-bar .sort-search .form-control{
+    display: inline;
+    width: auto;
+}
+
+.sort-bar #categories{
+  float:right;
+}
+
+.sort-bar li.sort-tab > a ,
+.sort-bar #categories #category-dropdown {
+  background:white;
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  margin-right: 2px;
+  line-height: 1.42857143;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  color: #555;
+  cursor: default;
+  background-color: #F4F4F5;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+}
+
+.sort-bar li.sortab.active > a,
+.sort-bar #categories #category-dropdown:active{
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    background-color: #fff;
+}
+
+
 
 
 .post {
@@ -297,7 +341,7 @@ footer p {
   color: #333;
   background-color: #fff;
   border: 1px solid #ccc;
-  
+
   font-weight: 300;
   font-style: italic;
   font-size: small;

@@ -1,18 +1,17 @@
 <h1>List of Article</h1>
 
-<!-- <pre> {{articles | json}}</pre> -->
-<!-- <pre> {{mcategories | json}}</pre> -->
-<!-- <div class="col-lg-12 text-center post" ng-repeat="article in articles" uid={{article.uid}}>
+<!-- <pre> {{$article.articles | json}}</pre> -->
+<!-- <pre> {{$article.mcategories | json}}</pre> -->
+<!-- <div class="col-lg-12 text-center post" ng-repeat="article in $article.articles" uid={{article.uid}}>
      <pre>{{article}}</pre>
 </div> -->
-
 <div class="btn-group" uib-dropdown dropdown-append-to-body>
 
   <button id="btn-append-to-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle>
     Categoria <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-to-body">
-    <li role="menuitem" ng-repeat="mcategory in mcategories">
+    <li role="menuitem" ng-repeat="mcategory in $article.mcategories">
       <a href="#" ng-bind="mcategory.name"></a>
     </li>
   </ul>
@@ -21,44 +20,52 @@
 <uib-tabset active="active">
    <uib-tab index="0" heading="Static title" class="sort-tab">Static content</uib-tab>
    <uib-tab index="2" heading="Static title" class="sort-tab">Static content2</uib-tab>
-   <span class="sort-search">Búsqueda:<input type="text" class="form-control" ng-model="searchContent"></span>
-   <p>{{searchContent}}</p>
-      <!-- <span>
+   <span class="sort-search">Búsqueda:
+     <input type="text" class="form-control">
+    <span>
+      <span>
         <p>Selected: {{person.selected}}</p>
-<ui-select ng-model="person.selected" theme="select2" ng-disabled="disabled" style="min-width: 100px;">
+<ui-select ng-model="person.selected" theme="select2" ng-disabled="disabled" style="min-width: 300px;">
   <ui-select-match placeholder="Select a person in the list or search his name/age...">{{$select.selected.name}}</ui-select-match>
-  <ui-select-choices repeat="person in people | propsFilter: {name: $select.search}">
+  <ui-select-choices repeat="person in $article.people | propsFilter: {name: $select.search}">
     <div ng-bind-html="person.name | highlight: $select.search"></div>
   </ui-select-choices>
 </ui-select>
-      </span> -->
-  <span>
-<pre> {{mcategory | json}}</pre>
- <ui-select ng-model="mcategory.selected" ng-change="getByCategory(mcategory.selected)" theme="select2" ng-disabled="disabled" style="min-width: 150px;">
+      </span>
+  <!-- <span>
+    <p>Selected: {{mcategory.selected}}</p>
+ <ui-select ng-model="mcategory.selected" theme="select2" ng-disabled="disabled" style="min-width: 300px;">
    <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}</ui-select-match>
-   <ui-select-choices repeat="mcategory in mcategories | PropsFormat: {name: $select.search}">
+   <ui-select-choices repeat="mcategory in $article.mcategories | PropsFormat: {name: $select.search}">
      <div ng-bind-html="mcategory.name | highlight: $select.search"></div>
+     <small>
+       email: {{mcategory.email}}
+       age: <span ng-bind-html="''+mcategory.age | highlight: $select.search"></span>
+     </small>
    </ui-select-choices>
  </ui-select>
+  </span> -->
+  <span>
+    <select name="singleSelect" ng-model="$article.singleSelect">
+         <option value="option-1">Option 1</option>
+         <option value="option-2">Option 2</option>
+       </select>
+       {{$article.singleSelect}}
 
   </span>
-   <!-- <span id="categories" class="nav nav-tabs" uib-dropdown on-toggle="toggled(open)">
+   <span id="categories" class="nav nav-tabs" uib-dropdown on-toggle="toggled(open)">
       <a href id="category-dropdown" uib-dropdown-toggle>
         Categoría <span class="caret"></span>
       </a>
       <ul uib-dropdown-menu aria-labelledby="category-dropdown">
-        <li role="menuitem" ng-repeat="mcategory in mcategories">
+        <li role="menuitem" ng-repeat="mcategory in $article.mcategories">
           <a href="#" ng-bind="mcategory.name"></a>
         </li>
       </ul>
-    </span> -->
+    </span>
  </uib-tabset>
 </div>
-<span class="sort-search">Búsqueda:<input type="text" class="form-control" ng-model="searchContent1"></span>
-<p>{{searchContent1}}</p>
-<div class="col-lg-12 text-center post" ng-repeat="article in articles | filter:searchContent1 | filter:mcategory.selected.name  " uid={{article.uid}}>
-
-        <pre>{{searchContent1}}</pre>
+<div class="col-lg-12 text-center post" ng-repeat="article in $article.articles" uid={{article.uid}}>
         <a ng-href="{{article.url}}" target="_blank">
         <!-- <img id="image" class="img-responsive img-full"
         ng-src="{{ article.image || 'images/submarine.png' }}"

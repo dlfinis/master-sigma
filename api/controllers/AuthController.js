@@ -24,7 +24,7 @@ module.exports = {
             'email',
             'publish_actions'
             ],
-            failureRedirect: '/'
+            failureRedirect: '/#/'
         },
         function (err, user)
         {

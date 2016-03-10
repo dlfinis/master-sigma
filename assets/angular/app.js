@@ -1,8 +1,10 @@
 ;(function () {
 
-  angular.module('app', ['ngRoute',
+  angular.module('app', ['ngSanitize',
+                         'ngRoute',
                          'ngAnimate',
                          'ui.bootstrap',
+                         'ui.select',
                          'app.core',
                          'app.main'])
   .config(['$routeProvider', function($routeProvider) {

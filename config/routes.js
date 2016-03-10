@@ -42,8 +42,13 @@ module.exports.routes = {
 
     '/getUser': {
       controller: 'UserController',
-      action: 'getUser'
-    }
+      action: 'getUser',
+            skipAssets: true,
+    },
+    '/api/article': '/article',
+    '/api/category': '/category',
+
+
     /***************************************************************************
      *                                                                          *
      * Custom routes here...                                                    *
