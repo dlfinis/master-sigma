@@ -3,28 +3,43 @@
 
   function ArticleCtrl($scope, $http, $uibModal, ArticleFactory)
   {
-    var $article = $scope;
 
-    $article.searchContent = '';
+
+    var $article = this;
+
+    function getCategories(){
+      return $http.get('/category');
+       };
+       getCategories().then(function (response){
+         $article.mcategories = response.data;
+       });
+    $article.textSearchContent= '';
     $article.mcategory = {};
-    $article.mcategory.selected = undefined;
     ArticleFactory.getArticles()
                   .then(function (response){
-                      $article.articles = response.data.results;
+                      $article.articleList = response.data.results;
+
+
                   })
                   .catch(function (err) {
                       console.error(err.stack);
                   });
 
-    $http.get('/category')
-         .then(function (response){
-           $article.mcategories = response.data;
-          //  console.log(response.data);
 
-         });
     $article.test = function test() {
           return 'Test';
     };
+
+    $article.clear = function ($event, $select){
+                             //stops click event bubbling
+                             $event.stopPropagation();
+                             //to allow empty field, in order to force a selection remove the following line
+                             $select.selected = undefined;
+                             //reset search query
+                             $select.search = undefined;
+                             //focus and open dropdown
+                             $select.activate();
+                            };
 
     $article.open = function (size) {
       $uibModal.open(
@@ -35,7 +50,7 @@
         </div>
         <div class="modal-body">
         <div class="embed-responsive embed-responsive-4by3">
-          <iframe class="embed-responsive-item" sandbox="allow-same-origin allow-forms allow-popups" 
+          <iframe class="embed-responsive-item" sandbox="allow-same-origin allow-forms allow-popups"
           src="http://genbeta.com"></iframe>
         </div>
             <ul>

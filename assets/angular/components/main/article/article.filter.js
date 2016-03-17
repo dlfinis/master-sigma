@@ -43,7 +43,15 @@ function PropsFormatFilter() {
 
         var keys = Object.keys(props);
         for (var i = 0; i < keys.length; i++) {
+            console.log("Item:",item[prop]);
+
           var prop = keys[i];
+
+          if(props[prop] === undefined ) {
+            itemMatches = true;
+            break;
+          }
+
           var text = props[prop].toLowerCase();
           if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
             itemMatches = true;

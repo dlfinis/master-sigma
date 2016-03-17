@@ -7,7 +7,7 @@
                restrict: 'EA',
                scope: {},
                controller: 'ArticleCtrl',
-              //  controllerAs: '$article',
+               controllerAs: '$article',
                templateUrl: partial.main.article+'article.html',
            };
          });
