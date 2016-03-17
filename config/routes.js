@@ -45,9 +45,6 @@ module.exports.routes = {
       action: 'getUser',
             skipAssets: true,
     },
-    '/api/article': '/article',
-    '/api/category': '/category',
-
 
     /***************************************************************************
      *                                                                          *

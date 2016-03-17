@@ -17,16 +17,16 @@ module.exports = {
     },
     // livereloadPath: 'http://localhost:35729/livereload.js',
     connections: {
-      sigmadbDv: {
+      sigmaDv: {
         adapter: 'sails-mysql',
         host: 'localhost',
         user: 'root',
         password: 'root',
-        database: 'sigmadb'
+        database: 'msigmadb'
       },
     },
     models: {
-      connection: 'sigmadbDv',
+      connection: 'sigmaDv',
       migrate: 'alter'
     },
     application_auth: {

@@ -1,11 +1,7 @@
 <h1>List of Article</h1>
 
 <!-- <pre> {{articles | json}}</pre> -->
-<!-- <pre> {{mcategories | json}}</pre> -->
-<!-- <div class="col-lg-12 text-center post" ng-repeat="article in articles" uid={{article.uid}}>
-     <pre>{{article}}</pre>
-</div> -->
-
+<button type="button" class="btn btn-default" ng-click="open()">Open me!</button>
 <div class="btn-group" uib-dropdown dropdown-append-to-body>
 
   <button id="btn-append-to-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle>
@@ -33,7 +29,6 @@
 </ui-select>
       </span> -->
   <span>
-<pre> {{mcategory | json}}</pre>
  <ui-select ng-model="mcategory.selected" ng-change="getByCategory(mcategory.selected)" theme="select2" ng-disabled="disabled" style="min-width: 150px;">
    <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}</ui-select-match>
    <ui-select-choices repeat="mcategory in mcategories | PropsFormat: {name: $select.search}">
@@ -55,10 +50,7 @@
  </uib-tabset>
 </div>
 <span class="sort-search">Búsqueda:<input type="text" class="form-control" ng-model="searchContent1"></span>
-<p>{{searchContent1}}</p>
 <div class="col-lg-12 text-center post" ng-repeat="article in articles | filter:searchContent1 | filter:mcategory.selected.name  " uid={{article.uid}}>
-
-        <pre>{{searchContent1}}</pre>
         <a ng-href="{{article.url}}" target="_blank">
         <!-- <img id="image" class="img-responsive img-full"
         ng-src="{{ article.image || 'images/submarine.png' }}"
@@ -66,9 +58,10 @@
         </a>
         <div id="title" class="title"><h3 ng-bind="article.title"></h3></div>
         <div class="box">
-          <h5>{{ article.updatedAt | DateFormat }}</h5>
+          <h5>{{ article.date | DateFormat }}</h5>
           <p id="description" ng-bind="article.description"></p>
           <a id="url" ng-href="{{article.url}}" target="_blank" class="btn btn-default btn-lg">Leer más</a>
+          <p>{{getInfo(article.id) | json}}</p>
          </div>
     <div class="social-bar" >
           <div class="categories">

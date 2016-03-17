@@ -19,9 +19,150 @@ var graph = require('fbgraph');
       }).id;
   };
 
+  function getCreator(article){
+    var creator = {};
+
+    if(article.creator != 'undefined' || article.creator == [])
+    {
+        creator = {
+          id: article.creator.id,
+          uid: article.creator.uid,
+          name: article.creator.name
+        };
+    }
+
+    return creator;
+  };
+
+  function getLikes(article){
+    var like = {};
+
+    like = {
+      count: article.likes.length
+    };
+
+    return like;
+  };
+  function getShares(article){
+    var share = {};
+
+    share = {
+      count: article.shares.length
+    };
+
+    return share;
+  };
+  function getVisit(article){
+    var visit = {};
+
+    visit = {
+      count: article.visit.length
+    };
+
+    return visit;
+  };
+  function getCategories(article){
+    var categories = [];
+    if(article != 'undefined' || article == [])
+    {
+      article.categories.forEach(function (category){
+        var categoryList = {
+            id: category.id,
+            name: category.name,
+        };
+        categories.push(categoryList);
+      });
+    }
+
+    return categories;
+  };
+
 module.exports = {
 
-   test: function (req, res) {
+  findAll:function(req,res){
+    var articles_info = Article.find()
+                               .populate('creator')
+                               .populate('categories')
+                               .populate('likes')
+                               .populate('shares')
+                               .populate('visits');
+
+      articles_info.then(function(response){
+                      if(response != undefined )
+                      {
+                        var articles = [];
+                        response.forEach(function(article){
+                            var articleObj = {};
+
+                            articleObj = {
+                              id: article.id,
+                              uid: article.uid,
+                              title: article.title,
+                              url: article.url,
+                              state: article.state,
+                              date: article.state === "edit" ?
+                                    article.updatedAt : article.createdAt,
+                              description: article.description,
+                              image: article.image,
+                              likes : article.likes.length,
+                              shares : article.shares.length,
+                              visits : article.visits.length,
+                              creator: getCreator(article),
+                              categories: getCategories(article)
+                            };
+
+                            articles.push(articleObj);
+                        });
+
+                        return res.ok({total:articles.length,results:articles});
+
+                      }else{
+                        return res.send(404,{results:'Not found'});
+                      }
+                   })
+                  .catch(function(err){
+                            sails.log(err);
+                            return res.serverError(err);
+                  });
+  },
+  getInfo: function(req,res){
+      var articleID = req.param('id');
+      // console.log(articleID);
+
+      var articles_info = Article.findOne({id:articleID})
+                                 .populate('categories')
+                                 .populate('creator');
+          articles_info.then(function(response){
+                        // console.log(response);
+                        if(response != undefined )
+                        {
+                          var article = {
+                          results:[{
+                                  id: response.id,
+                                  uid: response.uid,
+                                  createdAt: response.createdAt,
+                                  updatedAt: response.updatedAt,
+                                  categories: getCategories(response),
+                                  creator: [{
+                                    id:response.creator.id,
+                                    name:response.creator.name,
+                                  }]
+                          }]
+                        }
+                          // console.log(response);
+                          return res.ok(article);
+                        }else{
+                          return res.send(404,{results:'Not found'});
+                        }
+
+                        })
+                       .catch(function(err){
+                                  sails.log(err);
+                                  return res.serverError(err);
+                        });
+
+  },
+  test: function (req, res) {
     return res.json({ status: 'OK' });
   },
   testID: function (req, res) {

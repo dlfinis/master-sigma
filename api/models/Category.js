@@ -5,18 +5,19 @@
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
 module.exports = {
-    adapter: 'sigmaDv',
     attributes: {
 
         name: {
         type: 'string',
         required: true,
+        unique: true,
         index:true
         },
 
         description:{
           type: 'string',
-          required: false
+          required: false,
+          defaultsTo: ''
         },
 
         // Add a reference to Article

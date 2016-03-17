@@ -6,8 +6,9 @@
  */
 var uuid = require('node-uuid');
 module.exports = {
-    adapter: 'sigmaDv',
+
     attributes: {
+
         uid: {
         type: 'STRING',
         defaultsTo: function (){ return uuid.v4(); },
@@ -27,11 +28,19 @@ module.exports = {
         url:{
           type: 'STRING',
           required: true,
-          // unique: true
+          urlish: true,
+          unique: true
         },
         image:{
           type: 'STRING',
-          required: false
+          required: false,
+          urlish: true
+        },
+        // Add a reference to state
+        state: {
+          type: 'STRING',
+          enum: ['create', 'edit'],
+          defaultsTo: 'create'
         },
         // Add a reference to User
         creator: {
@@ -54,9 +63,19 @@ module.exports = {
         // Add a reference to Share
         shares: {
           collection: 'share',
-          via: 'articles',
-          dominant: true
+          via: 'article'
+        },
+        // Add a reference to Visit
+        visits: {
+          collection: 'visit',
+          via: 'article'
         }
+    },
+    afterUpdate : function(values, cb){
+        Article.update(values.id,{ state: 'edit' },function(err){
+          if(err) return cb(err, false);
+        });
+        cb();
     },
     toJSON : function(){
        var obj = this.Object();
