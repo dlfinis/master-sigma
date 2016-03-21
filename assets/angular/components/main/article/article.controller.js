@@ -13,8 +13,19 @@
        getCategories().then(function (response){
          $article.mcategories = response.data;
        });
+    $article.sortValue= '';
     $article.textSearchContent= '';
+
+    $article.btn0 = '';
+    $article.btn1 = '';
+
     $article.mcategory = {};
+
+    $article.isActive = false;
+    $article.activeButton = function(index) {
+    $article.isActive = !$article.isActive;
+    console.log(index);
+    }
     ArticleFactory.getArticles()
                   .then(function (response){
                       $article.articleList = response.data.results;

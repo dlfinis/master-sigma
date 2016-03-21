@@ -36,7 +36,7 @@
                        btn-checkbox-false="false">
                 <img src="/icons/thumb.png" />
                </button>
-               <p>{{$like.state}}</p>
+               <!--<p>{{$like.state}}</p>-->
                `,
            };
          });

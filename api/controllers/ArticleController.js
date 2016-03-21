@@ -107,6 +107,10 @@ module.exports = {
                               likes : article.likes.length,
                               shares : article.shares.length,
                               visits : article.visits.length,
+                              recommend :
+                                          article.likes.length +
+                                          article.shares.length +
+                                          article.visits.length ,
                               creator: getCreator(article),
                               categories: getCategories(article)
                             };

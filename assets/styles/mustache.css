@@ -241,19 +241,75 @@ footer p {
 
 .sort-bar{
   /*background:white;*/
+  display:block;
+  width: 100%;
+  height: 30px;
+  background: #6D84B4;
+  font-size: 0.8em;
+}
+
+.sort-bar .sort-item{
+  display: inline-block;
+}
+
+.sort-bar .sort-item.tab{
+  padding: 7px 2%;
+  background: #4C6598;
+  color: #fff;
+  cursor: pointer;
+}
+
+.sort-bar .sort-item.tab.active{
+  background: #3A5795;
+  font-weight: bolder;
+}
+
+.sort-bar .sort-section{
+  display: inline-block;
+  text-align: right;
+  float: right;
+  width: 50%;
+  margin: 0 0.3%;
 }
 
 .sort-bar .sort-search {
-  padding: 10px 15px;
-  /*line-height: 40px;*/
+  margin: 0.69% 1%;
+  display: inline-block;
 }
+
+.sort-bar .sort-category{
+  display: inline-block;
+}
+
+
+.sort-bar .sort-category .ui-select-container{
+  min-width: 250px;
+  text-align: left;
+}
+
 .sort-bar .sort-search .form-control{
     display: inline;
     width: auto;
+    height: 22px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background-clip: padding-box;
+    box-sizing: border-box;
+    font-size: 1em;
 }
 
+.sort-bar .sort-search .field{
+    padding:0 7px;
+    color:#fff;
+    font-weight: bolder;
+}
 .sort-bar #categories{
   float:right;
+}
+
+.sort-bar .select2-container .select2-choice{
+  height: 22px;
+  line-height: 20px;
 }
 
 .sort-bar li.sort-tab > a ,
@@ -261,7 +317,7 @@ footer p {
   background:white;
   position: relative;
   display: block;
-  padding: 10px 15px;
+  padding: 4px 15px;
   margin-right: 2px;
   line-height: 1.42857143;
   border: 1px solid transparent;
@@ -282,11 +338,8 @@ footer p {
     background-color: #fff;
 }
 
-
-
-
 .post {
-  margin:2%;
+  margin-bottom:2%;
 }
 
 .post .title{
@@ -306,7 +359,7 @@ footer p {
 
 
 .post .btn{
-  font-size: 1.1em;
+  font-size: 1em;
 }
 
 .post hr{
@@ -319,7 +372,7 @@ footer p {
   background: rgb(142, 160, 196);
   background: rgba(58, 87, 149, 0.54);
   border-top: 1px solid #CCCCCC;
-
+  cursor: pointer;
 }
 
 .post .social-bar .categories{

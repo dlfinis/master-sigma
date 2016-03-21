@@ -12,7 +12,8 @@ module.exports = {
       type: 'STRING',
       required: true,
       index: true,
-      uuidv4: true
+      uuidv4: true,
+      defaultsTo: function (){ return uuid.v4(); }
     },
     // Add a reference to Article
     article: {

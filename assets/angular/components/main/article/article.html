@@ -1,39 +1,29 @@
 <h1>List of Article</h1>
 
 <!-- <pre> {{articles | json}}</pre> -->
-<button type="button" class="btn btn-default" ng-click="open()">Open me!</button>
-<div class="btn-group" uib-dropdown dropdown-append-to-body>
+<div class="col-sm-12">
+  <div class="sort-bar">
+      <div class="sort-item tab" ng-class='{"active":tab == 1}' ng-click="sortValue = '-date';tab = 1">Reciente</div>
+      <div class="sort-item tab" ng-class='{"active":tab == 2}' ng-click="sortValue = '-recommend';tab = 2">Recomendados</div>
+      <div class="sort-item sort-section">
+        <div class="sort-search">
+          <span class="field">Búsqueda: </span>
+          <input type="text" class="form-control select2-container" ng-model="$article.textSearchContent">
+        </div>
+        <div class="sort-category">
+          <ui-select ng-model="$article.mcategory.selected" theme="select2">
+           <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}
+           <a class="btn btn-xs" ng-click="$article.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
+           </ui-select-match>
+           <ui-select-choices repeat="mcategory in $article.mcategories | orderBy:'name' | PropsFormat: {name: $select.search}">
+             <div ng-bind-html="mcategory.name | highlight: $select.search"></div>
+           </ui-select-choices>
+          </ui-select>
+        </div>
+    </div>
+  </div>
 
-  <button id="btn-append-to-to-body" type="button" class="btn btn-primary" uib-dropdown-toggle>
-    Categoria <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-to-body">
-    <li role="menuitem" ng-repeat="mcategory in mcategories">
-      <a href="#" ng-bind="mcategory.name"></a>
-    </li>
-  </ul>
-</div>
-<div class="sort-bar">
-<uib-tabset active="active">
-   <uib-tab index="0" heading="Static title" class="sort-tab">Static content</uib-tab>
-   <uib-tab index="2" heading="Static title" class="sort-tab">Static content2</uib-tab>
-   <span class="sort-search">Búsqueda:<input type="text" class="form-control" ng-model="$article.textSearchContent"></span>
-   <span>
-   <ui-select ng-model="$article.mcategory.selected" theme="select2" style="min-width: 250px;">
-    <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}
-   <a class="btn btn-xs btn-link pull-right" ng-click="$article.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
-    </ui-select-match>
-    <ui-select-choices repeat="mcategory in $article.mcategories | PropsFormat: {name: $select.search}">
-      <div ng-bind-html="mcategory.name | highlight: $select.search"></div>
-    </ui-select-choices>
-   </ui-select>
-   </span>
- </uib-tabset>
-</div>
-
-
-<!-- <span class="sort-search">Búsqueda:<input type="text" class="form-control" ng-model="searchContent"></span> -->
-<div class="col-lg-12 text-center post" ng-repeat="article in $article.articleList | filter:$article.textSearchContent | filter:$article.mcategory.selected.name  " uid={{article.uid}}>
+<div class="text-center post" ng-repeat="article in $article.articleList | orderBy:sortValue | filter:$article.textSearchContent | filter:$article.mcategory.selected.name  " uid={{article.uid}}>
         <a ng-href="{{article.url}}" target="_blank">
         <!-- <img id="image" class="img-responsive img-full"
         ng-src="{{ article.image || 'images/submarine.png' }}"
@@ -41,25 +31,26 @@
         </a>
         <div id="title" class="title"><h3 ng-bind="article.title"></h3></div>
         <div class="box">
-          <h5>{{ article.date | DateFormat }}</h5>
-          <p id="description" ng-bind="article.description"></p>
-          <a id="url" ng-href="{{article.url}}" target="_blank" class="btn btn-default btn-lg">Leer más</a>
-          <p>{{getInfo(article.id) | json}}</p>
+            <h5>{{ article.date | DateFormat }}</h5>
+            <p id="description" ng-bind="article.description"></p>
+            <a id="url" ng-href="{{article.url}}" target="_blank" class="btn btn-default">Leer más</a>
+            <p>{{getInfo(article.id) | json}}</p>
          </div>
+
     <div class="social-bar" >
           <div class="categories">
             <div class="category" ng-repeat="category in article.categories" ng-bind="category.name"></div>
+            <p style="font-size:0.8em">Like:{{article.likes}}.</br>Share:{{article.shares}}.</br>Visits:{{article.visits}}</p>
+            <p style="font-size:0.8em"> Valoracion de Recomendación:{{article.recommend}}</p>
           </div>
           <div class="section-btn" uid-post="{{article.uid}}">
-            <!-- <a class="btn btn-default btn-lg" type="like"><img src="/icons/thumb.png" /></a>
-            <a class="btn btn-lg" type="dislike"><img src="/icons/thumb-down.png" /></a> -->
             <like></like>
-            <a href="#" type="share" class="btn btn-lg"><img src="/icons/share.png" /></a>
+            <share></share>
           </div>
     </div>
 </div>
-
-<div class="col-lg-12 text-center">
+</div>
+<div class="col-sm-12 text-center">
     <ul class="pager">
         <li class="previous"><a href="#">&larr; Previo</a>
         </li>
