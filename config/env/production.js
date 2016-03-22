@@ -20,33 +20,32 @@ module.exports = {
 
         enableLocalAuth: true,
 
-        // Get your keys from https://apps.twitter.com/
-        enableTwitterAuth: true,
-        twitterConsumerKey: "",
-        twitterSecretKey: "",
-        twitterCallbackURL: "http://you-domain.com/auth/twitter/callback",
-
+        // Get your keys from https://developers.facebook.com/apps/
+        // module.exports.local = {
         enableFacebookAuth: true,
-        facebookClientID: "",
-        facebookClientSecret: "",
-        facebookCallbackURL: "http://you-domain.com/auth/facebook/callback"
+        facebookClientID: "1267766483237355",
+        facebookClientSecret: "a2f5e3a27b74a64bc0d1ecc2d3a9ec31",
+        facebookCallbackURL: "https://master.sigma/auth/facebook/callback",
+        facebookAppURL: "https://apps.facebook.com/master-sigma/",
     },
 
     /***************************************************************************
      * Set the default database connection for models in the production        *
      * environment (see config/connections.js and config/models.js )           *
      ***************************************************************************/
-
-    connections: {
-        prodMongodbServer: {
-            adapter: 'sails-mongo',
-            host: 'localhost',
-            port: 27017,
-            //user: '',
-            //password: '',
-            database: 'sails-auth'
-        }
-    }
+     connections: {
+       sigmaDv: {
+         adapter: 'sails-mysql',
+         host: 'us-cdbr-iron-east-03.cleardb.net',
+         user: 'bad812654b4b13',
+         password: 'eed57ee2',
+         database: 'heroku_1014650bcf2946e'
+       },
+     },
+     models: {
+       connection: 'sigmaDv',
+       migrate: 'alter'
+     },
 
     //session: {
     //    adapter: 'mongo',
@@ -64,7 +63,7 @@ module.exports = {
      * Set the port in the production environment to 80                        *
      ***************************************************************************/
 
-    // port: 80,
+     port: process.env.PORT || 1337,
 
     /***************************************************************************
      * Set the log level in production environment to "silent"                 *

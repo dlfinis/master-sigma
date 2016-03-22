@@ -15,7 +15,6 @@ module.exports = {
     grunt: {
         _hookTimeout: 60000
     },
-    // livereloadPath: 'http://localhost:35729/livereload.js',
     connections: {
       sigmaDv: {
         adapter: 'sails-mysql',
@@ -32,12 +31,6 @@ module.exports = {
     application_auth: {
 
         enableLocalAuth: true,
-
-        // Get your keys from https://apps.twitter.com/
-        enableTwitterAuth: false,
-        twitterConsumerKey: "",
-        twitterSecretKey: "",
-        twitterCallbackURL: "https://localhost:1337/auth/twitter/callback",
 
         // Get your keys from https://developers.facebook.com/apps/
         // module.exports.local = {
