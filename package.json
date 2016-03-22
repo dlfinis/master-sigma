@@ -1,5 +1,5 @@
 {
-  "name": "sails-social-login",
+  "name": "master-sigma",
   "private": true,
   "version": "0.0.0",
   "description": "a Sails application",
@@ -45,7 +45,7 @@
     "type": "git",
     "url": "git://github.com/dlfinis/master-sigma.git"
   },
-  "author": "bmustata",
+  "author": "dlfinis",
   "license": "",
   "devDependencies": {
     "connect-livereload": "^0.5.4"
