@@ -6,6 +6,7 @@
   "keywords": [],
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "bower": "^1.7.7",
     "connect-ensure-login": "^0.1.1",
     "ejs": "~0.8.4",
     "fb": "^1.0.2",
@@ -38,7 +39,8 @@
   },
   "scripts": {
     "start": "sails lift",
-    "debug": "node debug app.js"
+    "debug": "node debug app.js",
+    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "main": "app.js",
   "repository": {
