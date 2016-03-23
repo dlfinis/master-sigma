@@ -1,4 +1,4 @@
-;(function () {
+(function () {
   'use strict';
 
   angular.module('app.main.home',['app.config'])
@@ -13,4 +13,4 @@
   });
 
 
-})()
+})();

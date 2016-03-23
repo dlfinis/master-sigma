@@ -1,4 +1,4 @@
-;(function () {
+(function () {
   angular.module('app.main.wall', ['app.config'])
   .directive('wall',function (partial) {
     return {
@@ -10,4 +10,4 @@
     };
   });
 
-})()
+})();

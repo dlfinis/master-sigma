@@ -1,4 +1,5 @@
-angular.module('app.config',[])
+(function () {
+  angular.module('app.config',[])
        .constant(
          'partial',{
               'main' : {
@@ -18,3 +19,4 @@ angular.module('app.config',[])
               }
           }
        );
+})();

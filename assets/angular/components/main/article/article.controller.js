@@ -9,8 +9,9 @@
 
     function getCategories(){
       return $http.get('/category');
-       };
-       getCategories().then(function (response){
+    }
+
+    getCategories().then(function (response){
          $article.mcategories = response.data;
        });
     $article.sortValue= '';
@@ -25,7 +26,8 @@
     $article.activeButton = function(index) {
     $article.isActive = !$article.isActive;
     console.log(index);
-    }
+    };
+
     ArticleFactory.getArticles()
                   .then(function (response){
                       $article.articleList = response.data.results;
@@ -55,27 +57,8 @@
     $article.open = function (size) {
       $uibModal.open(
       {
-        template:`
-        <div class="modal-header">
-            <h3 class="modal-title">I'm a modal!</h3>
-        </div>
-        <div class="modal-body">
-        <div class="embed-responsive embed-responsive-4by3">
-          <iframe class="embed-responsive-item" sandbox="allow-same-origin allow-forms allow-popups"
-          src="http://genbeta.com"></iframe>
-        </div>
-            <ul>
-                <li ng-repeat="item in items">
-                    <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-                </li>
-            </ul>
-            Selected: <b>{{ selected.item }}</b>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-        </div>
-        `
+
+        templateUrl: '/angular/components/margin/article/tpl/test.modal.html'
       });
     };
     $article.showModal = false;
@@ -84,7 +67,7 @@
     };
 
 
-  };
+  }
 
   angular.module('app.main.article')
          .controller('ArticleCtrl',ArticleCtrl);

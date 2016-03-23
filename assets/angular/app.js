@@ -1,4 +1,4 @@
-;(function () {
+(function () {
 
   angular.module('app', ['ngSanitize',
                          'ngRoute',
@@ -29,4 +29,4 @@
     $routeProvider.otherwise({redirectTo: '/'});
   }]);
 
-})()
+})();

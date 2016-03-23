@@ -1,4 +1,4 @@
-;(function () {
+(function () {
   'use strict';
 
   function ShareCtrl($scope)
@@ -12,7 +12,7 @@
         $share.count++;
         $share.state = !$share.state;
       };
-  };
+  }
 
   angular.module('app.main.article.share', [])
          .controller('ShareCtrl',ShareCtrl)
@@ -25,20 +25,8 @@
                },
                controller: 'ShareCtrl',
                controllerAs: '$share',
-               template:
-               `
-               <button type="button"
-                       class="btn btn-primary"
-                       article-uid="$share.uid"
-                       ng-model="$share.state"
-                       uib-btn-checkbox
-                       btn-checkbox-true="true"
-                       btn-checkbox-false="false">
-                <img src="/icons/share.png" />
-               </button>
-              <!--<p>{{$share.state}}</p>-->
-               `,
+              templateUrl: '/angular/components/main/article/tpl/share.cmp.html'
            };
          });
 
-})()
+})();

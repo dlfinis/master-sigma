@@ -1,4 +1,4 @@
-;(function () {
+(function () {
 
   function WallCtrl($scope){
 
@@ -6,9 +6,9 @@
 
     $wall.ok = 'OK';
 
-  };
+  }
 
   angular.module('app.main.wall')
          .controller('WallCtrl',WallCtrl);
 
-})()
+})();

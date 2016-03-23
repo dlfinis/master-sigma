@@ -22,7 +22,7 @@
           sc.count = 0;
           sc.myFunction = function() {
             sc.count++;
-          }
+          };
 
           var services = [
           { name:'Service A' },

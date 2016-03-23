@@ -1,4 +1,4 @@
-;(function () {
+(function () {
   'use strict';
 
   angular.module('app.main.zarticle', ['app.config'])
@@ -12,8 +12,8 @@
           {
             return $http.get('/api/article');
           }
-    }
-  };
+    };
+  }
 
   function ZArticleCtrl($scope, ZArticleFactory)
   {
@@ -26,7 +26,7 @@
                   .catch(function (err) {
                       console.error(err.stack);
                   });
-  };
+  }
 
   function ZArticleDirective (partial) {
     return {
@@ -38,4 +38,4 @@
     };
   }
 
-})()
+})();

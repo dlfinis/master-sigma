@@ -1,4 +1,4 @@
-;(function () {
+(function () {
   'use strict';
 
   function LikeCtrl($scope)
@@ -12,7 +12,7 @@
         $like.count++;
         $like.state = !$like.state;
       };
-  };
+  }
 
   angular.module('app.main.article.like', [])
          .controller('LikeCtrl',LikeCtrl)
@@ -25,20 +25,8 @@
                },
                controller: 'LikeCtrl',
                controllerAs: '$like',
-               template:
-               `
-               <button type="button"
-                       class="btn btn-primary"
-                       article-uid="delta"
-                       ng-model="$like.state"
-                       uib-btn-checkbox
-                       btn-checkbox-true="true"
-                       btn-checkbox-false="false">
-                <img src="/icons/thumb.png" />
-               </button>
-               <!--<p>{{$like.state}}</p>-->
-               `,
+               templateUrl: '/angular/components/main/article/tpl/like.cmp.html'
            };
          });
 
-})()
+})();

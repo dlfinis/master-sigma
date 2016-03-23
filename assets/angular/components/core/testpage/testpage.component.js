@@ -1,4 +1,4 @@
-;(function(){
+(function(){
   'use strict';
 
   angular.module('app.core.testpage', ['app.config'])
@@ -22,12 +22,12 @@
       {
           return 'OK';
       }
-    }
-  };
+    };
+  }
 
   function TestPageCtrl(TestPageFactory){
     var sc = this;
     sc.ok = TestPageFactory.isOK();
-  };
+  }
 
-})()
+})();

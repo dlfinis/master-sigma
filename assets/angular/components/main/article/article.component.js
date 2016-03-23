@@ -1,4 +1,4 @@
-;(function () {
+(function () {
   'use strict';
 
   angular.module('app.main.article', ['app.config'])
@@ -12,4 +12,4 @@
            };
          });
 
-})()
+})();

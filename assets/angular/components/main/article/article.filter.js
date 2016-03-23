@@ -1,15 +1,15 @@
-;(function () {
+(function () {
   'use strict';
 
   function DateFormatFilter($filter)
   {
    return function(input)
    {
-    if(input == null){ return ""; }
+    if(input == 'null'){ return ""; }
     var _date = $filter('date')(new Date(input), "EEEE,dd 'de' MMMM 'del' yyyy");
     return _date;
-   }
- };
+  };
+ }
 
 
 function CategoryFormatFilter($filter){
@@ -30,8 +30,8 @@ function CategoryFormatFilter($filter){
  // }
  return function(){
 
- }
-};
+ };
+}
 
 function PropsFormatFilter() {
   return function(items, props) {
@@ -69,8 +69,8 @@ function PropsFormatFilter() {
     }
 
     return out;
-  }
-};
+  };
+}
 
 
   angular.module('app.main.article')
@@ -78,4 +78,4 @@ function PropsFormatFilter() {
          .filter('CategoryFormat',CategoryFormatFilter)
          .filter('PropsFormat',PropsFormatFilter)
 
-})()
+})();

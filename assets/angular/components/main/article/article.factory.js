@@ -1,4 +1,4 @@
-;(function () {
+(function () {
  'use strict';
 
   function ArticleFactory($http){
@@ -11,9 +11,9 @@
           {
             return ">"+articleID;
           }
-    }
+    };
   }
 
  angular.module('app.main.article')
         .factory('ArticleFactory', ArticleFactory);
-})()
+})();

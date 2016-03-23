@@ -43,6 +43,7 @@ module.exports = {
        },
      },
      models: {
+       schema: true,
        connection: 'sigmaDv',
        migrate: 'alter'
      },

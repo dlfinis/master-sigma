@@ -1,4 +1,4 @@
-;(function(){
+(function(){
   'use strict';
 
   angular.module('app.core.test', ['app.config'])
@@ -11,4 +11,4 @@
     };
   });
 
-})()
+})();
