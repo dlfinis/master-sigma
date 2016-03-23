@@ -49,8 +49,8 @@ module.exports = function(grunt) {
 				appRoot: '.tmp/public'
 			},
 			files: {
-				'.tmp/public/**/*.html': ['.tmp/public/min/production.min.js'],
-				'assets/**/*.html': ['.tmp/public/min/production.min.js']
+				'.tmp/public/**/*.html': ['.tmp/public/concat/production.js'],
+				'assets/**/*.html': ['.tmp/public/concat/production.js']
 			}
 		},
 
@@ -63,8 +63,8 @@ module.exports = function(grunt) {
 				relative: true
 			},
 			files: {
-        '.tmp/public/**/*.html': ['.tmp/public/min/production.min.js'],
-        'assets/**/*.html': ['.tmp/public/min/production.min.js']
+        '.tmp/public/**/*.html': ['.tmp/public/concat/production.js'],
+        'assets/**/*.html': ['.tmp/public/concat/production.js']
 			}
 		},
 
