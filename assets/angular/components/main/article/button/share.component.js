@@ -25,7 +25,7 @@
                },
                controller: 'ShareCtrl',
                controllerAs: '$share',
-              templateUrl: '/angular/components/main/article/tpl/share.cmp.html'
+              templateUrl: partial.main.article+'tpl/share.cmp.html'
            };
          });
 

@@ -1,7 +1,7 @@
 (function () {
  'use strict';
 
-  function ArticleFactory($http){
+  function ArticleListFactory($http){
     return {
           getArticles: function()
           {
@@ -10,10 +10,14 @@
           getInfo: function(articleID)
           {
             return ">"+articleID;
+          },
+          getSite: function(uri)
+          {
+            return $http.get('/article/getSite/',{params:{"uri": uri}});
           }
     };
   }
 
  angular.module('app.main.article')
-        .factory('ArticleFactory', ArticleFactory);
+        .factory('ArticleListFactory', ArticleListFactory);
 })();

@@ -23,6 +23,9 @@
     "components-font-awesome": "^4.5.0",
     "angular-i18n": "^1.5.0",
     "ui-select": "angular-ui-select#^0.14.9",
-    "angular-sanitize": "^1.5.0"
+    "angular-sanitize": "^1.5.0",
+    "angular-lazy-img": "^1.2.2",
+    "spin.js": "spinjs#^2.3.2",
+    "angular-loading-bar": "^0.9.0"
   }
 }

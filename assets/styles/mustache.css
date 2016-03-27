@@ -190,8 +190,8 @@ footer p {
 
 .navbar {
     border-radius: 0px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
+    /*border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;*/
     min-height: 35px;
     height: 35px;
 }
@@ -202,15 +202,13 @@ footer p {
 
 .navbar-default{
     background-color: #3B5998;
-    border-color: #6D84B4;
+    border:0;
     background-image: none;
 }
 
 .navbar-brand{
-    padding: 5px 25px;
-    font-size: 20px;
-    line-height: 22px;
-    height: 35px;
+  padding: 5px 10px;
+  height: auto;
 }
 
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
@@ -239,6 +237,56 @@ footer p {
   background: #6D84B4;
 }
 
+.full-screen {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.zIndex-10--loadingPage {
+  z-index: 1000;
+}
+
+.loading{
+  width: 100%;
+  text-align: center;
+  background: #344557;
+  /*margin-top: -20px;*/
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  overflow:hidden;
+}
+
+.fade{
+    -webkit-transition: opacity 10s; /* For Safari 3.1 to 6.0 */
+    transition: opacity 10s;
+    opacity: 0;
+}
+
+.fade-in-out {
+  transition: 1.5s linear all;
+  opacity: 1;
+}
+
+.fade-in-out.ng-hide {
+  opacity: 0;
+}
+
+.animate-enter {
+  -webkit-transition: 1s linear all; /* Chrome */
+  transition: 1s linear all;
+  opacity: 0;
+}
+
+.animate-enter.animate-enter-active {
+  opacity: 1;
+}
+
 .sort-bar{
   /*background:white;*/
   display:block;
@@ -253,10 +301,11 @@ footer p {
 }
 
 .sort-bar .sort-item.tab{
-  padding: 7px 2%;
+  padding: 6px 2%;
   background: #4C6598;
   color: #fff;
   cursor: pointer;
+  height: 29px;
 }
 
 .sort-bar .sort-item.tab.active{
@@ -268,7 +317,7 @@ footer p {
   display: inline-block;
   text-align: right;
   float: right;
-  width: 50%;
+  width: 70%;
   margin: 0 0.3%;
 }
 
@@ -283,7 +332,7 @@ footer p {
 
 
 .sort-bar .sort-category .ui-select-container{
-  min-width: 250px;
+  min-width: 200px;
   text-align: left;
 }
 
@@ -340,16 +389,24 @@ footer p {
 
 .post {
   margin-bottom:2%;
+  padding: 0px;
 }
 
+.post .image-box{
+  background: #344557;
+}
 .post .title{
   padding-top: 10px;
   padding-bottom: 5px;
   background:#3A5795;
+  padding: 0px;
+
 }
 
 .post .title h3{
-  margin:0;
+    margin:0;
+    color:#fff;
+    padding: 0.3%;
 }
 
 .post .box{
@@ -357,6 +414,14 @@ footer p {
   padding: 1% 2% 2.5% 2%;
 }
 
+
+.post .image{
+  height: 250px;
+  width: 100%;
+  display: block;
+  height: 50vh;
+  object-fit: cover;
+}
 
 .post .btn{
   font-size: 1em;
@@ -417,4 +482,24 @@ footer p {
 }
 .post .social-bar .section-btn .btn:hover{
     /*opacity:1;*/
+}
+
+@media screen and (max-width:768px) {
+  p {
+      font-size: 1.0em;
+    }
+
+    .sort-bar .sort-section {
+        display: inline-block;
+        text-align: left;
+        float: right;
+        width: 100%;
+        margin: 0;
+        background: #4C6598;
+    }
+
+    .post .image{
+      height: 100px;
+    }
+
 }

@@ -12,7 +12,7 @@
       template:
                 '<h4>TEST PAGE</h4>'+
                 '<pre>{{sc.ok}}</pre>'+
-                '<article></article>'
+                '<articlelist></articlelist>'
      };
   });
 

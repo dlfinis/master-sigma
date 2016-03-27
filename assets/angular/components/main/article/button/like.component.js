@@ -14,7 +14,7 @@
       };
   }
 
-  angular.module('app.main.article.like', [])
+  angular.module('app.main.article.like',['app.config'])
          .controller('LikeCtrl',LikeCtrl)
          .directive('like', function(partial){
            return {
@@ -25,7 +25,7 @@
                },
                controller: 'LikeCtrl',
                controllerAs: '$like',
-               templateUrl: '/angular/components/main/article/tpl/like.cmp.html'
+               templateUrl: partial.main.article+'tpl/like.cmp.html'
            };
          });
 

@@ -33,8 +33,10 @@
     "passport-facebook-canvas": "0.0.3",
     "passport-local": "^1.0.0",
     "rc": "~0.5.0",
+    "request": "^2.69.0",
     "sails": "~0.11.x",
     "sails-disk": "~0.10.x",
+    "sails-hook-autoreload": "^0.13.1",
     "sails-mysql": "^0.11.4"
   },
   "scripts": {
@@ -48,9 +50,8 @@
     "url": "git://github.com/dlfinis/master-sigma.git"
   },
   "author": "dlfinis",
-  "license": "",
+  "license": "MIT",
   "devDependencies": {
-    "sails-hook-autoreload": "^0.13.1",
     "connect-livereload": "^0.5.4"
   }
 }

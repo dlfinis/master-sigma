@@ -21,9 +21,9 @@ var cssFilesToInject = [
   'bower_components/angular-bootstrap/*.css',
   'bower_components/bootstrap-css/**/bootstrap.css',
   'bower_components/bootstrap-css/**/bootstrap-theme.css',
+  'bower_components/angular-loading-bar/build/loading-bar.css',
   'bower_components/ui-select/**/select.css',
   'styles/**/*.css',
-
 ];
 
 
@@ -31,12 +31,17 @@ var cssFilesToInject = [
 // (uses Grunt-style wildcard/glob/splat expressions)
 var jsFilesToInject = [
 
+  // Load sails.io before everything else
+  'js/dependencies/sails.io.js',
+
   // Load Angular
   'bower_components/angular/angular.js',
   'bower_components/angular-i18n/angular-locale_es-ec.js',
   'bower_components/angular-sanitize/angular-sanitize.js',
   'bower_components/angular-route/angular-route.js',
+  'bower_components/angular-loading-bar/build/loading-bar.js',
   'bower_components/angular-animate/angular-animate.js',
+  'bower_components/angular-lazy-img/release/angular-lazy-img.js',
   'bower_components/ui-select/dist/select.js',
   'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
 
@@ -46,10 +51,6 @@ var jsFilesToInject = [
   'angular/components/core/**/*.js',
   'angular/components/*.js',
   'angular/app.js',
-
-
-  // Load sails.io before everything else
-  'js/dependencies/sails.io.js',
 
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/**/*.js',

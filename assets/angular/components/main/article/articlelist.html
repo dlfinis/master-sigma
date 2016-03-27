@@ -1,21 +1,20 @@
-<h1>List of Article</h1>
-
 <!-- <pre> {{articles | json}}</pre> -->
+
 <div class="col-sm-12">
   <div class="sort-bar">
-      <div class="sort-item tab" ng-class='{"active":tab == 1}' ng-click="sortValue = '-date';tab = 1">Reciente</div>
+      <div class="sort-item tab" ng-init="tab = 1" ng-class='{"active":tab == 1}' ng-click="sortValue = '-date';tab = 1">Reciente</div>
       <div class="sort-item tab" ng-class='{"active":tab == 2}' ng-click="sortValue = '-recommend';tab = 2">Recomendados</div>
       <div class="sort-item sort-section">
         <div class="sort-search">
           <span class="field">Búsqueda: </span>
-          <input type="text" class="form-control select2-container" ng-model="$article.textSearchContent">
+          <input type="text" class="form-control select2-container" ng-model="$articlelist.textSearchContent">
         </div>
         <div class="sort-category">
-          <ui-select ng-model="$article.mcategory.selected" theme="select2">
+          <ui-select ng-model="$articlelist.mcategory.selected" theme="select2">
            <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}
-           <a class="btn btn-xs" ng-click="$article.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
+           <a class="btn btn-xs" ng-click="$articlelist.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
            </ui-select-match>
-           <ui-select-choices repeat="mcategory in $article.mcategories | orderBy:'name' | PropsFormat: {name: $select.search}">
+           <ui-select-choices repeat="mcategory in $articlelist.mcategories | orderBy:'name' | PropsFormat: {name: $select.search}">
              <div ng-bind-html="mcategory.name | highlight: $select.search"></div>
            </ui-select-choices>
           </ui-select>
@@ -23,11 +22,29 @@
     </div>
   </div>
 
-<div class="text-center post" ng-repeat="article in $article.articleList | orderBy:sortValue | filter:$article.textSearchContent | filter:$article.mcategory.selected.name  " uid={{article.uid}}>
-        <a ng-href="{{article.url}}" target="_blank">
-        <!-- <img id="image" class="img-responsive img-full"
-        ng-src="{{ article.image || 'images/submarine.png' }}"
-        alt="{{article.title}}"> -->
+<!-- <div class="row recommend-bar">
+  <div class="col-md-4" ng-repeat="article in $articlelist.articleList | orderBy:'-recommend' | limitTo:3" uid={{article.uid}}>
+    <a ng-href="{{article.url}}" target="_blank" style="width: 100%;
+display: block;">
+    <img id="image" class="" src="/images/spinner.gif"
+    lazy-img="{{ article.image || 'images/submarine.png' }}"
+    alt="{{article.title}}"
+    style="width: 100%;">
+    </a>
+      <div id="title" class="title"><span ng-bind="article.title"></span></div>
+  </div>
+</div> -->
+
+<div class="col-sm-12 text-center post" ng-animate=" 'animate' " ng-repeat="article in $articlelist.articleList | orderBy:sortValue | filter:$articlelist.textSearchContent | filter:$articlelist.mcategory.selected.name" uid={{article.uid}}>
+
+        <a class="image-box" ng-href="{{article.url}}" target="_blank">
+        <img class="image"
+        src="/images/spinner.gif"
+        lazy-img="{{ article.image || 'images/submarine.png' }}"
+        alt="">
+        <!-- <div  class="image"
+              lazy-img="{{ article.image || 'images/submarine.png' }}">
+        </div> -->
         </a>
         <div id="title" class="title"><h3 ng-bind="article.title"></h3></div>
         <div class="box">

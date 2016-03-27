@@ -10,7 +10,7 @@ var graph = require('fbgraph');
   function isSetLike(uid,graphData) {
       return _.find(graphData, function(resp) {
           return resp.data.uid == uid
-      }) ? true : false;
+      }) ? true : false ;
   };
 
   function getIDLike(uid,graphData) {
@@ -32,7 +32,7 @@ var graph = require('fbgraph');
     }
 
     return creator;
-  };
+  }
 
   function getLikes(article){
     var like = {};
@@ -42,7 +42,8 @@ var graph = require('fbgraph');
     };
 
     return like;
-  };
+  }
+
   function getShares(article){
     var share = {};
 
@@ -51,7 +52,8 @@ var graph = require('fbgraph');
     };
 
     return share;
-  };
+  }
+
   function getVisit(article){
     var visit = {};
 
@@ -60,7 +62,8 @@ var graph = require('fbgraph');
     };
 
     return visit;
-  };
+  }
+
   function getCategories(article){
     var categories = [];
     if(article != 'undefined' || article == [])
@@ -75,7 +78,7 @@ var graph = require('fbgraph');
     }
 
     return categories;
-  };
+  }
 
 module.exports = {
 
@@ -88,7 +91,7 @@ module.exports = {
                                .populate('visits');
 
       articles_info.then(function(response){
-                      if(response != undefined )
+                      if(response != 'undefined' )
                       {
                         var articles = [];
                         response.forEach(function(article){
@@ -138,21 +141,21 @@ module.exports = {
                                  .populate('creator');
           articles_info.then(function(response){
                         // console.log(response);
-                        if(response != undefined )
+                        if(response != 'undefined' )
                         {
                           var article = {
-                          results:[{
-                                  id: response.id,
-                                  uid: response.uid,
-                                  createdAt: response.createdAt,
-                                  updatedAt: response.updatedAt,
-                                  categories: getCategories(response),
-                                  creator: [{
-                                    id:response.creator.id,
-                                    name:response.creator.name,
-                                  }]
-                          }]
-                        }
+                            results:[{
+                                    id: response.id,
+                                    uid: response.uid,
+                                    createdAt: response.createdAt,
+                                    updatedAt: response.updatedAt,
+                                    categories: getCategories(response),
+                                    creator: [{
+                                      id:response.creator.id,
+                                      name:response.creator.name,
+                                    }]
+                                }]
+                          };
                           // console.log(response);
                           return res.ok(article);
                         }else{
@@ -165,6 +168,44 @@ module.exports = {
                                   return res.serverError(err);
                         });
 
+  },
+  getSite: function (req, res) {
+
+        var request = require('request');
+        var URI = req.param('uri');
+
+    //     request(
+    //     {
+    //       method: 'GET' ,
+    //       uri: URI,
+    //       gzip: true
+    //     },
+    //     function (error, response, body) {
+    //     // body is the decompressed response body
+    //     console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'));
+    //     console.log('the decoded data is: ' + body);
+    //     })
+    //     .on('data', function(data) {
+    //     // decompressed data as it is received
+    //     console.log('decoded chunk: ' + data);
+    //     })
+    //     .on('response', function(response) {
+    //     // unmodified http.IncomingMessage object
+    //     response.on('data', function(data) {
+    //     // compressed data as it is received
+    //     console.log('received ' + data.length + ' bytes of compressed data');
+    //   });
+    // });
+    console.log(URI);
+    request(URI, function (error, response, body) {
+      console.log(response.statusCode);
+      if (!error && response.statusCode == 200) {
+
+          // console.log(body);
+          res.send(body);
+
+      }
+    });
   },
   test: function (req, res) {
     return res.json({ status: 'OK' });
@@ -279,4 +320,4 @@ module.exports = {
                  }
           );
   }
-}
+};
