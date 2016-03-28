@@ -545,12 +545,17 @@ footer p {
 
 
 .modal.in .modal-dialog{
-  width: 80%;
+  /*width: 80%;*/
+}
+
+.modal .modal-header .btn{
+  float:right;
 }
 
 .modal .modal-body{
   padding: 0px;
 }
+
 .modal .post , .modal .social-bar{
   background: #7485A6;
   background: rgba(58, 87, 149, 0.75);

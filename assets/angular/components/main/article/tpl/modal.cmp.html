@@ -1,5 +1,9 @@
 <div class="modal-header">
+  <a class="btn btn-primary" ng-href="{{article.url}}" target="_blank">
+    Abrir Página Externa
+  </a>
     <h3 class="modal-title">{{article.title}}</h3>
+
 </div>
 <div class="modal-body">
   <!-- <pre>{{article}}</pre> -->
@@ -7,7 +11,7 @@
   <div class="fade-it loading" >
     <img class="" src="/images/spinner-2.gif"/>
   </div>
-  <iframe class="embed-responsive-item" sandbox="allow-same-origin allow-forms allow-popups"
+  <iframe class="embed-responsive-item" sandbox=""
   ng-src="{{currentUrl}}" ng-onload="hello">
     <p>Tu navegador no soporta iframes.</p>
   </iframe>
