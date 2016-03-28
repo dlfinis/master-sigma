@@ -26,6 +26,7 @@
     "angular-sanitize": "^1.5.0",
     "angular-lazy-img": "^1.2.2",
     "spin.js": "spinjs#^2.3.2",
-    "angular-loading-bar": "^0.9.0"
+    "angular-loading-bar": "^0.9.0",
+    "ng-onload": "^0.2.1"
   }
 }

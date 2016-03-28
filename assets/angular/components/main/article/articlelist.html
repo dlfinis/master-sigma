@@ -35,13 +35,13 @@ display: block;">
   </div>
 </div> -->
 
-<div class="col-sm-12 text-center post" ng-animate=" 'animate' " ng-repeat="article in $articlelist.articleList | orderBy:sortValue | filter:$articlelist.textSearchContent | filter:$articlelist.mcategory.selected.name" uid={{article.uid}}>
+<div class="col-sm-12 text-center post animate-repeat" ng-animate="'animate'" ng-repeat="article in $articlelist.articleList | orderBy:sortValue | filter:$articlelist.textSearchContent | filter:$articlelist.mcategory.selected.name" uid={{article.uid}}>
 
         <a class="image-box" ng-href="{{article.url}}" target="_blank">
         <img class="image"
         src="/images/spinner.gif"
         lazy-img="{{ article.image || 'images/submarine.png' }}"
-        alt="">
+        alt=""/>
         <!-- <div  class="image"
               lazy-img="{{ article.image || 'images/submarine.png' }}">
         </div> -->
@@ -49,8 +49,9 @@ display: block;">
         <div id="title" class="title"><h3 ng-bind="article.title"></h3></div>
         <div class="box">
             <h5>{{ article.date | DateFormat }}</h5>
-            <p id="description" ng-bind="article.description"></p>
-            <a id="url" ng-href="{{article.url}}" target="_blank" class="btn btn-default">Leer más</a>
+            <p class="text" id="description" ng-bind="article.description"></p>
+            <!-- <a id="url" ng-click="$articlelist.open(article)" ng-href="{{article.url}}" target="_blank" class="btn btn-default">Leer más</a> -->
+            <a id="url" ng-click="$articlelist.open(article)" target="_blank" class="btn btn-default">Leer más</a>
             <p>{{getInfo(article.id) | json}}</p>
          </div>
 

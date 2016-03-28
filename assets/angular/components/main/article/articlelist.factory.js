@@ -1,7 +1,9 @@
 (function () {
  'use strict';
 
-  function ArticleListFactory($http){
+
+
+  function ArticleListFactory($http,$uibModal,partial){
     return {
           getArticles: function()
           {
@@ -14,6 +16,20 @@
           getSite: function(uri)
           {
             return $http.get('/article/getSite/',{params:{"uri": uri}});
+          },
+          getModal:function(article){
+            // console.log(url);
+            // console.log(alfa);
+            return $uibModal.open(
+            {
+                templateUrl: partial.main.article+'tpl/modal.cmp.html',
+                controller: 'ModalCtrl',
+                resolve: {
+                  article: function(){
+                    return article;
+                  }
+                }
+            });
           }
     };
   }

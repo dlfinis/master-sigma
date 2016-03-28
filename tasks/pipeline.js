@@ -41,6 +41,7 @@ var jsFilesToInject = [
   'bower_components/angular-route/angular-route.js',
   'bower_components/angular-loading-bar/build/loading-bar.js',
   'bower_components/angular-animate/angular-animate.js',
+  'bower_components/ng-onload/release/ng-onload.min.js',
   'bower_components/angular-lazy-img/release/angular-lazy-img.js',
   'bower_components/ui-select/dist/select.js',
   'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',

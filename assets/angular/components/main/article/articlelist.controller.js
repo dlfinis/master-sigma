@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  function ArticleListCtrl($scope, $http, $uibModal, ArticleListFactory)
+  function ArticleListCtrl($scope, $http, ArticleListFactory)
   {
     var $articlelist = this;
 
@@ -73,20 +73,42 @@
                              $select.activate();
                             };
 
-    $articlelist.open = function (size) {
-      $uibModal.open(
-      {
-        templateUrl: partial.main.article+'tpl/test.modal.html'
-      });
+    $articlelist.open = function (article)
+    {
+        ArticleListFactory.getModal(article);
     };
-    $articlelist.showModal = false;
-    $articlelist.toggleModal = function(){
-        $articlelist.showModal = !$articlelist.showModal;
-    };
+
+
+    // $articlelist.open = function (size) {
+    //   $uibModal.open(
+    //   {
+    //     templateUrl: partial.main.article+'tpl/test.modal.html'
+    //   });
+    // };
+    // $articlelist.showModal = false;
+    // $articlelist.toggleModal = function(){
+    //     $articlelist.showModal = !$articlelist.showModal;
+    // };
 
 
   }
 
+  function ModalCtrl($scope,$uibModalInstance,$sce,article){
+    var $modal = $scope;
+    $modal.article = article;
+    $modal.currentUrl = $sce.trustAsResourceUrl(article.url);
+    $modal.hello = function(contentLocation) {
+      console.log(contentLocation);
+    // contentLocation === iframe.contentWindow.location
+    // it's undefined when contentWindow cannot be found from the bound element
+    console.log("Hello world!");
+};
+    $modal.close = function(){
+     $uibModalInstance.dismiss('cancel');
+    };
+  }
+
   angular.module('app.main.article')
-         .controller('ArticleListCtrl',ArticleListCtrl);
+         .controller('ArticleListCtrl',ArticleListCtrl)
+         .controller('ModalCtrl',ModalCtrl);
 })();

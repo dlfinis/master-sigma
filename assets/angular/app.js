@@ -5,6 +5,7 @@
                          'ngRoute',
                          'ngAnimate',
                          'ui.bootstrap',
+                         'ngOnload',
                          'angularLazyImg',
                          'ui.select',
                          'app.core',
