@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" >
+<head>
+    <title>MasterSigma </title>
+    <meta name="description"  content="Master Sigma support. Built by MasterSigma" />
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="Master Sigma support" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://localhost:1337" />
+    <meta property="og:image" content="https://localhost:1337/images/sails-auth-share.jpg" />
+    <meta property="og:description" content="Master Sigma" />
+    <meta property="og:site_name" content="MasterSigma" />
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/favicon.png">
+
+        <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700'rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/components/fontawesome/css/font-awesome.min.css">
+
+    <!--STYLES-->
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/mustache.css">
+    <!--STYLES END-->
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : <%- sails.config.application_auth.facebookClientID%>,
+          xfbml      : true,
+          version    : 'v2.5'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <script src="/components/jquery/dist/jquery.min.js"></script>
+    <script src="/components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/components/underscore/underscore.js"></script>
+    <script src="/components/moment/moment.js"></script>
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-default">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#"><i class="fa fa-home fa-lg"></i></a>
+        </div>
+        </nav>
+    </header>
+    <%- body %>
+
+
+<!--SCRIPTS-->
+<script src="/js/dependencies/sails.io.js"></script>
+<script src="/js/dependencies/test.js"></script>
+<script src="/js/app/app.js"></script>
+<script src="/js/app/controllers/mainController.js"></script>
+<script src="/js/app/factories/mainFactory.js"></script>
+<!--SCRIPTS END-->
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "master-sigma",
+  "version": "0.0.0",
+  "authors": [
+    "DLFinis <development@jaggerfly.cu.cc>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "assets/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-route": "^1.5.0",
+    "bootstrap-css": "^3.3.6",
+    "angular-bootstrap": "^1.2.1",
+    "angular-animate": "^1.5.0",
+    "angular-bootstrap-ratings": "^0.11.2",
+    "components-font-awesome": "^4.5.0",
+    "angular-i18n": "^1.5.0",
+    "ui-select": "angular-ui-select#^0.14.9",
+    "angular-sanitize": "^1.5.0",
+    "angular-lazy-img": "^1.2.2",
+    "spin.js": "spinjs#^2.3.2",
+    "angular-loading-bar": "^0.9.0",
+    "ng-onload": "^0.2.1"
+  }
+}
