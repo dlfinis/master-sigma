@@ -40,9 +40,9 @@
     "sails-mysql": "^0.11.4"
   },
   "scripts": {
-    "start": "./node_modules/forever/bin/forever -l ~/app-root/logs/forever.log --append --pidFile ~/app-root/logs/forever.pid start app.js --prod",
+    "start" : "node app.js"
     "debug": "node debug app.js",
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "postinstall": "HOME=$OPENSHIFT_REPO_DIR bower install || ./node_modules/bower/bin/bower install"
   },
   "main": "app.js",
   "repository": {
