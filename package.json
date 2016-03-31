@@ -54,5 +54,8 @@
   "license": "MIT",
   "devDependencies": {
     "connect-livereload": "^0.5.4"
-  }
+  },
+  "engines": {
+    "node": ">= 4.4.1"
+  },
 }
