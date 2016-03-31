@@ -21,29 +21,32 @@ module.exports = {
         passport.authenticate('facebook-canvas',
         {
             scope: [
-            'email',
             'publish_actions'
             ],
             failureRedirect: '/#/'
         },
         function (err, user)
         {
-                console.log("Facebook Auth Response error=", err, "user=", user);
-
+                // console.log("Facebook Auth Response error=", err, "user=", user);
+                if(err) {
+                  sails.log(err);
+                  return next(err);
+                }
+                if(!user){
+                  return res.redirect('/');
+                }
                 if (user) {
                     req.logIn(user, function (err) {
-
                         if (err) {
+                          //  return next(err);
                             console.log("Auth Error", err);
                             return res.view('500');
                         }
-
+                        console.log(user);
                         return res.redirect('#/canvas');
-
                     });
-                } else {
-                    return res.redirect('/');
                 }
+                  console.log(req.user);
 
         }
         )(req, res);

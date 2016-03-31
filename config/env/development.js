@@ -9,9 +9,7 @@
  * any private information to this file!
  *
  */
-
 module.exports = {
-
     grunt: {
         _hookTimeout: 60000
     },
@@ -21,17 +19,15 @@ module.exports = {
         host: 'localhost',
         user: 'root',
         password: 'root',
-        database: 'msigmadb'
+        database: 'mastersigma'
       },
     },
-    models: {
-      connection: 'sigmaDv',
-      migrate: 'alter'
-    },
+    // models: {
+    //   connection: 'sigmaDv',
+    //   migrate: 'safe'
+    // },
     application_auth: {
-
         enableLocalAuth: true,
-
         // Get your keys from https://developers.facebook.com/apps/
         // module.exports.local = {
         enableFacebookAuth: true,

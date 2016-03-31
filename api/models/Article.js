@@ -6,9 +6,8 @@
  */
 var uuid = require('node-uuid');
 module.exports = {
-
+    schema: true,
     attributes: {
-
         uid: {
         type: 'STRING',
         defaultsTo: function (){ return uuid.v4(); },
@@ -28,7 +27,7 @@ module.exports = {
         url:{
           type: 'STRING',
           required: true,
-          urlish: true,
+          url: true,
           unique: true
         },
         image:{
@@ -71,11 +70,21 @@ module.exports = {
           via: 'article'
         }
     },
-    afterUpdate : function(values, cb){
-        Article.update(values.id,{ state: 'edit' },function(err){
-          if(err) return cb(err, false);
+    afterUpdate : function(values, next){
+        Article.findOne(values.id).exec(function(err,record){
+          if(err) return next(err, false);
+          if(values.title != record.title ||
+             values.url != record.url ||
+             values.description != record.description ||
+             values.image != record.image
+          )
+          {
+            Article.update(values.id,{ state: 'edit' },function(err){
+              if(err) return next(err, false);
+            });
+          }
         });
-        cb();
+        next();
     },
     toJSON : function(){
        var obj = this.Object();

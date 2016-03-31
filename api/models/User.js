@@ -8,19 +8,17 @@
 var bcrypt = require('bcrypt-nodejs');
 
 module.exports = {
-
-    adapter: 'sigmaDv',
-
+    schema: true,
     attributes: {
         provider: 'STRING',
         uid: 'STRING',
-
         name: 'STRING',
         email: 'STRING',
         firstname: 'STRING',
         lastname: 'STRING',
+        gender: 'STRING',
+        profileUrl: 'STRING',
         password: 'STRING',
-
         // Add a reference to Article
         articles: {
           collection: 'article',

@@ -20,7 +20,12 @@ module.exports.http = {
                 clientID: sails.config.application_auth.facebookClientID,
                 clientSecret: sails.config.application_auth.facebookClientSecret,
                 callbackURL: sails.config.application_auth.facebookCallbackURL,
-                profileFields: ['id', 'displayName', 'photos', 'email'],
+                profileFields: ['id',
+                                'displayName',
+                                'name',
+                                'email',
+                                'gender',
+                                'profileUrl'],
                 enableProof: true
             }, verifyHandler));
 
@@ -53,17 +58,17 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
 
 
         User.findOne({uid: profile.id}, function (err, user) {
+
             if (user) {
                 fbgraph.setAccessToken(token);
                 return done(null, user);
             } else {
-
+                fbgraph.setAccessToken(token);
                 var data = {
                     provider: profile.provider,
                     uid: profile.id,
                     name: profile.displayName
                 };
-
                 if (profile.emails && profile.emails[0] && profile.emails[0].value) {
                     data.email = profile.emails[0].value;
                 }
@@ -73,11 +78,17 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
                 if (profile.name && profile.name.familyName) {
                     data.lastname = profile.name.familyName;
                 }
+                if (profile.gender) {
+                    data.gender = profile.gender;
+                }
+                if (profile.profileUrl) {
+                    data.profileUrl = profile.profileUrl;
+                }
 
                 User.create(data, function (err, user) {
                     return done(err, user);
                 });
-                fbgraph.setAccessToken(token);
+
             }
         });
     });

@@ -5,21 +5,19 @@
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
 module.exports = {
+    schema: true,
     attributes: {
-
         name: {
         type: 'string',
         required: true,
         unique: true,
         index:true
         },
-
         description:{
           type: 'string',
           required: false,
           defaultsTo: ''
         },
-
         // Add a reference to Article
         articles: {
           collection: 'article',

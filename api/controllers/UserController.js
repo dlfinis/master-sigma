@@ -7,13 +7,15 @@
 
 module.exports = {
 	 getUser:function(req,res){
+		 sails.log(req.user);
       var user = {
-                  data : req.user ,
+                  user : req.user ,
                   auth : req.isAuthenticated()
                  };
       return res.send(user);
    },
    isAuthenticated: function(req,res){
      return res.send(req.isAuthenticated());
-   }
+   },
+
 };

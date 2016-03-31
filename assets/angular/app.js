@@ -30,11 +30,7 @@
     $routeProvider.when('/canvas', { template: '<canvas></canvas>' });
     $routeProvider.when('/test', { template: '<test></test>' });
     $routeProvider.when('/testpage', { template: '<testpage></testpage>' });
-    $routeProvider.when('/mtest', { template: '<mtest></mtest>' });
-    $routeProvider.when('/article', { template: '<article></article>' });
-    $routeProvider.when('/zarticle', { template: '<zarticle></zarticle>' });
-    $routeProvider.when('/dcasa', { template: '<dcasa></dcasa>' });
-    // $routeProvider.when('/mtest', {template: '<mtest></mtest>'});
+    $routeProvider.when('/registry', { template: '<registry></registry>' });
     $routeProvider.otherwise({redirectTo: '/'});
   }])
   /*CONFIG*/

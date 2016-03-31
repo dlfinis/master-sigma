@@ -11,13 +11,13 @@ var graph = require('fbgraph');
       return _.find(graphData, function(resp) {
           return resp.data.uid == uid
       }) ? true : false ;
-  };
+  }
 
   function getIDLike(uid,graphData) {
       return _.find(graphData, function(resp) {
           return resp.data.uid == uid
       }).id;
-  };
+  }
 
   function getCreator(article){
     var creator = {};
@@ -80,6 +80,13 @@ var graph = require('fbgraph');
     return categories;
   }
 
+  /*
+  Like 0.2 Share 0.6 Visit 0.3
+  */
+  function getRecom(like,share,visit){
+    return (like*0.2) +(share*0.6)+(visit*0.3);
+  }
+
 module.exports = {
 
   findAll:function(req,res){
@@ -110,10 +117,11 @@ module.exports = {
                               likes : article.likes.length,
                               shares : article.shares.length,
                               visits : article.visits.length,
-                              recommend :
-                                          article.likes.length +
-                                          article.shares.length +
-                                          article.visits.length ,
+                              recommend : getRecom(
+                                            article.likes.length,
+                                            article.shares.length,
+                                            article.visits.length
+                                          ),
                               creator: getCreator(article),
                               categories: getCategories(article)
                             };
@@ -200,10 +208,8 @@ module.exports = {
     request(URI, function (error, response, body) {
       console.log(response.statusCode);
       if (!error && response.statusCode == 200) {
-
           // console.log(body);
           res.send(body);
-
       }
     });
   },

@@ -26,9 +26,9 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': 'sessionAuth',
-  '*': true,
-
+  '*': 'sessionAuth',
+  // '*': true,
+  //
   'home': {
     '*': true
   },
@@ -36,7 +36,9 @@ module.exports.policies = {
   'auth': {
     '*': true
   },
-
+  'user': {
+    '*': true
+  },
   'canvas': {
     login : true,
     autologin : true
@@ -49,14 +51,14 @@ module.exports.policies = {
   'category': {
     '*': true
   },
-
-  'like': {
-    '*': true
-  },
-
-  'share': {
-    '*': true
-  }
+  //
+  // 'like': {
+  //   '*': true
+  // },
+  //
+  // 'share': {
+  //   '*': true
+  // }
 
   /***************************************************************************
   *                                                                          *

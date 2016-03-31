@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-sm-12">
+    <legend>Registro de Artículos</legend>
+    <form name="articleForm" novalidate>
+      <label for="title">Título</label><br />
+      <input name="title" type="text" ng-model="$registry.article.title" ng-model-options="{ updateOn: 'blur' }" required />
+      <br />
+      <label for="url">URL de dirección</label><br />
+      <input name="url" type="url" ng-model="$registry.article.url" ng-model-options="{ updateOn: 'blur' }" required />
+      <br />
+      <label for="image">URL de Imagen</label><br />
+      <input name="image" type="image" ng-model="$registry.article.image" ng-model-options="{ updateOn: 'blur' }" required />
+      <br />
+      <label for="description">Descripción</label><br />
+      <input name="description" type="textares" ng-model="$registry.article.description" ng-model-options="{ updateOn: 'blur' }" required />
+      <br />
+      <label for="gender">Género</label><br />
+      <input name="gender" type="radio" ng-model="user.gender" value="male" />Masculino
+      <input name="gender" type="radio" ng-model="user.gender" value="female" />Femenino
+      <br />
+      <label for="age">Edad</label><br />
+      <input name="age" type="number" ng-model="user.age" ng-model-options="{ updateOn: 'blur' }" min="0" max="150" />
+
+      <br /><br />
+      <input type="button" ng-click="reset()" value="Limpiar" />
+      <input type="submit" ng-click="update()" value="Guardar" />
+    </form>
+    <pre>user = {{user | json}}</pre>
+  </div>
+</div>

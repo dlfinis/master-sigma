@@ -6,7 +6,8 @@
 */
 
 module.exports = {
-
+  schema: true,
+  autoUpdatedAt: false,
   attributes: {
 
     sid: {

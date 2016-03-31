@@ -6,15 +6,9 @@
 */
 var uuid = require('node-uuid');
 module.exports = {
-
+  schema: true,
+  autoUpdatedAt: false,
   attributes: {
-    sid: {
-      type: 'STRING',
-      required: true,
-      index: true,
-      uuidv4: true,
-      defaultsTo: function (){ return uuid.v4(); }
-    },
     // Add a reference to Article
     article: {
       model: 'article'

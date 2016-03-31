@@ -6,9 +6,9 @@
 */
 
 module.exports = {
-
+  schema: true,
+  autoUpdatedAt: false,
   attributes: {
-
     sid: {
       type: 'STRING',
       required: true,

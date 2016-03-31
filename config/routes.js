@@ -40,7 +40,7 @@ module.exports.routes = {
     //   view: 'homepage'
     // }
 
-    '/getUser': {
+    '/getuser': {
       controller: 'UserController',
       action: 'getUser',
             skipAssets: true,
