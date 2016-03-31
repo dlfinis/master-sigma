@@ -33,15 +33,17 @@ module.exports = {
      * Set the default database connection for models in the production        *
      * environment (see config/connections.js and config/models.js )           *
      ***************************************************************************/
-     // Heroku Deploy
+
+     connections: {
+      // Heroku Deploy
      //sigmaDv: {
         //  adapter: 'sails-mysql',
         //  host: 'us-cdbr-iron-east-03.cleardb.net',
         //  user: 'bad812654b4b13',
         //  password: 'eed57ee2',
         //  database: 'heroku_1014650bcf2946e'
-        // }
-     connections: {
+        // },
+     // Openshift Deploy
        sigmaDv: {
          adapter: 'sails-mysql',
          host: process.env.OPENSHIFT_MYSQL_DB_HOST ,
