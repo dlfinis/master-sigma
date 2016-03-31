@@ -40,8 +40,7 @@
     "sails-mysql": "^0.11.4"
   },
   "scripts": {
-##    "start": "sails lift",
-    "start": "./node_modules/forever/bin/forever -l ~/app-root/logs/forever.log --append --pidFile ~/app-root/logs/forever.pid start app.js --prod"
+    "start": "./node_modules/forever/bin/forever -l ~/app-root/logs/forever.log --append --pidFile ~/app-root/logs/forever.pid start app.js --prod",
     "debug": "node debug app.js",
     "postinstall": "./node_modules/bower/bin/bower install"
   },
