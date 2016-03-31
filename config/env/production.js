@@ -36,10 +36,11 @@ module.exports = {
      connections: {
        sigmaDv: {
          adapter: 'sails-mysql',
-         host: 'us-cdbr-iron-east-03.cleardb.net',
-         user: 'bad812654b4b13',
-         password: 'eed57ee2',
-         database: 'heroku_1014650bcf2946e'
+         host: process.env.OPENSHIFT_MYSQL_DB_HOST,
+         port: process.env.OPENSHIFT_MYSQL_DB_PORT,
+         user: 'adminDknJX7x',
+         password: '8-8d3FxqXlVy',
+         database: 'mastersigma'
        },
      },
      models: {
