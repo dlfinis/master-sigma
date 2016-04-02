@@ -6,6 +6,7 @@
  */
 
 var graph = require('fbgraph');
+var Promise = require('bluebird');
 
   function isSetLike(uid,graphData) {
       return _.find(graphData, function(resp) {
@@ -87,67 +88,156 @@ var graph = require('fbgraph');
     return (like*0.2) +(share*0.6)+(visit*0.3);
   }
 
+  function getDateDiff(){
+    return {
+        inDays: function(d1, d2) {
+            var t2 = d2.getTime();
+            var t1 = d1.getTime();
+
+            return parseInt((t2-t1)/(24*3600*1000));
+        },
+        inWeeks: function(d1, d2) {
+            var t2 = d2.getTime();
+            var t1 = d1.getTime();
+
+            return parseInt((t2-t1)/(24*3600*1000*7));
+        },
+        inMonths: function(d1, d2) {
+            var d1Y = d1.getFullYear();
+            var d2Y = d2.getFullYear();
+            var d1M = d1.getMonth();
+            var d2M = d2.getMonth();
+
+            return (d2M+12*d2Y)-(d1M+12*d1Y);
+        },
+        inYears: function(d1, d2) {
+            return d2.getFullYear()-d1.getFullYear();
+        }
+    };
+  }
+
+  function getReadingTime(url) {
+        return new Promise(function(resolve,reject){
+          var request = require('request');
+          var cheerio = require('cheerio');
+          var readingTime = require('reading-time');
+
+          var URI = url;
+          var info = {};
+
+          request(
+          {
+            method: 'GET' ,
+            uri: URI,
+            gzip: true
+          },
+          function (error, response, html) {
+            // body is the decompressed response body
+            // console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'));
+            var $ = cheerio.load(html);
+            var content = $('p','body').text();
+
+            if(error) reject(error);
+
+            var stats =
+            readingTime(
+                content,
+                {
+                  label:'min de lectura',
+                  wpm:300
+                }
+            );
+              resolve({
+                stats : stats
+              });
+          });
+
+        });
+
+  }
+
+  function getArticleStructure(article){
+    return getReadingTime(article.url).then(function (response){
+      return {
+        id: article.id,
+        uid: article.uid,
+        title: article.title,
+        url: article.url,
+        state: article.state,
+        date: article.state === "edit" ?
+              article.updatedAt : article.createdAt,
+        time  : getDateDiff().inDays(new Date(article.createdAt),new Date()),
+        reading : response.stats,
+        description: article.description,
+        image: article.image,
+        likes : article.likes.length,
+        shares : article.shares.length,
+        visits : article.visits.length,
+        recommend : getRecom(
+                      article.likes.length,
+                      article.shares.length,
+                      article.visits.length
+                    ),
+        creator: getCreator(article),
+        categories: getCategories(article)
+      };
+    });
+
+  }
+
 module.exports = {
 
   findAll:function(req,res){
-    var articles_info = Article.find()
-                               .populate('creator')
-                               .populate('categories')
-                               .populate('likes')
-                               .populate('shares')
-                               .populate('visits');
+    var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUtil');
+    var isRecommendList = req.param('recommendList') || false;
+    var articleQuery = Article.find()
+                              .where( actionUtil.parseCriteria(req) )
+                              .limit( actionUtil.parseLimit(req) )
+                              .skip( actionUtil.parseSkip(req) )
+                              .sort( actionUtil.parseSort(req) )
+                              .populate('creator')
+                              .populate('categories')
+                              .populate('likes')
+                              .populate('shares')
+                              .populate('visits');
 
-      articles_info.then(function(response){
-                      if(response != 'undefined' )
-                      {
-                        var articles = [];
-                        response.forEach(function(article){
-                            var articleObj = {};
 
-                            articleObj = {
-                              id: article.id,
-                              uid: article.uid,
-                              title: article.title,
-                              url: article.url,
-                              state: article.state,
-                              date: article.state === "edit" ?
-                                    article.updatedAt : article.createdAt,
-                              description: article.description,
-                              image: article.image,
-                              likes : article.likes.length,
-                              shares : article.shares.length,
-                              visits : article.visits.length,
-                              recommend : getRecom(
-                                            article.likes.length,
-                                            article.shares.length,
-                                            article.visits.length
-                                          ),
-                              creator: getCreator(article),
-                              categories: getCategories(article)
-                            };
+      articleQuery.exec(function found(err,articles){
+                  if (err) return res.serverError(err);
+                  if(articles != 'undefined' )
+                  {
 
-                            articles.push(articleObj);
-                        });
+                    var articlesList = [];
 
-                        return res.ok({total:articles.length,results:articles});
+                    Promise.each(articles, function(article) {
+                        // Promise.map awaits for returned promises as well.
+                            return getArticleStructure(article).then(function(articleFormat){
+                              articlesList.push(articleFormat);
+                            });
+                    }).then(function() {
+                        sails.log("Done load of articles");
+                        if(isRecommendList)
+                        {
+                          articlesList.sort(function(a, b) {
+                              return b.recommend - a.recommend;
+                          });
+                        }
 
-                      }else{
-                        return res.send(404,{results:'Not found'});
-                      }
-                   })
-                  .catch(function(err){
-                            sails.log(err);
-                            return res.serverError(err);
+                        return res.ok({total:articlesList.length,results:articlesList});
                   });
+                  }else{
+                    res.serverError('Not rows');
+                  }
+               });
   },
   getInfo: function(req,res){
       var articleID = req.param('id');
       // console.log(articleID);
 
-      var articles_info = Article.findOne({id:articleID})
+      var articleQuery = Article.findOne({id:articleID})
                                  .populate('categories')
                                  .populate('creator');
-          articles_info.then(function(response){
+          articleQuery.then(function(response){
                         // console.log(response);
                         if(response != 'undefined' )
                         {
@@ -178,40 +268,31 @@ module.exports = {
 
   },
   getSite: function (req, res) {
-
         var request = require('request');
+        var cheerio = require('cheerio');
+        var readingTime = require('reading-time');
         var URI = req.param('uri');
-
-    //     request(
-    //     {
-    //       method: 'GET' ,
-    //       uri: URI,
-    //       gzip: true
-    //     },
-    //     function (error, response, body) {
-    //     // body is the decompressed response body
-    //     console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'));
-    //     console.log('the decoded data is: ' + body);
-    //     })
-    //     .on('data', function(data) {
-    //     // decompressed data as it is received
-    //     console.log('decoded chunk: ' + data);
-    //     })
-    //     .on('response', function(response) {
-    //     // unmodified http.IncomingMessage object
-    //     response.on('data', function(data) {
-    //     // compressed data as it is received
-    //     console.log('received ' + data.length + ' bytes of compressed data');
-    //   });
-    // });
-    console.log(URI);
-    request(URI, function (error, response, body) {
-      console.log(response.statusCode);
-      if (!error && response.statusCode == 200) {
-          // console.log(body);
-          res.send(body);
-      }
-    });
+        console.log(URI);
+        request(
+        {
+          method: 'GET' ,
+          uri: URI,
+          gzip: true
+        },
+        function (error, response, html) {
+        // body is the decompressed response body
+        console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'));
+        var $ = cheerio.load(html);
+        var body = $('p','body').text();
+        var stats = readingTime(
+            body,
+            {
+            label:'min de lectura',
+            wpm:300
+            }
+          );
+        console.log(stats);
+        });
   },
   test: function (req, res) {
     return res.json({ status: 'OK' });

@@ -19,7 +19,8 @@ module.exports = {
         host: 'localhost',
         user: 'root',
         password: 'root',
-        database: 'mastersigma'
+        // database: 'mastersigma'
+        database: 'msigmadb'
       },
     },
     models: {
