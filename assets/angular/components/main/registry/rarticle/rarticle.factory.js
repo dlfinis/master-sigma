@@ -1,7 +1,7 @@
 (function () {
  'use strict';
 
-  function RegistryFactory($http){
+  function RArticleFactory($http){
     return {
           getCategories: function()
           {
@@ -37,6 +37,6 @@
     };
   }
 
- angular.module('app.main.registry')
-        .factory('RegistryFactory', RegistryFactory);
+ angular.module('app.main.registry.rarticle')
+        .factory('RArticleFactory', RArticleFactory);
 })();

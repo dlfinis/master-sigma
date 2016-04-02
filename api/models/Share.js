@@ -6,7 +6,6 @@
 */
 
 module.exports = {
-  schema: true,
   autoUpdatedAt: false,
   attributes: {
     sid: {
@@ -16,11 +15,13 @@ module.exports = {
     },
     // Add a reference to User
     article: {
-      model: 'article'
+      model: 'article',
+      required: true
     },
     // Add a reference to User
     user: {
-      model: 'user'
+      model: 'user',
+      required: true
     }
   }
 };

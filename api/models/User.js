@@ -6,12 +6,17 @@
  */
 
 var bcrypt = require('bcrypt-nodejs');
-
+var uuid = require('node-uuid');
 module.exports = {
     schema: true,
     attributes: {
         provider: 'STRING',
-        uid: 'STRING',
+        uid: {
+          type: 'STRING',
+          unique: true,
+          index: true,
+          defaultsTo: function (){ return uuid.v4(); }
+        },
         name: 'STRING',
         email: 'STRING',
         firstname: 'STRING',

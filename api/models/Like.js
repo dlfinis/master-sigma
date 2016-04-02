@@ -6,10 +6,8 @@
 */
 
 module.exports = {
-  schema: true,
   autoUpdatedAt: false,
   attributes: {
-
     sid: {
       type: 'STRING',
       required: true,
@@ -17,11 +15,13 @@ module.exports = {
     },
     // Add a reference to Article
     article: {
-      model: 'article'
+      model: 'article',
+      required: true
     },
     // Add a reference to User
     user: {
-      model: 'user'
+      model: 'user',
+      required: true
     }
   }
 };

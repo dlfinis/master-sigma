@@ -22,10 +22,11 @@ module.exports = {
         database: 'mastersigma'
       },
     },
-    // models: {
-    //   connection: 'sigmaDv',
-    //   migrate: 'safe'
-    // },
+    models: {
+      schema: true,
+      connection: 'sigmaDv',
+      migrate: 'safe',
+    },
     application_auth: {
         enableLocalAuth: true,
         // Get your keys from https://developers.facebook.com/apps/

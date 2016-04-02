@@ -1,12 +1,12 @@
 (function () {
 
-  function RegistryCtrl($scope,RegistryFactory){
+  function RArticleCtrl($scope,RArticleFactory){
 
     $registry = this;
     $registry.article = {};
     // $registry.categories = {};
 
-    RegistryFactory.getCategories()
+    RArticleFactory.getCategories()
                   .then(function (response){
                       $registry.categories = response;
                   })
@@ -24,7 +24,7 @@
         {
         console.log('Not article info');
         }else{
-          RegistryFactory.saveArticle($registry.article).then(function(response){
+          RArticleFactory.saveArticle($registry.article).then(function(response){
             if(response.status == 201)
             {
               $registry.reset();
@@ -38,7 +38,7 @@
 
   }
 
-  angular.module('app.main.registry')
-         .controller('RegistryCtrl',RegistryCtrl);
+  angular.module('app.main.registry.rarticle')
+         .controller('RArticleCtrl',RArticleCtrl);
 
 })();

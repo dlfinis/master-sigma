@@ -592,3 +592,7 @@ footer p {
     }
 
 }
+
+.select2-results {
+    max-height: 110px !important;
+}

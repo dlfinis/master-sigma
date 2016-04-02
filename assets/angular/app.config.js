@@ -5,9 +5,11 @@
               'main' : {
                         'origin' : 'angular/components/main/',
                         'article' : 'angular/components/main/article/',
-                        'registry' : 'angular/components/main/registry/',
                         'home' : 'angular/components/main/home/',
                         'wall' : 'angular/components/main/wall/',
+                        'rarticle' : 'angular/components/main/registry/rarticle/',
+                        'rcategory' : 'angular/components/main/registry/rcategory/'
+
 
               },
               'core' : {

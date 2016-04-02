@@ -6,16 +6,17 @@
 */
 var uuid = require('node-uuid');
 module.exports = {
-  schema: true,
   autoUpdatedAt: false,
   attributes: {
     // Add a reference to Article
     article: {
-      model: 'article'
+      model: 'article',
+      required: true
     },
     // Add a reference to User
     user: {
-      model: 'user'
+      model: 'user',
+      required: true
     }
   }
 

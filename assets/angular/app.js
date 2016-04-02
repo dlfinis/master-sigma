@@ -31,6 +31,8 @@
     $routeProvider.when('/test', { template: '<test></test>' });
     $routeProvider.when('/testpage', { template: '<testpage></testpage>' });
     $routeProvider.when('/registry', { template: '<registry></registry>' });
+    $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
+    $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
     $routeProvider.otherwise({redirectTo: '/'});
   }])
   /*CONFIG*/

@@ -1,7 +1,7 @@
 (function () {
  'use strict';
 
-  function RegistryFactory($http){
+  function RCategoryFactory($http){
     return {
           getCategories: function()
           {
@@ -16,27 +16,18 @@
           {
             return $http.get('/getuser');
           },
-          saveArticle : function(article){
-            return this.getUser().then(function (response){
-                //  console.log(response.data.user);
-               article.creator = response.data.user.id;
-               return $http.post('/article/create',article).then(function (response){
+          saveCategory: function(category){
+               return $http.post('/category/create',category).then(function (response){
                  console.log(response);
-                  return response;
+                 return response;
                })
                .catch(function (err) {
                    console.error(err.stack);
                });
-
-             })
-             .catch(function (err) {
-                 console.error(err.stack);
-             });
-
           }
     };
   }
 
- angular.module('app.main.registry')
-        .factory('RegistryFactory', RegistryFactory);
+ angular.module('app.main.registry.rcategory')
+        .factory('RCategoryFactory', RCategoryFactory);
 })();
