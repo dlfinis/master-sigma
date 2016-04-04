@@ -17,5 +17,11 @@
                         'test' : 'angular/components/core/test/',
               }
           }
-       );
+        );
+      //  )
+      //  .constant(
+      //         'query',{
+      //             'limit' : 1
+      //           }
+      //   );
 })();

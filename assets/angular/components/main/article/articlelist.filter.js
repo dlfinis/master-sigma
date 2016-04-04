@@ -1,6 +1,15 @@
 (function () {
   'use strict';
 
+  function StartFromFilter() {
+    return function(input, start) {
+        console.log(input);
+        console.log(start);
+        start = +start; //parse to int
+        return input.slice(start);
+    };
+  }
+
   function DateFormatFilter($filter)
   {
    return function(input)
@@ -52,6 +61,7 @@ function PropsFormatFilter() {
 
 
   angular.module('app.main.article')
+         .filter('StartFrom',StartFromFilter)
          .filter('PropsFormat',PropsFormatFilter)
          .filter('DateFormat',DateFormatFilter);
 

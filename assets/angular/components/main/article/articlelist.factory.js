@@ -1,17 +1,26 @@
 (function () {
  'use strict';
-
-
-
   function ArticleListFactory($http,$uibModal,partial){
     return {
-          getArticles: function()
+          getArticles: function(props)
           {
-            return $http.get('/article/findAll');
+            if(props === 'recommend' || props.recommend)
+                  return $http.get('/article/findAll', { params:{'recommendList': true }});
+            else
+              return $http.get('/article/findAll');
           },
           getInfo: function(articleID)
           {
             return ">"+articleID;
+          },
+          getCategories: function()
+          {
+            return $http.get('/category/find').then(function (response){
+                return response.data.results;
+            })
+            .catch(function (err) {
+                console.error(err.stack);
+            });
           },
           getSite: function(uri)
           {

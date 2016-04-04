@@ -27,6 +27,7 @@
     // $routeProvider.when('/home', {  templateUrl:'angular/components/main/home/home.html'});
     $routeProvider.when('/home', {  template:'<home></home>' });
     $routeProvider.when('/wall', { template: '<wall></wall>' });
+    $routeProvider.when('/articlelist', { template: '<articlelist></articlelist>' });
     $routeProvider.when('/canvas', { template: '<canvas></canvas>' });
     $routeProvider.when('/test', { template: '<test></test>' });
     $routeProvider.when('/testpage', { template: '<testpage></testpage>' });

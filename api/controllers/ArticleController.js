@@ -191,7 +191,7 @@ module.exports = {
     var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUtil');
     var isRecommendList = req.param('recommendList') || false;
     var articleQuery = Article.find()
-                              .where( actionUtil.parseCriteria(req) )
+                              // .where( actionUtil.parseCriteria(req) )
                               .limit( actionUtil.parseLimit(req) )
                               .skip( actionUtil.parseSkip(req) )
                               .sort( actionUtil.parseSort(req) )
