@@ -41,19 +41,21 @@
     //             });
     $articlelist.getArticles = function(props){
       console.log("GetArticles");
-      console.log(props);
+      console.log(JSON.stringify(props));
       ArticleListFactory.getArticles(props)
                   .then(function (response){
                       $articlelist.data = response.data.results;
-                      console.log($articlelist.data);
+                      // console.log($articlelist.data);
                   })
                   .catch(function (err) {
                       console.error(err.stack);
                   });
     };
+
     $articlelist.test = function test() {
           return 'Test';
     };
+
     $articlelist.clear = function ($event, $select){
                              //stops click event bubbling
                              $event.stopPropagation();

@@ -7,6 +7,8 @@
 
 var graph = require('fbgraph');
 var Promise = require('bluebird');
+var request = require('request');
+var cheerio = require('cheerio');
 
   function isSetLike(uid,graphData) {
       return _.find(graphData, function(resp) {
@@ -90,74 +92,59 @@ var Promise = require('bluebird');
 
   function getDateDiff(){
     return {
-        inDays: function(d1, d2) {
-            var t2 = d2.getTime();
-            var t1 = d1.getTime();
 
-            return parseInt((t2-t1)/(24*3600*1000));
-        },
-        inWeeks: function(d1, d2) {
-            var t2 = d2.getTime();
-            var t1 = d1.getTime();
-
-            return parseInt((t2-t1)/(24*3600*1000*7));
-        },
-        inMonths: function(d1, d2) {
-            var d1Y = d1.getFullYear();
-            var d2Y = d2.getFullYear();
-            var d1M = d1.getMonth();
-            var d2M = d2.getMonth();
-
-            return (d2M+12*d2Y)-(d1M+12*d1Y);
-        },
-        inYears: function(d1, d2) {
-            return d2.getFullYear()-d1.getFullYear();
-        }
     };
   }
 
   function getReadingTime(url) {
-        return new Promise(function(resolve,reject){
-          var request = require('request');
-          var cheerio = require('cheerio');
-          var readingTime = require('reading-time');
+      var readingTime = require('reading-time');
+      var URI = encodeURI(url);
+      return new Promise(function(resolve,reject){
+        request(
+        {
+          accept:'text/html',
+          method: 'GET' ,
+          uri: URI,
+          gzip: true,
+        },
+        function (error, response, html) {
+        // body is the decompressed response body
+        // console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'));
+          if(error){
+              sails.log(error);
+              reject(error);
+          }
+          var $ = cheerio.load(html);
+          var content = '';
 
-          var URI = url;
-          var info = {};
+          if($('p','body').text().length)
+            content = $('p','body').text();
+          else
+            content = $('[class*=content]','body').text();
 
-          request(
-          {
-            method: 'GET' ,
-            uri: URI,
-            gzip: true
-          },
-          function (error, response, html) {
-            // body is the decompressed response body
-            // console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'));
-            var $ = cheerio.load(html);
-            var content = $('p','body').text();
-
-            if(error) reject(error);
-
-            var stats =
-            readingTime(
-                content,
-                {
-                  label:'min de lectura',
-                  wpm:300
-                }
+          var stats = {};
+          if(content.length > 0)
+           stats = readingTime(
+              content,
+              {
+                label:' min de lectura',
+                wpm:300
+              }
             );
-              resolve({
-                stats : stats
-              });
-          });
+          else
+            stats = {
+                    'duration': '5 min de lectura',
+                    'minutes': 5,
+                    'time': 500000,
+                    'words': 100
+                  };
 
-        });
-
+          resolve(stats);
+      });
+    });
   }
 
   function getArticleStructure(article){
-    return getReadingTime(article.url).then(function (response){
       return {
         id: article.id,
         uid: article.uid,
@@ -166,8 +153,6 @@ var Promise = require('bluebird');
         state: article.state,
         date: article.state === "edit" ?
               article.updatedAt : article.createdAt,
-        time  : getDateDiff().inDays(new Date(article.createdAt),new Date()),
-        reading : response.stats,
         description: article.description,
         image: article.image,
         likes : article.likes.length,
@@ -181,8 +166,6 @@ var Promise = require('bluebird');
         creator: getCreator(article),
         categories: getCategories(article)
       };
-    });
-
   }
 
 module.exports = {
@@ -209,22 +192,19 @@ module.exports = {
 
                     var articlesList = [];
 
-                    Promise.each(articles, function(article) {
-                        // Promise.map awaits for returned promises as well.
-                            return getArticleStructure(article).then(function(articleFormat){
-                              articlesList.push(articleFormat);
-                            });
-                    }).then(function() {
-                        sails.log("Done load of articles");
-                        if(isRecommendList)
-                        {
-                          articlesList.sort(function(a, b) {
-                              return b.recommend - a.recommend;
-                          });
-                        }
+                    articles.forEach(function (article){
+                            articlesList.push(getArticleStructure(article));
+                    });
+                    sails.log("Done load of articles");
+                      if(isRecommendList)
+                      {
+                        articlesList.sort(function(a, b) {
+                            return b.recommend - a.recommend;
+                        });
+                      }
 
-                        return res.ok({total:articlesList.length,results:articlesList});
-                  });
+                    return res.ok({total:articlesList.length,results:articlesList});
+
                   }else{
                     res.serverError('Not rows');
                   }
@@ -267,31 +247,37 @@ module.exports = {
                         });
 
   },
-  getSite: function (req, res) {
-        var request = require('request');
-        var cheerio = require('cheerio');
-        var readingTime = require('reading-time');
-        var URI = req.param('uri');
-        console.log(URI);
-        request(
-        {
-          method: 'GET' ,
-          uri: URI,
-          gzip: true
-        },
-        function (error, response, html) {
-        // body is the decompressed response body
-        console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'));
-        var $ = cheerio.load(html);
-        var body = $('p','body').text();
-        var stats = readingTime(
-            body,
-            {
-            label:'min de lectura',
-            wpm:300
-            }
-          );
-        console.log(stats);
+  htmldata:function(req,res){
+    var URI = encodeURI(req.param('uri'));
+
+    request(
+    {
+      accept:'text/html',
+      method: 'GET' ,
+      uri: URI,
+      gzip: true,
+      headers: {
+          'Access-Control-Allow-Origin': '*',
+          'User-Agent': 'request'
+        }
+    },
+    function (error, response, html) {
+      if(error){
+          sails.log(error);
+          return res.serverError(error);
+      }
+      return res.ok(html);
+    }
+    );
+  },
+  reading: function (req, res) {
+      getReadingTime(req.param('uri'))
+        .then(function(response){
+          return res.json({reading:response});
+        })
+        .catch(function(err){
+          sails.log(err);
+          return res.serverError(err);
         });
   },
   test: function (req, res) {

@@ -22,9 +22,13 @@
                 console.error(err.stack);
             });
           },
-          getSite: function(uri)
+          getReading: function(url)
           {
-            return $http.get('/article/getSite/',{params:{"uri": uri}});
+            return $http.get('/article/reading?uri='+url);
+          },
+          getHtmlData: function(url)
+          {
+            return $http.get('/article/htmldata?uri='+url);
           },
           getModal:function(article){
             // console.log(url);

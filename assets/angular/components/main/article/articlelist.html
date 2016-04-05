@@ -1,68 +1,76 @@
-<pre> {{$articlelist.data | json}}</pre>
+<!-- <pre> {{$articlelist.data | json}}</pre> -->
+<div class="container">
+  <div class="col-sm-12">
+    <div class="sort-bar">
+        <div class="sort-item tab" ng-init="$articlelist.getArticles({});tab = 1" ng-class='{"active":tab == 1}' ng-click="$articlelist.getArticles({});tab = 1">Reciente</div>
+        <div class="sort-item tab" ng-class='{"active":tab == 2}' ng-click="$articlelist.getArticles('recommend');tab = 2">Recomendados</div>
+        <div class="sort-item sort-section">
+          <div class="sort-search">
+            <span class="field">Búsqueda: </span>
+            <input type="text" class="form-control select2-container" ng-model="$articlelist.textSearchContent">
+          </div>
+          <div class="sort-category">
+            <ui-select ng-model="$articlelist.mcategory.selected" theme="select2">
+             <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}
+             <a class="btn btn-xs" ng-click="$articlelist.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
+             </ui-select-match>
+             <ui-select-choices repeat="mcategory in $articlelist.mcategories | orderBy:'name' | PropsFormat: {name: $select.search}">
+               <div ng-bind-html="mcategory.name | highlight: $select.search"></div>
+             </ui-select-choices>
+            </ui-select>
+          </div>
+      </div>
+    </div>
+    <div class="col-sm-12 post animate-repeat"
+          ng-animate="'animate'" ng-repeat="article in $articlelist.data
+          |filter:$articlelist.textSearchContent
+          |filter:$articlelist.mcategory.selected.name"
 
-<h1>Test</h1>
-<div class="col-sm-12">
-  <div class="sort-bar">
-      <div class="sort-item tab" ng-init="$articlelist.getArticles({});tab = 1" ng-class='{"active":tab == 1}' ng-click="$articlelist.getArticles({});tab = 1">Reciente</div>
-      <div class="sort-item tab" ng-class='{"active":tab == 2}' ng-click="$articlelist.getArticles('recommend');tab = 2">Recomendados</div>
-      <div class="sort-item sort-section">
-        <div class="sort-search">
-          <span class="field">Búsqueda: </span>
-          <input type="text" class="form-control select2-container" ng-model="$articlelist.textSearchContent">
-        </div>
-        <div class="sort-category">
-          <ui-select ng-model="$articlelist.mcategory.selected" theme="select2">
-           <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}
-           <a class="btn btn-xs" ng-click="$articlelist.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
-           </ui-select-match>
-           <ui-select-choices repeat="mcategory in $articlelist.mcategories | orderBy:'name' | PropsFormat: {name: $select.search}">
-             <div ng-bind-html="mcategory.name | highlight: $select.search"></div>
-           </ui-select-choices>
-          </ui-select>
+          uid={{article.uid}}>
+          <div>
+            {{$articlelist.testHtml()}}
+          </div>
+            <a class="image-box" ng-href="{{article.url}}" target="_blank">
+            <img class="image"
+            src="/images/spinner.gif"
+            lazy-img="{{ article.image || 'images/submarine.png' }}"
+            alt=""/>
+            </a>
+            <div id="title" class="title"><h3 ng-bind="article.title"></h3></div>
+            <div class="box">
+                <div class="info">
+                  <div class="editor" ng-bind="article.creator.name"></div>
+                  <div class="period" period data="{{ article.date }}"></div>
+                  <span>&#8226;</span>
+                  <div class="reading" reading url="{{ article.url }}"></div>
+                </div>
+                <p class="text" id="description" ng-bind="article.description"></p>
+
+                <a id="url" ng-click="$articlelist.open(article)" class="read-more">Leer más...</a>
+
+             </div>
+        <div class="social-bar" >
+              <div class="categories">
+
+                <div class="category" ng-repeat="category in article.categories">
+                  <span>&#8226;</span>{{category.name}}
+                </div>
+              </div>
+              <div class="section-btn" uid-post="{{article.uid}}">
+                <like></like>
+                <share></share>
+              </div>
         </div>
     </div>
   </div>
 
-<div class="col-sm-12 text-center post animate-repeat"
-      ng-animate="'animate'" ng-repeat="article in $articlelist.data
-      |filter:$articlelist.textSearchContent
-      |filter:$articlelist.mcategory.selected.name"
-
-      uid={{article.uid}}>
-
-        <a class="image-box" ng-href="{{article.url}}" target="_blank">
-        <img class="image"
-        src="/images/spinner.gif"
-        lazy-img="{{ article.image || 'images/submarine.png' }}"
-        alt=""/>
-        </a>
-        <div id="title" class="title"><h3 ng-bind="article.title"></h3></div>
-        <div class="box">
-            <h5>{{ article.date | DateFormat }}</h5>
-            <p class="text" id="description" ng-bind="article.description"></p>
-            <a id="url" ng-click="$articlelist.open(article)" class="btn btn-default">Leer más</a>
-         </div>
-
-    <div class="social-bar" >
-          <div class="categories">
-            <div class="category" ng-repeat="category in article.categories" ng-bind="category.name"></div>
-            <p style="font-size:0.8em">Like:{{article.likes}}.</br>Share:{{article.shares}}.</br>Visits:{{article.visits}}</p>
-            <p style="font-size:0.8em"> Valoracion de Recomendación:{{article.recommend}}</p>
-          </div>
-          <div class="section-btn" uid-post="{{article.uid}}">
-            <like></like>
-            <share></share>
-          </div>
-    </div>
-</div>
-</div>
-
-<div class="col-sm-12 text-center">
-    <ul class="pager">
-        <li ng-disabled="$articlelist.currentPage == 0" ng-click="$articlelist.currentPage=$articlelist.currentPage-1" class="previous"><a href="#">&larr; Previo</a>
-        </li>
-        <li>{{$articlelist.currentPage+1}}/{{$article.list.numberOfPages()}}</li>
-        <li ng-disabled="$articlelist.currentPage >= data.length/pageSize - 1" ng-click="$articlelist.currentPage=$articlelist.currentPage+1" class="next"><a href="#">Nuevo &rarr;</a>
-        </li>
-    </ul>
+  <div class="col-sm-12 text-center">
+      <ul class="pager">
+          <li ng-disabled="$articlelist.currentPage == 0" ng-click="$articlelist.currentPage=$articlelist.currentPage-1" class="previous"><a href="#">&larr; Previo</a>
+          </li>
+          <!-- <li ng-bind="{{$articlelist.currentPage+1}}/{{$article.list.numberOfPages()}}"></li> -->
+          <li ng-disabled="$articlelist.currentPage >= data.length/pageSize - 1" ng-click="$articlelist.currentPage=$articlelist.currentPage+1" class="next"><a href="#">Nuevo &rarr;</a>
+          </li>
+      </ul>
+  </div>
 </div>
