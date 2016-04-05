@@ -36,22 +36,22 @@ module.exports = {
 
      connections: {
       // Heroku Deploy
-     sigmaDv: {
+    //  sigmaDv: {
+    //      adapter: 'sails-mysql',
+    //      host: 'us-cdbr-iron-east-03.cleardb.net',
+    //      user: 'bad812654b4b13',
+    //      password: 'eed57ee2',
+    //      database: 'heroku_1014650bcf2946e'
+    //     },
+       sigmaDv: {
          adapter: 'sails-mysql',
-         host: 'us-cdbr-iron-east-03.cleardb.net',
-         user: 'bad812654b4b13',
-         password: 'eed57ee2',
-         database: 'heroku_1014650bcf2946e'
-        },
-      //  sigmaDv: {
-      //    adapter: 'sails-mysql',
-      //    host: process.env.OPENSHIFT_MYSQL_DB_HOST ,
-      //    port: process.env.OPENSHIFT_MYSQL_DB_PORT,
-      //    // Openshift Deploy
-      //    user: 'adminDknJX7x',
-      //    password:'8-8d3FxqXlVy' ,
-      //    database: 'mastersigma'
-      //  },
+         host: process.env.OPENSHIFT_MYSQL_DB_HOST ,
+         port: process.env.OPENSHIFT_MYSQL_DB_PORT,
+         // Openshift Deploy
+         user: 'adminDknJX7x',
+         password:'8-8d3FxqXlVy' ,
+         database: 'mastersigma'
+       },
      },
      models: {
        schema: true,
@@ -74,13 +74,12 @@ module.exports = {
     /***************************************************************************
      * Set the port in the production environment to 80                        *
      ***************************************************************************/
-    //  host: process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1",
+     host: process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1",
 
-    //  port: process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 8080,
-     port: process.env.PORT || 1337,
+     port: process.env.OPENSHIFT_NODEJS_PORT || 8080,
+    //  port: process.env.PORT || 1337,
 
      environment: process.env.NODE_ENV || 'development',
-    //  port: process.env.PORT || 1337,
 
     /***************************************************************************
      * Set the log level in production environment to "silent"                 *
