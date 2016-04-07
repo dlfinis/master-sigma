@@ -12,12 +12,12 @@
                      return true;
                  } else {
                      var deferred = $q.defer();
-                     $http.post('/getUser')
+                     $http.post('/getuser')
                          .success(function (response) {
                              if(response.auth)
                                {
                                    $rootScope.userProfile = response.user;
-                                   $location.path('/canvas');
+                                   $location.path('/wall');
                                }else {
                                    $location.path('/home');
                                }

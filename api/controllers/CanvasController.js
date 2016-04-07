@@ -24,7 +24,6 @@ module.exports = {
         passport.authenticate('facebook-canvas',
         {
             scope: [
-            'email',
             'publish_actions'
             ]
         },
@@ -39,8 +38,10 @@ module.exports = {
                             sails.log("Auth Error", err);
                             return res.view('500');
                         }
-                        sails.log('+ REDIRECT ','/canvas/index');
-                        return res.redirect('/canvas/index');
+                        // sails.log('+ REDIRECT ','/canvas/index');
+                        // return res.redirect('/canvas/index');
+                        sails.log('+ REDIRECT ','/wall');
+                        return res.redirect('/#/wall');
 
                     });
                 } else {
@@ -56,7 +57,7 @@ module.exports = {
 
       alfa= FB.getLoginUrl({
         display: 'popup',
-          scope: 'email,publish_actions',
+          scope: 'publish_actions',
           client_id: sails.config.application_ClientID,
           redirect_uri: sails.config.application_AppURL
       });

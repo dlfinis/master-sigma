@@ -25,7 +25,7 @@ module.exports = {
         enableFacebookAuth: true,
         facebookClientID: "1267766483237355",
         facebookClientSecret: "a2f5e3a27b74a64bc0d1ecc2d3a9ec31",
-        facebookCallbackURL: "https://master.sigma/auth/facebook/callback",
+        facebookCallbackURL: "https://mastersigma-jaggerfly.rhcloud.com/auth/facebook/callback",
         facebookAppURL: "https://apps.facebook.com/master-sigma/",
     },
 

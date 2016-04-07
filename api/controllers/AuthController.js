@@ -43,7 +43,7 @@ module.exports = {
                             return res.view('500');
                         }
                         console.log(user);
-                        return res.redirect('#/canvas');
+                        return res.redirect('#/wall');
                     });
                 }
                   console.log(req.user);
