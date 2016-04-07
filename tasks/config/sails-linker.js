@@ -23,7 +23,8 @@ module.exports = function(grunt) {
 			},
 			files: {
 				'.tmp/public/*.html': require('../pipeline').jsFilesToInject,
-				'assets/**/*.html': require('../pipeline').jsFilesToInject
+				'assets/**/*.html': require('../pipeline').jsFilesToInject,
+				'views/**/*.ejs': require('../pipeline').jsFilesToInject
 			}
 		},
 
@@ -37,7 +38,8 @@ module.exports = function(grunt) {
 			},
 			files: {
         '.tmp/public/*.html': require('../pipeline').jsFilesToInject,
-        'assets/**/*.html': require('../pipeline').jsFilesToInject
+        'assets/**/*.html': require('../pipeline').jsFilesToInject,
+				'views/**/*.ejs': require('../pipeline').jsFilesToInject
 			}
 		},
 
@@ -50,7 +52,8 @@ module.exports = function(grunt) {
 			},
 			files: {
 				'.tmp/public/**/*.html': ['.tmp/public/min/production.min.js'],
-				'assets/**/*.html': ['.tmp/public/min/production.min.js']
+				'assets/**/*.html': ['.tmp/public/min/production.min.js'],
+				'views/**/*.ejs': ['.tmp/public/min/production.min.js']
 			}
 		},
 
@@ -64,7 +67,9 @@ module.exports = function(grunt) {
 			},
 			files: {
         '.tmp/public/**/*.html': ['.tmp/public/min/production.min.js'],
-        'assets/**/*.html': ['.tmp/public/min/production.min.js']
+        'assets/**/*.html': ['.tmp/public/min/production.min.js'],
+				'views/**/*.ejs': ['.tmp/public/min/production.min.js']
+
 			}
 		},
 
@@ -78,7 +83,8 @@ module.exports = function(grunt) {
 
 			files: {
 				'.tmp/public/**/*.html': require('../pipeline').cssFilesToInject,
-				'assets/**/*.html': require('../pipeline').cssFilesToInject
+				'assets/**/*.html': require('../pipeline').cssFilesToInject,
+				'views/**/*.ejs': require('../pipeline').cssFilesToInject
 			}
 		},
 
@@ -93,7 +99,8 @@ module.exports = function(grunt) {
 
 			files: {
 				'.tmp/public/**/*.html': require('../pipeline').cssFilesToInject,
-				'assets/**/*.html': require('../pipeline').cssFilesToInject
+				'assets/**/*.html': require('../pipeline').cssFilesToInject,
+				'views/**/*.ejs': require('../pipeline').cssFilesToInject
 			}
 		},
 
@@ -106,7 +113,8 @@ module.exports = function(grunt) {
 			},
 			files: {
 				'.tmp/public/index.html': ['.tmp/public/min/production.min.css'],
-				'assets/index.html': ['.tmp/public/min/production.min.css']
+				'assets/index.html': ['.tmp/public/min/production.min.css'],
+				'views/**/*.ejs': ['.tmp/public/min/production.min.css']
 
 			}
 		},
@@ -121,7 +129,8 @@ module.exports = function(grunt) {
 			},
 			files: {
         '.tmp/public/index.html': ['.tmp/public/min/production.min.css'],
-				'assets/index.html': ['.tmp/public/min/production.min.css']
+				'assets/index.html': ['.tmp/public/min/production.min.css'],
+				'views/**/*.ejs': ['.tmp/public/min/production.min.css']
 			}
 		}
   });

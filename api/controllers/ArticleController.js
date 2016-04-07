@@ -90,10 +90,13 @@ var cheerio = require('cheerio');
     return (like*0.2) +(share*0.6)+(visit*0.3);
   }
 
-  function getDateDiff(){
-    return {
-
-    };
+  function getTotalSize(){
+      return new Promise(function (resolve){
+        Article.count().exec(function countCB(err, found){
+          if(err) return next(err);
+          resolve(found);
+      });
+    });
   }
 
   function getReadingTime(url) {
@@ -111,35 +114,37 @@ var cheerio = require('cheerio');
         // body is the decompressed response body
         // console.log('server encoded the data as: ' + (response.headers['content-encoding'] || 'identity'));
           if(error){
-              sails.log(error);
               reject(error);
           }
-          var $ = cheerio.load(html);
-          var content = '';
+          if (!error && response.statusCode == 200) {
+            var $ = cheerio.load(html);
+            var content = '';
 
-          if($('p','body').text().length)
-            content = $('p','body').text();
-          else
-            content = $('[class*=content]','body').text();
+            if($('p','body').text().length)
+              content = $('p','body').text();
+            else
+              content = $('[class*=content]','body').text();
 
-          var stats = {};
-          if(content.length > 0)
-           stats = readingTime(
-              content,
-              {
-                label:' min de lectura',
-                wpm:300
-              }
-            );
-          else
-            stats = {
-                    'duration': '5 min de lectura',
-                    'minutes': 5,
-                    'time': 500000,
-                    'words': 100
-                  };
+            var stats = {};
+            if(content.length > 0)
+             stats = readingTime(
+                content,
+                {
+                  label:' min de lectura',
+                  wpm:300
+                }
+              );
+            else
+              stats = {
+                      'duration': '5 min de lectura',
+                      'minutes': 5,
+                      'time': 500000,
+                      'words': 100
+                    };
 
-          resolve(stats);
+            resolve(stats);
+          }
+
       });
     });
   }
@@ -168,47 +173,91 @@ var cheerio = require('cheerio');
       };
   }
 
+  function getArticleListNormal (articleQuery){
+    return new Promise(function(resolve){
+      var articlesList = [];
+      var totalSize = 0;
+      articleQuery.then(function (articles){
+
+                    articles.forEach(function (article){
+                            articlesList.push(getArticleStructure(article));
+                    });
+
+                      articlesList.sort(function(a, b) {
+                          return b.date - a.date;
+                      });
+
+                      getTotalSize().then(function (totalSize) {
+                        resolve (
+                          {
+                            size:totalSize,
+                            total:articlesList.length,
+                            results:articlesList
+                          });
+                      });
+                    });
+      });
+    }
+
+  function getArticleListRecommend (articleQuery){
+    return new Promise(function(resolve){
+      getTotalSize().then(function (totalSize) {
+
+          var limit = articleQuery._criteria.limit;
+          var articlesList = [];
+
+          articleQuery.limit(totalSize);
+
+          articleQuery.then(function (articles){
+            articles.some(function (article,index){
+                    articlesList.push(getArticleStructure(article));
+                    return index >= (limit - 1);
+            });
+
+            articlesList.sort(function(a, b) {
+                return b.date - a.date;
+            });
+
+            articlesList.sort(function(a, b) {
+                return b.recommend - a.recommend;
+            });
+
+            resolve({
+                size:totalSize,
+                total:articlesList.length,
+                results:articlesList
+              }
+            );
+          });
+      });
+    });
+  }
+
 module.exports = {
 
   findAll:function(req,res){
     var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUtil');
-    var isRecommendList = req.param('recommendList') || false;
+    var kindList = req.param('kind');
+
     var articleQuery = Article.find()
-                              // .where( actionUtil.parseCriteria(req) )
                               .limit( actionUtil.parseLimit(req) )
                               .skip( actionUtil.parseSkip(req) )
-                              .sort( actionUtil.parseSort(req) )
                               .populate('creator')
                               .populate('categories')
                               .populate('likes')
                               .populate('shares')
                               .populate('visits');
 
+    if( kindList == 'recommend')
+      getArticleListRecommend(articleQuery).then(function (response){
+        return res.ok(response);
+      });
 
-      articleQuery.exec(function found(err,articles){
-                  if (err) return res.serverError(err);
-                  if(articles != 'undefined' )
-                  {
+    if( kindList == 'normal')
+      getArticleListNormal(articleQuery).then(function (response){
+        return res.ok(response);
+    });
 
-                    var articlesList = [];
-
-                    articles.forEach(function (article){
-                            articlesList.push(getArticleStructure(article));
-                    });
-                    sails.log("Done load of articles");
-                      if(isRecommendList)
-                      {
-                        articlesList.sort(function(a, b) {
-                            return b.recommend - a.recommend;
-                        });
-                      }
-
-                    return res.ok({total:articlesList.length,results:articlesList});
-
-                  }else{
-                    res.serverError('Not rows');
-                  }
-               });
   },
   getInfo: function(req,res){
       var articleID = req.param('id');
@@ -276,8 +325,8 @@ module.exports = {
           return res.json({reading:response});
         })
         .catch(function(err){
-          sails.log(err);
-          return res.serverError(err);
+           if(err.errno !== 'ENOTFOUND') sails.log(err);
+           return res.serverError('URL broke:'+req.param('uri'));
         });
   },
   test: function (req, res) {

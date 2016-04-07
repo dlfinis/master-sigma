@@ -2,15 +2,24 @@
 <div class="container">
   <div class="col-sm-12">
     <div class="sort-bar">
-        <div class="sort-item tab" ng-init="$articlelist.getArticles({});tab = 1" ng-class='{"active":tab == 1}' ng-click="$articlelist.getArticles({});tab = 1">Reciente</div>
-        <div class="sort-item tab" ng-class='{"active":tab == 2}' ng-click="$articlelist.getArticles('recommend');tab = 2">Recomendados</div>
+        <div class="sort-item tab"
+          ng-init="props = {'kind':'normal'};$articlelist.getArticles(props);tab = 1"
+          ng-class='{"active":tab == 1}'
+          ng-click="props = {'kind':'normal'};$articlelist.getArticles(props);tab = 1">
+          Reciente
+        </div>
+        <div class="sort-item tab"
+          ng-class='{"active":tab == 2}'
+          ng-click="props = {'kind':'recommend'};$articlelist.getArticles(props);tab = 2">
+          Recomendados
+        </div>
         <div class="sort-item sort-section">
           <div class="sort-search">
             <span class="field">Búsqueda: </span>
             <input type="text" class="form-control select2-container" ng-model="$articlelist.textSearchContent">
           </div>
           <div class="sort-category">
-            <ui-select ng-model="$articlelist.mcategory.selected" theme="select2">
+            <ui-select ng-init="$articlelist.getCategories()" ng-model="$articlelist.mcategory.selected" theme="select2">
              <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}
              <a class="btn btn-xs" ng-click="$articlelist.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
              </ui-select-match>
@@ -21,12 +30,14 @@
           </div>
       </div>
     </div>
-    <div class="col-sm-12 post animate-repeat"
-          ng-animate="'animate'" ng-repeat="article in $articlelist.data
-          |filter:$articlelist.textSearchContent
-          |filter:$articlelist.mcategory.selected.name"
 
-          uid={{article.uid}}>
+    <div class="col-sm-12 post animate-repeat"
+          ng-animate="'animate'"
+          ng-repeat="article in $articlelist.data
+            |filter: $articlelist.textSearchContent
+            |filter: $articlelist.mcategory.selected.name
+            |limitTo: $articlelist.perPage"
+          uid ="{{article.uid}}">
           <div>
             {{$articlelist.testHtml()}}
           </div>
@@ -42,34 +53,42 @@
                   <div class="editor" ng-bind="article.creator.name"></div>
                   <div class="period" period data="{{ article.date }}"></div>
                   <span>&#8226;</span>
-                  <div class="reading" reading url="{{ article.url }}"></div>
+                  <div class="reading" reading url="{{ article.url }}" ng-model="article.reading"></div>
+                  <span ng-show="article.state === 'edit'">&#8226;</span>
+                  <div class="edition" ng-show="article.state === 'edit'">Editado</div>
+                  <div class="visits" ng-show="article.visits > 0">{{article.visits+1}} Visitas</div>
                 </div>
                 <p class="text" id="description" ng-bind="article.description"></p>
 
-                <a id="url" ng-click="$articlelist.open(article)" class="read-more">Leer más...</a>
+                <a id="url"
+                ng-click="$articlelist.openModal(article)"
+                class="read-more">
+                  Leer más... {{article.reading}}
+                </a>
 
              </div>
         <div class="social-bar" >
-              <div class="categories">
+          <div class="section-btn" uid-post="{{article.uid}}">
+            <like stats="article.likes"></like>
+            <share stats="article.shares" uid="article.uid"></share>
+          </div>
+          <div class="categories">
+            <div class="category" ng-repeat="category in article.categories">
+              <span>&#8226;</span>{{category.name}}
+            </div>
+          </div>
 
-                <div class="category" ng-repeat="category in article.categories">
-                  <span>&#8226;</span>{{category.name}}
-                </div>
-              </div>
-              <div class="section-btn" uid-post="{{article.uid}}">
-                <like></like>
-                <share></share>
-              </div>
         </div>
     </div>
   </div>
 
   <div class="col-sm-12 text-center">
       <ul class="pager">
-          <li ng-disabled="$articlelist.currentPage == 0" ng-click="$articlelist.currentPage=$articlelist.currentPage-1" class="previous"><a href="#">&larr; Previo</a>
+          <li class="previous" ng-click="$articlelist.prevPage()" ng-disabled="$articlelist.existPage('prev')">
+            <a> &larr; Previo</a>
           </li>
-          <!-- <li ng-bind="{{$articlelist.currentPage+1}}/{{$article.list.numberOfPages()}}"></li> -->
-          <li ng-disabled="$articlelist.currentPage >= data.length/pageSize - 1" ng-click="$articlelist.currentPage=$articlelist.currentPage+1" class="next"><a href="#">Nuevo &rarr;</a>
+          <li class="next" ng-click="$articlelist.nextPage()"  ng-disabled="$articlelist.existPage('next')">
+            <a> Nuevo &rarr;</a>
           </li>
       </ul>
   </div>

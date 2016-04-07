@@ -8,6 +8,12 @@ var uuid = require('node-uuid');
 module.exports = {
   autoUpdatedAt: false,
   attributes: {
+
+    time: {
+      type:'FLOAT',
+      defaultsTo:0,
+      required:true
+    },
     // Add a reference to Article
     article: {
       model: 'article',

@@ -36,21 +36,22 @@ module.exports.policies = {
   'auth': {
     '*': true
   },
-  'user': {
-    '*': true
-  },
   'canvas': {
     login : true,
     autologin : true
   },
 
-  'article': {
-    '*': true
-  },
-
-  'category': {
-    '*': true
-  },
+  // 'user': {
+  //   '*': true
+  // },
+  //
+  // 'article': {
+  //   '*': true
+  // },
+  //
+  // 'category': {
+  //   '*': true
+  // },
   //
   // 'like': {
   //   '*': true

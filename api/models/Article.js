@@ -28,7 +28,7 @@ module.exports = {
           type: 'STRING',
           required: true,
           url: true,
-          unique: true
+          // unique: true
         },
         image:{
           type: 'STRING',

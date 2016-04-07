@@ -16,7 +16,6 @@
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
   'fonts/**/*.css',
-  'bower_components/components-font-awesome/css/font-awesome.css',
   'bower_components/angular/*.css',
   'bower_components/angular-bootstrap/*.css',
   'bower_components/bootstrap-css/**/bootstrap.css',
@@ -32,7 +31,7 @@ var cssFilesToInject = [
 var jsFilesToInject = [
 
   // Load sails.io before everything else
-  'js/dependencies/sails.io.js',
+  // 'js/dependencies/sails.io.js',
 
   // Load Angular
   'bower_components/angular/angular.js',
@@ -60,7 +59,7 @@ var jsFilesToInject = [
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
-  'js/**/*.js'
+  'js/**/*.js',
 ];
 
 

@@ -88,7 +88,7 @@ module.exports = {
       //   sails.log(res); // { id: xxxxx}
       // });
         // sails.log(ArticleService. getArticles());
-        var articles = (ArticleService. getArticles(res));
+        // var articles = (ArticleService. getArticles(res));
         // res.view({ articles : articles});
     },
     test:function(req,res){
@@ -96,6 +96,10 @@ module.exports = {
     },
     testpage:function(req,res){
       return res.redirect('/#/delta');
+    },
+    wall:function(req,res){
+      return res.redirect('/#/wall');
     }
+
 
 };

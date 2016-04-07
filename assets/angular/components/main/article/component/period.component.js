@@ -50,8 +50,12 @@
     var d1 = new Date(datePost);
     var d2 = new Date();
 
-    var dayPublished = moment(d1).format('MMM DD,YYYY');
-    var dayMonthPublished = moment(d1).format('MMM DD');
+    var dayPublished = (moment(d1).format('MMM DD,YYYY'));
+    dayPublished = dayPublished.charAt(0).toUpperCase() +
+                    dayPublished.substr(1).toLowerCase();
+    var dayMonthPublished = (moment(d1).format('MMM DD'));
+    dayMonthPublished = dayMonthPublished.charAt(0).toUpperCase() +
+                          dayMonthPublished.substr(1).toLowerCase();
 
     var dateDiff = DateLabel.main;
 
@@ -66,16 +70,16 @@
       dateDiff = DateLabel.now;
 
     if(minsDiff >= 5  && minsDiff < 60 )
-      dateDiff = DateLabel.main+' ' + minsDiff + (minsDiff == 1 ? '':'s')+' '+DateLabel.min;
+      dateDiff = DateLabel.main+' ' + minsDiff +' '+DateLabel.min+(minsDiff == 1 ? '':'s');
 
     if(hoursDiff > 0 && hoursDiff < 24 )
-      dateDiff = DateLabel.main+' ' + hoursDiff + (hoursDiff == 1 ? '':'s')+' '+DateLabel.hour;
+      dateDiff = DateLabel.main+' ' + hoursDiff +' '+DateLabel.hour+(hoursDiff == 1 ? '':'s');
 
     if(hoursDiff > 23 && hoursDiff < 48 )
       dateDiff = DateLabel.yesterday;
 
     if(daysDiff > 0 && daysDiff < 4 )
-        dateDiff = DateLabel.main+' ' + daysDiff + (daysDiff == 1 ? '':'s')+' '+DateLabel.day;
+        dateDiff = DateLabel.main+' ' + daysDiff +' '+DateLabel.day+(daysDiff == 1 ? '':'s');
 
     if(daysDiff >= 4 && monthsDiff <= 12)
         dateDiff = dayMonthPublished;

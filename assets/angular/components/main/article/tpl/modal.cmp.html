@@ -1,12 +1,23 @@
 <div class="modal-header">
-  <a class="btn btn-primary" ng-href="{{article.url}}" target="_blank">
-    Abrir Página Externa
-  </a>
     <h3 class="modal-title">{{article.title}}</h3>
-
 </div>
+
 <div class="modal-body">
-  <!-- <pre>{{article}}</pre> -->
+  <!-- <div class="source">
+    <span>&#8226; </span><div class="reading" reading url="{{article.url}}"></div>
+    <a class="external" ng-href="{{article.url}}" target="_blank">
+      <i class="fa fa-external-link"></i> Abrir Página
+    </a>
+  </div> -->
+<div class="source">
+  <span>&#8226; </span><div class="reading" reading url="{{article.url}}"></div>
+  <div class="external">
+    <i class="fa fa-external-link"></i> Abrir Página
+  </div>
+</div>
+<div class="">
+  {{article.reading}}
+</div>
 <div class="embed-responsive embed-responsive-4by3">
   <div class="fade-it loading" >
     <img class="" src="/images/spinner-2.gif"/>
@@ -18,19 +29,23 @@
 </div>
 
 </div>
-<div class="post">
-  <div class="social-bar" >
-        <div class="categories">
-          <div class="category" ng-repeat="category in article.categories" ng-bind="category.name"></div>
-        </div>
-        <div class="section-btn" uid-post="{{article.uid}}">
-          <like></like>
-          <share></share>
-        </div>
-  </div>
-</div>
+
 <div class="modal-footer">
-    <button class="btn btn-danger" type="button" ng-click="close()">
-      Salir <i class="fa fa-times"></i>
+  <div class="post">
+    <div class="social-bar" >
+          <div class="categories">
+              <div class="category"
+              ng-repeat="category in article.categories | limitTo:4">
+              <span>&#8226;</span>{{category.name}}
+              </div>
+          </div>
+          <div class="section-btn" uid-post="{{article.uid}}">
+            <like></like>
+            <share></share>
+          </div>
+    </div>
+  </div>
+    <button ng-disabled="!exit" class="btn btn-danger" type="button" ng-click="close()">
+      <i class="fa fa-times"></i> Salir
     </button>
 </div>

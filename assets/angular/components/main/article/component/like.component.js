@@ -7,6 +7,7 @@
     $like.count = 0;
     $like.state = false;
     $like.model = 0;
+    $like.stats = 0;
     $like.article_uid = "";
       $like.setLike = function() {
         $like.count++;
@@ -21,7 +22,8 @@
                restrict: 'EA',
                scope: {
                  uid: "@",
-                 state: "="
+                 state: "=",
+                 stats:"="
                },
                controller: 'LikeCtrl',
                controllerAs: '$like',

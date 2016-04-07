@@ -2,35 +2,27 @@
 <html lang="es" >
 <head>
     <title>MasterSigma </title>
-    <meta name="description"  content="Master Sigma support. Built by MasterSigma" />
-
-    <!-- Open Graph data -->
-    <meta property="og:title" content="Master Sigma support" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://localhost:1337" />
-    <meta property="og:image" content="https://localhost:1337/images/sails-auth-share.jpg" />
-    <meta property="og:description" content="Master Sigma" />
-    <meta property="og:site_name" content="MasterSigma" />
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/favicon.png">
-
-        <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700'rel='stylesheet' type='text/css'>
-
-    <link rel="stylesheet" href="/components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/components/fontawesome/css/font-awesome.min.css">
-
     <!--STYLES-->
+    <link rel="stylesheet" href="/fonts/fontawesome/font-awesome.css">
+    <link rel="stylesheet" href="/fonts/josefinslab/josefinslab.css">
+    <link rel="stylesheet" href="/fonts/opensans/opensans.css">
+    <link rel="stylesheet" href="/fonts/oxygen/oxygen.css">
+    <link rel="stylesheet" href="/fonts/ubuntu/ubuntu.css">
+    <link rel="stylesheet" href="/bower_components/angular/angular-csp.css">
+    <link rel="stylesheet" href="/bower_components/angular-bootstrap/ui-bootstrap-csp.css">
+    <link rel="stylesheet" href="/bower_components/bootstrap-css/css/bootstrap.css">
+    <link rel="stylesheet" href="/bower_components/bootstrap-css/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/bower_components/angular-loading-bar/build/loading-bar.css">
+    <link rel="stylesheet" href="/bower_components/ui-select/dist/select.css">
     <link rel="stylesheet" href="/styles/main.css">
     <link rel="stylesheet" href="/styles/mustache.css">
+    <link rel="stylesheet" href="/styles/select2.css">
     <!--STYLES END-->
-    <script>
+    <!-- <script>
       window.fbAsyncInit = function() {
         FB.init({
           appId      : <%- sails.config.application_auth.facebookClientID%>,
@@ -46,31 +38,57 @@
          js.src = "//connect.facebook.net/en_US/sdk.js";
          fjs.parentNode.insertBefore(js, fjs);
        }(document, 'script', 'facebook-jssdk'));
-    </script>
-    <script src="/components/jquery/dist/jquery.min.js"></script>
-    <script src="/components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/components/underscore/underscore.js"></script>
-    <script src="/components/moment/moment.js"></script>
-
+    </script> -->
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-default">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#"><i class="fa fa-home fa-lg"></i></a>
-        </div>
-        </nav>
-    </header>
     <%- body %>
-
-
 <!--SCRIPTS-->
-<script src="/js/dependencies/sails.io.js"></script>
-<script src="/js/dependencies/test.js"></script>
-<script src="/js/app/app.js"></script>
-<script src="/js/app/controllers/mainController.js"></script>
-<script src="/js/app/factories/mainFactory.js"></script>
+<script src="/bower_components/angular/angular.js"></script>
+<script src="/bower_components/moment/min/moment-with-locales.js"></script>
+<script src="/bower_components/angular-i18n/angular-locale_es-ec.js"></script>
+<script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="/bower_components/angular-route/angular-route.js"></script>
+<script src="/bower_components/angular-loading-bar/build/loading-bar.js"></script>
+<script src="/bower_components/angular-animate/angular-animate.js"></script>
+<script src="/bower_components/ng-onload/release/ng-onload.min.js"></script>
+<script src="/bower_components/angular-lazy-img/release/angular-lazy-img.js"></script>
+<script src="/bower_components/ui-select/dist/select.js"></script>
+<script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="/angular/app.config.js"></script>
+<script src="/angular/components/main/article/articlelist.component.js"></script>
+<script src="/angular/components/main/article/articlelist.controller.js"></script>
+<script src="/angular/components/main/article/articlelist.factory.js"></script>
+<script src="/angular/components/main/article/articlelist.filter.js"></script>
+<script src="/angular/components/main/article/component/category.component.js"></script>
+<script src="/angular/components/main/article/component/htmldata.component.js"></script>
+<script src="/angular/components/main/article/component/like.component.js"></script>
+<script src="/angular/components/main/article/component/period.component.js"></script>
+<script src="/angular/components/main/article/component/reading.component.js"></script>
+<script src="/angular/components/main/article/component/share.component.js"></script>
+<script src="/angular/components/main/article/component/tdelta.component.js"></script>
+<script src="/angular/components/main/home/home.component.js"></script>
+<script src="/angular/components/main/pagination/pagination.module.js"></script>
+<script src="/angular/components/main/registry/rarticle/rarticle.component.js"></script>
+<script src="/angular/components/main/registry/rarticle/rarticle.controller.js"></script>
+<script src="/angular/components/main/registry/rarticle/rarticle.factory.js"></script>
+<script src="/angular/components/main/registry/rcategory/rcategory.component.js"></script>
+<script src="/angular/components/main/registry/rcategory/rcategory.controller.js"></script>
+<script src="/angular/components/main/registry/rcategory/rcategory.factory.js"></script>
+<script src="/angular/components/main/registry/registry.component.js"></script>
+<script src="/angular/components/main/registry/registry.controller.js"></script>
+<script src="/angular/components/main/registry/registry.factory.js"></script>
+<script src="/angular/components/main/wall/wall.component.js"></script>
+<script src="/angular/components/main/wall/wall.controller.js"></script>
+<script src="/angular/components/main/wall/wall.factory.js"></script>
+<script src="/angular/components/core/check/route.js"></script>
+<script src="/angular/components/core/test/test.component.js"></script>
+<script src="/angular/components/core/test/test.controller.js"></script>
+<script src="/angular/components/core/test/test.factory.js"></script>
+<script src="/angular/components/core/testpage/testpage.component.js"></script>
+<script src="/angular/components/app.core.js"></script>
+<script src="/angular/components/app.main.js"></script>
+<script src="/angular/app.js"></script>
 <!--SCRIPTS END-->
 </body>
 </html>

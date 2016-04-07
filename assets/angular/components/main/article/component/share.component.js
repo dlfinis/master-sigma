@@ -7,11 +7,14 @@
     $share.count = 0;
     $share.state = false;
     $share.model = 0;
+    $share.stats = 0;
     $share.article_uid = "";
       $share.setShare = function() {
         $share.count++;
         $share.state = !$share.state;
       };
+
+
   }
 
   angular.module('app.main.article.share', [])
@@ -21,7 +24,8 @@
                restrict: 'EA',
                scope: {
                  uid: "@",
-                 state: "="
+                 state: "=",
+                 stats:"="
                },
                controller: 'ShareCtrl',
                controllerAs: '$share',
