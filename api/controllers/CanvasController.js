@@ -19,8 +19,8 @@ module.exports = {
         {
           // sails.log('+ REDIRECT ','/canvas/index');
           // return res.redirect('/canvas/index');
-          sails.log('+ REDIRECT ','/#/testpage');
-          return res.redirect('/#/testpage');
+          sails.log('+ REDIRECT ','/#/wall');
+          return res.redirect('/#/wall');
         }
 
         passport.authenticate('facebook-canvas',
@@ -42,8 +42,8 @@ module.exports = {
                         }
                         // sails.log('+ REDIRECT ','/canvas/index');
                         // return res.redirect('/canvas/index');
-                        sails.log('+ REDIRECT ','/#/testpage');
-                        return res.redirect('/#/testpage');
+                        sails.log('+ REDIRECT ','/#/wall');
+                        return res.redirect('/#/wall');
 
                     });
                 } else {
