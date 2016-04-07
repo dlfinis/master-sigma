@@ -9,6 +9,8 @@
                controller: 'ArticleListCtrl',
                controllerAs: '$articlelist',
                templateUrl: partial.main.article+'articlelist.html',
+               link: function (scope){
+               }
            };
          });
 

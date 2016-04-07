@@ -45,6 +45,11 @@ module.exports.routes = {
       action: 'getUser',
             skipAssets: true,
     },
+    'POST /auth/facebook/canvas' : {
+      controller: 'CanvasController',
+      action: 'login',
+            skipAssets: true,
+    }
 
     /***************************************************************************
      *                                                                          *

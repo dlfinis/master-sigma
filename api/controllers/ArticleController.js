@@ -307,7 +307,8 @@ module.exports = {
       gzip: true,
       headers: {
           'Access-Control-Allow-Origin': '*',
-          'User-Agent': 'request'
+          'User-Agent': 'request',
+          'Access-Control-Allow-Headers': 'X-Requested-With'
         }
     },
     function (error, response, html) {

@@ -17,8 +17,10 @@ module.exports = {
 
         if(req.user)
         {
-          sails.log('+ REDIRECT ','/canvas/index');
-          return res.redirect('/canvas/index');
+          // sails.log('+ REDIRECT ','/canvas/index');
+          // return res.redirect('/canvas/index');
+          sails.log('+ REDIRECT ','/#/testpage');
+          return res.redirect('/#/testpage');
         }
 
         passport.authenticate('facebook-canvas',
@@ -40,8 +42,8 @@ module.exports = {
                         }
                         // sails.log('+ REDIRECT ','/canvas/index');
                         // return res.redirect('/canvas/index');
-                        sails.log('+ REDIRECT ','/wall');
-                        return res.redirect('/#/wall');
+                        sails.log('+ REDIRECT ','/#/testpage');
+                        return res.redirect('/#/testpage');
 
                     });
                 } else {
@@ -58,8 +60,8 @@ module.exports = {
       alfa= FB.getLoginUrl({
         display: 'popup',
           scope: 'publish_actions',
-          client_id: sails.config.application_ClientID,
-          redirect_uri: sails.config.application_AppURL
+          client_id: sails.config.application_auth.facebookClientID,
+          redirect_uri: sails.config.application_auth.facebookAppURL
       });
       sails.log(alfa);
 

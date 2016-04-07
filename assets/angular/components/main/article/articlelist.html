@@ -44,7 +44,7 @@
             <a class="image-box" ng-href="{{article.url}}" target="_blank">
             <img class="image"
             src="/images/spinner.gif"
-            lazy-img="{{ article.image || 'images/submarine.png' }}"
+            lazy-img="{{ $articlelist.getTrustedResource(article.image) || 'images/submarine.png' }}"
             alt=""/>
             </a>
             <div id="title" class="title"><h3 ng-bind="article.title"></h3></div>

@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  function ArticleListCtrl($scope, $http,$q, ArticleListFactory)
+  function ArticleListCtrl($scope, $http,$q,$sce, ArticleListFactory)
   {
     var $articlelist = this;
 
@@ -106,6 +106,10 @@
           });
     };
 
+    $articlelist.getTrustedResource = function(resource)
+    {
+      return $sce.trustAsResourceUrl(resource);
+    };
     //Modal
     $articlelist.openModal = function (article)
     {
