@@ -10,16 +10,21 @@ var moment = require('moment');
 var request = require('request');
 var cheerio = require('cheerio');
 var graph = require('fbgraph');
-var User;
-var Size;
+var _user;
+var _size;
+var _limit;
+
 module.exports = {
 
   setUser: function (user) {
-    User = user;
+    _user = user;
+  },
+  setLimit: function (limit) {
+    _limit = limit || sails.config.blueprints.defaultLimit || 10;
   },
   setTotalSize: function () {
     ArticleService.getTotalSize(function countRecord(total) {
-        Size = total;
+        _size = total;
     });
   },
   getDate:function(date,format){
@@ -200,7 +205,7 @@ module.exports = {
     var like = _.find(
                       likes,function(element)
                               {
-                                return element.user === User.id ;
+                                return element._user === User.id ;
                               }
                   );
     return like;
@@ -386,20 +391,20 @@ module.exports = {
                       articlesList.sort(function(a, b) {
                           return b.date - a.date;
                       });
-                      ArticleService.getTotalSize().then(function (totalSize) {
+
                         resolve (
                           {
-                            size:totalSize, //Total Size of elements in Article
+                            size:ArticleService._size, //Total Size of elements in Article
                             total:articlesList.length, //Based respect the limit of the query
                             results:articlesList //Articles List Data
                           });
-                      });
+
                     });
       });
   },
   getArticleListRecommend : function (articleQuery){
     return new Promise(function(resolve){
-          var limit = articleQuery._criteria.limit;
+
           var articlesList = [];
 
           // articleQuery.limit(totalSize);
@@ -417,7 +422,7 @@ module.exports = {
             // });
             articles.some(function (article,index){
                     articlesList.push(ArticleService.getArticleStructure(article));
-                    return index >= (limit - 1);
+                    return index >= (ArticleService._limit - 1);
             });
             // articlesList.sort(function(a, b) {
             //     return b.date - a.date;
@@ -427,7 +432,7 @@ module.exports = {
             //     return a.recommend - b.recommend;
             // });
             resolve({
-                size:totalSize,
+                size:ArticleService._size,
                 total:articlesList.length,
                 results:articlesList
               }
@@ -442,32 +447,33 @@ module.exports = {
 
       articleQuery.sort("createdAt DESC");
 
+      delete articleQuery._criteria['limit'];
+
+
       User.findOne({name:creator}).then( function(creatorRecord){
+        sails.log(creatorRecord);
+        articleQuery.where({'creator':creatorRecord.id});
+        articleQuery.then(function (articles){
 
-        console.log(creatorRecord);
-        resolve(true);
+                        articles.some(function (article,index){
+                                articlesList.push(ArticleService.getArticleStructure(article));
+                                return index >= (ArticleService._limit - 1);
+                        });
 
+                        articlesList.sort(function(a, b) {
+                            return b.date - a.date;
+                        });
+
+                          resolve (
+                            {
+                              size:articles.length,
+                              total:articlesList.length,
+                              results:articlesList
+                            });
+                      }).catch(function(err){
+                        sails.log.error(err);
+                      });
       });
-
-      // User.findOne({name:creator}).then( function(creatorRecord){
-      //   articleQuery.where({'creator':creatorRecord.id});
-      //   articleQuery.then(function (articles){
-      //                   _.each(articles, function (article){
-      //                        articlesList.push(ArticleService.getArticleStructure(article));
-      //                   });
-      //
-      //                   articlesList.sort(function(a, b) {
-      //                       return b.date - a.date;
-      //                   });
-      //
-      //                     resolve (
-      //                       {
-      //                         size:articlesList.length,
-      //                         total:articlesList.length,
-      //                         results:articlesList
-      //                       });
-      //                 });
-      // });
 
       });
   },
@@ -479,30 +485,43 @@ module.exports = {
       articleQuery.then(function (articles){
 
 
-                    _.each(articles, function (article){
-                        if(article.categories)
-                        {
-                           var exist = _.find(article.categories, function(element) {
-                                 return element.name == category;
-                           });
+                    articles.some(function (article,index){
+                          if(article.categories)
+                          {
+                             var exist = _.find(article.categories, function(element) {
+                                   return element.name == category;
+                             });
 
-                           if(exist)
-                             articlesList.push(ArticleService.getArticleStructure(article));
-                         }
+                             if(exist)
+                               articlesList.push(ArticleService.getArticleStructure(article));
+                           }
+                            return index >= (ArticleService._limit - 1);
                     });
+
+                    // _.each(articles, function (article){
+                    //     if(article.categories)
+                    //     {
+                    //        var exist = _.find(article.categories, function(element) {
+                    //              return element.name == category;
+                    //        });
+                    //
+                    //        if(exist)
+                    //          articlesList.push(ArticleService.getArticleStructure(article));
+                    //      }
+                    // });
 
                       articlesList.sort(function(a, b) {
                           return b.date - a.date;
                       });
 
-                      ArticleService.getTotalSize().then(function (totalSize) {
+
                         resolve (
                           {
-                            size:totalSize,
+                            size:articles.length,
                             total:articlesList.length,
                             results:articlesList
                           });
-                      });
+
 
                     });
       });

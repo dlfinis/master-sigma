@@ -1,5 +1,5 @@
 # The MIT License (MIT)
-**Copyright &copy; 2014-2015 **
+**Copyright &copy; 2016 **
 
 * * *
 

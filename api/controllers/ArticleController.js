@@ -40,12 +40,13 @@ module.exports = {
   },
   findAll:function(req,res){
     var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUtil');
-    var kindList = req.param('kind') || 'normal';
+    var kindList = req.param('kind');
     var creator = req.param('creator');
     var category = req.param('category');
 
     ArticleService.setTotalSize();
     ArticleService.setUser(req.user);
+    ArticleService.setLimit(req.param('limit'));
 
     var articleQuery = Article.find()
                               .limit( actionUtil.parseLimit(req) )
@@ -62,6 +63,9 @@ module.exports = {
     if(category)
       kindList = 'category';
 
+      sails.log(kindList);
+      sails.log(creator);
+      sails.log(category);
     switch (kindList) {
       case 'normal': {
             ArticleService.getArticleListNormal(articleQuery).then(function (response){
@@ -90,27 +94,12 @@ module.exports = {
             });
             break;
       }
-      default:
+      default:{
             ArticleService.getArticleListNormal(articleQuery).then(function (response){
               return res.ok(response);
             });
-
+        }
     }
-
-    // if(category)
-    //   ArticleService.getArticleListByCategory(articleQuery,category).then(function (response){
-    //     return res.ok(response);
-    //   });
-    //
-    // if( kindList == 'recommend')
-    //   ArticleService.getArticleListRecommend(articleQuery).then(function (response){
-    //     return res.ok(response);
-    //   });
-    //
-    // if( kindList == 'normal')
-    //   ArticleService.getArticleListNormal(articleQuery).then(function (response){
-    //     return res.ok(response);
-    // });
 
   },
   havelike : function(req,res){
@@ -128,8 +117,30 @@ module.exports = {
 
     });
   },
+  setshare : function(req,res){
+    var shareSID = req.param('shareSID');
+    var articleID = req.param('articleID');
+    var userID = req.user.id || ArticleService._user.id;
+
+    sails.log(userID);
+    sails.log(shareSID);
+              Share.create({
+                            sid : shareSID,
+                            article : articleID,
+                            user : userID
+                          }).exec(function createRecord(err, created){
+                              if(err)
+                              {
+                                sails.log.warn(err);
+                                return res.ok(false);
+                              }
+                              sails.log.debug('Set share :'+created.completeSID);
+                              return res.ok(true);
+                          });
+
+
+  },
   setlike : function(req,res){
-    var uuid = require('node-uuid');
     var articleID = req.param('articleID');
     var articleURL = req.param('articleURL');
     var userID = req.user.id;

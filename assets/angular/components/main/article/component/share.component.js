@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function ShareFactory($window)
+  function ShareFactory($window,$http)
   {
     return {
 			init: function(fbId) {
@@ -34,11 +34,21 @@
 				} else {
 					throw ("FB App Id Cannot be blank");
 				}
-			}
+			},
+      setshare: function(shareSID,articleID)
+      {
+        console.log(shareSID);
+        console.log(articleID);
+        return $http.post('/article/setshare',
+               {
+                shareSID : shareSID,
+                articleID : articleID
+               });
+      },
 		};
   }
 
-  function ShareCtrl($scope)
+  function ShareCtrl($scope,ShareFactory)
   {
     var $share = this;
     $share.count = 0;
@@ -46,12 +56,9 @@
     $share.model = 0;
     $share.stats = 0;
     $share.article_uid = "";
-      $share.setShare = function() {
-        $share.count++;
-        $share.state = !$share.state;
+      $share.setShare = function(shareSID,articleID) {
+        ShareFactory.setshare(shareSID,articleID);
       };
-
-
   }
 
   angular.module('app.main.article.share', [])
@@ -68,7 +75,7 @@
                controller: 'ShareCtrl',
                controllerAs: '$share',
                templateUrl: partial.main.article+'tpl/share.cmp.html',
-               link: function(scope, element, attr) {
+               link: function(scope, element, attr,controller) {
         					element.unbind();
         					element.bind('click', function(e) {
         						FB.ui({
@@ -76,7 +83,10 @@
         							href: scope.source.url
         						}, function(response){
                       $log.debug(response);
-                      attr.stats = attr.stats+1;
+                      $log.debug(attr.stats);
+
+                      scope.stats = scope.stats+1;
+                      controller.setShare(response.post_id,scope.source.id);
         						});
         						e.preventDefault();
         					});
