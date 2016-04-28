@@ -470,7 +470,7 @@ footer p {
   font-size: 0.9em;
   font-weight: 400;
   text-decoration: none;
-  cursor: default;
+  cursor: pointer;
 }
 
 .post .read-more:hover{
@@ -555,11 +555,12 @@ footer p {
   font-size: 0.8em;
   font-weight: 100;
   display: inline-block;
-  width: 22px;
-  padding: 1%;
-  /*margin-right: 15%;*/
-  /*height: 20px;*/
-  text-align: right;
+  width: 20px;
+  padding-top: 5px;
+  color: #426CA6;
+  vertical-align: middle;
+  opacity: 0.8;
+
 }
 
 .post .social-bar .section-btn .btn{
@@ -570,24 +571,37 @@ footer p {
   color: #6b6d6f;
   cursor:pointer;
   font-size: 0.8em;
+  outline:none
 }
 
 .post .social-bar .section-btn .btn:hover{
   color: #426CA6;
+  outline:none
 }
 
-.post .social-bar .section-btn like .btn:hover .fa-thumbs-o-up:before{
+/*.post .social-bar .section-btn like .btn:hover .fa-thumbs-o-up:before{
   content: "\f164";
   color: #426CA6;
-}
+  outline:none
+}*/
 
+.post .social-bar .section-btn like .on,
+.post .social-bar .section-btn like .on .fa-thumbs-o-up:before,
 .post .social-bar .section-btn like .btn:active .fa-thumbs-o-up:before{
   content: "\f164";
   color: #426CA6;
+  outline:none
+}
+
+.post .social-bar .section-btn like .exist,
+.post .social-bar .section-btn share .exist{
+  color: #426CA6;
+  outline: none;
 }
 
 .post .social-bar .section-btn share .btn{
   padding-top: 3px;
+  outline:none
 }
 
 .post .social-bar .section-btn .btn-primary{
@@ -602,19 +616,25 @@ footer p {
   border-color: #E0E0E0;
   background: #ececec;
   color: #3B5998;
+  outline:none
 }
 
 .post .social-bar .section-btn .btn-primary:active, .btn-primary.active {
     background-color: #3A5795;
     border-color: #4C6598;
     color: #ececec;
+    outline:none
 }
 
 .post .social-bar .section-btn .btn-primary:active, .btn-primary.active:focus {
     background-color: #426CA6;
     border-color: #3A5795;
+    outline:none
 }
 
+.pager{
+  cursor: pointer;
+}
 
 .modal.in .modal-dialog{
   /*width: 80%;*/
@@ -647,6 +667,7 @@ footer p {
   display: inline-block;
   float: right;
   color: inherit;
+  padding: 0.1% 1.7%;
 }
 
 
@@ -656,6 +677,8 @@ footer p {
   font-weight: 700;
   background: #5070B3;
   padding:0% 2%;
+  padding: 0.1% 1.5% 0.2%;
+  text-decoration: none;
 }
 
 .modal .modal-body {

@@ -35,8 +35,14 @@ module.exports = {
         enableFacebookAuth: true,
         facebookClientID: "1267766483237355",
         facebookClientSecret: "a2f5e3a27b74a64bc0d1ecc2d3a9ec31",
+        // facebookCallbackURL: "https://master.sigma/auth/facebook/callback",
         facebookCallbackURL: "https://master.sigma/auth/facebook/callback",
         facebookAppURL: "https://apps.facebook.com/master-sigma/",
     },
-
+    // ssl: {
+    //   ca: require('fs').readFileSync(__dirname + '/ssl/server.crt'),
+    //   key: require('fs').readFileSync(__dirname + '/ssl/server.key'),
+    //   cert: require('fs').readFileSync(__dirname + '/ssl/server.crt')
+    // },
+    port: process.env.PORT || 1337,
 };

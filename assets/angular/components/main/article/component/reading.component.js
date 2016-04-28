@@ -11,8 +11,8 @@
                     return response.data.reading;
                   });
     };
-
-}
+  }
+  
   angular.module('app.main.article.reading',[])
          .controller('ReadingCtrl',ReadingCtrl)
          .directive('reading', function($q){

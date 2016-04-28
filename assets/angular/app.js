@@ -1,21 +1,23 @@
 (function () {
 
-  angular.module('app', ['ngSanitize',
-                         'angular-loading-bar',
+  angular.module('app', ['angular-loading-bar',
                          'ngRoute',
+                         'ngSanitize',
                          'ngAnimate',
-                         'ui.bootstrap',
                          'ngOnload',
                          'angularLazyImg',
+                         'ui.bootstrap',
                          'ui.select',
                          'app.core',
-                         'app.main'])
-  .config(['$routeProvider','cfpLoadingBarProvider', function($routeProvider,cfpLoadingBarProvider) {
+                         'app.main',
+                         'app.config'
+                       ])
+  .config(['INIT','$routeProvider','$logProvider','cfpLoadingBarProvider',function(INIT,$routeProvider,$logProvider,cfpLoadingBarProvider) {
+
+    $logProvider.debugEnabled(INIT.debug);
 
     // Remove loading bar spinner
     cfpLoadingBarProvider.includeSpinner = false;
-    // cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-    //     cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
 
     $routeProvider.when('/', {   resolve: {
 
@@ -24,11 +26,11 @@
                                                   }
                                   },
     });
-    // $routeProvider.when('/home', {  templateUrl:'angular/components/main/home/home.html'});
+
     $routeProvider.when('/home', {  template:'<home></home>' });
     $routeProvider.when('/wall', { template: '<wall></wall>' });
     $routeProvider.when('/articlelist', { template: '<articlelist></articlelist>' });
-    // $routeProvider.when('/canvas', { template: '<canvas></canvas>' });
+
     $routeProvider.when('/test', { template: '<test></test>' });
     $routeProvider.when('/testpage', { template: '<testpage></testpage>' });
     $routeProvider.when('/registry', { template: '<registry></registry>' });
@@ -37,7 +39,7 @@
     $routeProvider.otherwise({redirectTo: '/'});
   }])
   /*CONFIG*/
-  .run(function ($rootScope, $location,$route, $timeout,cfpLoadingBar) {
+  .run(function ($rootScope,$location,$route,$timeout,cfpLoadingBar,ShareFactory,KEYS) {
 
       $rootScope.config = {};
       $rootScope.config.app_url = $location.url();
@@ -48,9 +50,10 @@
       $rootScope.isAppLoading = true;
       $rootScope.startTime = new Date();
 
-      var diff,timeoutPromise;
+      ShareFactory.init(KEYS.fbClientID);
 
-      // Subscribe to broadcast of $stateChangeStart state event via AngularUI Router
+      var diff,timeoutPromise;
+// Subscribe to broadcast of $stateChangeStart state event via AngularUI Router
 $rootScope.$on('$routeChangeStart', function (event, toState, toParams, fromState, fromParams, error) {
   console.log('$stateChangeStart');
   // If app is not already loading (since we started the loading bar in the config with the isAppLoading)

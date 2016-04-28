@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  function ArticleListCtrl($scope, $http,$q,$sce, ArticleListFactory)
+  function ArticleListCtrl($scope,$http,$q,$sce,$log, ArticleListFactory)
   {
     var $articlelist = this;
 
@@ -10,6 +10,7 @@
     $articlelist.textSearchContent= '';
 
     $articlelist.mcategory = {};
+    $articlelist.mcategories = [];
 
     $articlelist.pagination = {};
     $articlelist.props = {};
@@ -17,7 +18,6 @@
     $articlelist.isActive = false;
     $articlelist.activeButton = function(index) {
     $articlelist.isActive = !$articlelist.isActive;
-    console.log(index);
     };
 
     $articlelist.clear = function ($event, $select){
@@ -33,7 +33,9 @@
 
     $articlelist.getCategories = function(){
       $q.when(ArticleListFactory.getCategories()).then(function(response){
-          $articlelist.mcategories = response;
+           angular.forEach(response, function(category) {
+	            $articlelist.mcategories.push(category);
+	          });
       });
     };
 
@@ -43,24 +45,41 @@
 
      $articlelist.startItem = 0;
      $articlelist.currentPage = 1;
-     $articlelist.perPage = 10;
+     $articlelist.perPage = 5;
      $articlelist.numberOfPages = 1;
 
+      $articlelist.totalItems = 0;
+      $articlelist.maxSizeItems = 5;
+      // $articlelist.currentPage = 4;
+
+
+      $articlelist.pageChanged = function() {
+        $log.log('Page changed to: ' + $articlelist.currentPage );
+        $log.log('Item: ' + $articlelist.startfrom()  );
+
+        $articlelist.getNextArticleData($articlelist.startfrom() );
+      };
+
     $articlelist.startfrom = function(){
-          return $articlelist.perPage * $articlelist.currentPage;
+          return ($articlelist.perPage * $articlelist.currentPage)-($articlelist.perPage);
     };
 
     $articlelist.getNextArticleData = function(startValue){
+        $log.log({
+          'skip' : startValue,
+          'kind' : $articlelist.props.kind
+        });
       $q.when(ArticleListFactory.getArticles(
             {
               'skip' : startValue,
               'kind' : $articlelist.props.kind
             }))
           .then(function(response){
+              $log.debug(response.data.results);
               $articlelist.data = response.data.results;
           })
           .catch(function (err) {
-              console.error(err.stack);
+              $log.error(err.stack);
           });
     };
 
@@ -73,7 +92,7 @@
     };
 
     $articlelist.nextPage = function () {
-        if($articlelist.currentPage < $articlelist.numberOfPages)
+      if($articlelist.currentPage < $articlelist.numberOfPages)
         {
           $articlelist.startItem +=
                                       $articlelist.currentPage <=
@@ -95,46 +114,84 @@
         }
     };
 
+    $articlelist.setNormalList = function()
+    {
+      $articlelist.props = {
+        'kind':'normal',
+        'limit':$articlelist.perPage
+      };
+      $articlelist.getArticles($articlelist.props);
+      $articlelist.normal = true;
+      $articlelist.recommend = false;
+      $articlelist.currentPage = 1;
+    };
+
+    $articlelist.setRecommendList = function()
+    {
+      $articlelist.props = {
+        'kind':'recommend',
+        'limit':$articlelist.perPage
+      };
+      $articlelist.getArticles($articlelist.props);
+      $articlelist.recommend = true;
+      $articlelist.normal = false;
+      $articlelist.currentPage = 1;
+    };
+
     $articlelist.getArticles = function(props){
-      $q.when(ArticleListFactory.getArticles(props))
-          .then(function(response){
-                $articlelist.data = response.data.results;
-                $articlelist.numberOfPages = Math.ceil(response.data.size/$articlelist.perPage) || 1;
-          })
-          .catch(function (err) {
-              console.error(err.stack);
-          });
+      $q.when(ArticleListFactory.getArticles(props),
+      function(values){
+          $articlelist.data = values.data.results ;
+
+          // angular.forEach(values.data.results, function(article) {
+          //      $log.debug(article.recommend);
+          //      $articlelist.data.push(article);
+          // });
+
+
+          $articlelist.totalItems = values.data.size;
+          $articlelist.numberOfPages = Math.ceil(values.data.size/$articlelist.perPage) || 1;
+      },
+      function(err){
+        $log.debug(err);
+      },
+      function(progress){
+          $log.debug(progress);
+      });
     };
 
     $articlelist.getTrustedResource = function(resource)
     {
-      return $sce.trustAsResourceUrl(resource);
+    //exist url with protocol
+    if(resource.indexOf('://')>0)
+      return $sce.trustAsResourceUrl(resource.substr(resource.indexOf('://')+1));
     };
+
     //Modal
     $articlelist.openModal = function (article)
     {
         var $modalInstance = ArticleListFactory.getModal(article);
 
         $modalInstance.result.then(function (ops){
-            console.log(ops);
+            $log.debug("Options Modal:",JSON.stringify(ops));
         },
          function () {
-           console.log('Modal dismissed at: ' + new Date());
+           $log.debug('Modal dismissed at: ' + new Date());
         }
         );
 
     };
-
 
     $articlelist.test = function test() {
       return 'Test';
     };
   }
 
-  function ModalCtrl($scope,$sce,$timeout,$uibModalInstance,ArticleListFactory,article){
+  function ModalCtrl($scope,$log,$sce,$timeout,$uibModalInstance,ArticleListFactory,article){
     var $modal = $scope;
+
     $modal.article = article;
-    $modal.currentUrl = $sce.trustAsResourceUrl(article.url);
+    $modal.currentUrl = $sce.trustAsResourceUrl(article.url.substr(article.url.indexOf('://')+1));
     $modal.visit = 0;
 
     $uibModalInstance.opened.then(function(){
@@ -151,21 +208,21 @@
 
 
     $modal.close = function(){
-      // console.log($modal.diffTime());
       if($modal.diffTime() > 15)
       {
-        console.log($modal.diffTime());
+        $log.debug("Time:",$modal.diffTime());
         ArticleListFactory.setVisit(article,$modal.diffTime());
         $uibModalInstance.close({visit:true,article:article.id});
+        article.visits = article.visits + 1;
       }
       $uibModalInstance.dismiss('cancel');
     };
 
     $modal.hello = function(contentLocation) {
-      console.log(contentLocation);
+      $log.debug(contentLocation);
       // contentLocation === iframe.contentWindow.location
       // it's undefined when contentWindow cannot be found from the bound element
-      console.log("Hello world!");
+      $log.debug("Hello world!");
     };
 
   }

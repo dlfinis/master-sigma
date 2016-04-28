@@ -1,11 +1,10 @@
 (function () {
  'use strict';
-  function ArticleListFactory($http,$uibModal,$q,partial){
+  function ArticleListFactory($http,$log,$uibModal,$q,partial){
   return {
           getArticles: function(props)
           {
             var prms = {};
-
             if(props.kind === 'normal' || props.kind === 'recommend')
               prms.kind = props.kind;
 
@@ -46,57 +45,28 @@
           setVisit: function(article,time)
           {
             var prms = {};
-            this.getUser()
-                            .then(function (response){
-                              prms.article = article.id;
-                              prms.user = response.data.user.id;
-                              prms.time =  time;
-                              // console.log(prms);
-                               $http.post('/visit/create',prms).then(function(record)
-                               {
-                                 console.log(record);
-                               }
-                              ).catch(function (err) {
-                                   console.error(err.stack);
-                                 });
-                            });
-
-            // if(prms.user != 'undefined')
-            //   {
-            //     var visit = $http.post('/visit/create',prms);
-            //
-            //     $q.all([ user, visit]).then(function success(response) {
-            //       return response;
-            //     })
-            //     .catch(function (err) {
-            //       console.error(err.stack);
-            //     });
-            //   }else{
-            //     throw new Error("Not user");
-            //     // return Promise.reject('error');
-            //   }
-              // return this.getUser()
-              //                 .then(function (response){
-              //                   prms.article = article.id;
-              //                   prms.user = response.data.user.id;
-              //                   prms.time =  time;
-              //                 })
-              //                 .then($http.post('/visit/create',prms));
+            prms.articleID = article.id;
+            prms.visitTime = time;
+             $http.post('/visit/create',prms).then(function(record)
+             {
+               $log.debug(record.data);
+             }
+            ).catch(function (err) {
+               $log.error(err.stack);
+            });
           },
           getModal:function(article){
-            // console.log(url);
-            // console.log(alfa);
             return $uibModal.open(
             {
                 templateUrl: partial.main.article+'tpl/modal.cmp.html',
                 controller: 'ModalCtrl',
-                // size: 'lg',
+                size: 'lg',
                 resolve: {
                   article: function(){
                     return article;
                   }
                 },
-                backdrop: 'static'
+                // backdrop: 'static'
             });
           }
     };

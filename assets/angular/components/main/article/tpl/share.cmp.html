@@ -1,10 +1,6 @@
 <div class="stats" ng-show="stats > 0 " ng-bind="stats"></div>
 <button type="button"
         class="btn"
-        article-uid="$share.uid"
-        ng-model="$share.state"
-        uib-btn-checkbox
-        btn-checkbox-true="true"
-        btn-checkbox-false="false">
+        ng-class="{exist:stats > 0}">
   <i class="fa fa-share-square-o fa-2x"></i>
 </button>

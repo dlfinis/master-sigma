@@ -15,12 +15,15 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
-  'fonts/**/*.css',
+  'fonts/fontawesome/*.css',
+  'fonts/oxygen/*.css',
+  'fonts/opensans/*.css',
+  'fonts/ubuntu/*.css',
   'bower_components/angular/*.css',
   'bower_components/angular-bootstrap/*.css',
+  'bower_components/angular-loading-bar/build/loading-bar.css',
   'bower_components/bootstrap-css/**/bootstrap.css',
   'bower_components/bootstrap-css/**/bootstrap-theme.css',
-  'bower_components/angular-loading-bar/build/loading-bar.css',
   'bower_components/ui-select/**/select.css',
   'styles/**/*.css',
 ];

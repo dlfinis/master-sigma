@@ -45,9 +45,9 @@ module.exports.policies = {
   //   '*': true
   // },
   //
-  // 'article': {
-  //   '*': true
-  // },
+  'article': {
+    '*': true
+  },
   //
   // 'category': {
   //   '*': true

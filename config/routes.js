@@ -31,20 +31,21 @@ module.exports.routes = {
      * `assets` directory)                                                      *
      *                                                                          *
      ***************************************************************************/
+     /**
+      *   '/*': function (req, res, next) {
+           sails.log.info(req.method, req.url);
+           next();
+          },
+          '/': {
+            view: 'homepage'
+          },
+          '/getuser': {
+            controller: 'UserController',
+            action: 'getUser',
+                  skipAssets: true,
+          },
+      */
 
-    //'/*': function (req, res, next) {
-    //    sails.log.info(req.method, req.url);
-    //    next();
-    //},
-    // '/': {
-    //   view: 'homepage'
-    // }
-
-    '/getuser': {
-      controller: 'UserController',
-      action: 'getUser',
-            skipAssets: true,
-    },
     'POST /auth/facebook/canvas' : {
       controller: 'CanvasController',
       action: 'login',

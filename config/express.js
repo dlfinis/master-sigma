@@ -14,7 +14,7 @@ module.exports.http = {
 
     customMiddleware: function (app) {
 
-        sails.log('+ Init Express midleware');
+        sails.log.debug('+ Init Express Midleware');
 
             passport.use(new FacebookStrategy({
                 clientID: sails.config.application_auth.facebookClientID,
@@ -36,13 +36,13 @@ module.exports.http = {
 
 passport.serializeUser(function (user, done) {
 
-    // sails.log("serializeUser", user);
+    // sails.log.debug("serializeUser:", user);
     done(null, user.uid);
 });
 
 passport.deserializeUser(function (uid, done) {
 
-    // sails.log("deserializeUser", uid);
+    // sails.log.debug("deserializeUser:", uid);
     User.findOne({uid: uid}, function (err, user) {
         done(err, user);
     });
@@ -54,12 +54,13 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
     process.nextTick(function () {
 
 
-        sails.log("=> verifyHandler with ", token, tokenSecret);
+        sails.log.debug("=> verifyHandler with ", token, tokenSecret);
 
 
         User.findOne({uid: profile.id}, function (err, user) {
 
             if (user) {
+                sails.log.debug(user);
                 fbgraph.setAccessToken(token);
                 return done(null, user);
             } else {
@@ -85,7 +86,9 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
                     data.profileUrl = profile.profileUrl;
                 }
 
+
                 User.create(data, function (err, user) {
+                    sails.log.debug(user);
                     return done(err, user);
                 });
 

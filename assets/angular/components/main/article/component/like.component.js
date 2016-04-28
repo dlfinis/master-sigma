@@ -1,33 +1,95 @@
 (function () {
   'use strict';
 
-  function LikeCtrl($scope)
+  function LikeFactory($http,$httpParamSerializer){
+    return {
+            havelike: function(articleID)
+            {
+              return $http.get('/article/havelike',
+                     {
+                       params : {articleID:articleID}
+                     });
+            },
+            setlike: function(articleID,articleURL)
+            {
+              return $http.post('/article/setlike',
+                     {
+                      articleID:articleID ,
+                      articleURL:articleURL
+                     });
+            },
+            deletelike: function(articleSid)
+            {
+              return $http.delete('/article/deletelike',
+                     {
+                      params : { articleSid:articleSid }
+                     });
+            },
+          };
+  }
+
+  function LikeCtrl($scope,LikeFactory)
   {
     var $like = this;
-    $like.count = 0;
-    $like.state = false;
-    $like.model = 0;
-    $like.stats = 0;
-    $like.article_uid = "";
-      $like.setLike = function() {
-        $like.count++;
-        $like.state = !$like.state;
-      };
+
+    $like.setLike = function (articleID,articleURL){
+        return LikeFactory.setlike(articleID,articleURL);
+    };
+    $like.deleteLike = function (articleSid){
+        return LikeFactory.deletelike(articleSid);
+    };
   }
 
   angular.module('app.main.article.like',['app.config'])
+         .factory('LikeFactory',LikeFactory)
          .controller('LikeCtrl',LikeCtrl)
-         .directive('like', function(partial){
+         .directive('like', function( partial,$log,$q){
            return {
-               restrict: 'EA',
+               restrict: 'E',
                scope: {
-                 uid: "@",
-                 state: "=",
-                 stats:"="
+                 stats: "=",
+                 source: "=",
+                 articleSid:"="
                },
                controller: 'LikeCtrl',
                controllerAs: '$like',
-               templateUrl: partial.main.article+'tpl/like.cmp.html'
+               templateUrl: partial.main.article+'tpl/like.cmp.html',
+               link : function (scope, element, attrs, controller) {
+                 // Check if exist previous like
+                 if(scope.articleSid)
+                    scope.checkstate = true;
+                 scope.doLike = function(){
+                   if((!scope.checkstate))
+                   {
+                      controller.setLike(scope.source.id,scope.source.url)
+                                .then(function (response){
+                                  if(response.data)
+                                  {
+                                    scope.articleSid = response.data;
+                                    scope.checkstate = true;
+                                    scope.stats = scope.stats + 1;
+                                  }
+                                })
+                                .catch(function(err){
+                                  $log.error(err);
+                                });
+                   }
+                   else {
+                     scope.checkstate = false;
+                     controller.deleteLike(scope.articleSid)
+                               .then(function(response){
+                                 if(response.data)
+                                 {
+                                   scope.checkstate = false;
+                                   scope.stats = scope.stats - 1;
+                                 }
+                               })
+                               .catch(function(err){
+                                 $log.error(err);
+                               });
+                   }
+                };
+               }
            };
          });
 

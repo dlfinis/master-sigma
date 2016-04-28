@@ -50,3 +50,29 @@ server {
 ln -s /etc/nginx/sites-available/node.conf /etc/nginx/sites-enabled/node.conf       
 cp config/ssl/ /etc/nginx/ssl/
 mv server nginx
+
+
+Buffer request headers
+request({ method: 'GET', uri: URI ,gzip:true })
+  .on('error', function(err) {
+      return res.serverError(err);
+  })
+  .on('response', function(response) {
+      if(response && response.statusCode == 200)
+      {
+          response.destroy();
+          response.on('data',function (chunk) {
+                    console.log(chunk);
+                    return res.json({
+                        type:fileType(chunk).mime
+                    });
+          });
+      }
+    });
+
+Test perfomance
+var startTime = new Date().getTime();
+var delta = function(){
+  var mn = (new Date().getTime() - startTime )/1000;
+  console.log(mn);
+};

@@ -1,10 +1,9 @@
 <div class="stats" ng-show="stats > 0 " ng-bind="stats"></div>
 <button type="button"
         class="btn"
-        article-uid="delta"
-        ng-model="$like.state"
-        uib-btn-checkbox
-        btn-checkbox-true="true"
-        btn-checkbox-false="false">
+        article-sid="{{articleSid}}"
+        ng-model="checkstate"
+        ng-class="{on:checkstate,exist:stats > 0}"
+        ng-click="doLike()">
   <i class="fa fa-thumbs-o-up fa-2x"></i>
 </button>

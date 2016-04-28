@@ -1,16 +1,18 @@
 <!-- <pre> {{$articlelist.data | json}}</pre> -->
 <div class="container">
   <div class="col-sm-12">
-    <div class="sort-bar">
+    <div class="sort-bar" ng-show="$articlelist.data.length > 0">
         <div class="sort-item tab"
-          ng-init="props = {'kind':'normal'};$articlelist.getArticles(props);tab = 1"
-          ng-class='{"active":tab == 1}'
-          ng-click="props = {'kind':'normal'};$articlelist.getArticles(props);tab = 1">
+          ng-init="$articlelist.setNormalList()"
+          ng-class='{"active":$articlelist.normal}'
+          ng-click="$articlelist.setNormalList()"
+          >
           Reciente
         </div>
         <div class="sort-item tab"
-          ng-class='{"active":tab == 2}'
-          ng-click="props = {'kind':'recommend'};$articlelist.getArticles(props);tab = 2">
+          ng-class='{"active":$articlelist.recommend}'
+          ng-click="$articlelist.setRecommendList()"
+          >
           Recomendados
         </div>
         <div class="sort-item sort-section">
@@ -37,6 +39,7 @@
             |filter: $articlelist.textSearchContent
             |filter: $articlelist.mcategory.selected.name
             |limitTo: $articlelist.perPage"
+          ng-show="$articlelist.data.length"
           uid ="{{article.uid}}">
           <div>
             {{$articlelist.testHtml()}}
@@ -53,10 +56,10 @@
                   <div class="editor" ng-bind="article.creator.name"></div>
                   <div class="period" period data="{{ article.date }}"></div>
                   <span>&#8226;</span>
-                  <div class="reading" reading url="{{ article.url }}" ng-model="article.reading"></div>
+                  <div class="reading" reading url="{{ article.url }}"></div>
                   <span ng-show="article.state === 'edit'">&#8226;</span>
                   <div class="edition" ng-show="article.state === 'edit'">Editado</div>
-                  <div class="visits" ng-show="article.visits > 0">{{article.visits+1}} Visitas</div>
+                  <div class="visits" ng-show="article.visits > 0">{{article.visits}} Visitas</div>
                 </div>
                 <p class="text" id="description" ng-bind="article.description"></p>
 
@@ -68,28 +71,46 @@
 
              </div>
         <div class="social-bar" >
-          <div class="section-btn" uid-post="{{article.uid}}">
-            <like stats="article.likes"></like>
-            <share stats="article.shares" uid="article.uid"></share>
+          <div class="section-btn">
+            <like
+                  stats="article.likes"
+                  article="article"
+                  article-sid="article.ownlike.sid"
+                  ></like>
+            <share stats="article.shares" source="article"></share>
           </div>
           <div class="categories">
             <div class="category" ng-repeat="category in article.categories">
               <span>&#8226;</span>{{category.name}}
             </div>
           </div>
-
         </div>
     </div>
   </div>
 
-  <div class="col-sm-12 text-center">
-      <ul class="pager">
+  <div class="col-sm-12 text-center" ng-show="$articlelist.data.length > 0">
+      <!-- <ul class="pager">
           <li class="previous" ng-click="$articlelist.prevPage()" ng-disabled="$articlelist.existPage('prev')">
             <a> &larr; Previo</a>
           </li>
           <li class="next" ng-click="$articlelist.nextPage()"  ng-disabled="$articlelist.existPage('next')">
             <a> Nuevo &rarr;</a>
           </li>
-      </ul>
+      </ul> -->
+      <!-- items-per-page="articlelist.perPage" -->
+    <uib-pagination
+    boundary-links="true"
+    total-items="$articlelist.totalItems"
+    max-size="$articlelist.maxSizeItems"
+    num-pages="numPages"
+    ng-model="$articlelist.currentPage"
+    ng-change="$articlelist.pageChanged()"
+    class="pagination"
+    force-ellipses="true"
+    previous-text="&lsaquo;"
+    next-text="&rsaquo;"
+    first-text="&laquo;"
+    last-text="&raquo;">
+    </uib-pagination>
   </div>
 </div>
