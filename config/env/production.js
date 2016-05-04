@@ -17,16 +17,14 @@ module.exports = {
     },
 
     application_auth: {
-
         enableLocalAuth: true,
 
         // Get your keys from https://developers.facebook.com/apps/
-        // module.exports.local = {
-        enableFacebookAuth: true,
-        facebookClientID: "1267766483237355",
-        facebookClientSecret: "a2f5e3a27b74a64bc0d1ecc2d3a9ec31",
-        facebookCallbackURL: "https://mastersigma-jaggerfly.rhcloud.com/auth/facebook/callback",
-        facebookAppURL: "https://apps.facebook.com/master-sigma/",
+          enableFacebookAuth: true,
+          facebookClientID: "1267766483237355",
+          facebookClientSecret: "a2f5e3a27b74a64bc0d1ecc2d3a9ec31",
+          facebookCallbackURL: "https://sigma-jaggerfly.rhcloud.com/auth/facebook/callback",
+          facebookAppURL: "https://apps.facebook.com/master-sigma/",
     },
 
     /***************************************************************************
@@ -43,20 +41,20 @@ module.exports = {
     //      password: 'eed57ee2',
     //      database: 'heroku_1014650bcf2946e'
     //     },
-       sigmaDv: {
+       sigmaPrd: {
          adapter: 'sails-mysql',
          host: process.env.OPENSHIFT_MYSQL_DB_HOST ,
          port: process.env.OPENSHIFT_MYSQL_DB_PORT,
          // Openshift Deploy
-         user: 'adminDknJX7x',
-         password:'8-8d3FxqXlVy' ,
-         database: 'mastersigma'
+         user: 'adminUdw66Ql',
+         password:'G2-ibTwE7WCj' ,
+         database: 'sigma'
        },
      },
      models: {
        schema: true,
-       connection: 'sigmaDv',
-       migrate: 'alter'
+       connection: 'sigmaPrd',
+       migrate: 'safe'
      },
 
     //session: {
