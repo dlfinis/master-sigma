@@ -1,0 +1,9 @@
+#
+#  This file contains a list of globally installed and available npm modules.
+#
+
+#  DB drivers.
+sails-mysql
+
+#  Other modules (including frameworks, middleware etc).
+sails
