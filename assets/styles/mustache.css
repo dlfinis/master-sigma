@@ -12,6 +12,18 @@ body {
   font-family: "Oxygen","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
 h1,
 h2,
 h3,
