@@ -35,14 +35,20 @@
 
     <!-- <div class="col-sm-12 post animate-repeat"
           ng-animate="'animate'" -->
-    <div class="col-sm-12 post"
-            ng-repeat="article in $articlelist.data
+    <div control
+          alive="article.alive"
+          secure="article.secure"
+          source="article"
+          list="$articlelist.data"
+        class="col-sm-12 post"
+        ng-repeat="article in $articlelist.data
             |filter: $articlelist.textSearchContent
             |filter: $articlelist.mcategory.selected.name
             |limitTo: $articlelist.perPage
             track by article.id
             "
-            uid ="{{::article.uid}}">
+        uid ="{{::article.uid}}"
+    >
             <a class="image-box" ng-href="{{::article.url}}" target="_blank">
             <img class="image"
             ng-src="/images/spinner.gif"
