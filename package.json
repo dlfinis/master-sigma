@@ -53,7 +53,7 @@
   "scripts": {
     "start": "node app.js",
     "debug": "node debug app.js",
-    "postinstall": "HOME=$OPENSHIFT_REPO_DIR bower install || bower install || ./node_modules/bower/bin/bower install"
+    "postinstall": "HOME=$OPENSHIFT_REPO_DIR bower install"
   },
   "main": "app.js",
   "repository": {
