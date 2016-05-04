@@ -67,6 +67,7 @@
     "connect-livereload": "^0.5.4"
   },
   "engines": {
-    "node": ">= 4.4.1"
+    "node": ">=4.4.x",
+    "npm": ">=2.15.1",
   }
 }
