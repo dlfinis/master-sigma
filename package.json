@@ -15,7 +15,7 @@
     "fbgraph": "^1.1.0",
     "follow-redirects": "^0.1.0",
     "grunt": "^0.4.2",
-    "grunt-cli": "^1.2.0",
+    "grunt-cli": "^1.2.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-copy": "~0.5.0",
@@ -40,11 +40,10 @@
     "reading-time": "git+https://github.com/dlfinis/reading-time.git",
     "req-fast": "^0.2.14",
     "request": "^2.69.0",
-    "request-promise": "^3.0.0",
     "sails": "~0.11.x",
     "sails-disk": "~0.10.x",
     "sails-hook-autoreload": "^0.13.1",
-    "sails-mysql": "^0.11.4",
+    "sails-mysql": "^0.12.1",
     "step": "0.0.6",
     "summarize": "^1.5.0",
     "superagent": "^1.8.3",
@@ -67,7 +66,7 @@
     "connect-livereload": "^0.5.4"
   },
   "engines": {
-    "node": ">=4.4.x",
-    "npm": ">=2.15.1",
+    "node": ">=4.4.3",
+    "npm": ">=2.15.1"
   }
 }
