@@ -6,8 +6,8 @@
   "keywords": [],
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "bower": "*",
     "bluebird": "^3.3.4",
-    "bower": "^1.7.7",
     "cheerio": "^0.20.0",
     "connect-ensure-login": "^0.1.1",
     "ejs": "~0.8.4",
@@ -53,7 +53,7 @@
   "scripts": {
     "start": "node app.js",
     "debug": "node debug app.js",
-    "postinstall": "HOME=$OPENSHIFT_REPO_DIR bower install || ./node_modules/bower/bin/bower install"
+    "postinstall": "HOME=$OPENSHIFT_REPO_DIR bower install || bower install || ./node_modules/bower/bin/bower install"
   },
   "main": "app.js",
   "repository": {
