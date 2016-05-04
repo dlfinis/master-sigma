@@ -29,7 +29,8 @@
                restrict: 'EA',
                scope: {
                  url: "@",
-                 articleID:"@"
+                 articleID:"@",
+                 source:"="
                },
                controller: 'ReadingCtrl',
                controllerAs: '$reading',
@@ -40,8 +41,11 @@
                      {
                        scope.info = response.data.reading.duration;
                      }else {
-                       if(scope.articleID)
-                       controller.setArticleDead(scope.articleID);
+                       if(scope.source && scope.articleID)
+                       {
+                         controller.setArticleDead(scope.articleID);
+
+                       }
                      }
                  });
               }

@@ -216,6 +216,11 @@ footer p {
 }
 
 
+.fade-out {
+  transition: 3.0s linear all;
+  opacity: 0;
+}
+
 .fade-in-out {
   transition: 10.5s linear all;
   opacity: 1;
