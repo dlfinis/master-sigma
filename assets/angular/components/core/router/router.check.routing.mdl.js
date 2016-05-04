@@ -1,10 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('app.core.check', [])
-         .factory('CheckRoutingFactory',CheckRoutingFactory);
-
-         function CheckRoutingFactory ($q, $rootScope, $location,$http) {
+         function CheckRoutingFactory ($q, $log, $rootScope, $location,$http) {
            return {
              isAuthenticated: function()
              {
@@ -12,8 +9,8 @@
                      return true;
                  } else {
                      var deferred = $q.defer();
-                     $http.post('/getuser')
-                         .success(function (response) {
+                     $http.post('/user/current')
+                          .success(function (response) {
                              if(response.auth)
                                {
                                    $rootScope.userProfile = response.user;
@@ -24,7 +21,7 @@
                              deferred.resolve(true);
                          })
                          .error(function (err) {
-                             console.log(err);
+                             $log.error(err);
                              deferred.reject();
                              $location.path('/home');
                           });
@@ -33,5 +30,6 @@
              }
            };
          }
-
+         angular.module('app.core.router.check', [])
+                .factory('CheckRoutingFactory',CheckRoutingFactory);
 })();

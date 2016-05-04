@@ -22,21 +22,23 @@ module.exports = {
                               // .populate('likes')
                               // .populate('shares')
                               // .populate('visits');
-                            sails.log.debug("Object Keys\n",Object.keys(articleQuery._criteria));
 
-                            delete articleQuery._criteria['limit'];
-                            sails.log.debug("Object Keys\n",Object.keys(articleQuery._criteria));
-                            // sails.log.debug("Object Keys\n",Object.keys(articleQuery._criteria.limit));
-                            sails.log.debug("Limit to:",articleQuery._criteria.limit);
-         articleQuery.then(function (response){
-                          sails.log.debug("Total Elements:",response.length);
-                          return res.ok(response);
-                      })
-                      .catch(function(err){
-                        sails.log.warn(err);
-                        return res.serverError(err);
-                      });
+                        var articleList = [];
 
+                        articleQuery.then(function (response){
+                            Promise.map(response, function(article) {
+                                return article;
+                            })
+                            .then(function(allItems) {
+                                sails.log.debug("Total Elements:",allItems.length);
+                                return res.ok(allItems);
+                            });
+
+                          })
+                          .catch(function(err){
+                            sails.log.warn(err);
+                            return res.serverError(err);
+                        });
   },
   findAll:function(req,res){
     var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUtil');
@@ -44,10 +46,14 @@ module.exports = {
     var creator = req.param('creator');
     var category = req.param('category');
 
-    ArticleService.setTotalSize();
     ArticleService.setUser(req.user);
     ArticleService.setLimit(req.param('limit'));
+    ArticleService.setTotalSize();
 
+    console.log(kindList);
+    console.log(creator);
+    console.log(category);
+    
     var articleQuery = Article.find()
                               .limit( actionUtil.parseLimit(req) )
                               .skip( actionUtil.parseSkip(req) )
@@ -63,9 +69,6 @@ module.exports = {
     if(category)
       kindList = 'category';
 
-      sails.log(kindList);
-      sails.log(creator);
-      sails.log(category);
     switch (kindList) {
       case 'normal': {
             ArticleService.getArticleListNormal(articleQuery).then(function (response){
@@ -102,6 +105,40 @@ module.exports = {
     }
 
   },
+  isAlive : function (req,res) {
+    var articleID = req.param('articleID');
+    Article.findOne({id:articleID}).then(function foundRecord(article){
+        if(!article)
+          return res.notFound();
+
+        article.isAlive()
+                .then(function(alive){
+                  return res.ok(alive);
+                });
+
+    })
+    .catch(function(err){
+      return res.serverError(err);
+    });
+
+  },
+  isSecure : function (req,res) {
+    var articleID = req.param('articleID');
+    Article.findOne({id:articleID}).then(function foundRecord(article){
+        if(!article)
+          return res.notFound();
+
+        article.isSecure()
+                .then(function(secure){
+                  return res.ok(secure);
+                });
+
+    })
+    .catch(function(err){
+      return res.serverError(err);
+    });
+
+  },
   havelike : function(req,res){
     var articleID = req.param('articleID');
     var userID = req.user.id;
@@ -120,24 +157,24 @@ module.exports = {
   setshare : function(req,res){
     var shareSID = req.param('shareSID');
     var articleID = req.param('articleID');
-    var userID = req.user.id || ArticleService._user.id;
+    var messageShare = req.param('messageShare');
+    var userID = ArticleService._user.id || req.user.id ;
 
-    sails.log(userID);
-    sails.log(shareSID);
+    if(shareSID && articleID)
               Share.create({
                             sid : shareSID,
                             article : articleID,
-                            user : userID
+                            user : userID,
+                            message : messageShare
                           }).exec(function createRecord(err, created){
                               if(err)
                               {
                                 sails.log.warn(err);
                                 return res.ok(false);
                               }
-                              sails.log.debug('Set share :'+created.completeSID);
+                              sails.log.debug('Set share :'+JSON.stringify(created));
                               return res.ok(true);
                           });
-
 
   },
   setlike : function(req,res){
@@ -348,7 +385,10 @@ module.exports = {
     var URI = encodeURI(req.param('uri'));
       ArticleService.getReadingTime(URI)
         .then(function(response){
+          if(response)
           return res.json({reading:response});
+          else
+          return res.notFound();
         })
         .catch(function(err){
            if(err.errno !== 'ENOTFOUND') sails.log(err);

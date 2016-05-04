@@ -3,7 +3,8 @@
       .constant(
         'INIT',{
               'debug' : true,
-              'elementlimit' : 5
+              'elementlimit' : 5,
+              'development' : 'master.sigma'
         }
       )
       .constant(
@@ -26,13 +27,8 @@
              'core' : {
                        'origin' : 'angular/components/core/',
                        'test' : 'angular/components/core/test/',
+                       'testpage' : 'angular/components/core/testpage/',
              }
          }
        );
-      //  )
-      //  .constant(
-      //         'query',{
-      //             'limit' : 1
-      //           }
-      //   );
 })();

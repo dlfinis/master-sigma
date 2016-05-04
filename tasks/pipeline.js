@@ -15,10 +15,11 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
-  'fonts/fontawesome/*.css',
-  'fonts/oxygen/*.css',
-  'fonts/opensans/*.css',
-  'fonts/ubuntu/*.css',
+  // 'fonts/fontawesome/*.css',
+  // 'fonts/ubuntu/*.css',
+  // 'fonts/oxygen/*.css',
+  // 'fonts/opensans/*.css',
+  // 'fonts/base.css',
   'bower_components/angular/*.css',
   'bower_components/angular-bootstrap/*.css',
   'bower_components/angular-loading-bar/build/loading-bar.css',
@@ -36,24 +37,27 @@ var jsFilesToInject = [
   // Load sails.io before everything else
   // 'js/dependencies/sails.io.js',
 
-  // Load Angular
-  'bower_components/angular/angular.js',
+  // Load Angular App
+  'bower_components/fontfaceobserver/fontfaceobserver.js',
   'bower_components/moment/min/moment-with-locales.js',
+  'bower_components/angular/angular.js',
+  'bower_components/webfontloader/webfontloader.js',
   'bower_components/angular-i18n/angular-locale_es-ec.js',
-  'bower_components/angular-sanitize/angular-sanitize.js',
-  'bower_components/angular-route/angular-route.js',
+  'bower_components/angular-lazy-img/release/angular-lazy-img.js',
   'bower_components/angular-loading-bar/build/loading-bar.js',
   'bower_components/angular-animate/angular-animate.js',
-  'bower_components/ng-onload/release/ng-onload.min.js',
-  'bower_components/angular-lazy-img/release/angular-lazy-img.js',
-  'bower_components/ui-select/dist/select.js',
   'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+  'bower_components/ui-select/dist/select.js',
+  'bower_components/ng-onload/release/ng-onload.min.js',
+  'bower_components/ng-facebook/ngFacebook.js',
+  'bower_components/angular-sanitize/angular-sanitize.js',
+  'bower_components/angular-route/angular-route.js',
 
 
   //Load Angular app
   'angular/app.config.js',
-  'angular/components/main/**/*.js',
   'angular/components/core/**/*.js',
+  'angular/components/main/**/*.js',
   'angular/components/*.js',
   'angular/app.js',
 

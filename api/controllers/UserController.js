@@ -6,14 +6,10 @@
  */
 
 module.exports = {
-	//  getUser:function(req,res){
-	// 	 sails.log(req.user);
-  //     var user = {
-  //                 user : req.user ,
-  //                 auth : req.isAuthenticated()
-  //                };
-  //     return res.send(user);
-  //  },
+   current: function(req, res) {
+      if ( !req.isAuthenticated() ) return res.forbidden();
+      return res.json({user: req.user});
+   },
    isAuthenticated: function(req,res){
      return res.send(req.isAuthenticated());
    },

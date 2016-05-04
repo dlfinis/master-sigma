@@ -5,7 +5,9 @@
          .directive('articlelist', function(partial){
            return {
                restrict: 'EA',
-               scope: {},
+               scope: {
+                 source:"="
+               },
                controller: 'ArticleListCtrl',
                controllerAs: '$articlelist',
                templateUrl: partial.main.article+'articlelist.html',

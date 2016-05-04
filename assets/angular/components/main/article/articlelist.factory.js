@@ -2,6 +2,28 @@
  'use strict';
   function ArticleListFactory($http,$log,$uibModal,$q,partial){
   return {
+          isAlive: function(articleID)
+          {
+            var prms = {
+              articleID : articleID
+            };
+
+            return $http.get('/article/isAlive',{ params : prms  }).then(function (response){
+                $log.debug(response.data);
+                return response.data;
+            })
+            .catch(function (err) {
+                $log.error(err.stack);
+            });
+          },
+          isSecure: function(articleID)
+          {
+            var prms = {
+              articleID : articleID
+            };
+
+            return $http.get('/article/isSecure',{ params : prms  });
+          },
           getArticles: function(props)
           {
             var prms = {};
@@ -14,7 +36,15 @@
             if(props.skip != 'undefined')
               prms.skip = props.skip;
 
-            return $http.get('/article/findAll', { params : prms });
+            if(props.creator != 'undefined')
+              prms.creator = props.creator;
+
+            if(props.category != 'undefined')
+              prms.category = props.category;
+
+              return $http.get('/article/findAll', { params : prms });
+
+
 
           },
           getInfo: function(articleID)
@@ -30,17 +60,9 @@
                 console.error(err.stack);
             });
           },
-          getReading: function(url)
-          {
-            return $http.get('/article/reading?uri='+url);
-          },
           getHtmlData: function(url)
           {
             return $http.get('/article/htmldata?uri='+url);
-          },
-          getUser: function()
-          {
-            return $http.get('/getuser');
           },
           setVisit: function(article,time)
           {
@@ -50,6 +72,20 @@
              $http.post('/visit/create',prms).then(function(record)
              {
                $log.debug(record.data);
+             }
+            ).catch(function (err) {
+               $log.error(err.stack);
+            });
+          },
+          setDead: function(articleID)
+          {
+            var prms = {
+              state : 'disable',
+            };
+             $http.put('/article/update'+articleID,prms).then(function(record)
+             {
+               $log.debug('Set DEAD >'+articleID+' >> '+record.data);
+
              }
             ).catch(function (err) {
                $log.error(err.stack);

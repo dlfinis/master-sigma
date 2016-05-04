@@ -17,14 +17,22 @@ var _limit;
 module.exports = {
 
   setUser: function (user) {
-    _user = user;
+    ArticleService._user = user;
   },
   setLimit: function (limit) {
-    _limit = limit || sails.config.blueprints.defaultLimit || 10;
+    ArticleService._limit = limit || sails.config.blueprints.defaultLimit || 10;
   },
   setTotalSize: function () {
-    ArticleService.getTotalSize(function countRecord(total) {
-        _size = total;
+    ArticleService.getTotalSize().then(function countRecord(size) {
+        ArticleService._size = size;
+    });
+  },
+  getTotalSize : function (){
+      return new Promise(function (resolve){
+        Article.count().exec(function countCB(err, found){
+          if(err) return next(err);
+          resolve(found);
+      });
     });
   },
   getDate:function(date,format){
@@ -251,19 +259,12 @@ module.exports = {
   getRecom : function (like,share,visit){
     return (like*0.2) +(share*0.6)+(visit*0.3);
   },
-  getTotalSize : function (){
-      return new Promise(function (resolve){
-        Article.count().exec(function countCB(err, found){
-          if(err) return next(err);
-          resolve(found);
-      });
-    });
-  },
   getReadingTime : function (url) {
       var readingTime = require('reading-time');
       var reqfast = require('req-fast');
       var URI = url;
-      return new Promise(function(resolve,reject){
+
+      return new Promise(function(resolve){
         request(
         {
           uri: URI,
@@ -271,33 +272,28 @@ module.exports = {
         },
         function (err, response, html) {
           if(err){
-              reject(err);
+              sails.log.warn(err);
           }
+          var stats = {};
           var statusCode = response && response.statusCode;
+
           if(statusCode === 200)
           {
-            var stats = {};
             ArticleService.getReadArtHtml(html).then(function(content){
                 if(content)
                      stats = readingTime(
-                        content,
-                        {
-                          label:' min de lectura',
-                          wpm:300
-                        }
-                      );
-                    else
-                      stats = {
-                              'duration': '5 min de lectura',
-                              'minutes': 5,
-                              'time': 500000,
-                              'words': 100
-                            };
-                  resolve(stats);
-              })
-              .catch(function(err){
-                  reject(err);
+                              content,
+                              {
+                                label:' min de lectura',
+                                wpm:300
+                              }
+                     );
+
+                resolve(stats);
               });
+           }
+           else {
+             resolve(false);
            }
           });
         });
@@ -355,27 +351,30 @@ module.exports = {
   },
   getArticleStructure : function (article){
     return {
-        id: article.id,
-        uid: article.uid,
-        title: article.title,
-        url: article.url,
-        state: article.state,
-        date: article.state === "edit" ?
-              article.updatedAt : article.createdAt,
-        description: article.description,
-        image: article.image,
-        ownlike: ArticleService.getOwnLike(article.likes),
-        likes : article.likes.length,
-        shares : article.shares.length,
-        visits : article.visits.length,
-        recommend : ArticleService.getRecom(
-                      article.likes.length,
-                      article.shares.length,
-                      article.visits.length
-                    ),
-        creator: ArticleService.getCreator(article),
-        categories: ArticleService.getCategories(article)
-      };
+                  id: article.id,
+                  uid: article.uid,
+                  title: article.title,
+                  url: article.url,
+                  state: article.state,
+                  date: article.state === "edit" ?
+                        article.updatedAt : article.createdAt,
+                  description: article.description,
+                  image: article.image,
+                  ownlike: ArticleService.getOwnLike(article.likes),
+                  likes : article.likes.length,
+                  shares : article.shares.length,
+                  visits : article.visits.length,
+                  recommend : ArticleService.getRecom(
+                                article.likes.length,
+                                article.shares.length,
+                                article.visits.length
+                              ),
+                  creator: ArticleService.getCreator(article),
+                  categories: ArticleService.getCategories(article)
+              };
+  },
+  getArticleListRawData : function (articleQuery){
+
   },
   getArticleListNormal : function (articleQuery){
     return new Promise(function(resolve){
@@ -385,6 +384,7 @@ module.exports = {
       articleQuery.then(function (articles){
 
                     articles.forEach(function (article){
+                            if(article.state !== 'disable')
                             articlesList.push(ArticleService.getArticleStructure(article));
                     });
 
@@ -421,8 +421,9 @@ module.exports = {
             //      articlesList.push(ArticleService.getArticleStructure(article));
             // });
             articles.some(function (article,index){
-                    articlesList.push(ArticleService.getArticleStructure(article));
-                    return index >= (ArticleService._limit - 1);
+                    if(article.state !== 'disable')
+                      articlesList.push(ArticleService.getArticleStructure(article));
+                    return articlesList.length >= (ArticleService._limit - 1);
             });
             // articlesList.sort(function(a, b) {
             //     return b.date - a.date;
@@ -451,28 +452,30 @@ module.exports = {
 
 
       User.findOne({name:creator}).then( function(creatorRecord){
-        sails.log(creatorRecord);
+        sails.log.debug('+ Creator >'+JSON.stringify(creatorRecord));
         articleQuery.where({'creator':creatorRecord.id});
-        articleQuery.then(function (articles){
+        articleQuery
+        .then(function (articles){
+            articles.some(function (article,index){
+                    if(article.state !== 'disable')
+                      articlesList.push(ArticleService.getArticleStructure(article));
+                    return articlesList.length >= (ArticleService._limit - 1);
+            });
 
-                        articles.some(function (article,index){
-                                articlesList.push(ArticleService.getArticleStructure(article));
-                                return index >= (ArticleService._limit - 1);
-                        });
+            articlesList.sort(function(a, b) {
+                return b.date - a.date;
+            });
 
-                        articlesList.sort(function(a, b) {
-                            return b.date - a.date;
-                        });
-
-                          resolve (
-                            {
-                              size:articles.length,
-                              total:articlesList.length,
-                              results:articlesList
-                            });
-                      }).catch(function(err){
+            resolve (
+              {
+                size:articles.length,
+                total:articlesList.length,
+                results:articlesList
+              });
+          })
+          .catch(function(err){
                         sails.log.error(err);
-                      });
+          });
       });
 
       });
@@ -488,14 +491,17 @@ module.exports = {
                     articles.some(function (article,index){
                           if(article.categories)
                           {
-                             var exist = _.find(article.categories, function(element) {
-                                   return element.name == category;
-                             });
+                            if(article.state !== 'disable')
+                            {
+                               var exist = _.find(article.categories, function(element) {
+                                     return element.name == category;
+                               });
 
-                             if(exist)
-                               articlesList.push(ArticleService.getArticleStructure(article));
+                               if(exist)
+                                 articlesList.push(ArticleService.getArticleStructure(article));
+                             }
                            }
-                            return index >= (ArticleService._limit - 1);
+                            return articlesList.length >= (ArticleService._limit - 1);
                     });
 
                     // _.each(articles, function (article){

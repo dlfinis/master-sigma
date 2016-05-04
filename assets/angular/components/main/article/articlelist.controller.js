@@ -39,19 +39,45 @@
       });
     };
 
+    $articlelist.getArticles = function(props){
+      ArticleListFactory.getArticles(props).then(function(response){
+        // $articlelist.data = response.data.results ;
+
+            var articleList = [];
+            angular.forEach( response.data.results, function(article) {
+                //  $log.debug("Recommend > "+article.recommend);
+                //  $log.debug("State > "+article.state);
+                    articleList.push(article);
+            });
+
+
+            $articlelist.data = articleList;
+            $articlelist.totalItems = response.data.size;
+            $articlelist.numberOfPages = Math.ceil(response.data.size/$articlelist.perPage) || 1;
+      });
+    };
+
+
+    // $articlelist.$watchCollection('data', function (newValue,oldValue) {
+    //   $log.debug(newValue);
+    //   $log.debug(oldValue);
+    // });
+
     /**
      * Pagination
      */
 
      $articlelist.startItem = 0;
      $articlelist.currentPage = 1;
-     $articlelist.perPage = 5;
+     $articlelist.perPage = 10; //Elements by Page
      $articlelist.numberOfPages = 1;
 
       $articlelist.totalItems = 0;
-      $articlelist.maxSizeItems = 5;
-      // $articlelist.currentPage = 4;
+      $articlelist.maxSizeItems = 10; // Numbers of Pages
 
+      $articlelist.startfrom = function(){
+        return ($articlelist.perPage * $articlelist.currentPage)-($articlelist.perPage);
+      };
 
       $articlelist.pageChanged = function() {
         $log.log('Page changed to: ' + $articlelist.currentPage );
@@ -60,58 +86,30 @@
         $articlelist.getNextArticleData($articlelist.startfrom() );
       };
 
-    $articlelist.startfrom = function(){
-          return ($articlelist.perPage * $articlelist.currentPage)-($articlelist.perPage);
-    };
 
     $articlelist.getNextArticleData = function(startValue){
-        $log.log({
+        $log.debug({
           'skip' : startValue,
-          'kind' : $articlelist.props.kind
+          'kind' : $articlelist.props.kind,
+          'limit':$articlelist.perPage
         });
       $q.when(ArticleListFactory.getArticles(
             {
               'skip' : startValue,
-              'kind' : $articlelist.props.kind
+              'kind' : $articlelist.props.kind,
+              'limit':$articlelist.perPage
             }))
           .then(function(response){
               $log.debug(response.data.results);
-              $articlelist.data = response.data.results;
+              var articleList = [];
+              angular.forEach( response.data.results, function(article) {
+                        articleList.push(article);
+              });
+              $articlelist.data = articleList;
           })
           .catch(function (err) {
               $log.error(err.stack);
           });
-    };
-
-    $articlelist.existPage = function (kindAction){
-      if( kindAction === 'prev')
-        return $articlelist.currentPage > 0 ? false :true;
-      if( kindAction === 'next')
-        return $articlelist.currentPage <
-               $articlelist.numberOfPages ? false : true;
-    };
-
-    $articlelist.nextPage = function () {
-      if($articlelist.currentPage < $articlelist.numberOfPages)
-        {
-          $articlelist.startItem +=
-                                      $articlelist.currentPage <=
-                                      $articlelist.numberOfPages ? $articlelist.perPage : 0;
-          $articlelist.getNextArticleData($articlelist.startItem);
-          $articlelist.currentPage +=
-                                      $articlelist.currentPage <
-                                      $articlelist.numberOfPages ? 1 : 0;
-        }
-    };
-
-    $articlelist.prevPage = function(){
-        if($articlelist.currentPage > 0)
-        {
-            $articlelist.startItem -=
-                                      $articlelist.currentPage > 0 ? $articlelist.perPage : 0;
-            $articlelist.getNextArticleData($articlelist.startItem);
-            $articlelist.currentPage -= $articlelist.currentPage > 0 ? 1 : 0;
-        }
     };
 
     $articlelist.setNormalList = function()
@@ -138,25 +136,41 @@
       $articlelist.currentPage = 1;
     };
 
-    $articlelist.getArticles = function(props){
-      $q.when(ArticleListFactory.getArticles(props),
-      function(values){
-          $articlelist.data = values.data.results ;
+    $articlelist.setCreatorList = function(creator)
+    {
+      $articlelist.props = {
+        'kind': 'normal',
+        'limit': $articlelist.perPage,
+        'creator': creator.name
+      };
+      $articlelist.getArticles($articlelist.props);
+      $articlelist.recommend = false;
+      $articlelist.normal = true;
+      $articlelist.currentPage = 1;
+    };
 
-          // angular.forEach(values.data.results, function(article) {
-          //      $log.debug(article.recommend);
-          //      $articlelist.data.push(article);
-          // });
+    $articlelist.setCategoryList = function(category)
+    {
+      $articlelist.props = {
+        'kind': 'normal',
+        'limit': $articlelist.perPage,
+        'category': category.name
+      };
+      $articlelist.getArticles($articlelist.props);
+      $articlelist.recommend = false;
+      $articlelist.normal = true;
+      $articlelist.currentPage = 1;
+    };
 
-
-          $articlelist.totalItems = values.data.size;
-          $articlelist.numberOfPages = Math.ceil(values.data.size/$articlelist.perPage) || 1;
-      },
-      function(err){
-        $log.debug(err);
-      },
-      function(progress){
-          $log.debug(progress);
+    $articlelist.isSecure = function(articleID)
+    {
+    return  ArticleListFactory.isSecure(articleID)
+      .then(function(data){
+        console.log(data);
+        return true;
+      })
+      .catch(function(err){
+        return false;
       });
     };
 
@@ -170,6 +184,7 @@
     //Modal
     $articlelist.openModal = function (article)
     {
+
         var $modalInstance = ArticleListFactory.getModal(article);
 
         $modalInstance.result.then(function (ops){
@@ -228,6 +243,6 @@
   }
 
   angular.module('app.main.article')
-         .controller('ArticleListCtrl',ArticleListCtrl)
-         .controller('ModalCtrl',ModalCtrl);
+         .controller('ArticleListCtrl',ArticleListCtrl);
+        //  .controller('ModalCtrl',ModalCtrl);
 })();

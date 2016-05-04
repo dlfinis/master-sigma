@@ -1,9 +1,9 @@
 <!-- <pre> {{$articlelist.data | json}}</pre> -->
 <div class="container">
   <div class="col-sm-12">
-    <div class="sort-bar" ng-show="$articlelist.data.length > 0">
+    <div ng-init="$articlelist.setNormalList()" class="sort-bar" ng-if="$articlelist.data && $articlelist.mcategories">
+    <!-- <div class="sort-bar"> -->
         <div class="sort-item tab"
-          ng-init="$articlelist.setNormalList()"
           ng-class='{"active":$articlelist.normal}'
           ng-click="$articlelist.setNormalList()"
           >
@@ -33,71 +33,57 @@
       </div>
     </div>
 
-    <div class="col-sm-12 post animate-repeat"
-          ng-animate="'animate'"
-          ng-repeat="article in $articlelist.data
+    <!-- <div class="col-sm-12 post animate-repeat"
+          ng-animate="'animate'" -->
+    <div class="col-sm-12 post"
+            ng-repeat="article in $articlelist.data
             |filter: $articlelist.textSearchContent
             |filter: $articlelist.mcategory.selected.name
-            |limitTo: $articlelist.perPage"
-          ng-show="$articlelist.data.length"
-          uid ="{{article.uid}}">
-          <div>
-            {{$articlelist.testHtml()}}
-          </div>
-            <a class="image-box" ng-href="{{article.url}}" target="_blank">
+            |limitTo: $articlelist.perPage
+            track by article.id
+            "
+            uid ="{{::article.uid}}">
+            <a class="image-box" ng-href="{{::article.url}}" target="_blank">
             <img class="image"
             src="/images/spinner.gif"
-            lazy-img="{{ $articlelist.getTrustedResource(article.image) || 'images/submarine.png' }}"
+            lazy-img="{{::article.image}}"
             alt=""/>
             </a>
             <div id="title" class="title"><h3 ng-bind="article.title"></h3></div>
             <div class="box">
                 <div class="info">
-                  <div class="editor" ng-bind="article.creator.name"></div>
-                  <div class="period" period data="{{ article.date }}"></div>
+                  <div class="creator"
+                       ng-bind="article.creator.name"
+                       ng-click="$articlelist.setCreatorList(article.creator)"></div>
+                  <div class="period" period data="{{::article.date }}"></div>
                   <span>&#8226;</span>
-                  <div class="reading" reading url="{{ article.url }}"></div>
-                  <span ng-show="article.state === 'edit'">&#8226;</span>
-                  <div class="edition" ng-show="article.state === 'edit'">Editado</div>
-                  <div class="visits" ng-show="article.visits > 0">{{article.visits}} Visitas</div>
+                  <div class="reading" reading url="{{::article.url }}" article-id="article.id"></div>
+                  <span ng-if="article.state === 'edit'">&#8226;</span>
+                  <div class="edition" ng-if="article.state === 'edit'">Editado</div>
+                  <div class="visits" ng-if="article.visits > 0">{{article.visits}} Visitas</div>
                 </div>
                 <p class="text" id="description" ng-bind="article.description"></p>
-
-                <a id="url"
-                ng-click="$articlelist.openModal(article)"
-                class="read-more">
-                  Leer más... {{article.reading}}
-                </a>
-
+                <div openlater source="article"></div>
              </div>
         <div class="social-bar" >
           <div class="section-btn">
             <like
-                  stats="article.likes"
-                  article="article"
-                  article-sid="article.ownlike.sid"
-                  ></like>
+              stats="article.likes"
+              source="article"
+              article-sid="article.ownlike.sid"
+            ></like>
             <share stats="article.shares" source="article"></share>
           </div>
           <div class="categories">
-            <div class="category" ng-repeat="category in article.categories">
-              <span>&#8226;</span>{{category.name}}
+            <div class="category" ng-click="$articlelist.setCategoryList(category)" ng-repeat="category in article.categories">
+                <span>&#8226;</span>{{::category.name}}
             </div>
           </div>
         </div>
     </div>
   </div>
 
-  <div class="col-sm-12 text-center" ng-show="$articlelist.data.length > 0">
-      <!-- <ul class="pager">
-          <li class="previous" ng-click="$articlelist.prevPage()" ng-disabled="$articlelist.existPage('prev')">
-            <a> &larr; Previo</a>
-          </li>
-          <li class="next" ng-click="$articlelist.nextPage()"  ng-disabled="$articlelist.existPage('next')">
-            <a> Nuevo &rarr;</a>
-          </li>
-      </ul> -->
-      <!-- items-per-page="articlelist.perPage" -->
+  <div class="col-sm-12 text-center" ng-if="$articlelist.data">
     <uib-pagination
     boundary-links="true"
     total-items="$articlelist.totalItems"

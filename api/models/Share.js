@@ -5,6 +5,21 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 var graph = require('fbgraph');
+function completeSID(userID,shareSID){
+
+  var userSID,completeSID;
+  return User.findOne({id:userID}).then(function(user){
+    if(user)
+    {
+    userSID = user.uid;
+    completeSID = userSID+"_"+shareSID;
+
+    return completeSID;
+  }else {
+    return false;
+  }
+  });
+}
 module.exports = {
   autoUpdatedAt: false,
   attributes: {
@@ -27,30 +42,22 @@ module.exports = {
       model: 'user',
       required: true
     },
-    completeSID : function(){
-      var userID = this.user;
-      var shareSID = this.sid;
-
-      var userSID,completeSID;
-
-      User.findOne({id:userID}).then(function(user){
-        userSID = user.uid;
-        completeSID = userSID+"_"+shareSID;
-
-        return completeSID;
-      });
-    }
   },
-  afterCreate : function(record,next){
-    sails.log.debug("+ Share > "+JSON.stringify(record));
-    // if(record.sid)
-    // graph.get(record.completeSID+'?fields=message,likes,shares',
-    //       function(err, response) {
-    //         if(err) next(err);
-    //         record.message = response.message;
-    //         next();
-    //       }
-    //     );
-
-  }
+  // afterCreate : function(record,next){
+  //   completeSID(record.user,record.sid).then(function(_sid){
+  //     if(record.sid && _sid )
+  //     {
+  //       graph.get(_sid+'?fields=message,likes,shares',
+  //       function(err, response) {
+  //         if(err) next(err);
+  //         record.message = response.message;
+  //         Share.update(record.id,{message:response.message}, function(err, updated){
+  //             if(err) next(err);
+  //             next();
+  //         });
+  //       }
+  //     );
+  //   }
+  //   });
+  // }
 };

@@ -6,27 +6,51 @@
   .controller('TestPageCtrl',TestPageCtrl)
   .directive('testpage',function (partial) {
     return {
-      scope: {},
-      controller: 'TestPageCtrl',
-      controllerAs: 'sc',
+      restricti:'EA',
+      scope: {
+        data : '=',
+        datad : "@",
+        dg : "=",
+      },
+      controller: function($scope) {
+           // I want `data` to be injected from the resolve...
+           // as it would if this was a "standalone" controller
+           console.log('$scope.data: '+ $scope.data);
+         },
       template:
-                '<h4>TEST PAGE</h4>'+
-                '<pre>{{sc.ok}}</pre>'
+                '<h2>TEST PAGE</h2>'+
+                '<pre>{{ok}}</pre>'+
+                '</br>'+
+                '<h4>{{datat}</h4>'+
+                '<h4>{{sc}</h4>'
      };
   });
 
-  function TestPageFactory ($q, $rootScope, $location,$http) {
+
+  function TestPageFactory ($q, $timeout,$rootScope, $location,$http) {
     return {
       isOK: function()
       {
           return 'OK';
+      },
+      getSlowData: function () {
+        console.log(" + Get Data");
+        return $timeout(function(){
+          console.log("Slow Data");
+          return "Slow Data";
+        }, 5000);
       }
     };
   }
 
-  function TestPageCtrl(TestPageFactory,$sce){
-    var sc = this;
+  function TestPageCtrl(TestPageFactory,$scope,$sce, $element, $attrs){
+    var sc = $scope;
     sc.ok = TestPageFactory.isOK();
+    sc.datat = sc.data;
+    console.log(sc.datat);
+    console.log(sc.datad);
+    console.log(sc.dg);
+    console.log(sc);
     var tc = {};
   tc.rurl = $sce.trustAsResourceUrl("http://i.blogs.es/28348d/captura-de-pantalla-619-/650_1200.jpg");
   // tc.turl = $sce.getTrustedUrl("http://i.blogs.es/28348d/captura-de-pantalla-619-/650_1200.jpg");
@@ -40,5 +64,7 @@
     // console.log(tc);
     // console.log(tc.rurl.toString());
   }
+
+  // TestPageCtrl.$inject
 
 })();
