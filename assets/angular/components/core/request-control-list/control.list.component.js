@@ -6,8 +6,6 @@
              return {
                  restrict: 'A',
                  scope: {
-                   alive: "=",
-                   secure: "=",
                    source: "=",
                    list: "="
                  },

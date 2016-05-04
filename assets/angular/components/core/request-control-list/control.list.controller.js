@@ -1,11 +1,17 @@
-(function(app) {
+(function(module) {
     'use strict';
+
     function ControlListCtrl ($scope,$log,$q) {
       var $control = $scope;
+      
       $log.debug($control.source);
       $log.debug($control.list);
+
+      $control.source.alive = true;
+      $control.source.alive = false;
+
     }
 
-    app.controller('ControlListCtrl',ControlListCtrl);
+    module.controller('ControlListCtrl',ControlListCtrl);
 
-})('app.core.request.control.list');
+})(angular.module('app.core.request.control.list'));

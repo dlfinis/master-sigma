@@ -1,3 +1,11 @@
+## Get Size of Database Mysql
+SELECT table_schema `Data Base Name`,
+    sum( data_length + index_length ) / 1024 / 1024 `Data Base Size in MB`,
+    sum( data_free )/ 1024 / 1024 `Free Space in MB`
+FROM information_schema.TABLES
+GROUP BY table_schema ;
+
+
 http://localhost:1337/category?name=Programacion
 http://localhost:1337/category?name=Tecnología
 http://localhost:1337/category?name=Seguridad Informatica
