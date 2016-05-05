@@ -2,7 +2,7 @@
   "name": "master-sigma",
   "private": true,
   "version": "0.0.0",
-  "description": "A Angular & Sails application",
+  "description": "A Angular & Sails application that use Facebook Platafomr & SDK",
   "keywords": [],
   "dependencies": {
     "bluebird": "^3.3.4",
