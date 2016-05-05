@@ -12,9 +12,9 @@
 
 module.exports = {
 
-    grunt: {
-        _hookTimeout: 60000
-    },
+    // grunt: {
+    //     _hookTimeout: 60000
+    // },
 
     application_auth: {
         enableLocalAuth: true,
