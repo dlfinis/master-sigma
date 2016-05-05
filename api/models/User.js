@@ -5,7 +5,6 @@
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
 
-var bcrypt = require('bcrypt-nodejs');
 var uuid = require('node-uuid');
 module.exports = {
     schema: true,
