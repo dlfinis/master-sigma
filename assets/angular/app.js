@@ -38,14 +38,14 @@
       {
         template: '<articlelist source="_source"></articlelist>',
         resolve:{
-          source: function(ArticleListFactory){
-              // return TestPageFactory.getSlowData();
-              return true;
-
+          _source: function(ArticleListFactory,$timeout){
+            return $timeout(function () {
+              return ArticleListFactory._source_init();
+            }, 2000 );
           },
         },
-        controller: function($scope, source){
-          $scope._source = source;
+        controller: function($scope, _source){
+          $scope._source = _source;
         }
       }
       );
@@ -75,6 +75,14 @@
       FBLoader.setScript();
       //Load fonts asynchronously
       FontLoader.setFonts();
+
+      // App is loading, so set isAppLoading to true and start a timer
+      $rootScope.isAppLoading = true;
+      $rootScope.startTime = new Date();
+
+      // Start loading bar for app loading
+      cfpLoadingBar.start();
+
 //       $rootScope.config = {};
 //       $rootScope.config.app_url = $location.url();
 //       $rootScope.config.app_path = $location.path();

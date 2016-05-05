@@ -1,7 +1,35 @@
 (function () {
  'use strict';
-  function ArticleListFactory($http,$log,$uibModal,$q,partial){
+  function ArticleListFactory($http,$log,$uibModal,$q,partial,INIT){
   return {
+            _params: function () {
+            return {
+                    startItem : 0,
+                    currentPage : 1,
+                    perPage : INIT.elementlimit, //Elements by Page
+                    numberOfPages : 1,
+                    totalItems : 0,
+                    maxSizeItems : INIT.elementpage // Numbers of Pages
+                   };
+          },
+          _props_normal: function (props) {
+            return  {
+              'kind' : 'normal',
+              'limit' : this._params().perPage
+            };
+          },
+          _source_init: function () {
+            return $q.all([
+                    this.getArticles(this._props_normal()),
+                    $http.get('/category/find'),
+                  ]).then(function(response){
+                    return {
+                            articlelist : response[0].data,
+                            categories : response[1].data
+                    };
+                  });
+
+          },
           isAlive: function(articleID)
           {
             var prms = {

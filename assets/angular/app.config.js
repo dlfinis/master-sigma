@@ -3,14 +3,15 @@
       .constant(
         'INIT',{
               'debug' : true,
-              'elementlimit' : 5,
+              'elementlimit' : 10,
+              'elementpage' : 10,
               'development' : 'master.sigma'
         }
       )
       .constant(
         'KEYS',{
               'fbClientID' : 1267766483237355
-            }
+               }
       )
       .constant(
         'partial',{

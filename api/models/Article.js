@@ -144,21 +144,10 @@ module.exports = {
             });
         }
     },
-    afterUpdate : function(values, next){
-        Article.findOne(values.id).exec(function(err,record){
-          if(err) return next(err, false);
-          if(values.title != record.title ||
-             values.url != record.url ||
-             values.description != record.description ||
-             values.image != record.image
-          )
-          {
-            Article.update(values.id,{ state: 'edit' },function(err){
-              if(err) return next(err, false);
-            });
-          }
-        });
-        next();
+    beforeUpdate : function(values, next){
+           if(values.title || values.url || values.description || values.image || values.kind )
+            values.state = 'edit';
+           next();
     },
     toJSON : function(){
        var obj = this.Object();

@@ -15,10 +15,7 @@
     $articlelist.pagination = {};
     $articlelist.props = {};
 
-    $articlelist.isActive = false;
-    $articlelist.activeButton = function(index) {
-    $articlelist.isActive = !$articlelist.isActive;
-    };
+    $log.debug($articlelist.source);
 
     $articlelist.clear = function ($event, $select){
                              //stops click event bubbling
@@ -75,6 +72,16 @@
       $articlelist.totalItems = 0;
       $articlelist.maxSizeItems = 10; // Numbers of Pages
 
+      if($scope.source)
+      {
+        $articlelist.data = $scope.source.articlelist.results;
+        $articlelist.mcategories = $scope.source.categories.results;
+
+        $articlelist.totalItems = $scope.source.articlelist.size;
+        $articlelist.numberOfPages =
+            Math.ceil($articlelist.totalItems/ArticleListFactory._params().perPage) || 1;
+      }
+
       $articlelist.startfrom = function(){
         return ($articlelist.perPage * $articlelist.currentPage)-($articlelist.perPage);
       };
@@ -83,7 +90,7 @@
         $log.log('Page changed to: ' + $articlelist.currentPage );
         $log.log('Item: ' + $articlelist.startfrom()  );
 
-        $articlelist.getNextArticleData($articlelist.startfrom() );
+        $articlelist.getNextArticleData($articlelist.startfrom());
       };
 
 

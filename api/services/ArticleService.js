@@ -462,7 +462,7 @@ module.exports = {
     return new Promise(function(resolve){
       var articlesList = [];
       var totalSize = 0;
-      articleQuery.sort("createdAt DESC");
+      articleQuery.sort("updatedAt DESC");
       articleQuery.then(function (articles){
 
                     articles.forEach(function (article){
@@ -471,7 +471,7 @@ module.exports = {
                     });
 
                       articlesList.sort(function(a, b) {
-                          return b.date - a.date;
+                          return (b.date - a.date)+(b.id - a.id);
                       });
 
                         resolve (

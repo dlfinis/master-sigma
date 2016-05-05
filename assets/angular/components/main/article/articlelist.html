@@ -1,7 +1,7 @@
 <!-- <pre> {{$articlelist.data | json}}</pre> -->
 <div class="container">
   <div class="col-sm-12">
-    <div ng-init="$articlelist.setNormalList()" class="sort-bar" ng-if="$articlelist.data && $articlelist.mcategories">
+    <div class="sort-bar" ng-if="$articlelist.data && $articlelist.mcategories">
     <!-- <div class="sort-bar"> -->
         <div class="sort-item tab"
           ng-class='{"active":$articlelist.normal}'
@@ -33,9 +33,9 @@
       </div>
     </div>
 
-    <!-- <div class="col-sm-12 post animate-repeat"
-          ng-animate="'animate'" -->
-    <div class="col-sm-12 post"
+    <!-- <div class="col-sm-12 post" -->
+    <div class="col-sm-12 post animate-repeat"
+    ng-animate="'animate'"
          ng-repeat="article in $articlelist.data
             |filter: $articlelist.textSearchContent
             |filter: $articlelist.mcategory.selected.name
