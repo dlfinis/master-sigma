@@ -39,7 +39,7 @@
     "request": "^2.69.0",
     "sails": "~0.11.x",
     "sails-disk": "~0.10.x",
-    "sails-mysql": "~0.12.x",
+    "sails-mysql": "~0.12.x"
   },
   "scripts": {
     "start": "node app.js",
