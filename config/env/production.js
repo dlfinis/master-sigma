@@ -23,7 +23,7 @@ module.exports = {
           enableFacebookAuth: true,
           facebookClientID: "1267766483237355",
           facebookClientSecret: "a2f5e3a27b74a64bc0d1ecc2d3a9ec31",
-          facebookCallbackURL: "https://sigma-jaggerfly.rhcloud.com/auth/facebook/callback",
+          facebookCallbackURL: "https://mastersigma-jaggerfly.rhcloud.com/auth/facebook/callback",
           facebookAppURL: "https://apps.facebook.com/master-sigma/",
     },
 
@@ -46,9 +46,9 @@ module.exports = {
          host: process.env.OPENSHIFT_MYSQL_DB_HOST ,
          port: process.env.OPENSHIFT_MYSQL_DB_PORT,
          // Openshift Deploy
-         user: 'adminUdw66Ql',
-         password:'G2-ibTwE7WCj' ,
-         database: 'sigma'
+         user: 'admin2gbmiNI',
+         password:'lJPfcp7n6ViH' ,
+         database: 'mastersigma'
        },
      },
      models: {
