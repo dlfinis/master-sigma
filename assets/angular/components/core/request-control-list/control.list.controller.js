@@ -1,14 +1,9 @@
 (function(module) {
     'use strict';
 
-    function ControlListCtrl ($scope,$log,$q) {
+    function ControlListCtrl ($scope,$log,$q,ControlListFactory) {
       var $control = $scope;
-      
-      $log.debug($control.source);
-      $log.debug($control.list);
-
-      $control.source.alive = true;
-      $control.source.alive = false;
+      var $factory = ControlListFactory;
 
     }
 

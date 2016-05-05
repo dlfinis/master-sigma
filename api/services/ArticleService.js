@@ -13,6 +13,7 @@ var graph = require('fbgraph');
 var _user;
 var _size;
 var _limit;
+var _wpm = 250;
 
 module.exports = {
 
@@ -140,6 +141,74 @@ module.exports = {
       //   // returns the post id
       //   sails.log(res); // { id: xxxxx}
   },
+  getStats: function(URI){
+
+    return new Promise(function(resolve,reject){
+      var reqfast = require('req-fast');
+           URI = String(URI).indexOf('http') === 0 ? URI : 'http://'+URI;
+      var _URI = String(URI).replace('http://','https://');
+
+      var stats ={
+          alive : false,
+          secure : false,
+          reading : {}
+      };
+
+
+      reqfast(_URI, function(err, resp) // Https request
+      {
+
+        if(err || resp.statusCode >= 400)
+        {
+            sails.log.warn(err);
+            if(err.code !== 'ENOTFOUND' || err )
+            {
+               reqfast(URI, function(err, resp) // Http request
+               {
+                  if(err){
+                    sails.log.warn(err.reason || err);
+                    resolve(stats);
+                  }
+
+                  if(resp && resp.statusCode && !(resp.statusCode >= 200 && resp.statusCode <=208))
+                      resolve(stats); // Other Error Status Secure site
+
+                  if(resp && resp.statusCode && resp.statusCode >= 200 && resp.statusCode <=208)
+                    {
+                      stats.alive = true;
+                      ArticleService.getReadingTime(URI,resp.body)
+                        .then(function (reading) {
+                            stats.reading = reading;
+                            resolve(stats); // Alive site
+                        })
+                        .catch(function (err) {
+                          reject(err);
+                        });
+                    }
+              });
+
+            }else {
+              resolve(stats); // DEAD Site
+            }
+        }
+
+        if(resp && resp.statusCode && resp.statusCode >= 200 && resp.statusCode <=208)
+        {
+            stats.alive = true;
+            stats.secure = true;
+            ArticleService.getReadingTime(URI,resp.body)
+              .then(function (reading) {
+                  stats.reading = reading;
+                  resolve(stats); // Secure site
+              });
+        }
+
+      });
+
+
+    });
+
+  },
   getArticles: function(res){
 
       sails.log("+ ARTICLE.GETARTICLES");
@@ -259,44 +328,40 @@ module.exports = {
   getRecom : function (like,share,visit){
     return (like*0.2) +(share*0.6)+(visit*0.3);
   },
-  getReadingTime : function (url) {
-      var readingTime = require('reading-time');
-      var reqfast = require('req-fast');
-      var URI = url;
+  getReadingTime : function (_url,rawData) {
+    var readingTime = require('reading-time');
+    return new Promise(function(resolve,reject){
+    Article.findOne()
+           .where({ 'url': { contains : _url }})
+           .exec(function (err, article){
+              if (err)
+                reject(err);
 
-      return new Promise(function(resolve){
-        request(
-        {
-          uri: URI,
-          gzip: true,
-        },
-        function (err, response, html) {
-          if(err){
-              sails.log.warn(err);
-          }
-          var stats = {};
-          var statusCode = response && response.statusCode;
+              if(article.reading)
+                resolve(article.reading);
 
-          if(statusCode === 200)
-          {
-            ArticleService.getReadArtHtml(html).then(function(content){
-                if(content)
-                     stats = readingTime(
-                              content,
-                              {
-                                label:' min de lectura',
-                                wpm:300
-                              }
-                     );
+                ArticleService.getReadArtHtml(rawData)
+                .then(function(processedData){
+                    var reading = {};
 
-                resolve(stats);
-              });
-           }
-           else {
-             resolve(false);
-           }
-          });
-        });
+                    if(processedData)
+                    {
+                      reading = readingTime(
+                                        processedData,{ label:' min de lectura',wpm:_wpm }
+                                    );
+                    }
+
+                    if(article)
+                      Article.update({'url': _url},{'reading':reading})
+                      .then(function (updated) { });
+
+                    resolve(reading);
+                })
+                .catch(function (err) {
+                    reject(err);
+                });
+            });
+    });
   },
   getReadArtHtml : function (html) {
       var read = require('read-art');

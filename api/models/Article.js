@@ -38,6 +38,9 @@ module.exports = {
           required: false,
           urlish: true
         },
+        reading:{
+          type: 'JSON'
+        },
         // Add a reference to state
         state: {
           type: 'STRING',

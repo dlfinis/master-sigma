@@ -12,7 +12,7 @@ module.exports = {
   findRawAll: function(req,res){
     var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUtil');
     var articleQuery = Article.find()
-                              // .where( actionUtil.parseCriteria(req) )
+                              .where( actionUtil.parseCriteria(req) )
                               .limit( actionUtil.parseLimit(req) )
                               .skip( actionUtil.parseSkip(req) )
                               .sort( actionUtil.parseSort(req) )
@@ -53,7 +53,7 @@ module.exports = {
     console.log(kindList);
     console.log(creator);
     console.log(category);
-    
+
     var articleQuery = Article.find()
                               .limit( actionUtil.parseLimit(req) )
                               .skip( actionUtil.parseSkip(req) )
@@ -104,6 +104,16 @@ module.exports = {
         }
     }
 
+  },
+  stats: function (req,res) {
+    var URI = req.param('uri');
+    ArticleService.getStats(URI).then(function (response) {
+      return res.ok(response);
+    })
+    .catch(function (err) {
+        sails.log.error(err);
+        return res.negotiate(err);
+    });
   },
   isAlive : function (req,res) {
     var articleID = req.param('articleID');
