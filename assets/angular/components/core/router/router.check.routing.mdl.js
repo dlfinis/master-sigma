@@ -5,13 +5,15 @@
            return {
              isAuthenticated: function()
              {
+                $log.debug('+ Check User > '+JSON.stringify($rootScope.userProfile));
                  if ($rootScope.userProfile) {
                      return true;
                  } else {
                      var deferred = $q.defer();
                      $http.post('/user/current')
                           .success(function (response) {
-                             if(response.auth)
+                            $log.debug('+GET User > '+JSON.stringify($rootScope.userProfile));
+                             if(response.user)
                                {
                                    $rootScope.userProfile = response.user;
                                    $location.path('/wall');

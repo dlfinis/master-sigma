@@ -93,161 +93,6 @@ module.exports = {
         });
     });
   },
-  createArticles:function(){
-      // var options = {
-      //     timeout:  3000
-      //   , pool:     { maxSockets:  Infinity }
-      //   , headers:  { connection:  "keep-alive" }
-      // };
-
-/*      Article.find().exec(function (err,articles){
-          if(err){
-            sails.log(err);
-            return next(err);
-          }
-
-
-            _.each(articles, function (article) {
-
-               var articleObj={
-                  'og:url': article.url,
-                  'og:title': article.title,
-                  'og:type': 'article',
-                  'og:image': article.image ? article.image : '/images/grass.png' ,
-                  'og:description': article.description,
-                  'fb:app_id': sails.config.application_auth.facebookClientID
-                };
-                sails.log(JSON.stringify(articleObj));
-
-                 // graph.post("me/objects/article", {object:JSON.stringify(articleObj)}, function(err, res) {
-                 //    sails.log(res);
-                 // });
-                 graph.post("me/og.likes", {object:JSON.stringify(articleObj)}, function(err, res) {
-                    sails.log(res);
-                 });
-                    // returns the post id
-                    //sails.log(graph.post()); // { id: xxxxx}
-                    // sails.log(Object.keys(graph.post()); // { id: xxxxx}
-              });
-
-      });*/
-
-
-            // var wallPost = {
-      //   message: "I'm gonna come at you like a spider monkey, chip!"
-      // };
-
-      // graph.post("/feed", wallPost, function(err, res) {
-      //   // returns the post id
-      //   sails.log(res); // { id: xxxxx}
-  },
-  getStats: function(URI){
-
-    return new Promise(function(resolve,reject){
-      var reqfast = require('req-fast');
-      var _URI_OLD = URI;
-           URI = String(URI).indexOf('http') === 0 ? URI : 'http://'+URI;
-      var _URI = String(URI).replace('http://','https://');
-
-      var stats ={
-          alive : false,
-          secure : false,
-          reading : {}
-      };
-
-
-      reqfast(_URI, function(err, resp) // Https request
-      {
-
-        if(err || resp.statusCode >= 400)
-        {
-            sails.log.warn(err);
-            if(err.code !== 'ENOTFOUND' || err )
-            {
-               reqfast(URI, function(err, resp) // Http request
-               {
-                  if(err){
-                    sails.log.warn(err.reason || err);
-
-                    Article.update({'url': _URI_OLD},{'state':'disable'}) //Set Dead Article
-                    .then(function (updated) {
-                      sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);
-                    });
-
-                    resolve(stats);
-                  }
-
-                  if(resp && resp.statusCode && !(resp.statusCode >= 200 && resp.statusCode <=208))
-                      resolve(stats); // Other Error Status Secure site
-
-                  if(resp && resp.statusCode && resp.statusCode >= 200 && resp.statusCode <=208)
-                    {
-                      stats.alive = true;
-                      ArticleService.getReadingTime(URI,resp.body)
-                        .then(function (reading) {
-                            stats.reading = reading;
-                            resolve(stats); // Alive site
-                        })
-                        .catch(function (err) {
-                          reject(err);
-                        });
-                    }
-              });
-
-            }else {
-              Article.update({'url': _URI_OLD},{'state':'disable'})
-              .then(function (updated) {
-                sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);
-              });
-              resolve(stats); // DEAD Site
-            }
-        }
-
-        if(resp && resp.statusCode && resp.statusCode >= 200 && resp.statusCode <=208)
-        {
-            stats.alive = true;
-            stats.secure = true;
-            ArticleService.getReadingTime(URI,resp.body)
-              .then(function (reading) {
-                  stats.reading = reading;
-                  resolve(stats); // Secure site
-              });
-        }
-
-      });
-
-
-    });
-
-  },
-  getArticles: function(res){
-
-      sails.log("+ ARTICLE.GETARTICLES");
-      Article.find(function articleFounded(err,articles){
-        if(err){
-          sails.log(err);
-          return next(err);
-        }
-
-       // articles = articles.map(function(article) {
-       //      return { // return what new object will look like
-       //          // updatedAt: dateFormat(updatedAt, "dddd, mmmm dS, yyyy")
-       //          url : article.url.replace(/^https?:\/\//,'')
-       //      };
-       //  });
-        // sails.log(_.each(articles,function(){}));
-        // _.each( articles, function(article,index){
-        //   var obj=articles[index];
-        //   // articles[index].updateAt = dateFormat(obj.updateAt, "yyyy-mm-dd");
-        //   // sails.log( "TEst",dateFormat(obj.updateAt, "dddd, mmmm dS, yyyy"));
-        //   // sails.log( "TEst",dateFormat(now, "yyyy, mmmm dS, dd"));
-        //   articles[index].url="google.com";
-        //   sails.log(article);
-        // });
-        //sails.log(articles);
-        res.view({articles:articles});
-      });
-  },
   getIDLike : function (uid,graphData) {
       return _.find(graphData, function(resp) {
           return resp.data.uid == uid;
@@ -273,9 +118,6 @@ module.exports = {
                       }
                       return ArticleService.isUID(uid, response.data);
               });
-  },
-  test:function(){
-    return 'delta';
   },
   getCreator : function(article){
     var creator = {};
@@ -431,6 +273,85 @@ module.exports = {
       });
     });
   },
+  getStats: function(URI){
+
+      return new Promise(function(resolve,reject){
+        var reqfast = require('req-fast');
+        var _URI_OLD = URI;
+             URI = String(URI).indexOf('http') === 0 ? URI : 'http://'+URI;
+        var _URI = String(URI).replace('http://','https://');
+
+        var stats ={
+            alive : false,
+            secure : false,
+            reading : {}
+        };
+
+
+        reqfast(_URI, function(err, resp) // Https request
+        {
+
+          if(err || resp.statusCode >= 400)
+          {
+              sails.log.warn(err);
+              if(err.code !== 'ENOTFOUND' || err )
+              {
+                 reqfast(URI, function(err, resp) // Http request
+                 {
+                    if(err){
+                      sails.log.warn(err.reason || err);
+
+                      Article.update({'url': _URI_OLD},{'state':'disable'}) //Set Dead Article
+                      .then(function (updated) {
+                        sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);
+                      });
+
+                      resolve(stats);
+                    }
+
+                    if(resp && resp.statusCode && !(resp.statusCode >= 200 && resp.statusCode <=208))
+                        resolve(stats); // Other Error Status Secure site
+
+                    if(resp && resp.statusCode && resp.statusCode >= 200 && resp.statusCode <=208)
+                      {
+                        stats.alive = true;
+                        ArticleService.getReadingTime(URI,resp.body)
+                          .then(function (reading) {
+                              stats.reading = reading;
+                              resolve(stats); // Alive site
+                          })
+                          .catch(function (err) {
+                            reject(err);
+                          });
+                      }
+                });
+
+              }else {
+                Article.update({'url': _URI_OLD},{'state':'disable'})
+                .then(function (updated) {
+                  sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);
+                });
+                resolve(stats); // DEAD Site
+              }
+          }
+
+          if(resp && resp.statusCode && resp.statusCode >= 200 && resp.statusCode <=208)
+          {
+              stats.alive = true;
+              stats.secure = true;
+              ArticleService.getReadingTime(URI,resp.body)
+                .then(function (reading) {
+                    stats.reading = reading;
+                    resolve(stats); // Secure site
+                });
+          }
+
+        });
+
+
+      });
+
+    },
   getArticleStructure : function (article){
     return {
                   id: article.id,
@@ -454,9 +375,6 @@ module.exports = {
                   creator: ArticleService.getCreator(article),
                   categories: ArticleService.getCategories(article)
               };
-  },
-  getArticleListRawData : function (articleQuery){
-
   },
   getArticleListNormal : function (articleQuery){
     return new Promise(function(resolve){
@@ -586,19 +504,7 @@ module.exports = {
                             return articlesList.length >= (ArticleService._limit - 1);
                     });
 
-                    // _.each(articles, function (article){
-                    //     if(article.categories)
-                    //     {
-                    //        var exist = _.find(article.categories, function(element) {
-                    //              return element.name == category;
-                    //        });
-                    //
-                    //        if(exist)
-                    //          articlesList.push(ArticleService.getArticleStructure(article));
-                    //      }
-                    // });
-
-                      articlesList.sort(function(a, b) {
+                       articlesList.sort(function(a, b) {
                           return b.date - a.date;
                       });
 
@@ -613,55 +519,5 @@ module.exports = {
 
                     });
       });
-  },
-  unfluff : function (url,content){
-    return new Promise(function(resolve,reject){
-      var extractor = require('unfluff');
-      var superagent = require('superagent');
-      var reqfast = require('req-fast');
-      var URI = url;
-
-      // reqfast(URI, function(err, resp){
-      //   if(err) reject(err);
-      //
-      //   resolve(extractor(resp.body));
-      // });
-      // superagent.get(URI, function(err, response){
-      // if (err) throw err;
-      //   resolve(extractor(response.text));
-      // });
-      //
-      request(
-      {
-        accept:'text/html',
-        method: 'GET' ,
-        uri: URI,
-        gzip: true,
-      },
-      function (error, response, html) {
-        if(error){
-            reject(error);
-        }
-        if (!error && response.statusCode == 200) {
-          // resolve(html);
-          if(content == 'undefined')
-            resolve(extractor(html));
-
-          if(content == 'text')
-              resolve(extractor.lazy(html).text());
-
-          if(content == 'image')
-              resolve(extractor.lazy(html).image());
-
-        }
-      });
-
-    });
-  },
-  unfluffInfo : function (content){
-    var extractor = require('unfluff');
-    return new Promise(function(resolve){
-          resolve(extractor.lazy(content));
-    });
   }
 };

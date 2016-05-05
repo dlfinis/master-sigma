@@ -50,10 +50,6 @@ module.exports = {
     ArticleService.setLimit(req.param('limit'));
     ArticleService.setTotalSize();
 
-    console.log(kindList);
-    console.log(creator);
-    console.log(category);
-
     var articleQuery = Article.find()
                               .limit( actionUtil.parseLimit(req) )
                               .skip( actionUtil.parseSkip(req) )
@@ -213,23 +209,12 @@ module.exports = {
   },
   deleteLike : function(req,res){
     var sid = req.param('articleSid');
-    sails.log(sid);
-    // Like.destroy({
-    //   sid : sid
-    // }).exec(function deleteRecord(err,deleted){
-    //   if (err) {
-    //     sails.log(err);
-    //     return res.serverError(err);
-    //   }
-    //   sails.log('Deleted like :'+JSON.stringify(deleted));
-    //   return res.ok(true);
-    // });
     ArticleService.deleteArticleLike(sid)
                   .then(function(response){
                         Like.destroy({
                           sid : sid
                         }).exec(function deleteRecord(err,deleted){
-                            sails.log.debug('Deleted like :'+deleted);
+                            sails.log.debug('+Deleted like :'+deleted);
                             return res.ok(true);
                         });
                   })
@@ -237,101 +222,6 @@ module.exports = {
                     sails.log.warn(err);
                     return res.ok(false);
                   });
-  },
-  getInfo : function(req,res){
-      var articleID = req.param('id');
-      var articleQuery = Article.findOne({id:articleID})
-                                 .populate('categories')
-                                 .populate('creator');
-          articleQuery.then(function(response){
-                        // console.log(response);
-                        if(response != 'undefined' )
-                        {
-                          var article = {
-                            results:[{
-                                    id: response.id,
-                                    uid: response.uid,
-                                    createdAt: response.createdAt,
-                                    updatedAt: response.updatedAt,
-                                    categories: getCategories(response),
-                                    creator: [{
-                                      id:response.creator.id,
-                                      name:response.creator.name,
-                                    }]
-                                }]
-                          };
-                          // console.log(response);
-                          return res.ok(article);
-                        }else{
-                          return res.send(404,{results:'Not found'});
-                        }
-                        })
-                       .catch(function(err){
-                                  sails.log(err);
-                                  return res.serverError(err);
-                        });
-  },
-  wce : function (req,res) {
-    var URI = encodeURI(req.param('uri'));
-    var wce = require('wce');
-    var extractors =['read-art','node-readability'];
-
-    var options = {};
-    var WCE = new wce(extractors, options);
-
-    try {
-      WCE.extract(URI)
-        .on('success', function (result, errors) {
-          if (errors && errors.length !== 0) {
-            return res.badRequest('Extraction was successful, but there were some errors: '+error);
-          }
-            return res.ok(result.content);
-        })
-        .on('error', function (errors) {
-          return res.serverError('Extraction failed with the following error(s): '+error);
-        });
-    } catch (error) {
-        return res.serverError(error);
-    }
-  },
-  readart: function (req,res) {
-    var read = require('read-art');
-    var URI = encodeURI(req.param('uri'));
-    ArticleService.getReadArt(URI)
-        .then(function (response){
-            return res.ok(response);
-        })
-        .catch(function(err){
-                       sails.log(err);
-                       return res.serverError(err);
-             });
-  },
-  extract : function(req,res){
-    var time = new Date().getTime();
-    var URI = encodeURI(req.param('uri'));
-    var CONTENT = encodeURI(req.param('content'));
-
-    ArticleService.unfluff(URI,CONTENT)
-    .then(function(response){
-        return res.ok(response);
-    })
-    .catch(function(err){
-               sails.log(err);
-               return res.serverError(err);
-     });
-     console.log(time+' = '+new Date().getTime());
-     console.log((time - (new Date().getTime()))/1000);
-  },
-  summarize : function (req,res){
-    var summarize = require('summarize');
-    var superagent = require('superagent');
-    var request = require('req-fast');
-    var URI = encodeURI(req.param('uri'));
-
-    superagent.get(URI, function(err, response){
-      if (err) throw err;
-      return res.ok(summarize(response.text));
-    });
   },
   filetype : function (req,res) {
     var mime = require('mime-types');
@@ -361,35 +251,6 @@ module.exports = {
             type:mimetype
         });
       }
-  },
-  htmldata:function(req,res){
-    var URI = encodeURI(req.param('uri'));
-    var request = require('request');
-
-    request(
-    {
-      accept:'text/html',
-      // method: 'GET' ,
-      uri: URI,
-      // gzip: true,
-      // headers: {
-      //     'Access-Control-Allow-Origin': '*',
-      //     'User-Agent': 'request',
-      //     'Access-Control-Allow-Headers': 'X-Requested-With'
-      //   }
-      headers: {
-      'accept':'*/*'
-    }
-    },
-    function (error, response, html) {
-      if(error){
-          sails.log(error);
-          return res.serverError(error);
-      }
-      // console.log(html);
-      return res.ok(html);
-    }
-    );
   },
   reading: function (req, res) {
     var URI = encodeURI(req.param('uri'));
