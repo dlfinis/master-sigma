@@ -10,7 +10,7 @@
                    list: "="
                  },
                  controller: 'ControlListCtrl',
-                 controllerAs: '$control',
+                 controllerAs: '$control'
              };
            });
 

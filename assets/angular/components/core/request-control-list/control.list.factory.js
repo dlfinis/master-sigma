@@ -3,31 +3,22 @@
 
     function ControlListFactory ($http,$log,$q) {
       return {
-        isAlive: function(articleID)
+        getStats: function(url)
         {
           var prms = {
-            articleID : articleID
+            uri : url
           };
-
-          return $http.get('/article/isAlive',{ params : prms  }).then(function (response){
-              $log.debug(response.data);
+          return $http.get('/article/stats',{ params : prms  }).then(function (response){
+              // $log.debug('+Get stats >'+JSON.stringify(response.data));
               return response.data;
           })
           .catch(function (err) {
               $log.error(err.stack);
           });
-        },
-        isSecure: function(articleID)
-        {
-          var prms = {
-            articleID : articleID
-          };
-
-          return $http.get('/article/isSecure',{ params : prms  });
         }
       };
     }
 
-    module.controller('ControlListFactory',ControlListFactory);
+    module.factory('ControlListFactory',ControlListFactory);
 
 })(angular.module('app.core.request.control.list'));

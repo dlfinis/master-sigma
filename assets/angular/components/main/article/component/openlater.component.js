@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function ModalFactory($http,$httpParamSerializer,$uibModal,partial){
+  function ModalFactory($http,$log,$httpParamSerializer,$uibModal,partial){
     return {
             getModal:function(article){
               return $uibModal.open(
@@ -14,17 +14,17 @@
                       return article;
                     }
                   },
-                  // backdrop: 'static'
+                  backdrop: 'static'
               });
             },
-            getModalRedirect:function(url){
+            getModalRedirect:function(article){
               return $uibModal.open(
               {
                   templateUrl: partial.main.article+'tpl/modal.redirect.cmp.html',
                   controller: 'ModalRedirectCtrl',
                   resolve: {
-                    url: function(){
-                      return url;
+                    article: function(){
+                      return article;
                     }
                   },
                   // backdrop: 'static'
@@ -47,10 +47,12 @@
             $modal.exit = true;
       }, 4000);
     });
+
     $modal.diffTime = function(){
       var diff = (new Date() - $modal.startTime)/(1000); //segs
       return Math.round(diff);
     };
+
     $modal.close = function(){
       if($modal.diffTime() > 15)
       {
@@ -63,20 +65,22 @@
     };
   }
 
-  function ModalRedirectCtrl($scope,$log,$sce,$window,$timeout,$uibModalInstance,url){
-      $scope.url = url;
+  function ModalRedirectCtrl($scope,$log,$sce,$window,$timeout,$uibModalInstance,ArticleListFactory,article){
+      var $modal = $scope;
+          $modal.url = article.url;
       $timeout(function() {
             $log.debug('> Redirect');
+              ArticleListFactory.setVisit(article,3);
 
             var site = $window.open('about:blank', '_blank');
-            site.document.write('Cargando información...');
-            site.location.href = $scope.url;
+                site.document.write('Cargando información...');
+                site.location.href = $modal.url;
 
         $uibModalInstance.dismiss('cancel');
-      }, 1750);
+      }, 3050);
   }
 
-  function OpenLaterCtrl($scope,ArticleListFactory,ModalFactory)
+  function OpenLaterCtrl($scope,$log,ArticleListFactory,ModalFactory)
   {
     var $openlater = this;
     $openlater.isSecure = function (articleID){
@@ -97,9 +101,18 @@
 
     };
 
-    $openlater.openModalRedirect = function (url)
+    $openlater.openModalRedirect = function (article)
     {
         var $modalInstance = ModalFactory.getModalRedirect(url);
+
+        $modalInstance.result.then(function (ops){
+            $log.debug("Options Modal:",JSON.stringify(ops));
+        },
+         function () {
+           $log.debug('Modal dismissed at: ' + new Date());
+           ArticleListFactory.setVisit(article,3);
+        }
+        );
     };
 }
   angular.module('app.main.article.openlater',['app.config'])
@@ -117,24 +130,24 @@
                controllerAs: '$openlater',
                templateUrl: partial.main.article+'tpl/openlater.cmp.html',
                link : function (scope, element, attrs, controller) {
-                var _isSecure = false;
-
-                //  $q.when(controller.isSecure(scope.source.id)).then(function(secure){
-                //    $log.debug('isSecure >'+secure.data);
-                //     _isSecure = secure.data;
-                //  });
-                 controller.isSecure(scope.source.id).then(function(secure){
-                   $log.debug('isSecure >'+secure.data);
-                    _isSecure = secure.data;
-                 });
+                 var _isSecure = false;
+                 scope.source.stats = {};
+                 scope.$watch(
+                                 "source.stats",
+                                 function ( values ) {
+                                     if(values && scope.source.stats.secure )
+                                     {
+                                       _isSecure =  scope.source.stats.secure;
+                                     }
+                                 }
+                             );
 
                  scope.opensite = function () {
-
-                   if(!_isSecure)
+                   if(_isSecure)
                    {
                      controller.openModal(scope.source);
                    }else {
-                     controller.openModalRedirect(scope.source.url);
+                     controller.openModalRedirect(scope.source);
                    }
                  };
 

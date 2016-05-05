@@ -145,6 +145,7 @@ module.exports = {
 
     return new Promise(function(resolve,reject){
       var reqfast = require('req-fast');
+      var _URI_OLD = URI;
            URI = String(URI).indexOf('http') === 0 ? URI : 'http://'+URI;
       var _URI = String(URI).replace('http://','https://');
 
@@ -167,6 +168,12 @@ module.exports = {
                {
                   if(err){
                     sails.log.warn(err.reason || err);
+
+                    Article.update({'url': _URI_OLD},{'state':'disable'}) //Set Dead Article
+                    .then(function (updated) {
+                      sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);
+                    });
+
                     resolve(stats);
                   }
 
@@ -188,6 +195,10 @@ module.exports = {
               });
 
             }else {
+              Article.update({'url': _URI_OLD},{'state':'disable'})
+              .then(function (updated) {
+                sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);
+              });
               resolve(stats); // DEAD Site
             }
         }
@@ -337,29 +348,35 @@ module.exports = {
               if (err)
                 reject(err);
 
-              if(article.reading)
-                resolve(article.reading);
+                if(article.reading)
+                  resolve(article.reading);
 
-                ArticleService.getReadArtHtml(rawData)
-                .then(function(processedData){
-                    var reading = {};
+                if(!article.reading)
+                  ArticleService.getReadArtHtml(rawData)
+                  .then(function(processedData){
 
-                    if(processedData)
-                    {
-                      reading = readingTime(
-                                        processedData,{ label:' min de lectura',wpm:_wpm }
-                                    );
-                    }
+                      if(processedData)
+                      {
 
-                    if(article)
-                      Article.update({'url': _url},{'reading':reading})
-                      .then(function (updated) { });
+                        var reading = readingTime(
+                                          processedData,{ label:' min de lectura',wpm:_wpm }
+                                      );
 
-                    resolve(reading);
-                })
-                .catch(function (err) {
-                    reject(err);
-                });
+                        if(article && reading)
+                          Article.update({'url': _url},{'reading':reading})
+                          .then(function (updated) {
+                            sails.log.debug('+Set reading >'+JSON.stringify(updated[0].reading));
+                          });
+
+                        resolve(reading);
+                      }
+
+
+
+                  })
+                  .catch(function (err) {
+                      reject(err);
+                  });
             });
     });
   },

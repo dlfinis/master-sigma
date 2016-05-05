@@ -12,12 +12,10 @@
 
   function ReadingCtrl($scope,ReadingFactory,ArticleListFactory)
   {
-    var $reading = this;
+    var $reading = $scope;
+
     $reading.getReadingInfo = function(url){
       return  ReadingFactory.getReading(url);
-    };
-    $reading.setArticleDead = function  () {
-      // body...
     };
   }
 
@@ -28,26 +26,21 @@
            return {
                restrict: 'EA',
                scope: {
-                 url: "@",
-                 articleID:"@",
-                 source:"="
+                 stats: "=",
                },
                controller: 'ReadingCtrl',
                controllerAs: '$reading',
                template: '<div ng-bind="info"></div></i>',
                link: function(scope, element, attrs,controller){
-                 $q.when(controller.getReadingInfo(scope.url)).then(function(response){
-                     if(response)
-                     {
-                       scope.info = response.data.reading.duration;
-                     }else {
-                       if(scope.source && scope.articleID)
-                       {
-                         controller.setArticleDead(scope.articleID);
-
-                       }
-                     }
-                 });
+                 scope.$watch(
+                                 "stats",
+                                 function ( values ) {
+                                     if(values && scope.stats.reading )
+                                     {
+                                       scope.info =  scope.stats.reading.duration;
+                                     }
+                                 }
+                             );
               }
            };
          });
