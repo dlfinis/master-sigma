@@ -4,11 +4,12 @@
   "version": "1.0.10",
   "description": "A Angular & Sails application that use Facebook Platafomr & SDK",
   "keywords": [
-    
+
   ],
   "dependencies": {
     "bluebird": "^3.3.4",
     "bower": "*",
+    "connect-ensure-login": "^0.1.1",
     "ejs": "~0.8.4",
     "fb": "^1.0.2",
     "fbgraph": "^1.1.0",
