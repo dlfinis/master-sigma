@@ -45,7 +45,7 @@
     "sails-mysql": "~0.12.x"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "node app.js || sails lift",
     "debug": "node debug app.js",
     "postinstall": "export HOME=$OPENSHIFT_REPO_DIR;./node_modules/bower/bin/bower install"
   },

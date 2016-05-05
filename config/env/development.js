@@ -10,9 +10,9 @@
  *
  */
 module.exports = {
-    // grunt: {
-    //     _hookTimeout: 60000
-    // },
+    grunt: {
+        _hookTimeout: 60000
+    },
     connections: {
       sigmaDv: {
         adapter: 'sails-mysql',

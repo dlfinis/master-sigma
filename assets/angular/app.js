@@ -13,7 +13,7 @@
                          'app.main',
                          'app.config'
                        ])
-  .config(['INIT','KEYS','$routeProvider','$logProvider','$facebookProvider','cfpLoadingBarProvider',function(INIT,KEYS,$routeProvider,$logProvider,$facebookProvider,cfpLoadingBarProvider) {
+  .config(['INIT','KEYS','$routeProvider','$logProvider','$compileProvider','$facebookProvider','cfpLoadingBarProvider',function(INIT,KEYS,$routeProvider,$logProvider,$compileProvider,$facebookProvider,cfpLoadingBarProvider) {
 
     if (!location.host.match(INIT.development)) {
       $compileProvider.debugInfoEnabled(false);
