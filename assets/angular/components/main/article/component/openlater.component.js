@@ -146,7 +146,7 @@
                templateUrl: partial.main.article+'tpl/openlater.cmp.html',
                link : function (scope, element, attrs, controller) {
                  var _isSecure = false;
-                 console.log(scope.source);
+                 $log.debug(scope.source);
                  scope.source.stats = {};
                  scope.$watch(
                                  "source.stats",

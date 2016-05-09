@@ -10,8 +10,15 @@ var _req = null;
 module.exports = {
   current: function(user,origin,request) {
     _user = user;
-    if(origin) _origin = origin;
-    if(request) _req = request;
+    if(origin) {
+      _origin = origin;
+      request.origin = origin;
+    }
+    if(request){
+       _req = request;
+       request.session.user = user;
+       request.session.origin = origin;
+    }
   },
   origin: function(origin) {
      _origin = origin;

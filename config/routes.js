@@ -54,16 +54,19 @@ module.exports.routes = {
       controller : 'AuthController',
       action : 'facebook',
               skipAssets: true,
+              origin: 'web'
     },
     'GET /auth/facebook/callback' :{
       controller : 'AuthController',
       action : 'facebook/callback',
               skipAssets: true,
+              origin: 'web'
     },
     'POST /auth/facebook/canvas' : {
       controller: 'CanvasController',
       action: 'login',
             skipAssets: true,
+            origin: 'fb'
     },
     'GET /auth/logout' :{
       controller : 'AuthController',

@@ -25,7 +25,7 @@ module.exports = {
           scope: [
           'publish_actions'
           ],
-          failureRedirect: '/#/'
+          failureRedirect: '/'
       },
       function (err, user)
       {

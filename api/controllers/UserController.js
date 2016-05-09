@@ -11,7 +11,8 @@ module.exports = {
         return res.json({ user: {
                           id:req.user.id,
                           uid:req.user.uid,
-                          name:req.user.name
+                          name:req.user.name,
+                          origin:req.session.origin
                           }
                         });
    },

@@ -25,7 +25,19 @@
     // Remove loading bar spinner
     cfpLoadingBarProvider.includeSpinner = false;
 
-    $routeProvider.when('/home', {  template:'<home></home>' });
+    $routeProvider.when('/', {   resolve: {
+                                        load: function (CheckRoutingFactory) {
+                                              return CheckRoutingFactory.isOK();
+                                              }
+                              },
+    });
+    $routeProvider.when('/home', {  template:'<home></home>',
+                                    resolve: {
+                                        load: function (CheckRoutingFactory) {
+                                              return CheckRoutingFactory.isOK();
+                                              }
+                                      }
+                                  });
     $routeProvider.when('/wall',
       {
         template: '<articlelist source="_source"></articlelist>',
@@ -62,6 +74,7 @@
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
         if($location.path() !== '/home')
           CheckRoutingFactory.isAuthenticated();
+
       });
   });
 
