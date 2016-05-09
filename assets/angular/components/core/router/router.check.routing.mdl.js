@@ -40,11 +40,15 @@
               }
             },
             isOK : function(){
-            if($rootScope.userProfile) $location.path('/wall');
+            if($rootScope.userProfile) {
+              $location.path('/wall');
+              return true;
+            }
             else {
               this.getCurrentUser().then(function (user) {
                 $rootScope.userProfile = user;
                 $location.path('/wall');
+                return true;
               })
               .catch(function (err) {
                 if(String($location.absUrl()).contain('facebook'))

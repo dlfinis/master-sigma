@@ -42,6 +42,9 @@
       {
         template: '<articlelist source="_source"></articlelist>',
         resolve:{
+          load: function (CheckRoutingFactory) {
+                return CheckRoutingFactory.isOK();
+              },
           _source: function(ArticleListFactory,$timeout){
             return $timeout(function () {
               return ArticleListFactory._source_init();
@@ -71,11 +74,11 @@
       // Start loading bar for app loading
       cfpLoadingBar.start();
 
-      $rootScope.$on('$locationChangeStart', function (event, next, current) {
-        if($location.path() !== '/home')
-          CheckRoutingFactory.isAuthenticated();
-
-      });
+      // $rootScope.$on('$locationChangeStart', function (event, next, current) {
+      //   if($location.path() !== '/home')
+      //     CheckRoutingFactory.isAuthenticated();
+      //
+      // });
   });
 
 })();
