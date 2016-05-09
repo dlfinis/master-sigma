@@ -1,11 +1,11 @@
 (function () {
  'use strict';
 
-  function RArticleFactory($http){
+  function RArticleFactory($http,$rootScope){
     return {
           getCategories: function()
           {
-            return $http.get('/category/find').then(function (response){
+            return $http.get('/api/category/find').then(function (response){
                 return response.data.results;
             })
             .catch(function (err) {
@@ -14,13 +14,14 @@
           },
           getUser : function()
           {
-            return $http.get('/getuser');
+            return $http.get('/me');
           },
           saveArticle : function(article){
+            console.log($rootScope.userProfile);
             return this.getUser().then(function (response){
                 //  console.log(response.data.user);
                article.creator = response.data.user.id;
-               return $http.post('/article/create',article).then(function (response){
+               return $http.post('/api/article/create',article).then(function (response){
                  console.log(response);
                   return response;
                })

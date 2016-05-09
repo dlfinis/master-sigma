@@ -8,15 +8,12 @@
 var graph = require('fbgraph');
 var passport = require('passport');
 var FB = require('fb');
+
 module.exports = {
     // Facebook login screen
     login: function (req, res) {
         sails.log("+ .CANVAS");
-        if(req.user)
-        {
-          sails.log('+ REDIRECT ','/#/wall');
-          return res.redirect('/#/wall');
-        }
+
         passport.authenticate('facebook-canvas',
         {
             scope: [
@@ -26,23 +23,25 @@ module.exports = {
         function (err, user)
         {
                 if(err)
+                { sails.log("- Facebook Auth Response error=", err, "user=", user);
                   return next(err);
+                }
 
-                sails.log("Facebook Auth Response error=", err, "user=", user);
                 sails.log('+ CANVAS LOGIN ');
                 if (user) {
                     req.logIn(user, function (err) {
-
                         if (err) {
                             sails.log("Auth Error", err);
                             return res.view('500');
                         }
-                        sails.log('+ REDIRECT ','/#/wall');
+                        sails.log('+ REDIRECT TO ','/#/wall');
+                        UserService.current(user,'fb',req);
                         return res.redirect('/#/wall');
 
                     });
                 } else {
-                        return res.redirect('/canvas/autologin');
+                        // return res.redirect('/canvas/autologin');
+                        this.autologin(req,res);
                 }
 
         }
@@ -68,19 +67,7 @@ module.exports = {
                             '</html>').replace('$stringURL',stringURL);
        return res.send(redirect_popup);
     },
-    // Index page
-    index: function (req, res) {
-      sails.log("+ CANVAS.INDEX");
-    },
     test:function(req,res){
       return res.json("OK!");
-    },
-    testpage:function(req,res){
-      return res.redirect('/#/delta');
-    },
-    wall:function(req,res){
-      return res.redirect('/#/wall');
     }
-
-
 };

@@ -10,10 +10,10 @@
   </a>
 </div>
 <div class="embed-responsive embed-responsive-4by3">
-  <div class="fade-it loading" >
+  <div class="fade-in-out loader" >
     <img class="" src="/images/spinner-2.gif"/>
   </div>
-  <iframe class="embed-responsive-item" sandbox="allow-same-origin allow-top-navigation"
+  <iframe class="embed-responsive-item" sandbox="allow-same-origin allow-top-navigation allow-scripts"
   ng-src="{{currentUrl}}" ng-onload="hello">
     <p>Tu navegador no soporta iframes.</p>
   </iframe>
@@ -31,8 +31,11 @@
               </div>
           </div>
           <div class="section-btn" uid-post="{{article.uid}}">
-            <like></like>
-            <share></share>
+            <like
+            stats="article.likes"
+            source="article"
+            article-sid="article.ownlike.sid"></like>
+            <share stats="article.shares" source="article"></share>
           </div>
     </div>
   </div>
@@ -40,3 +43,6 @@
       <i class="fa fa-times"></i> Salir
     </button>
 </div>
+<script>
+  <!-- console._inspectorCommandLineAPI.clear(); -->
+</script>

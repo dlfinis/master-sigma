@@ -53,14 +53,14 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
 
     process.nextTick(function () {
 
-
-        sails.log.debug("=> verifyHandler with ", token, tokenSecret);
+        // Cehck handler
+        // sails.log.debug("=> verifyHandler with ", token, tokenSecret);
 
 
         User.findOne({uid: profile.id}, function (err, user) {
 
             if (user) {
-                sails.log.debug(user);
+                // sails.log.debug(user);
                 fbgraph.setAccessToken(token);
                 return done(null, user);
             } else {
@@ -88,7 +88,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
 
 
                 User.create(data, function (err, user) {
-                    sails.log.debug(user);
+                    sails.log.debug('+ User create'+JSON.stringify(user));
                     return done(err, user);
                 });
 

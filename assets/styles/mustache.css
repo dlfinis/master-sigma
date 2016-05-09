@@ -1,13 +1,21 @@
 body {
     font-family: Helvetica,Arial,sans-serif;
     background: url('/images/background/seamless_paper_texture.png') repeat fixed;
-    font-size:14px;
+    font-size: 14px;
     /*background: url('/images/background/polka-dot-2.png') no-repeat center center fixed;*/
     /*-webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;*/
 }
+
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+
 .wf-active body{
   font-family: "Oxygen","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
@@ -15,6 +23,7 @@ body {
 .row-centered {
     text-align:center;
 }
+
 .col-centered {
     display:inline-block;
     float:none;
@@ -22,6 +31,30 @@ body {
     text-align:left;
     /* inline-block space fix */
     margin-right:-4px;
+}
+
+.header{
+  /*background: url('/images/light.png') no-repeat;
+  max-width: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 100%;
+  background-size: cover;*/
+  background:
+	url('/images/light.png') 60% 90% no-repeat,
+	url('/images/light.png') 40% 50% no-repeat,
+	url('/images/light.png') 10% 20% no-repeat #393;
+  background-size: 240px 210px, auto, 150px;
+}
+
+.footer{
+  height: 100px;
+  background: #3e3d3b;
+  color:#fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width:100%;
 }
 
 h1,
@@ -229,6 +262,17 @@ footer p {
 
 }
 
+.home .login{
+  padding: 5% 0%;
+}
+
+.home .login .btn-default{
+  background: #3c6cbc;
+  height: 40px;
+  width: : 150px;
+
+  color:#fff;
+}
 
 .fade-out {
   transition: 3.0s linear all;
@@ -692,6 +736,17 @@ footer p {
     padding: 5px 15px;
 }
 
+.modal .loader{
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  background: #344557;
+}
 .modal .source{
   width:100%;
   background: #3A5795;

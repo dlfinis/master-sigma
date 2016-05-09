@@ -45,12 +45,31 @@ module.exports.routes = {
                   skipAssets: true,
           },
       */
-
+    'GET /me' :{
+        controller : 'UserController',
+        action : 'me',
+                skipAssets: true,
+      },
+    'GET /auth/facebook' :{
+      controller : 'AuthController',
+      action : 'facebook',
+              skipAssets: true,
+    },
+    'GET /auth/facebook/callback' :{
+      controller : 'AuthController',
+      action : 'facebook/callback',
+              skipAssets: true,
+    },
     'POST /auth/facebook/canvas' : {
       controller: 'CanvasController',
       action: 'login',
             skipAssets: true,
-    }
+    },
+    'GET /auth/logout' :{
+      controller : 'AuthController',
+      action : 'logout',
+              skipAssets: true,
+    },
 
     /***************************************************************************
      *                                                                          *

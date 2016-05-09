@@ -17,11 +17,10 @@ module.exports = {
                               .skip( actionUtil.parseSkip(req) )
                               .sort( actionUtil.parseSort(req) )
                               .populate('creator')
-                              .populate('categories');
-
-                              // .populate('likes')
-                              // .populate('shares')
-                              // .populate('visits');
+                              .populate('categories')
+                              .populate('likes')
+                              .populate('shares')
+                              .populate('visits');
 
                         var articleList = [];
 
@@ -46,9 +45,9 @@ module.exports = {
     var creator = req.param('creator');
     var category = req.param('category');
 
-    ArticleService.setUser(req.user);
     ArticleService.setLimit(req.param('limit'));
-    ArticleService.setTotalSize();
+    ArticleService.setTotalSize(); // All size of articles in DB
+    UserService.current(req.user); // Set  current user
 
     var articleQuery = Article.find()
                               .limit( actionUtil.parseLimit(req) )
@@ -111,7 +110,7 @@ module.exports = {
         return res.negotiate(err);
     });
   },
-  isAlive : function (req,res) {
+  alive : function (req,res) {
     var articleID = req.param('articleID');
     Article.findOne({id:articleID}).then(function foundRecord(article){
         if(!article)
@@ -128,7 +127,7 @@ module.exports = {
     });
 
   },
-  isSecure : function (req,res) {
+  secure : function (req,res) {
     var articleID = req.param('articleID');
     Article.findOne({id:articleID}).then(function foundRecord(article){
         if(!article)
@@ -164,64 +163,41 @@ module.exports = {
     var shareSID = req.param('shareSID');
     var articleID = req.param('articleID');
     var messageShare = req.param('messageShare');
-    var userID = ArticleService._user.id || req.user.id ;
+    var userID = UserService.me().id || req.user.id;
+
+    if(!shareSID || !articleID)
+      return res.badRequest();
 
     if(shareSID && articleID)
-              Share.create({
-                            sid : shareSID,
-                            article : articleID,
-                            user : userID,
-                            message : messageShare
-                          }).exec(function createRecord(err, created){
-                              if(err)
-                              {
-                                sails.log.warn(err);
-                                return res.ok(false);
-                              }
-                              sails.log.debug('Set share :'+JSON.stringify(created));
-                              return res.ok(true);
-                          });
-
+          ArticleService.share.set(shareSID,articleID,userID,messageShare)
+          .then(function (response) {
+            return res.json(200,response);
+          })
+          .catch(function (err) {
+              return res.json(400,err);
+          });
   },
   setlike : function(req,res){
     var articleID = req.param('articleID');
     var articleURL = req.param('articleURL');
-    var userID = req.user.id;
-
-        ArticleService.setArticleLike(articleURL)
-                      .then(function(response){
-                          Like.create({
-                            sid : response.id,
-                            article : articleID,
-                            user : userID
-                          }).exec(function createRecord(err, created){
-                              sails.log.debug('Set like :'+created.sid);
-                              return res.ok(created.sid);
-                          });
-                      })
-                      .catch(function(err){
-                        if(err)
-                        {
-                          sails.log.warn(err);
-                          return res.ok(false);
-                        }
-                      });
+    var userID = UserService.me().id || req.user.id;
+        ArticleService.like.set(articleID,articleURL,userID)
+        .then(function (response) {
+            return res.json(response);
+        })
+        .catch(function (err) {
+            return res.json(400,err);
+        });
   },
-  deleteLike : function(req,res){
+  deletelike : function(req,res){
     var sid = req.param('articleSid');
-    ArticleService.deleteArticleLike(sid)
-                  .then(function(response){
-                        Like.destroy({
-                          sid : sid
-                        }).exec(function deleteRecord(err,deleted){
-                            sails.log.debug('+Deleted like :'+deleted);
-                            return res.ok(true);
-                        });
-                  })
-                  .catch(function(err){
-                    sails.log.warn(err);
-                    return res.ok(false);
-                  });
+        ArticleService.like.delete(sid)
+        .then(function (response) {
+            return res.json(response);
+        })
+        .catch(function (err) {
+            return res.json(400,err);
+        });
   },
   filetype : function (req,res) {
     var mime = require('mime-types');

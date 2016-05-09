@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  function ArticleListCtrl($scope,$http,$q,$sce,$log, ArticleListFactory)
+  function ArticleListCtrl($scope,$q,$sce,$log,ArticleListFactory)
   {
     var $articlelist = this;
 
@@ -173,7 +173,6 @@
     {
     return  ArticleListFactory.isSecure(articleID)
       .then(function(data){
-        console.log(data);
         return true;
       })
       .catch(function(err){
@@ -188,65 +187,19 @@
       return $sce.trustAsResourceUrl(resource.substr(resource.indexOf('://')+1));
     };
 
-    //Modal
-    $articlelist.openModal = function (article)
+    $articlelist.withoutProtocol = function(url)
     {
-
-        var $modalInstance = ArticleListFactory.getModal(article);
-
-        $modalInstance.result.then(function (ops){
-            $log.debug("Options Modal:",JSON.stringify(ops));
-        },
-         function () {
-           $log.debug('Modal dismissed at: ' + new Date());
-        }
-        );
-
+      console.log(url.substr(url.indexOf('://')+1));
+    //exist url with protocol
+    if(url.indexOf('://')>0)
+      return url.substr(url.indexOf('://')+1);
     };
+
+
 
     $articlelist.test = function test() {
       return 'Test';
     };
-  }
-
-  function ModalCtrl($scope,$log,$sce,$timeout,$uibModalInstance,ArticleListFactory,article){
-    var $modal = $scope;
-
-    $modal.article = article;
-    $modal.currentUrl = $sce.trustAsResourceUrl(article.url.substr(article.url.indexOf('://')+1));
-    $modal.visit = 0;
-
-    $uibModalInstance.opened.then(function(){
-      $modal.startTime = new Date();
-      $timeout(function () {
-            $modal.exit = true;
-      }, 3000);
-    });
-
-    $modal.diffTime = function(){
-      var diff = (new Date() - $modal.startTime)/(1000); //segs
-      return Math.round(diff);
-    };
-
-
-    $modal.close = function(){
-      if($modal.diffTime() > 15)
-      {
-        $log.debug("Time:",$modal.diffTime());
-        ArticleListFactory.setVisit(article,$modal.diffTime());
-        $uibModalInstance.close({visit:true,article:article.id});
-        article.visits = article.visits + 1;
-      }
-      $uibModalInstance.dismiss('cancel');
-    };
-
-    $modal.hello = function(contentLocation) {
-      $log.debug(contentLocation);
-      // contentLocation === iframe.contentWindow.location
-      // it's undefined when contentWindow cannot be found from the bound element
-      $log.debug("Hello world!");
-    };
-
   }
 
   angular.module('app.main.article')

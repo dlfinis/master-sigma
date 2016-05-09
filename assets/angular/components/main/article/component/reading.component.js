@@ -5,7 +5,7 @@
   return {
           getReading: function(url)
           {
-            return $http.get('/article/reading?uri='+url);
+            return $http.get('/api/article/reading?uri='+url);
           },
         };
   }

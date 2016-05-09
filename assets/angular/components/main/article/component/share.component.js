@@ -6,7 +6,7 @@
     return {
 			setshare: function(shareSID,articleID,messageShare)
       {
-        return $http.post('/article/setshare',
+        return $http.post('/api/article/setshare',
                {
                 shareSID : shareSID,
                 articleID : articleID,
@@ -37,7 +37,7 @@
                   }
                 };
 
-                return $http.get('/share',{ params:prms });
+                return $http.get('/api/share',{ params:prms });
               }
 
       },

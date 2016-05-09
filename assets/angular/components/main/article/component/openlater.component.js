@@ -1,6 +1,23 @@
 (function () {
   'use strict';
 
+  function ModalBaseFactory($http,$log){
+    return {
+            setVisit: function(article,time)
+            {
+              var prms = {};
+              prms.articleID = article.id;
+              prms.visitTime = time;
+               $http.post('/api/visit/create',prms).then(function(record)
+               {
+                 $log.debug(record.data);
+               }
+              ).catch(function (err) {
+                 $log.error(err.stack);
+              });
+            }
+    };
+  }
   function ModalFactory($http,$log,$httpParamSerializer,$uibModal,partial){
     return {
             getModal:function(article){
@@ -34,7 +51,7 @@
   }
 
 
-  function ModalCtrl($scope,$log,$sce,$timeout,$uibModalInstance,ArticleListFactory,article){
+  function ModalCtrl($scope,$log,$sce,$timeout,$uibModalInstance,ModalBaseFactory,article){
     var $modal = $scope;
 
     $modal.article = article;
@@ -57,7 +74,7 @@
       if($modal.diffTime() > 15)
       {
         $log.debug("Time:",$modal.diffTime());
-        ArticleListFactory.setVisit(article,$modal.diffTime());
+        ModalBaseFactory.setVisit(article,$modal.diffTime());
         $uibModalInstance.close({visit:true,article:article.id});
         article.visits = article.visits + 1;
       }
@@ -65,28 +82,26 @@
     };
   }
 
-  function ModalRedirectCtrl($scope,$log,$sce,$window,$timeout,$uibModalInstance,ArticleListFactory,article){
+  function ModalRedirectCtrl($scope,$log,$sce,$window,$timeout,$uibModalInstance,ModalBaseFactory,article){
       var $modal = $scope;
           $modal.url = article.url;
       $timeout(function() {
             $log.debug('> Redirect');
-              ArticleListFactory.setVisit(article,3);
+              ModalBaseFactory.setVisit(article,1);
 
             var site = $window.open('about:blank', '_blank');
                 site.document.write('Cargando información...');
                 site.location.href = $modal.url;
 
+            article.visits = article.visits + 1;
+
         $uibModalInstance.dismiss('cancel');
       }, 3050);
   }
 
-  function OpenLaterCtrl($scope,$log,ArticleListFactory,ModalFactory)
+  function OpenLaterCtrl($scope,$log,ModalBaseFactory,ModalFactory)
   {
     var $openlater = this;
-    $openlater.isSecure = function (articleID){
-        return ArticleListFactory.isSecure(articleID);
-    };
-
     $openlater.openModal = function (article)
     {
         var $modalInstance = ModalFactory.getModal(article);
@@ -103,19 +118,19 @@
 
     $openlater.openModalRedirect = function (article)
     {
-        var $modalInstance = ModalFactory.getModalRedirect(url);
+        var $modalInstance = ModalFactory.getModalRedirect(article);
 
         $modalInstance.result.then(function (ops){
             $log.debug("Options Modal:",JSON.stringify(ops));
         },
          function () {
            $log.debug('Modal dismissed at: ' + new Date());
-           ArticleListFactory.setVisit(article,3);
         }
         );
     };
 }
   angular.module('app.main.article.openlater',['app.config'])
+         .factory('ModalBaseFactory',ModalBaseFactory)
          .factory('ModalFactory',ModalFactory)
          .controller('ModalCtrl',ModalCtrl)
          .controller('ModalRedirectCtrl',ModalRedirectCtrl)
@@ -131,6 +146,7 @@
                templateUrl: partial.main.article+'tpl/openlater.cmp.html',
                link : function (scope, element, attrs, controller) {
                  var _isSecure = false;
+                 console.log(scope.source);
                  scope.source.stats = {};
                  scope.$watch(
                                  "source.stats",

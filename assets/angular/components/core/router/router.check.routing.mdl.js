@@ -5,18 +5,17 @@
            return {
              isAuthenticated: function()
              {
-                $log.debug('+ Check User > '+JSON.stringify($rootScope.userProfile));
                  if ($rootScope.userProfile) {
+                    //  $log.debug('+ LoggedIn User > '+JSON.stringify($rootScope.userProfile));
                      return true;
                  } else {
                      var deferred = $q.defer();
-                     $http.post('/user/current')
+                     $http.get('/me')
                           .success(function (response) {
-                            $log.debug('+GET User > '+JSON.stringify($rootScope.userProfile));
                              if(response.user)
                                {
+                                 //  $log.debug('+GET User > '+JSON.stringify($rootScope.userProfile));
                                    $rootScope.userProfile = response.user;
-                                   $location.path('/wall');
                                }else {
                                    $location.path('/home');
                                }

@@ -5,7 +5,7 @@
     return {
           getCategories: function()
           {
-            return $http.get('/category/find').then(function (response){
+            return $http.get('/api/category/find').then(function (response){
                 return response.data.results;
             })
             .catch(function (err) {
@@ -14,10 +14,10 @@
           },
           getUser : function()
           {
-            return $http.get('/getuser');
+            return $http.get('/me');
           },
           saveCategory: function(category){
-               return $http.post('/category/create',category).then(function (response){
+               return $http.post('/api/category/create',category).then(function (response){
                  console.log(response);
                  return response;
                })

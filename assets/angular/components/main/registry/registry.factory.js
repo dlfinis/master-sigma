@@ -5,22 +5,18 @@
     return {
           getCategories: function()
           {
-            return $http.get('/category/find').then(function (response){
+            return $http.get('/api/category/find').then(function (response){
                 return response.data.results;
             })
             .catch(function (err) {
                 console.error(err.stack);
             });
           },
-          getUser : function()
-          {
-            return $http.get('/getuser');
-          },
           saveArticle : function(article){
-            return this.getUser().then(function (response){
+            return $http.get('/me').then(function (response){
                 //  console.log(response.data.user);
-               article.creator = response.data.user.id;
-               return $http.post('/article/create',article).then(function (response){
+               article.creator = response.user.id;
+               return $http.post('/api/article/create',article).then(function (response){
                  console.log(response);
                   return response;
                })

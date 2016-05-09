@@ -25,22 +25,6 @@
     // Remove loading bar spinner
     cfpLoadingBarProvider.includeSpinner = false;
 
-    $routeProvider.when('/', {   resolve: {
-
-                                            load: function (CheckRoutingFactory) {
-                                                  return CheckRoutingFactory.isAuthenticated();
-                                                  }
-                                  },
-    });
-
-    $routeProvider.when('/#/', {   resolve: {
-
-                                            load: function (CheckRoutingFactory) {
-                                                  return CheckRoutingFactory.isAuthenticated();
-                                                  }
-                                  },
-    });
-
     $routeProvider.when('/home', {  template:'<home></home>' });
     $routeProvider.when('/wall',
       {
@@ -57,28 +41,12 @@
         }
       }
       );
-    $routeProvider.when('/articlelist', { template: '<articlelist></articlelist>' });
-
-    $routeProvider.when('/test', { template: '<test></test>' });
-    $routeProvider.when('/testpage',
-          { template: '<testpage data="dataSlow"></testpage>',
-            resolve:{
-              dataSlow: function(TestPageFactory){
-                  return TestPageFactory.getSlowData();
-              },
-            },
-            controller: function($scope, dataSlow){
-              $scope.dataSlow = dataSlow;
-            }
-          }
-        );
-    $routeProvider.when('/registry', { template: '<registry></registry>' });
     $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
     $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
     $routeProvider.otherwise({redirectTo: '/'});
   }])
   /*CONFIG*/
-  .run(function ($rootScope,$location,$route,$timeout,FontLoader,FBLoader,cfpLoadingBar,KEYS) {
+  .run(function ($rootScope,$location,$route,$timeout,$log,FontLoader,FBLoader,cfpLoadingBar,CheckRoutingFactory,KEYS) {
       // Load the facebook SDK asynchronously
       FBLoader.setScript();
       //Load fonts asynchronously
@@ -90,6 +58,11 @@
 
       // Start loading bar for app loading
       cfpLoadingBar.start();
+
+      $rootScope.$on('$locationChangeStart', function (event, next, current) {
+        if($location.path() !== '/home')
+          CheckRoutingFactory.isAuthenticated();
+      });
   });
 
 })();

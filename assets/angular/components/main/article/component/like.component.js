@@ -5,14 +5,14 @@
     return {
             havelike: function(articleID)
             {
-              return $http.get('/article/havelike',
+              return $http.get('/api/article/havelike',
                      {
                        params : {articleID:articleID}
                      });
             },
             setlike: function(articleID,articleURL)
             {
-              return $http.post('/article/setlike',
+              return $http.post('/api/article/setlike',
                      {
                       articleID:articleID ,
                       articleURL:articleURL
@@ -20,7 +20,7 @@
             },
             deletelike: function(articleSid)
             {
-              return $http.delete('/article/deletelike',
+              return $http.delete('/api/article/deletelike',
                      {
                       params : { articleSid:articleSid }
                      });
@@ -63,9 +63,9 @@
                    {
                       controller.setLike(scope.source.id,scope.source.url)
                                 .then(function (response){
-                                  if(response.data)
+                                  if(response.data.created) // created,record
                                   {
-                                    scope.articleSid = response.data;
+                                    scope.articleSid = response.data.record.sid;
                                     scope.checkstate = true;
                                     scope.stats = scope.stats + 1;
                                   }
@@ -82,6 +82,7 @@
                                  {
                                    scope.checkstate = false;
                                    scope.stats = scope.stats - 1;
+                                   scope.articleSid = '';
                                  }
                                })
                                .catch(function(err){

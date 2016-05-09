@@ -1,7 +1,6 @@
 {
     "hooks": {
-        "session": false,
         "sockets": false,
-        "pubsub": false 
+        "pubsub": false
     }
 }

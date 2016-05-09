@@ -21,7 +21,7 @@
           _source_init: function () {
             return $q.all([
                     this.getArticles(this._props_normal()),
-                    $http.get('/category/find'),
+                    $http.get('/api/category/find'),
                   ]).then(function(response){
                     return {
                             articlelist : response[0].data,
@@ -44,14 +44,6 @@
                 $log.error(err.stack);
             });
           },
-          isSecure: function(articleID)
-          {
-            var prms = {
-              articleID : articleID
-            };
-
-            return $http.get('/article/isSecure',{ params : prms  });
-          },
           getArticles: function(props)
           {
             var prms = {};
@@ -70,10 +62,7 @@
             if(props.category != 'undefined')
               prms.category = props.category;
 
-              return $http.get('/article/findAll', { params : prms });
-
-
-
+              return $http.get('/api/article/findAll', { params : prms });
           },
           getInfo: function(articleID)
           {
@@ -81,7 +70,7 @@
           },
           getCategories: function()
           {
-            return $http.get('/category/find').then(function (response){
+            return $http.get('/api/category/find').then(function (response){
                 return response.data.results;
             })
             .catch(function (err) {
@@ -90,30 +79,16 @@
           },
           getHtmlData: function(url)
           {
-            return $http.get('/article/htmldata?uri='+url);
+            return $http.get('/api/article/htmldata?uri='+url);
           },
           setVisit: function(article,time)
           {
             var prms = {};
             prms.articleID = article.id;
             prms.visitTime = time;
-             $http.post('/visit/create',prms).then(function(record)
+             $http.post('/api/visit/create',prms).then(function(record)
              {
                $log.debug(record.data);
-             }
-            ).catch(function (err) {
-               $log.error(err.stack);
-            });
-          },
-          setDead: function(articleID)
-          {
-            var prms = {
-              state : 'disable',
-            };
-             $http.put('/article/update'+articleID,prms).then(function(record)
-             {
-               $log.debug('Set DEAD >'+articleID+' >> '+record.data);
-
              }
             ).catch(function (err) {
                $log.error(err.stack);

@@ -8,18 +8,13 @@
 var Promise = require('bluebird');
 var moment = require('moment');
 var request = require('request');
-var cheerio = require('cheerio');
 var graph = require('fbgraph');
-var _user;
 var _size;
 var _limit;
 var _wpm = 250;
 
 module.exports = {
 
-  setUser: function (user) {
-    ArticleService._user = user;
-  },
   setLimit: function (limit) {
     ArticleService._limit = limit || sails.config.blueprints.defaultLimit || 10;
   },
@@ -58,20 +53,9 @@ module.exports = {
      };
     return objMeta;
   },
-  setArticleLike : function(articleURL){
+  setFBLike : function(articleURL){
       return new Promise(
         function (resolve,reject){
-        // var articleMeta = ArticleService.getArticleMeta(article);
-
-          // graph.post('me/master-sigma:prefiere',
-          // {
-          //   article:JSON.stringify(articleMeta)
-          // },
-          //   function(err, response) {
-          //     if(err) reject(err);
-          //     resolve(response);
-          // });
-
           graph.post('me/og.likes',
           {
             object:articleURL
@@ -83,7 +67,7 @@ module.exports = {
 
       });
   },
-  deleteArticleLike : function(sid){
+  delFBLike : function(sid){
     return new Promise(
       function (resolve,reject){
         graph.del(sid,
@@ -92,32 +76,6 @@ module.exports = {
             resolve(response);
         });
     });
-  },
-  getIDLike : function (uid,graphData) {
-      return _.find(graphData, function(resp) {
-          return resp.data.uid == uid;
-      }).id;
-  },
-  isUID: function (uid,data){
-    return _.find(data, function(resp) {
-          return resp.data.uid == uid;
-        }) ? true : false;
-  },
-  isSetLike: function(uid){
-    var stringGetUID = "me/master-sigma:recomienda?fields=data{uid}";
-
-    // return _.find(graphData, function(resp) {
-    //     return resp.data.uid == uid
-    // }) ? true : false ;
-    //
-    return graph.get(stringGetUID,
-                  function(err, response) {
-                    if(err)
-                      {
-                        sails.log(err);
-                      }
-                      return ArticleService.isUID(uid, response.data);
-              });
   },
   getCreator : function(article){
     var creator = {};
@@ -135,9 +93,10 @@ module.exports = {
     var like = _.find(
                       likes,function(element)
                               {
-                                return element._user === User.id ;
+                                return element.user === UserService.me().id;
                               }
                   );
+
     return like;
   },
   getLikes : function(article){
@@ -175,11 +134,20 @@ module.exports = {
     }
     return categories;
   },
-  /*
-  Like 0.2 Share 0.6 Visit 0.3
-  */
+  //Like 0.2 Share 0.5 Visit 0.3
   getRecom : function (like,share,visit){
     return (like*0.2) +(share*0.6)+(visit*0.3);
+  },
+  getReadArtHtml : function (html) {
+      var read = require('read-art');
+      return new Promise(function(resolve,reject){
+          read(html, function(err, art, options){
+                if(err){
+                  reject(err);
+                }
+                      resolve(art.content);
+              });
+        });
   },
   getReadingTime : function (_url,rawData) {
     var readingTime = require('reading-time');
@@ -222,57 +190,6 @@ module.exports = {
             });
     });
   },
-  getReadArtHtml : function (html) {
-      var read = require('read-art');
-      return new Promise(function(resolve,reject){
-          read(html, function(err, art, options){
-                if(err){
-                  reject(err);
-                }
-                      resolve(art.content);
-              });
-        });
-  },
-  getReadArt : function (url) {
-      var URI = encodeURI(url);
-      var read = require('read-art');
-      return new Promise(function(resolve,reject){
-        request(
-        {
-          accept:'text/html',
-          method: 'GET' ,
-          uri: URI,
-          gzip: true,
-        },
-        function (error, response, html) {
-          if(error){
-            reject(error);
-          }
-
-          if (!error && response.statusCode == 200) {
-            var $ = cheerio.load(html);
-            var style = '';
-
-            if($('link','head').text().length)
-              style = $('link','head').text();
-            else
-              style = $('style','body').text();
-
-              var delta = $.html('link[rel=stylesheet]');
-              console.log($('link[rel=stylesheet]').length);
-
-              read(html, function(err, art, options){
-                if(err){
-                  throw err;
-                }
-                      console.log(art.title);
-                      console.log(art.img);
-                      resolve(delta+'\n'+art.content);
-              });
-          }
-      });
-    });
-  },
   getStats: function(URI){
 
       return new Promise(function(resolve,reject){
@@ -287,13 +204,14 @@ module.exports = {
             reading : {}
         };
 
-
         reqfast(_URI, function(err, resp) // Https request
         {
 
           if(err || resp.statusCode >= 400)
           {
-              sails.log.warn(err);
+              sails.log.warn(_URI);
+              sails.log.warn(err.code || err);
+
               if(err.code !== 'ENOTFOUND' || err )
               {
                  reqfast(URI, function(err, resp) // Http request
@@ -363,7 +281,7 @@ module.exports = {
                         article.updatedAt : article.createdAt,
                   description: article.description,
                   image: article.image,
-                  ownlike: ArticleService.getOwnLike(article.likes),
+                  ownlike: ArticleService.getOwnLike(article.likes) || false,
                   likes : article.likes.length,
                   shares : article.shares.length,
                   visits : article.visits.length,
@@ -508,7 +426,6 @@ module.exports = {
                           return b.date - a.date;
                       });
 
-
                         resolve (
                           {
                             size:articles.length,
@@ -519,5 +436,65 @@ module.exports = {
 
                     });
       });
+  },
+  like : {
+    set : function (articleID,articleURL,userID) {
+    return ArticleService.setFBLike(articleURL)
+          .then(function(reslike){ return [reslike]; })
+          .spread(function (reslike) {
+            return Like.create({
+                sid : reslike.id,
+                article : articleID,
+                user : userID
+              })
+              .then(function(created){
+                  sails.log.debug('Set like :'+created.sid);
+                  return ({created : true,record : created});
+              });
+          })
+          .catch(function(err){
+              sails.log.warn(err);
+              return ({created:false,err : err});
+          });
+    },
+    delete : function (sid) {
+    return ArticleService.delFBLike(sid)
+           .then(function(resdel){ return [resdel]; })
+           .spread(function (resdel) {
+             return Like.destroy({
+                       sid : sid
+                     }).then(function deleteRecord(){
+                         sails.log.debug('+Deleted like :'+sid);
+                         return ({deleted : true});
+                       })
+                       .catch(function(err){
+                         sails.log.warn(err);
+                         return ({deleted:false,err : err});
+                       });
+           })
+           .catch(function(err){
+               sails.log.warn(err);
+               return ({deleted:false,err : err});
+           });
+
+    }
+  },
+  share : {
+    set : function (shareSID,articleID,userID,messageShare) {
+    return Share.create({
+                    sid : shareSID,
+                    article : articleID,
+                    user : userID,
+                    message : messageShare
+                  }).then(function createRecord(created){
+                      sails.log.debug('Set share :'+JSON.stringify(created));
+                      return ({created : true,record : created});
+                    },
+                    function (err) {
+                        sails.log.warn(err);
+                        return ({created:false,err : err});
+                    }
+                  );
+    }
   }
 };

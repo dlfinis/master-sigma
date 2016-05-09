@@ -27,6 +27,7 @@
              },
              'core' : {
                        'origin' : 'angular/components/core/',
+                       'page' : 'angular/components/core/page/',
                        'test' : 'angular/components/core/test/',
                        'testpage' : 'angular/components/core/testpage/',
              }

@@ -6,17 +6,19 @@
  */
 
 module.exports = {
-   current: function(req, res) {
+   me: function(req, res) {
       if ( !req.isAuthenticated() ) return res.forbidden();
-      return res.json({user: req.user});
+        return res.json({ user: {
+                          id:req.user.id,
+                          uid:req.user.uid,
+                          name:req.user.name
+                          }
+                        });
    },
-   isAuthenticated: function(req,res){
-     return res.send(req.isAuthenticated());
-   },
-	 setBatchData: function (req,res) {
+	 bulkdata: function (req,res) {
 		 var loremIpsum = require('lorem-ipsum');
-		 var url = 'http://es.wikipedia.org/wiki/Special:Random';
-		 var image = 'http://lorempixel.com/1024/800/';
+		 var url = 'https://es.wikipedia.org/wiki/Special:Random';
+		 var image = 'https://placeimg.com/720/480/tech';
 
 		 var title = loremIpsum({
 										count: 1,                      // Number of words, sentences, or paragraphs to generate.
@@ -30,7 +32,7 @@ module.exports = {
 								  	units: 'paragraphs',           // Generate words, sentences, or paragraphs.
 								  	sentenceLowerBound: 5,         // Minimum words per sentence.
 								  	sentenceUpperBound: 20,       // Maximum words per sentence.
-								  	paragraphLowerBound: 3,        // Minimum sentences per paragraph.
+								  	paragraphLowerBound: 4,        // Minimum sentences per paragraph.
 								  	paragraphUpperBound: 7,        // Maximum sentences per paragraph.
 								});
 
@@ -42,7 +44,7 @@ module.exports = {
 			var categorylist = function (){
 					var list = [];
 					for (i = 1 ;i < random(1,5);i++) {
-							list.push(random(1,10));
+							list.push(random(1,5));
 					}
 					return list;
 			};

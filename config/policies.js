@@ -30,11 +30,11 @@ module.exports.policies = {
   // '*': true,
   //
   'home': {
-    '*': true
+    index: true
   },
-
   'auth': {
-    '*': true
+    facebook: true,
+    'facebook/callback': true
   },
   'canvas': {
     login : true,
@@ -45,9 +45,9 @@ module.exports.policies = {
   //   '*': true
   // },
   //
-  'article': {
-    '*': true
-  },
+  // 'article': {
+  //   '*': true
+  // },
   //
   // 'category': {
   //   '*': true

@@ -8,7 +8,7 @@
           var prms = {
             uri : url
           };
-          return $http.get('/article/stats',{ params : prms  }).then(function (response){
+          return $http.get('/api/article/stats',{ params : prms  }).then(function (response){
               // $log.debug('+Get stats >'+JSON.stringify(response.data));
               return response.data;
           })

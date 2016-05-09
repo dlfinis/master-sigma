@@ -5,13 +5,11 @@
                               'app.main.article.reading',
                               'app.main.article.period',
                               'app.main.article.openlater',
-                              'app.main.article.tdelta',
                               'app.main.registry',
                               'app.main.registry.rarticle',
                               'app.main.registry.rcategory',
                               'app.main.home',
                               'app.main.wall',
-                              'simplePagination'
                             ]
   );
 })();
