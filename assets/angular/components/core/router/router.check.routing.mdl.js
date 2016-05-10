@@ -3,6 +3,31 @@
 
          function CheckRoutingFactory ($q, $log, $rootScope, $location,$http) {
            return {
+             isAuth: function()
+             {
+                 if ($rootScope.userProfile) {
+                     return true;
+                 } else {
+                     var deferred = $q.defer();
+                     $http.post('/me')
+                         .success(function (response) {
+                             if(response.auth)
+                               {
+                                   $rootScope.userProfile = response.user;
+                                   $location.path('/wall');
+                               }else {
+                                   $location.path('/home');
+                               }
+                             deferred.resolve(true);
+                         })
+                         .error(function (err) {
+                             console.log(err);
+                             deferred.reject();
+                             $location.path('/home');
+                          });
+                     return deferred.promise;
+                 }
+               },
              getCurrentUser : function () {
                return $http.get('/me').then(function (response) {
                       return response.user;
