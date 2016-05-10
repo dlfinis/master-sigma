@@ -40,8 +40,8 @@ module.exports = {
 
                     });
                 } else {
-                        // return res.redirect('/canvas/autologin');
-                        this.autologin(req,res);
+                        return res.redirect('/canvas/autologin');
+                        // this.autologin(req,res);
                 }
 
         }

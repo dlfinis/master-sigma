@@ -189,7 +189,7 @@
     $articlelist.getTrustedResource = function(resource)
     {
       //exist url with protocol
-      console.log(resource);
+      // console.log(resource);
       if(resource && resource.indexOf('://')>0)
         return $sce.trustAsResourceUrl(resource.substr(resource.indexOf('://')+1));
       return resource;

@@ -136,7 +136,7 @@ module.exports = {
   },
   //Like 0.2 Share 0.5 Visit 0.3
   getRecom : function (like,share,visit){
-    return (like*0.2) +(share*0.6)+(visit*0.3);
+    return (like*0.2) +(share*0.5)+(visit*0.3);
   },
   getReadArtHtml : function (html) {
       var read = require('read-art');
