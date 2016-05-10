@@ -25,7 +25,6 @@
               {
                   templateUrl: partial.main.article+'tpl/modal.cmp.html',
                   controller: 'ModalCtrl',
-                  size: 'lg',
                   resolve: {
                     article: function(){
                       return article;
