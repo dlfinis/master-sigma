@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  function ArticleListCtrl($scope,$q,$sce,$log,ArticleListFactory)
+  function ArticleListCtrl($scope,$q,$sce,$log,ArticleListFactory,ModalBaseFactory)
   {
     var $articlelist = this;
 
@@ -169,6 +169,12 @@
       $articlelist.currentPage = 1;
     };
 
+    $articlelist.visit = function(article)
+    {
+      ModalBaseFactory.setVisit(article,1);
+      article.visits = article.visits + 1;
+    };
+
     $articlelist.isSecure = function(articleID)
     {
     return  ArticleListFactory.isSecure(articleID)
@@ -182,20 +188,12 @@
 
     $articlelist.getTrustedResource = function(resource)
     {
-    //exist url with protocol
-    if(resource.indexOf('://')>0)
-      return $sce.trustAsResourceUrl(resource.substr(resource.indexOf('://')+1));
+      //exist url with protocol
+      console.log(resource);
+      if(resource && resource.indexOf('://')>0)
+        return $sce.trustAsResourceUrl(resource.substr(resource.indexOf('://')+1));
+      return resource;
     };
-
-    $articlelist.withoutProtocol = function(url)
-    {
-      console.log(url.substr(url.indexOf('://')+1));
-    //exist url with protocol
-    if(url.indexOf('://')>0)
-      return url.substr(url.indexOf('://')+1);
-    };
-
-
 
     $articlelist.test = function test() {
       return 'Test';

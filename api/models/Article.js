@@ -146,10 +146,9 @@ module.exports = {
     },
     beforeUpdate : function(values, next){
           sails.log('+ Before Update'+JSON.stringify(values));
-          if((values.title || values.url || values.description || values.image || values.kind ) &&
-              !(values.title && values.url && values.description && values.image && values.kind))
-                values.state = 'edit';
-
+          // if((values.title || values.url || values.description || values.image || values.kind ) &&
+          //     !(values.title && values.url && values.description && values.image && values.kind))
+          //       values.state = 'edit';
           next();
     },
     toJSON : function(){
