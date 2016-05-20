@@ -20,8 +20,7 @@ module.exports = function (req, res, next) {
     var redirect =
     ((req.url.indexOf('canvas') > -1) || (req.url.indexOf('facebook') > -1)) ? '/canvas/login' : '/';
 
-    sails.log('+ REDIRECT ',redirect);
-
+    sails.log('+ REDIRECT POLICIE',redirect);
     return res.redirect(redirect);
     // return res.redirect('/login');
 };

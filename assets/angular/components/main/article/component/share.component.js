@@ -63,32 +63,19 @@
   function ShareCtrl($scope,ShareFactory)
   {
     var $share = this;
-    $share.count = 0;
-    $share.state = false;
-    $share.model = 0;
-    $share.stats = 0;
-    $share.article_uid = "";
-
       $share.setShare = function(shareSID,articleID,messageShare) {
         ShareFactory.setshare(shareSID,articleID,messageShare);
-      };
-
-      $share.getShareListInfo = function(articleID){
-        console.log(articleID);
-        // ShareFactory.getShareListInfo(articleID).then(function(response){
-        //   $log.debug(response.data);
-        // });
       };
   }
 
   angular.module('app.main.article.share', [])
          .factory('ShareFactory',ShareFactory)
          .controller('ShareCtrl',ShareCtrl)
-         .directive('share', function($rootScope,$q,$http,$log,$facebook,partial){
+         .directive('share', function($log,$rootScope,$facebook,partial){
            return {
                restrict: 'EA',
                scope: {
-                 stats: "=",
+                 stats: "=", 
                  source: "=" //article
                },
                transclude: true,
@@ -96,60 +83,30 @@
                controllerAs: '$share',
                templateUrl: partial.main.article+'tpl/share.cmp.html',
                link: function(scope, element, attr,controller) {
-
-                  // $q.when(controller.getShareListInfo(scope.source.id))
-                  // .then(function (response) {
-                  //     $log.debug(response.data);
-                  //     $log.debug();
-                  // });
-                  // $log.debug(controller.getShareListInfo(scope.source.id));
-
-                  // $q.when($http.get('/user/get_user')).then(function (response) {
-                  //     $log.debug(response);
-                  // });
-
                  	element.unbind();
-        					element.bind('click', function(e) {
-        						$facebook.ui({
-        							method: 'share',
-        							href: scope.source.url
-        						}).then(function(response){
-                      $log.debug(response);
-
-                      if(response && !response.error_code)
-                      {
-                        // $facebook.api("/me")
-                        // .then(function(user) {
-                        //     // $log.debug(user);
-                        //     var completeSID = user.id+"_"+response.post_id;
-                        //         $facebook.api('/'+completeSID)
-                        //         .then(function(share){
-                        //           // $log.debug(share);
-                        //           controller.setShare(share.id,scope.source.id,share.message);
-                        //          });
-                        //         scope.stats = scope.stats+1;
-                        // })
-                        // .catch(function(err) {
-                        //           $log.error(err);
-                        // });
-                            var user = $rootScope.userProfile;
-                            $log.debug(user);
-                            var completeSID = user.uid+"_"+response.post_id;
-                                $facebook.api('/'+completeSID)
-                                .then(function(share){
-                                  // $log.debug(share);
-                                  controller.setShare(share.id,scope.source.id,share.message);
-                                 });
-                                scope.stats = scope.stats+1;
-
-                      }
-
-        						});
-        						e.preventDefault();
+        			element.bind('click', function(e) {
+          					$facebook.ui(
+		                    {
+		      							  method: 'share',
+		      							  href: scope.source.url
+		                    })
+		                    .then(function(response){
+                            if(response && !response.error_code)
+                            {
+                              var user = $rootScope.userProfile;
+                              var completeSID = user.uid+"_"+response.post_id;
+                                  $facebook.api('/'+completeSID)
+                                  .then(function(share){
+                                      if(share){
+                                        controller.setShare(share.id,scope.source.id,share.message);
+                                        scope.stats = scope.stats+1;
+                                      }
+                                   });
+                            }
+            						});
+          						e.preventDefault();
         					});
-
           			}
             };
-
          });
 })();

@@ -16,6 +16,7 @@ module.exports = {
     }
     if(request){
        _req = request;
+       request.session.authenticated = true;
        request.session.user = user;
        request.session.origin = origin;
     }
