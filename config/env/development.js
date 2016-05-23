@@ -45,4 +45,7 @@ module.exports = {
     //   cert: require('fs').readFileSync(__dirname + '/ssl/server.crt')
     // },
     port: process.env.PORT || 1337,
+    log: {
+      level: 'verbose'
+    }
 };
