@@ -79,6 +79,9 @@ module.exports = {
 
      environment: process.env.NODE_ENV || 'development',
 
+     scraper : {
+        url: 'https://'+ process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1" +':'+3000
+     },
     /***************************************************************************
      * Set the log level in production environment to "silent"                 *
      ***************************************************************************/

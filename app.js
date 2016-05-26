@@ -61,6 +61,7 @@ process.chdir(__dirname);
           var invoked = false;
 
           var process = childProcess.fork(scriptPath);
+          console.log('+ API of scraper init');
 
           // listen for errors as they may prevent the exit event from firing
           process.on('error', function (err) {
@@ -73,7 +74,7 @@ process.chdir(__dirname);
           process.on('exit', function (code) {
               if (invoked) return;
               invoked = true;
-              var err = code === 0 ? null : new Error('exit code ' + code);
+              var err = code === 0 ? 'May main app finished' : new Error('Exit code ' + code);
               callback(err);
           });
 
