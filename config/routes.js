@@ -45,6 +45,7 @@ module.exports.routes = {
                   skipAssets: true,
           },
       */
+
     'GET /me' :{
         controller : 'UserController',
         action : 'me',
@@ -85,6 +86,10 @@ module.exports.routes = {
       action : 'logout',
               skipAssets: true,
     },
+    /**
+    * Route for access to API of Scraper System
+    */
+    'GET /scraper' : 'ScraperController.site',
 
     /***************************************************************************
      *                                                                          *
