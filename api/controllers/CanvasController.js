@@ -17,7 +17,9 @@ module.exports = {
         passport.authenticate('facebook-canvas',
         {
             scope: [
-            'publish_actions'
+              'publish_actions',
+              'user_about_me',
+              'user_friends'
             ]
         },
         function (err, user)
