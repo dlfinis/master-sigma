@@ -69,15 +69,11 @@
               $location.path('/wall');
             }
             else {
-              this.getCurrentUser().then(function (user) {
-                $rootScope.userProfile = user;
-                $location.path('/wall');
-              })
-              .catch(function (err) {
                 if(String($location.absUrl()).contain('facebook'))
                   $location.path('/auth/facebook/canvas');
-                $location.path('/home');
-              });
+                else {
+                  $location.path('/home');
+                }
             }
             }
            };

@@ -53,8 +53,12 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
 
     process.nextTick(function () {
 
-        // Cehck handler
+        // Check handler
         // sails.log.debug("=> verifyHandler with ", token, tokenSecret);
+
+        //Debug of information returned by Facebook
+        sails.log('+ Profile Facebook >');
+        sails.log(profile);
 
 
         User.findOne({uid: profile.id}, function (err, user) {

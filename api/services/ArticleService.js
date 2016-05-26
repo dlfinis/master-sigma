@@ -79,7 +79,7 @@ module.exports = {
   },
   getCreator : function(article){
     var creator = {};
-    if(article.creator != 'undefined' || article.creator == [])
+    if(article.creator && article.creator !== 'undefined')
     {
         creator = {
           id: article.creator.id,
