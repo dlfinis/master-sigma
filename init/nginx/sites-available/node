@@ -1,21 +1,21 @@
 server {
 
-        listen 80;
-        listen 443 ssl;
-	
-       ssl_certificate /etc/nginx/ssl/nginx.crt;
-       ssl_certificate_key /etc/nginx/ssl/nginx.key;
-#	rewrite ^ https://$http_host$request_uri? permanent; 
+  listen 80;
+  listen 443 ssl;
+
+  ssl_certificate /etc/nginx/ssl/nginx.crt;
+  ssl_certificate_key /etc/nginx/ssl/nginx.key;
+#	rewrite ^ https://$http_host$request_uri? permanent;
 #	 port_in_redirect off;
 # 	 autoindex on;
 
-    	server_name master.sigma;
+   server_name master.sigma;
 
     location / {
-
-#        proxy_pass_header Server;
+        add_header 'Access-Control-Allow-Origin' '*';
+#       proxy_pass_header Server;
         proxy_set_header Host $host;
-#        proxy_redirect off;
+#       proxy_redirect off;
         proxy_pass http://localhost:1337/;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

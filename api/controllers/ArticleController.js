@@ -102,12 +102,12 @@ module.exports = {
   },
   stats: function (req,res) {
     var URI = req.param('uri');
-    ArticleService.getStats(URI).then(function (response) {
+    ArticleService._getStats(URI).then(function (response) {
       return res.ok(response);
     })
     .catch(function (err) {
         sails.log.error(err);
-        return res.negotiate(err);
+        return res.badRequest(err);
     });
   },
   alive : function (req,res) {

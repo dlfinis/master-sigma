@@ -270,6 +270,50 @@ module.exports = {
       });
 
     },
+    _getStats: function(URI){
+
+        return new Promise(function(resolve,reject){
+          var reqfast = require('req-fast');
+          var _URI_OLD = URI;
+               URI = String(URI).indexOf('http') === 0 ? URI : 'http://'+URI;
+          var _URI = String(URI).replace('http://','https://');
+
+          var stats ={
+              alive : false,
+              reading : {}
+          };
+
+                   reqfast(URI, function(err, resp) // Http request
+                   {
+                      if(err){
+                        sails.log.warn(err.reason || 'Error of access');
+
+                        Article.update({'url': _URI_OLD},{'state':'disable'}) //Set Dead Article
+                        .then(function (updated) {
+                          sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);
+                        });
+
+                        resolve(stats);
+                      }
+
+                      if(resp && resp.statusCode && !(resp.statusCode >= 200 && resp.statusCode <=208))
+                          resolve(stats);
+
+                      if(resp && resp.statusCode && resp.statusCode >= 200 && resp.statusCode <=208)
+                        {
+                          stats.alive = true;
+                          ArticleService.getReadingTime(URI,resp.body)
+                            .then(function (reading) {
+                                stats.reading = reading;
+                                resolve(stats); // Alive site
+                            })
+                            .catch(function (err) {
+                              reject(err);
+                            });
+                        }
+                  });
+              });
+      },
   getArticleStructure : function (article){
     return {
                   id: article.id,

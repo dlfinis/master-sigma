@@ -13,8 +13,12 @@ var passport = require('passport'),
 module.exports.http = {
 
     customMiddleware: function (app) {
+      sails.log.debug('+ Init Express Midleware');
 
-        sails.log.debug('+ Init Express Midleware');
+      var express = require('../node_modules/sails/node_modules/express');
+      var path = require('path');
+
+        app.use('/website/static', express.static(path.resolve(__dirname, '../web-scraper/public')));
 
             passport.use(new FacebookStrategy({
                 clientID: sails.config.application_auth.facebookClientID,

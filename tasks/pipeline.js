@@ -50,6 +50,7 @@ var jsFilesToInject = [
   'bower_components/ui-select/dist/select.js',
   'bower_components/ng-onload/release/ng-onload.min.js',
   'bower_components/ng-facebook/ngFacebook.js',
+  'bower_components/angular-resource/angular-resource.js',
   'bower_components/angular-sanitize/angular-sanitize.js',
   'bower_components/angular-route/angular-route.js',
 

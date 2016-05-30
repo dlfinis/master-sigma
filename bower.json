@@ -30,6 +30,7 @@
     "moment": "^2.12.0",
     "ng-facebook": "^0.1.6",
     "webfontloader": "^1.6.24",
-    "fontfaceobserver": "^1.7.1"
+    "fontfaceobserver": "^1.7.1",
+    "angular-resource": "^1.5.6"
   }
 }

@@ -5,16 +5,16 @@
 <div class="modal-body">
 <div class="source">
   <span>&#8226; </span><div class="reading" reading stats="article.stats"></div>
-  <a class="external" ng-href="{{article.url}}" target="_blank">
+  <a class="external" ng-href="{{::article.url}}" target="_blank">
     <i class="fa fa-external-link"></i> Abrir Página
   </a>
 </div>
 <div class="embed-responsive embed-responsive-4by3">
-  <div class="fade-in-out loader" >
+  <div class="fade-in-out loader" ng-hide="sitePath" >
     <img class="" src="/images/spinner-2.gif"/>
   </div>
-  <iframe class="embed-responsive-item" sandbox="allow-same-origin allow-top-navigation allow-scripts"
-  ng-src="{{currentUrl}}" ng-onload="hello">
+  <iframe class="embed-responsive-item" sandbox=""
+  ng-src="{{::sitePath}}" ng-onload="hello">
     <p>Tu navegador no soporta iframes.</p>
   </iframe>
 </div>
@@ -27,10 +27,10 @@
           <div class="categories">
               <div class="category"
               ng-repeat="category in article.categories | limitTo:4">
-              <span>&#8226;</span>{{category.name}}
+              <span>&#8226;</span>{{::category.name}}
               </div>
           </div>
-          <div class="section-btn" uid-post="{{article.uid}}">
+          <div class="section-btn" uid-post="{{::article.uid}}">
             <like
             stats="article.likes"
             source="article"
