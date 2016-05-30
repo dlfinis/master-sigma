@@ -344,6 +344,10 @@ footer p {
     height: 0px;
 }
 
+.advancedSearchBox .search-parameter .value input {
+    height: 25px;
+}
+
 .sort-bar{
   /*background:white;*/
   display:block;

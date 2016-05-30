@@ -1,0 +1,37 @@
+<h1>TestPage</h1>
+
+<div class="row container">
+<div class="col-md-6">
+<div class="" style="width:70%;display:inline-block">
+  <nit-advanced-searchbox
+  ng-model="searchParams"
+  parameters="availableSearchParams"
+  placeholder="Búsqueda...">
+</nit-advanced-searchbox>
+</div>
+<div class="" style="width:20%;display:inline-block">
+  <a class="btn-default btn" ng-click="updateData(searchParams)"><i class="glyphicon glyphicon-retweet"></i></a>
+</div>
+</div>
+</div>
+
+<pre>{{searchParams}}</pre>
+<div class="col-sm-12 post animate-repeat"
+ng-animate="'animate'"
+     ng-repeat="article in articlelist"
+>
+        <div id="title" class="title"><h3 ng-bind="article.title"></h3></div>
+        <div class="box">
+            <div class="info">
+              <div class="creator"
+                   ng-bind="article.creator.name"></div>
+              <div class="period" period data="{{::article.date }}"></div>
+              <span ng-if="article.state === 'edit'">&#8226;</span>
+              <div class="edition" ng-if="article.state === 'edit'">Editado</div>
+              <div class="visits" ng-if="article.visits > 0">{{article.visits.length}} Visitas</div>
+            </div>
+            <p class="text" id="description" ng-bind="article.description"></p>
+            <div openlater source="article"></div>
+         </div>
+  </div>
+<span ng-show="articlelist.length == 0">No existe recursos con esa búsqueda</span>

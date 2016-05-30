@@ -7,6 +7,7 @@
                          'ngOnload',
                          'angularLazyImg',
                          'ui.bootstrap',
+                         'angular-advanced-searchbox',
                          'ui.select',
                          'ngResource',
                          'ngFacebook',
@@ -83,6 +84,8 @@
       );
     $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
     $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
+    $routeProvider.when('/test', { template: '<test></test>' });
+    $routeProvider.when('/testpage', { template: '<testpage></test>' });
     $routeProvider.otherwise({redirectTo: '/'});
   }])
   /*CONFIG*/

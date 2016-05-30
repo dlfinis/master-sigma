@@ -25,6 +25,7 @@ var cssFilesToInject = [
   'bower_components/angular-loading-bar/build/loading-bar.css',
   'bower_components/bootstrap-css/**/bootstrap.css',
   'bower_components/bootstrap-css/**/bootstrap-theme.css',
+  'bower_components/angular-advanced-searchbox/dist/angular-advanced-searchbox.min.css',
   'bower_components/ui-select/**/select.css',
   'styles/**/*.css',
 ];
@@ -37,6 +38,8 @@ var jsFilesToInject = [
   // Load sails.io before everything else
   // 'js/dependencies/sails.io.js',
 
+  //Load Base
+  'bower_components/jquery/dist/jquery.js',
   // Load Angular App
   'bower_components/fontfaceobserver/fontfaceobserver.js',
   'bower_components/moment/min/moment-with-locales.js',
@@ -47,6 +50,7 @@ var jsFilesToInject = [
   'bower_components/angular-loading-bar/build/loading-bar.js',
   'bower_components/angular-animate/angular-animate.js',
   'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+  'bower_components/angular-advanced-searchbox/dist/angular-advanced-searchbox-tpls.js',
   'bower_components/ui-select/dist/select.js',
   'bower_components/ng-onload/release/ng-onload.min.js',
   'bower_components/ng-facebook/ngFacebook.js',

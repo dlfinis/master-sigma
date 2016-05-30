@@ -69,7 +69,7 @@
               $location.path('/wall');
             }
             else {
-                if(String($location.absUrl()).contain('facebook'))
+                if($location.absUrl().contain('facebook'))
                   $location.path('/auth/facebook/canvas');
                 else {
                   $location.path('/home');
