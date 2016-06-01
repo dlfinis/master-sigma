@@ -7,18 +7,18 @@
 
 module.exports = {
 
-      create: function (req,res) {
-      var userID = req.user.id;
-      var articleID = req.param('articleID');
-      var visitTime = req.param('visitTime');
+    create: function (req,res) {
+        var userID = req.user.id;
+        var articleID = req.param('articleID');
+        var visitTime = req.param('visitTime');
 
-      Visit.create({user: userID,article: articleID,time: visitTime})
+        Visit.create({user: userID,article: articleID,time: visitTime})
            .exec(function createCB(err, created){
-             if(err)
-              return sails.log.warn(err);
+               if(err)
+                   return sails.log.warn(err);
 
-             return res.ok(created);
-          });
+               return res.ok(created);
+           });
 
-      }
+    }
 };

@@ -8,30 +8,30 @@
 
     RegistryFactory.getCategories()
                   .then(function (response){
-                      $registry.categories = response;
+                    $registry.categories = response;
                   })
                   .catch(function (err) {
-                      console.error(err.stack);
+                    console.error(err.stack);
                   });
 
     $registry.reset = function(){
-        $registry.article = {};
-        $registry.articleForm.$setPristine();
+      $registry.article = {};
+      $registry.articleForm.$setPristine();
     };
 
     $registry.save = function(){
-        if(JSON.stringify($registry.article) === '{}')
+      if(JSON.stringify($registry.article) === '{}')
         {
         console.log('Not article info');
-        }else{
-          RegistryFactory.saveArticle($registry.article).then(function(response){
-            if(response.status == 201)
+      }else{
+        RegistryFactory.saveArticle($registry.article).then(function(response){
+          if(response.status == 201)
             {
-              $registry.reset();
-            }
-          });
+            $registry.reset();
+          }
+        });
           // console.log(delta );
-        }
+      }
     };
 
     // $registry.article.categories = {};

@@ -8,9 +8,9 @@
 module.exports = {
     index: function(req, res)
     {
-      Category.find(function(err, categories)
+        Category.find(function(err, categories)
       {
-        res.send(categories);
-      })
+            res.send(categories);
+        });
     }
-}
+};

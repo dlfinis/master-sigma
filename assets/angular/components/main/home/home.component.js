@@ -8,7 +8,7 @@
       // scope: {},
       // controller: 'homeCtrl',
       // controllerAs: 'homeScope',
-      templateUrl: partial.main.home+'home.html',
+      templateUrl: partial.main.home+'home.html'
     };
   });
 

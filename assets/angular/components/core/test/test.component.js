@@ -7,7 +7,7 @@
       scope: {},
       controller: 'testCtrl',
       controllerAs: 'sc',
-      templateUrl: partial.core.test+'test.html',
+      templateUrl: partial.core.test+'test.html'
     };
   });
 

@@ -5,7 +5,7 @@
   .directive('header',function (partial) {
     return {
       restrict : 'AE',
-      templateUrl: partial.core.page+'tpl/header.cmp.html',
+      templateUrl: partial.core.page+'tpl/header.cmp.html'
     };
   });
 

@@ -2,46 +2,46 @@
   'use strict';
 
   var DateDiff = {
-      inMinutes: function(d1, d2) {
-          var t2 = d2.getTime();
-          var t1 = d1.getTime();
-          return parseInt((t2-t1)/(60*1000));
-      },
-      inHours: function(d1, d2) {
-          var t2 = d2.getTime();
-          var t1 = d1.getTime();
-          return parseInt((t2-t1)/(3600*1000));
-      },
-      inDays: function(d1, d2) {
-          var t2 = d2.getTime();
-          var t1 = d1.getTime();
-          return parseInt((t2-t1)/(24*3600*1000));
-      },
-      inWeeks: function(d1, d2) {
-          var t2 = d2.getTime();
-          var t1 = d1.getTime();
-          return parseInt((t2-t1)/(24*3600*1000*7));
-      },
-      inMonths: function(d1, d2) {
-          var d1Y = d1.getFullYear();
-          var d2Y = d2.getFullYear();
-          var d1M = d1.getMonth();
-          var d2M = d2.getMonth();
-          return (d2M+12*d2Y)-(d1M+12*d1Y);
-      },
-      inYears: function(d1, d2) {
-          return d2.getFullYear()-d1.getFullYear();
-      }
+    inMinutes: function(d1, d2) {
+      var t2 = d2.getTime();
+      var t1 = d1.getTime();
+      return parseInt((t2-t1)/(60*1000));
+    },
+    inHours: function(d1, d2) {
+      var t2 = d2.getTime();
+      var t1 = d1.getTime();
+      return parseInt((t2-t1)/(3600*1000));
+    },
+    inDays: function(d1, d2) {
+      var t2 = d2.getTime();
+      var t1 = d1.getTime();
+      return parseInt((t2-t1)/(24*3600*1000));
+    },
+    inWeeks: function(d1, d2) {
+      var t2 = d2.getTime();
+      var t1 = d1.getTime();
+      return parseInt((t2-t1)/(24*3600*1000*7));
+    },
+    inMonths: function(d1, d2) {
+      var d1Y = d1.getFullYear();
+      var d2Y = d2.getFullYear();
+      var d1M = d1.getMonth();
+      var d2M = d2.getMonth();
+      return (d2M+12*d2Y)-(d1M+12*d1Y);
+    },
+    inYears: function(d1, d2) {
+      return d2.getFullYear()-d1.getFullYear();
+    }
   };
   var DateLabel = {
-      main : 'Hace',
-      now: 'Hace poco',
-      yesterday: 'Ayer',
-      min: 'min',
-      hour: 'hr',
-      day: 'día',
-      month: 'mes',
-      year: 'año'
+    main : 'Hace',
+    now: 'Hace poco',
+    yesterday: 'Ayer',
+    min: 'min',
+    hour: 'hr',
+    day: 'día',
+    month: 'mes',
+    year: 'año'
   };
 
   function getTimePublished(datePost){
@@ -79,24 +79,24 @@
       dateDiff = DateLabel.yesterday;
 
     if(daysDiff > 0 && daysDiff < 4 )
-        dateDiff = DateLabel.main+' ' + daysDiff +' '+DateLabel.day+(daysDiff == 1 ? '':'s');
+      dateDiff = DateLabel.main+' ' + daysDiff +' '+DateLabel.day+(daysDiff == 1 ? '':'s');
 
     if(daysDiff >= 4 && monthsDiff <= 12)
-        dateDiff = dayMonthPublished;
+      dateDiff = dayMonthPublished;
 
     if(monthsDiff == 1)
-        dateDiff = DateLabel.main+' ' + monthsDiff +' '+ DateLabel.month;
+      dateDiff = DateLabel.main+' ' + monthsDiff +' '+ DateLabel.month;
 
     if(monthsDiff >= 1 && monthsDiff <= 12)
-        dateDiff = dayMonthPublished;
+      dateDiff = dayMonthPublished;
 
     if(yearsDiff == 1 && monthsDiff <= 13 )
-        dateDiff = DateLabel.main+' ' + yearsDiff +' '+ DateLabel.year;
+      dateDiff = DateLabel.main+' ' + yearsDiff +' '+ DateLabel.year;
 
     if(monthsDiff > 13 )
-        dateDiff = dayPublished;
+      dateDiff = dayPublished;
 
-  return dateDiff;
+    return dateDiff;
 
   }
 
@@ -104,7 +104,7 @@
   {
     var $period = this;
     $period.getPeriodInfo = function(date){
-        return getTimePublished(date);
+      return getTimePublished(date);
     };
   }
 
@@ -112,16 +112,16 @@
          .controller('PeriodCtrl',PeriodCtrl)
          .directive('period', function(partial,$q){
            return {
-               restrict: 'EA',
-               scope: {
-                 data: "@"
-               },
-               controller: 'PeriodCtrl',
-               controllerAs: '$period',
-               template: '<div ng-bind="period"></div>',
-               link: function(scope, element, attrs,controller){
-                  scope.period = controller.getPeriodInfo(scope.data);
-              }
+             restrict: 'EA',
+             scope: {
+               data: '@'
+             },
+             controller: 'PeriodCtrl',
+             controllerAs: '$period',
+             template: '<div ng-bind="period"></div>',
+             link: function(scope, element, attrs,controller){
+               scope.period = controller.getPeriodInfo(scope.data);
+             }
            };
          });
 

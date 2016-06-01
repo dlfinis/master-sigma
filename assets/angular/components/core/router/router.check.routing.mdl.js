@@ -1,83 +1,83 @@
 (function () {
   'use strict';
 
-         function CheckRoutingFactory ($q, $log, $rootScope, $location,$http) {
-           return {
-             isAuth: function()
+  function CheckRoutingFactory ($q, $log, $rootScope, $location,$http) {
+    return {
+      isAuth: function()
              {
-                 if ($rootScope.userProfile) {
-                     return true;
-                 } else {
-                     var deferred = $q.defer();
-                     $http.post('/me')
+        if ($rootScope.userProfile) {
+          return true;
+        } else {
+          var deferred = $q.defer();
+          $http.post('/me')
                          .success(function (response) {
-                             if(response.auth)
+                           if(response.auth)
                                {
-                                   $rootScope.userProfile = response.user;
-                                   $location.path('/wall');
-                               }else {
-                                   $location.path('/home');
-                               }
-                             deferred.resolve(true);
+                             $rootScope.userProfile = response.user;
+                             $location.path('/wall');
+                           }else {
+                             $location.path('/home');
+                           }
+                           deferred.resolve(true);
                          })
                          .error(function (err) {
-                             console.log(err);
-                             deferred.reject();
-                             $location.path('/home');
-                          });
-                     return deferred.promise;
-                 }
-               },
-             getCurrentUser : function () {
-               return $http.get('/me').then(function (response) {
-                      return response.user;
-               })
+                           console.log(err);
+                           deferred.reject();
+                           $location.path('/home');
+                         });
+          return deferred.promise;
+        }
+      },
+      getCurrentUser : function () {
+        return $http.get('/me').then(function (response) {
+          return response.user;
+        })
                .catch(function (err) {
-                  $log.error(err);
-                  return false;
+                 $log.error(err);
+                 return false;
                });
-             },
-             isAuthenticated: function()
+      },
+      isAuthenticated: function()
              {
-                 if ($rootScope.userProfile) {
+        if ($rootScope.userProfile) {
                     //  $log.debug('+ LoggedIn User > '+JSON.stringify($rootScope.userProfile));
-                    return true;
-                 } else {
-                     var deferred = $q.defer();
-                     $http.get('/me')
+          return true;
+        } else {
+          var deferred = $q.defer();
+          $http.get('/me')
                           .success(function (response) {
-                             if(response.user)
+                            if(response.user)
                                {
                                  //  $log.debug('+GET User > '+JSON.stringify($rootScope.userProfile));
-                                   $rootScope.userProfile = response.user;
+                              $rootScope.userProfile = response.user;
 
-                               }else {
-                                   $location.path('/home');
-                               }
-                             deferred.resolve(true);
-                         })
+                            }else {
+                              $location.path('/home');
+                            }
+                            deferred.resolve(true);
+                          })
                          .error(function (err) {
-                             $log.error(err);
-                             deferred.reject();
-                             $location.path('/home');
-                          });
-                     return deferred.promise;
-              }
-            },
-            isOK : function(){
-            if($rootScope.userProfile) {
-              $location.path('/wall');
-            }
-            else {
-                if(String($location.absUrl()).contain('facebook'))
-                  $location.path('/auth/facebook/canvas');
-                else {
-                  $location.path('/home');
-                }
-            }
-            }
-           };
-         }
-         angular.module('app.core.router.check', [])
+                           $log.error(err);
+                           deferred.reject();
+                           $location.path('/home');
+                         });
+          return deferred.promise;
+        }
+      },
+      isOK : function(){
+        if($rootScope.userProfile) {
+          $location.path('/wall');
+        }
+        else {
+          if(String($location.absUrl()).contain('facebook'))
+            $location.path('/auth/facebook/canvas');
+          else {
+            $location.path('/home');
+          }
+        }
+      }
+    };
+  }
+  angular.module('app.core.router.check', [])
                 .factory('CheckRoutingFactory',CheckRoutingFactory);
 })();

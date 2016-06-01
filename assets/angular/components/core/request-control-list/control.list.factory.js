@@ -1,24 +1,24 @@
 (function(module) {
-    'use strict';
+  'use strict';
 
-    function ControlListFactory ($http,$log,$q) {
-      return {
-        getStats: function(url)
+  function ControlListFactory ($http,$log,$q) {
+    return {
+      getStats: function(url)
         {
-          var prms = {
-            uri : url
-          };
-          return $http.get('/api/article/stats',{ params : prms  }).then(function (response){
+        var prms = {
+          uri : url
+        };
+        return $http.get('/api/article/stats',{ params : prms  }).then(function (response){
               // $log.debug('+Get stats >'+JSON.stringify(response.data));
-              return response.data;
-          })
+          return response.data;
+        })
           .catch(function (err) {
-              $log.error(err.stack);
+            $log.error(err.stack);
           });
-        }
-      };
-    }
+      }
+    };
+  }
 
-    module.factory('ControlListFactory',ControlListFactory);
+  module.factory('ControlListFactory',ControlListFactory);
 
 })(angular.module('app.core.request.control.list'));

@@ -7,11 +7,11 @@
  */
 
 module.exports = {
-	index: function(req, res)
+	                                        index: function(req, res)
 	{
-		Post.find(function(err, posts)
+		                                        Post.find(function(err, posts)
 		{
-			res.send(posts);
-		})
+			                                        res.send(posts);
+		});
 	}
 };

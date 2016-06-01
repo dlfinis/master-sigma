@@ -19,20 +19,20 @@
 
     $articlelist.clear = function ($event, $select){
                              //stops click event bubbling
-                             $event.stopPropagation();
+      $event.stopPropagation();
                              //to allow empty field, in order to force a selection remove the following line
-                             $select.selected = undefined;
+      $select.selected = undefined;
                              //reset search query
-                             $select.search = undefined;
+      $select.search = undefined;
                              //focus and open dropdown
-                             $select.activate();
+      $select.activate();
     };
 
     $articlelist.getCategories = function(){
       $q.when(ArticleListFactory.getCategories()).then(function(response){
-           angular.forEach(response, function(category) {
-	            $articlelist.mcategories.push(category);
-	          });
+        angular.forEach(response, function(category) {
+	                                                                                                                                                                                                                                                                                                                           $articlelist.mcategories.push(category);
+	                                                                                                                                                                                                                                                             });
       });
     };
 
@@ -40,17 +40,17 @@
       ArticleListFactory.getArticles(props).then(function(response){
         // $articlelist.data = response.data.results ;
 
-            var articleList = [];
-            angular.forEach( response.data.results, function(article) {
+        var articleList = [];
+        angular.forEach( response.data.results, function(article) {
                 //  $log.debug("Recommend > "+article.recommend);
                 //  $log.debug("State > "+article.state);
-                    articleList.push(article);
-            });
+          articleList.push(article);
+        });
 
 
-            $articlelist.data = articleList;
-            $articlelist.totalItems = response.data.size;
-            $articlelist.numberOfPages = Math.ceil(response.data.size/$articlelist.perPage) || 1;
+        $articlelist.data = articleList;
+        $articlelist.totalItems = response.data.size;
+        $articlelist.numberOfPages = Math.ceil(response.data.size/$articlelist.perPage) || 1;
       });
     };
 
@@ -64,58 +64,58 @@
      * Pagination
      */
 
-     $articlelist.startItem = 0;
-     $articlelist.currentPage = 1;
-     $articlelist.perPage = 10; //Elements by Page
-     $articlelist.numberOfPages = 1;
+    $articlelist.startItem = 0;
+    $articlelist.currentPage = 1;
+    $articlelist.perPage = 10; //Elements by Page
+    $articlelist.numberOfPages = 1;
 
-      $articlelist.totalItems = 0;
-      $articlelist.maxSizeItems = 10; // Numbers of Pages
+    $articlelist.totalItems = 0;
+    $articlelist.maxSizeItems = 10; // Numbers of Pages
 
-      if($scope.source)
+    if($scope.source)
       {
-        $articlelist.data = $scope.source.articlelist.results;
-        $articlelist.mcategories = $scope.source.categories.results;
+      $articlelist.data = $scope.source.articlelist.results;
+      $articlelist.mcategories = $scope.source.categories.results;
 
-        $articlelist.totalItems = $scope.source.articlelist.size;
-        $articlelist.numberOfPages =
+      $articlelist.totalItems = $scope.source.articlelist.size;
+      $articlelist.numberOfPages =
             Math.ceil($articlelist.totalItems/ArticleListFactory._params().perPage) || 1;
-      }
+    }
 
-      $articlelist.startfrom = function(){
-        return ($articlelist.perPage * $articlelist.currentPage)-($articlelist.perPage);
-      };
+    $articlelist.startfrom = function(){
+      return ($articlelist.perPage * $articlelist.currentPage)-($articlelist.perPage);
+    };
 
-      $articlelist.pageChanged = function() {
-        $log.log('Page changed to: ' + $articlelist.currentPage );
-        $log.log('Item: ' + $articlelist.startfrom()  );
+    $articlelist.pageChanged = function() {
+      $log.log('Page changed to: ' + $articlelist.currentPage );
+      $log.log('Item: ' + $articlelist.startfrom()  );
 
-        $articlelist.getNextArticleData($articlelist.startfrom());
-      };
+      $articlelist.getNextArticleData($articlelist.startfrom());
+    };
 
 
     $articlelist.getNextArticleData = function(startValue){
-        $log.debug({
+      $log.debug({
+        'skip' : startValue,
+        'kind' : $articlelist.props.kind,
+        'limit':$articlelist.perPage
+      });
+      $q.when(ArticleListFactory.getArticles(
+        {
           'skip' : startValue,
           'kind' : $articlelist.props.kind,
           'limit':$articlelist.perPage
-        });
-      $q.when(ArticleListFactory.getArticles(
-            {
-              'skip' : startValue,
-              'kind' : $articlelist.props.kind,
-              'limit':$articlelist.perPage
-            }))
+        }))
           .then(function(response){
-              $log.debug(response.data.results);
-              var articleList = [];
-              angular.forEach( response.data.results, function(article) {
-                        articleList.push(article);
-              });
-              $articlelist.data = articleList;
+            $log.debug(response.data.results);
+            var articleList = [];
+            angular.forEach( response.data.results, function(article) {
+              articleList.push(article);
+            });
+            $articlelist.data = articleList;
           })
           .catch(function (err) {
-              $log.error(err.stack);
+            $log.error(err.stack);
           });
     };
 
@@ -177,7 +177,7 @@
 
     $articlelist.isSecure = function(articleID)
     {
-    return  ArticleListFactory.isSecure(articleID)
+      return  ArticleListFactory.isSecure(articleID)
       .then(function(data){
         return true;
       })

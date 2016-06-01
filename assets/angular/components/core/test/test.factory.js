@@ -8,7 +8,7 @@
     return {
       isOK: function()
       {
-          return 'OK';
+        return 'OK';
       }
     };
   }

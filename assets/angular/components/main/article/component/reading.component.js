@@ -2,12 +2,12 @@
   'use strict';
 
   function ReadingFactory($http,$log){
-  return {
-          getReading: function(url)
+    return {
+      getReading: function(url)
           {
-            return $http.get('/api/article/reading?uri='+url);
-          },
-        };
+        return $http.get('/api/article/reading?uri='+url);
+      }
+    };
   }
 
   function ReadingCtrl($scope,ReadingFactory,ArticleListFactory)
@@ -24,24 +24,24 @@
          .controller('ReadingCtrl',ReadingCtrl)
          .directive('reading', function($q){
            return {
-               restrict: 'EA',
-               scope: {
-                 stats: "=",
-               },
-               controller: 'ReadingCtrl',
-               controllerAs: '$reading',
-               template: '<div ng-bind="info"></div></i>',
-               link: function(scope, element, attrs,controller){
-                 scope.$watch(
-                                 "stats",
+             restrict: 'EA',
+             scope: {
+               stats: '='
+             },
+             controller: 'ReadingCtrl',
+             controllerAs: '$reading',
+             template: '<div ng-bind="info"></div></i>',
+             link: function(scope, element, attrs,controller){
+               scope.$watch(
+                                 'stats',
                                  function ( values ) {
-                                     if(values && scope.stats.reading )
+                                   if(values && scope.stats.reading )
                                      {
-                                       scope.info =  scope.stats.reading.duration;
-                                     }
+                                     scope.info =  scope.stats.reading.duration;
+                                   }
                                  }
                              );
-              }
+             }
            };
          });
 

@@ -111,7 +111,7 @@ module.exports = {
                 }
 
               }).on('error',  function(err) {
-                sails.log.error("* isAlive >");
+                sails.log.error('* isAlive >');
                 sails.log.error(err.reason);
                 resolve(false);
               });
@@ -128,7 +128,7 @@ module.exports = {
                       resolve(true);
                     }
                 }).on('error',  function(err) {
-                  sails.log.error("* isSecure >");
+                  sails.log.error('* isSecure >');
                   sails.log.error(err.reason);
                   resolve(false);
                 });

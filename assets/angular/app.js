@@ -21,15 +21,15 @@
       $logProvider.debugEnabled(false);
       (function(){
         var _z = console;
-        Object.defineProperty( window, "console", {
-      		get : function(){
-      		    if( _z._commandLineAPI ){
-      			throw "Sorry, Can't execute scripts!";
+        Object.defineProperty( window, 'console', {
+      		                                                                                                                                                                get : function(){
+      		                                                                if( _z._commandLineAPI ){
+      			                                                            throw 'Sorry, Can\'t execute scripts!';
       		          }
-      		    return _z;
+      		                                                                return _z;
       		},
-      		set : function(val){
-      		    _z = val;
+      		                                                                                                                                                                set : function(val){
+      		                                                                _z = val;
       		}
         });
       })();
@@ -54,10 +54,10 @@
     //                                   }
     //                               });
     $routeProvider.when('/', {   resolve: {
-                                        load: function (CheckRoutingFactory) {
-                                              return CheckRoutingFactory.isOK();
-                                              }
-                              },
+      load: function (CheckRoutingFactory) {
+        return CheckRoutingFactory.isOK();
+      }
+    }
     });
     // $routeProvider.when('/home', {  template:'<home></home>',
     //                                 resolve: {
@@ -74,7 +74,7 @@
             return $timeout(function () {
               return ArticleListFactory._source_init();
             }, 2000 );
-          },
+          }
         },
         controller: function($scope, _source){
           $scope._source = _source;
@@ -88,16 +88,16 @@
   /*CONFIG*/
   .run(function ($rootScope,$location,$route,$timeout,$log,FontLoader,FBLoader,cfpLoadingBar,CheckRoutingFactory,KEYS) {
       // Load the facebook SDK asynchronously
-      FBLoader.setScript();
+    FBLoader.setScript();
       //Load fonts asynchronously
-      FontLoader.setFonts();
+    FontLoader.setFonts();
 
       // App is loading, so set isAppLoading to true and start a timer
-      $rootScope.isAppLoading = true;
-      $rootScope.startTime = new Date();
+    $rootScope.isAppLoading = true;
+    $rootScope.startTime = new Date();
 
       // Start loading bar for app loading
-      cfpLoadingBar.start();
+    cfpLoadingBar.start();
 
       // $rootScope.$on('$locationChangeStart', function (event, next, current) {
       //   if($location.path() !== '/home')

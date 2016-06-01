@@ -3,29 +3,29 @@
 
   function LikeFactory($http,$httpParamSerializer){
     return {
-            havelike: function(articleID)
+      havelike: function(articleID)
             {
-              return $http.get('/api/article/havelike',
-                     {
-                       params : {articleID:articleID}
-                     });
-            },
-            setlike: function(articleID,articleURL)
+        return $http.get('/api/article/havelike',
+          {
+            params : {articleID:articleID}
+          });
+      },
+      setlike: function(articleID,articleURL)
             {
-              return $http.post('/api/article/setlike',
-                     {
-                      articleID:articleID ,
-                      articleURL:articleURL
-                     });
-            },
-            deletelike: function(articleSid)
+        return $http.post('/api/article/setlike',
+          {
+            articleID:articleID ,
+            articleURL:articleURL
+          });
+      },
+      deletelike: function(articleSid)
             {
-              return $http.delete('/api/article/deletelike',
-                     {
-                      params : { articleSid:articleSid }
-                     });
-            },
-          };
+        return $http.delete('/api/article/deletelike',
+          {
+            params : { articleSid:articleSid }
+          });
+      }
+    };
   }
 
   function LikeCtrl($scope,LikeFactory)
@@ -33,10 +33,10 @@
     var $like = this;
 
     $like.setLike = function (articleID,articleURL){
-        return LikeFactory.setlike(articleID,articleURL);
+      return LikeFactory.setlike(articleID,articleURL);
     };
     $like.deleteLike = function (articleSid){
-        return LikeFactory.deletelike(articleSid);
+      return LikeFactory.deletelike(articleSid);
     };
   }
 
@@ -45,23 +45,23 @@
          .controller('LikeCtrl',LikeCtrl)
          .directive('like', function( partial,$log,$q){
            return {
-               restrict: 'E',
-               scope: {
-                 stats: "=",
-                 source: "=",
-                 articleSid:"="
-               },
-               controller: 'LikeCtrl',
-               controllerAs: '$like',
-               templateUrl: partial.main.article+'tpl/like.cmp.html',
-               link : function (scope, element, attrs, controller) {
+             restrict: 'E',
+             scope: {
+               stats: '=',
+               source: '=',
+               articleSid:'='
+             },
+             controller: 'LikeCtrl',
+             controllerAs: '$like',
+             templateUrl: partial.main.article+'tpl/like.cmp.html',
+             link : function (scope, element, attrs, controller) {
                  // Check if exist previous like
-                 if(scope.articleSid)
-                    scope.checkstate = true;
-                 scope.doLike = function(){
-                   if((!scope.checkstate))
+               if(scope.articleSid)
+                 scope.checkstate = true;
+               scope.doLike = function(){
+                 if((!scope.checkstate))
                    {
-                      controller.setLike(scope.source.id,scope.source.url)
+                   controller.setLike(scope.source.id,scope.source.url)
                                 .then(function (response){
                                   if(response.data.created) // created,record
                                   {
@@ -73,10 +73,10 @@
                                 .catch(function(err){
                                   $log.error(err);
                                 });
-                   }
-                   else {
-                     scope.checkstate = false;
-                     controller.deleteLike(scope.articleSid)
+                 }
+                 else {
+                   scope.checkstate = false;
+                   controller.deleteLike(scope.articleSid)
                                .then(function(response){
                                  if(response.data)
                                  {
@@ -88,9 +88,9 @@
                                .catch(function(err){
                                  $log.error(err);
                                });
-                   }
-                };
-               }
+                 }
+               };
+             }
            };
          });
 

@@ -9,7 +9,7 @@
                               'app.main.registry.rarticle',
                               'app.main.registry.rcategory',
                               'app.main.home',
-                              'app.main.wall',
+                              'app.main.wall'
                             ]
   );
 })();

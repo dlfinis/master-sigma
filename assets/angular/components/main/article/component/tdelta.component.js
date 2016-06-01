@@ -12,24 +12,24 @@
                   });
     };
 
-}
+  }
   angular.module('app.main.article.tdelta',[])
          .controller('TDeltaCtrl',TDeltaCtrl)
          .directive('tdelta', function($q){
            return {
-               restrict: 'EA',
-               scope: {
-                 url: "@"
-               },
-               controller: 'TDeltaCtrl',
-               controllerAs: '$tdelta',
-               template: '<p>TDelta</p><div class="tdelta" ng-bind="delta"></div>',
-               link: function(scope, element, attrs,controller){
-                 $q.when(controller.getReadingInfo(scope.url)).then(function(stats){
-                      console.log(stats);
-                     scope.delta = stats.duration;
-                 });
-              }
+             restrict: 'EA',
+             scope: {
+               url: '@'
+             },
+             controller: 'TDeltaCtrl',
+             controllerAs: '$tdelta',
+             template: '<p>TDelta</p><div class="tdelta" ng-bind="delta"></div>',
+             link: function(scope, element, attrs,controller){
+               $q.when(controller.getReadingInfo(scope.url)).then(function(stats){
+                 console.log(stats);
+                 scope.delta = stats.duration;
+               });
+             }
            };
          });
 

@@ -10,9 +10,9 @@ module.exports = {
     // Account main page
     index: function (req, res) {
 
-        sails.log("+ ACCOUNT.INDEX");
+        sails.log('+ ACCOUNT.INDEX');
 
-        var accountLabel = "U"; // Empty User
+        var accountLabel = 'U'; // Empty User
 
         sails.log(req.user);
 
@@ -36,9 +36,9 @@ module.exports = {
 
             _.each(models, function (model) {
 
-                if (model.provider == "local") localUsers++;
-                else if (model.provider == "facebook") fbUsers++;
-                else if (model.provider == "twitter") twUsers++;
+                if (model.provider == 'local') localUsers++;
+                else if (model.provider == 'facebook') fbUsers++;
+                else if (model.provider == 'twitter') twUsers++;
 
             });
 

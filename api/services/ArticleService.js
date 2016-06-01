@@ -32,8 +32,8 @@ module.exports = {
     });
   },
   getDate:function(date,format){
-    sails.log("+ ARTICLE.GETDATE");
-    var options = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+    sails.log('+ ARTICLE.GETDATE');
+    var options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
     if(!format)
     {
     moment.locale('es');
@@ -321,7 +321,7 @@ module.exports = {
                   title: article.title,
                   url: article.url,
                   state: article.state,
-                  date: article.state === "edit" ?
+                  date: article.state === 'edit' ?
                         article.updatedAt : article.createdAt,
                   description: article.description,
                   image: article.image,
@@ -342,7 +342,7 @@ module.exports = {
     return new Promise(function(resolve){
       var articlesList = [];
       var totalSize = 0;
-      articleQuery.sort("updatedAt DESC");
+      articleQuery.sort('updatedAt DESC');
       articleQuery.then(function (articles){
 
                     articles.forEach(function (article){
@@ -371,7 +371,7 @@ module.exports = {
 
           // articleQuery.limit(totalSize);
           delete articleQuery._criteria['limit'];
-          articleQuery.sort("createdAt DESC");
+          articleQuery.sort('createdAt DESC');
 
           articleQuery.then(function (articles){
             articles.sort(function(a, b) {
@@ -408,7 +408,7 @@ module.exports = {
       var articlesList = [];
       var totalSize = 0;
 
-      articleQuery.sort("createdAt DESC");
+      articleQuery.sort('createdAt DESC');
 
       delete articleQuery._criteria['limit'];
 
@@ -446,7 +446,7 @@ module.exports = {
     return new Promise(function(resolve){
       var articlesList = [];
       var totalSize = 0;
-      articleQuery.sort("createdAt DESC");
+      articleQuery.sort('createdAt DESC');
       articleQuery.then(function (articles){
 
 

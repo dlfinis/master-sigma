@@ -1,29 +1,28 @@
-(function(){
+(function () {
   'use strict';
 
   angular.module('app.core.testpage', ['app.config'])
-  .factory('TestPageFactory',TestPageFactory)
-  .controller('TestPageCtrl',TestPageCtrl)
-  .directive('testpage',function (partial) {
+  .factory('TestPageFactory', TestPageFactory)
+  .controller('TestPageCtrl', TestPageCtrl)
+  .directive('testpage', function (partial) {
     return {
       restricti:'EA',
       scope: {
-        data : '=',
-        datad : "@",
-        dg : "=",
-      },
+        data : '='
+      }
+        ,
       controller: function($scope) {
            // I want `data` to be injected from the resolve...
            // as it would if this was a "standalone" controller
-           console.log('$scope.data: '+ $scope.data);
-         },
+        console.log('$scope.data: '+ $scope.data);
+      },
       template:
                 '<h2>TEST PAGE</h2>'+
                 '<pre>{{ok}}</pre>'+
                 '</br>'+
-                '<h4>{{datat}</h4>'+
-                '<h4>{{sc}</h4>'
-     };
+                '<h4>{{datat}}</h4>'+
+                '<h4>{{sc}}</h4>'
+    };
   });
 
 
@@ -31,13 +30,13 @@
     return {
       isOK: function()
       {
-          return 'OK';
+        return 'OK';
       },
       getSlowData: function () {
-        console.log(" + Get Data");
+        console.log(' + Get Data');
         return $timeout(function(){
-          console.log("Slow Data");
-          return "Slow Data";
+          console.log('Slow Data');
+          return 'Slow Data';
         }, 5000);
       }
     };
@@ -52,7 +51,7 @@
     console.log(sc.dg);
     console.log(sc);
     var tc = {};
-  tc.rurl = $sce.trustAsResourceUrl("http://i.blogs.es/28348d/captura-de-pantalla-619-/650_1200.jpg");
+    tc.rurl = $sce.trustAsResourceUrl('http://i.blogs.es/28348d/captura-de-pantalla-619-/650_1200.jpg');
   // tc.turl = $sce.getTrustedUrl("http://i.blogs.es/28348d/captura-de-pantalla-619-/650_1200.jpg");
   // tc.url = $sce.trustAsUrl("http://i.blogs.es/28348d/captura-de-pantalla-619-/650_1200.jpg");
   // tc.rjs = $sce.trustAsResourceUrl("http://html5shim.googlecode.com/svn/trunk/html5.js");
