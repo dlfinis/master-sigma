@@ -29,11 +29,10 @@
     };
 
     $articlelist.getCategories = function(){
-      $q.when(ArticleListFactory.getCategories()).then(function(response){
-        angular.forEach(response, function(category) {
-	                                                                                                                                                                                                                                                                                                                           $articlelist.mcategories.push(category);
-	                                                                                                                                                                                                                                                             });
-      });
+      if(!$articlelist.mcategories)
+        ArticleListFactory.getCategories().then(function(categories){
+          $articlelist.mcategories = categories;
+        });
     };
 
     $articlelist.getArticles = function(props){
@@ -169,10 +168,13 @@
       $articlelist.currentPage = 1;
     };
 
-    $articlelist.visit = function(article)
+    $articlelist.setVisit = function(article)
     {
       ModalBaseFactory.setVisit(article,1);
       article.visits = article.visits + 1;
+      var newwindow = window.open(article.url,'name','height=200,width=150');
+      if (window.focus){newwindow.focus();}
+      return false;
     };
 
     $articlelist.isSecure = function(articleID)

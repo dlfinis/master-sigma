@@ -54,38 +54,60 @@ process.chdir(__dirname);
   }
 
 
-      var childProcess = require('child_process');
-      function runScript(scriptPath, callback) {
+  var childProcess = require('child_process');
+  function runScript(scriptPath, callback) {
 
-          // keep track of whether callback has been invoked to prevent multiple invocations
-          var invoked = false;
+    // keep track of whether callback has been invoked to prevent multiple invocations
+    var invoked = false;
 
-          var process = childProcess.fork(scriptPath);
-          console.log('+ API of scraper init');
+    var process = childProcess.fork(scriptPath);
+    console.log('+ API of scraper init');
 
-          // listen for errors as they may prevent the exit event from firing
-          process.on('error', function (err) {
-              if (invoked) return;
-              invoked = true;
-              callback(err);
-          });
+    process.on('data', function(data) {
+      console.log(data.toString());
+    });
 
-          // execute the callback once the process has finished running
-          process.on('exit', function (code) {
-              if (invoked) return;
-              invoked = true;
-              var err = code === 0 ? 'May main app finished' : new Error('Exit code ' + code);
-              callback(err);
-          });
+    // listen for errors as they may prevent the exit event from firing
+    process.on('error', function (err) {
+      if (invoked) return;
+      invoked = true;
+      callback(err);
+    });
 
-      }
+    // execute the callback once the process has finished running
+    process.on('exit', function (code) {
+      if (invoked) return;
+      invoked = true;
+      var err = code === 0 ? null : new Error('Exit code ' + code);
+      callback(err);
+    });
 
-      // Run a script and invoke a callback when complete, e.g.
-      runScript(__dirname + '/web-scraper/app/index.js', function (err) {
-          if (err) throw err;
-          console.log('Finished running web-scraper');
-      });
+  }
+
+  // Run a script and invoke a callback when complete, e.g.
+  runScript(__dirname + '/web-scraper/app/index.js', function (err) {
+    if (err) console.log(err);
+    console.log('+ Finished running API of scraper');
+  });
 
   // Start server
   sails.lift(rc('sails'));
+
+  // // Start server cluster
+  // var cluster = require('cluster');
+  // var os      = require('os');
+  //
+  // var numCPUs = os.cpus().length;
+  //
+  // if (cluster.isMaster) {
+  //   // Master:
+  //   // Let's fork as many workers as you have CPU cores
+  //
+  //   for (var i = 0; i < numCPUs; ++i) {
+  //     cluster.fork();
+  //   }
+  // } else {
+  //   // Worker:
+  //   sails.lift(rc('sails'));
+  // }
 })();

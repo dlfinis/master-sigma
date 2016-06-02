@@ -33,7 +33,6 @@
       </div>
     </div>
 
-    <!-- <div class="col-sm-12 post" -->
     <div class="" ng-if="!$articlelist.data">
       <h4>No existen artículos para visualizar.</h4>
     </div>
@@ -47,7 +46,7 @@
             "
         uid ="{{::article.uid}}"
     >
-            <a class="image-box" ng-href="{{::article.url}}" ng-click="$articlelist.visit(article)" target="_blank">
+            <a class="image-box" ng-href="{{::article.url}}" ng-click="$articlelist.setVisit(article)" target="_blank">
             <img class="image"
             ng-src="/images/spinner.gif"
             lazy-img="{{::$articlelist.getTrustedResource(article.image) ||'/images/submarine.png' }}"

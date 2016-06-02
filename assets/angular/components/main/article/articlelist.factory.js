@@ -69,13 +69,14 @@
         return '>'+articleID;
       },
       getCategories: function()
-          {
-        return $http.get('/api/category/find').then(function (response){
+      {
+        return $http.get('/api/category/find')
+        .then(function (response){
           return response.data.results;
         })
-            .catch(function (err) {
-              console.error(err.stack);
-            });
+        .catch(function (err) {
+          console.error(err.stack);
+        });
       },
       getHtmlData: function(url)
           {

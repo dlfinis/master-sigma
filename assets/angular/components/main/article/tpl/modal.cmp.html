@@ -10,13 +10,16 @@
   </a>
 </div>
 <div class="embed-responsive embed-responsive-4by3">
-  <div class="fade-in-out loader" ng-hide="sitePath" >
+  <div class="loader" ng-hide="sitePath" ng-hide="siteError" ng-class="{fadeInOut: sitePath}" >
     <img class="" src="/images/spinner-2.gif"/>
   </div>
-  <iframe class="embed-responsive-item" sandbox=""
+  <iframe ng-hide="siteError" class="embed-responsive-item" sandbox="allow-scripts allow-popups"
   ng-src="{{::sitePath}}" ng-onload="hello">
     <p>Tu navegador no soporta iframes.</p>
   </iframe>
+  <div ng-if="siteError" >
+    Nos encontramos con dificultades técnicas, por favor abre la página externamente.
+  </div>
 </div>
 
 </div>

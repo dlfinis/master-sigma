@@ -10,45 +10,52 @@
  *
  */
 module.exports = {
-    grunt: {
-        _hookTimeout: 60000
-    },
-    connections: {
-      sigmaDv: {
-        adapter: 'sails-mysql',
-        host: 'localhost',
-        user: 'root',
-        password: 'root',
-        // database: 'mastersigma'
-        database: 'msigmadb'
-      },
-    },
-    models: {
-      schema: true,
-      connection: 'sigmaDv',
-      migrate: 'safe',
-    },
-    application_auth: {
-        enableLocalAuth: true,
-        // Get your keys from https://developers.facebook.com/apps/
-        // module.exports.local = {
-        enableFacebookAuth: true,
-        facebookClientID: "1267766483237355",
-        facebookClientSecret: "a2f5e3a27b74a64bc0d1ecc2d3a9ec31",
-        // facebookCallbackURL: "https://master.sigma/auth/facebook/callback",
-        facebookCallbackURL: "https://master.sigma/auth/facebook/callback",
-        facebookAppURL: "https://apps.facebook.com/master-sigma/",
-    },
-    // ssl: {
-    //   ca: require('fs').readFileSync(__dirname + '/ssl/server.crt'),
-    //   key: require('fs').readFileSync(__dirname + '/ssl/server.key'),
-    //   cert: require('fs').readFileSync(__dirname + '/ssl/server.crt')
-    // },
-    port: process.env.PORT || 1337,
-    scraper : {
-       url: 'http://'+'127.0.0.1'+':'+3000
-    },
-    log: {
-      level: 'verbose'
+  grunt: {
+    _hookTimeout: 60000
+  },
+  connections: {
+    sigmaDv: {
+      adapter: 'sails-mysql',
+      host: 'localhost',
+      user: 'root',
+      password: 'root',
+      // database: 'mastersigma'
+      database: 'msigmadb'
     }
+  },
+  models: {
+    schema: true,
+    connection: 'sigmaDv',
+    migrate: 'safe'
+  },
+  application_auth: {
+    enableLocalAuth: true,
+    // Get your keys from https://developers.facebook.com/apps/
+    // module.exports.local = {
+    enableFacebookAuth: true,
+    facebookClientID: '1267766483237355',
+    facebookClientSecret: 'a2f5e3a27b74a64bc0d1ecc2d3a9ec31',
+    // facebookCallbackURL: 'https://master.sigma/auth/facebook/callback',
+    facebookCallbackURL: 'https://master.sigma/auth/facebook/callback',
+    facebookAppURL: 'https://apps.facebook.com/master-sigma/'
+  },
+  session: {
+    adapter: 'redis',
+    host: process.env.REDISCLOUD_URL,
+    port: process.env.REDISCLOUD_PORT,
+    ttl: 0,
+    pass: process.env.REDISCLOUD_PASSWORD
+  },
+  // ssl: {
+  //   ca: require('fs').readFileSync(__dirname + '/ssl/server.crt'),
+  //   key: require('fs').readFileSync(__dirname + '/ssl/server.key'),
+  //   cert: require('fs').readFileSync(__dirname + '/ssl/server.crt')
+  // },
+  port: process.env.PORT || 1337,
+  scraper : {
+    url: 'http://'+'127.0.0.1'+':'+3000
+  },
+  log: {
+    level: 'verbose'
+  }
 };

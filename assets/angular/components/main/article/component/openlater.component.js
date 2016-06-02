@@ -10,13 +10,14 @@
         var prms = {};
         prms.articleID = article.id;
         prms.visitTime = time;
-        $http.post('/api/visit/create',prms).then(function(record)
-               {
+        $http.post('/api/visit/create',prms)
+        .then(function(record)
+        {
           $log.debug(record.data);
-        }
-              ).catch(function (err) {
-                $log.error(err.stack);
-              });
+        })
+        .catch(function (err) {
+          $log.error(err.stack);
+        });
       }
     };
   }
@@ -47,9 +48,13 @@
     $modal.visit = 0;
     $modal.sitePath;
 
-    $q.when(ScraperFactory.get({'url':article.url}).$promise)
-      .then(function(response){
+    $q.when(ScraperFactory.get({'url':article.url}).$promise,
+      function(response){
         $modal.sitePath = $sce.trustAsResourceUrl('/website'+response.previewPath);
+      },
+      function(err){
+        $log.warn(err);
+        $modal.siteError = true;
       });
 
     $uibModalInstance.opened.then(function(){
@@ -110,11 +115,10 @@
              templateUrl: partial.main.article+'tpl/openlater.cmp.html',
              link : function (scope, element, attrs, controller) {
                element.bind('click', function(e){
-                 $log.debug( scope.source );
+                 $log.debug(scope.source);
                  controller.openModal(scope.source);
                });
              }
            };
          });
-
 })();

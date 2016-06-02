@@ -11,6 +11,7 @@
     "body-parser": "~1.12.x",
     "bower": "*",
     "connect-ensure-login": "^0.1.1",
+    "connect-redis": "1.4.5",
     "ejs": "~0.8.4",
     "express": "~4.11.x",
     "fb": "^1.0.2",
@@ -46,8 +47,8 @@
     "sails": "~0.11.x",
     "sails-disk": "~0.10.x",
     "sails-mysql": "~0.12.x",
-    "string-template": "^1.0.0",
-    "website-scraper": "^1.0.0"
+    "sigma-website-scraper": "git+https://github.com/dlfinis/sigma-node-website-scraper.git",
+    "string-template": "^1.0.0"
   },
   "scripts": {
     "preinstall": "git submodule update -i -r",
@@ -72,6 +73,6 @@
   },
   "engines": {
     "node": ">=4.4.3",
-    "npm": ">=3.8.8"
+    "npm": ">=2.15.6"
   }
 }
