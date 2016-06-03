@@ -51,7 +51,6 @@
     "string-template": "^1.0.0"
   },
   "scripts": {
-    "preinstall": "git submodule update -i -r",
     "start": "node app.js",
     "debug": "node debug app.js",
     "postinstall": "export HOME=$OPENSHIFT_REPO_DIR;./node_modules/bower/bin/bower install"
