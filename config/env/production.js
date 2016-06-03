@@ -58,10 +58,10 @@ module.exports = {
   },
   session: {
     adapter: 'redis',
-    host: process.env.REDISCLOUD_URL,
-    port: process.env.REDISCLOUD_PORT,
+    host: process.env.REDISCLOUD_URL || 'pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com',
+    port: process.env.REDISCLOUD_PORT || 12873,
     ttl: 1200,
-    pass: process.env.REDISCLOUD_PASSWORD
+    pass: process.env.REDISCLOUD_PASSWORD || 'mastersigma92'
   },
   /***************************************************************************
   * Set the port in the production environment to 80                        *
@@ -74,7 +74,7 @@ module.exports = {
   environment: process.env.NODE_ENV || 'development',
 
   scraper : {
-    url: 'https://'+ process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1' +':'+3000
+    url: 'https://'+ process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1' +':'+3100
   },
   /***************************************************************************
    * Set the log level in production environment to 'silent'                 *
