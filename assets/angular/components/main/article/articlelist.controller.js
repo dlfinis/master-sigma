@@ -172,8 +172,6 @@
     {
       ModalBaseFactory.setVisit(article,1);
       article.visits = article.visits + 1;
-      var newwindow = window.open(article.url,'name','height=200,width=150');
-      if (window.focus){newwindow.focus();}
       return false;
     };
 
