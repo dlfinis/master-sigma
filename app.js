@@ -84,11 +84,11 @@ process.chdir(__dirname);
 
   }
 
-  // // Run a script and invoke a callback when complete, e.g.
-  // runScript(__dirname + '/web-scraper/app/index.js', function (err) {
-  //   if (err) console.log(err);
-  //   console.log('+ Finished running API of scraper');
-  // });
+  // Run a script and invoke a callback when complete, e.g.
+  runScript(__dirname + '/web-scraper/app/index.js', function (err) {
+    if (err) console.log(err);
+    console.log('+ Finished running API of scraper');
+  });
 
   // Start server
   sails.lift(rc('sails'));
