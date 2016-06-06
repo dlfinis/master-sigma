@@ -11,20 +11,19 @@ module.exports = function (req, res, next) {
 
     // User is allowed, proceed to the next policy,
     // or if this is the last policy, the controller
-    if (req.isAuthenticated()) {
-        return next();
-    }
+  if (req.isAuthenticated() || req.session.user) {
+    sails.log.debug('+ LOGIN USER >',req.session.user);
+    return next();
+  }
 
-    // User is not allowed
-    // (default res.forbidden() behavior can be overridden in `config/403.js`)
-    var redirect =
+  // User is not allowed
+  // (default res.forbidden() behavior can be overridden in `config/403.js`)
+  var redirect =
     ((req.url.indexOf('canvas') > -1) || (req.url.indexOf('facebook') > -1)) ? '/canvas/login' : '/';
 
-    console.log((req.url.indexOf('canvas') > -1) || (req.url.indexOf('facebook')));
-    console.log(req.url);
-
-    sails.log('+ REDIRECT POLICIE',redirect);
-    return res.redirect(redirect);
-    // return res.forbidden();
-    // return res.redirect('/login');
+  sails.log.debug('+ DONT LOGIN ');
+  sails.log.debug('+ REDIRECT POLICIE ',redirect);
+  return res.redirect(redirect);
+  // return res.forbidden();
+  // return res.redirect('/login');
 };

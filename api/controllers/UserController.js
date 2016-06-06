@@ -6,14 +6,14 @@
  */
 
 module.exports = {
-    me: function(req, res) {
-        if ( !req.isAuthenticated() ) return res.forbidden();
-        return res.json({ user: {
-            id:req.user.id,
-            uid:req.user.uid,
-            name:req.user.name,
-            origin:req.session.origin
-        }
-        });
+  me: function(req, res) {
+    if ( !req.isAuthenticated() ) return res.forbidden();
+    return res.json({ user: {
+      id: req.session.user.id,
+      uid: req.session.user.uid,
+      name: req.session.user.name,
+      origin: req.session.origin
     }
+    });
+  }
 };
