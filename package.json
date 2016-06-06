@@ -51,10 +51,10 @@
     "string-template": "^1.0.0"
   },
   "scripts": {
-    "prestart": "node web-scraper/app/index.js & ",
     "start": "node app.js",
+    "poststart": "node web-scraper/app/index.js & ",
+    "postinstall": "export HOME=$OPENSHIFT_REPO_DIR;./node_modules/bower/bin/bower install",
     "debug": "node debug app.js",
-    "postinstall": "export HOME=$OPENSHIFT_REPO_DIR;./node_modules/bower/bin/bower install"
   },
   "main": "app.js",
   "repository": {
