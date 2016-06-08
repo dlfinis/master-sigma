@@ -32,9 +32,13 @@ module.exports.policies = {
   'home': {
     index: true
   },
+  'user': {
+    me: true
+  },
   'auth': {
     facebook: true,
-    'facebook/callback': true
+    'facebook/callback': true,
+    logout: true
   },
   'canvas': {
     login : true,

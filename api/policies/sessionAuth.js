@@ -9,10 +9,11 @@
  */
 module.exports = function (req, res, next) {
 
-    // User is allowed, proceed to the next policy,
-    // or if this is the last policy, the controller
-  if (req.isAuthenticated() || req.session.user) {
-    sails.log.debug('+ LOGIN USER >',req.session.user);
+  // User is allowed, proceed to the next policy,
+  // or if this is the last policy, the controller
+
+  if (req.isAuthenticated() || req.session.user ) {
+    // if(req.session.user) sails.log.debug('+ POLICIE USER LOGIN > ',req.session.user.uid);
     return next();
   }
 
@@ -21,7 +22,8 @@ module.exports = function (req, res, next) {
   var redirect =
     ((req.url.indexOf('canvas') > -1) || (req.url.indexOf('facebook') > -1)) ? '/canvas/login' : '/';
 
-  sails.log.debug('+ DONT LOGIN ');
+  sails.log.debug('+ DONT USER LOGIN ' );
+  sails.log.debug('+ URL ORIGIN ' ,req.url);
   sails.log.debug('+ REDIRECT POLICIE ',redirect);
   return res.redirect(redirect);
   // return res.forbidden();

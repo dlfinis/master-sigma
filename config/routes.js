@@ -84,12 +84,12 @@ module.exports.routes = {
     'GET /auth/logout' :{
       controller : 'AuthController',
       action : 'logout',
-              skipAssets: true,
+              skipAssets: true
     },
     /**
     * Route for access to API of Scraper System
     */
-    'GET /scraper' : 'ScraperController.site',
+    'GET /scraper' : 'ScraperController.site'
 
     /***************************************************************************
      *                                                                          *

@@ -55,8 +55,10 @@ module.exports = {
     )(req, res, next);
   },
   logout: function(req,res){
-    UserService.clean(req);
-    req.logout();
-    res.redirect('/');
+    sails.log.debug('+ AUTH.LOGOUT');
+    req.session.destroy(function(err) {
+      req.logOut();
+      return res.redirect('/');
+    });
   }
 };

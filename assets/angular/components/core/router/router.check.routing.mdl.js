@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function CheckRoutingFactory ($q, $log, $rootScope, $location,$http) {
+  function CheckRoutingFactory ($q, $log, $rootScope, $location,$http,AuthFactory ) {
     return {
       isAuth: function()
              {
@@ -65,7 +65,7 @@
         }
       },
       isOK : function(){
-        if($rootScope.userProfile) {
+        if(AuthFactory.isAuthenticated()) {
           $location.path('/wall');
         }
         else {
@@ -75,9 +75,17 @@
             $location.path('/home');
           }
         }
+      },
+      notAuth : function(){
+        $log.debug('+ Location current abs url ',$location.absUrl());
+        if($location.absUrl().indexOf('facebook') >-1)
+          $location.path('/auth/facebook/canvas');
+        else {
+          $location.path('/');
+        }
       }
     };
   }
   angular.module('app.core.router.check', [])
-                .factory('CheckRoutingFactory',CheckRoutingFactory);
+         .factory('CheckRoutingFactory',CheckRoutingFactory);
 })();

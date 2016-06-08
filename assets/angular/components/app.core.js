@@ -1,5 +1,6 @@
 (function() {
   angular.module('app.core',[
+    'app.core.auth',
     'app.core.router.check',
     'app.core.router.loading',
     'app.core.fontloader',

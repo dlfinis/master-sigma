@@ -7,7 +7,7 @@
 
 module.exports = {
   me: function(req, res) {
-    if ( !req.isAuthenticated() ) return res.forbidden();
+    if ( !req.isAuthenticated() ) return res.json(403,{});
     return res.json({ user: {
       id: req.session.user.id,
       uid: req.session.user.uid,

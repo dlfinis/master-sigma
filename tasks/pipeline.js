@@ -41,7 +41,7 @@ var jsFilesToInject = [
   'bower_components/fontfaceobserver/fontfaceobserver.js',
   'bower_components/moment/min/moment-with-locales.js',
   'bower_components/angular/angular.js',
-  'bower_components/angular-cookies/angular-cookies.js ',
+  'bower_components/angular-local-storage/dist/angular-local-storage.js',
   'bower_components/webfontloader/webfontloader.js',
   'bower_components/angular-i18n/angular-locale_es-ec.js',
   'bower_components/angular-lazy-img/release/angular-lazy-img.js',

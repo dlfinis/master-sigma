@@ -13,10 +13,7 @@ module.exports = {
       request.session.user = user;
     }
   },
-  clean: function(req) {
-    req.session = {};
-  },
   me : function (req) {
-    return req.session.user;
+    return [req.session.user,req.session.origin];
   }
 };

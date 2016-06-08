@@ -1,7 +1,7 @@
 (function () {
 
   angular.module('app', ['angular-loading-bar',
-                         'ngCookies',
+                         'LocalStorageModule',
                          'ngRoute',
                          'ngSanitize',
                          'ngAnimate',
@@ -64,20 +64,51 @@
       });
     $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
     $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
+    $routeProvider.when('/logout', {
+      resolve: {
+        load: function (AuthFactory) {
+          return AuthFactory.logout();
+        }
+      }
+    });
     $routeProvider.otherwise({redirectTo: '/'});
   }])
   /*CONFIG*/
-  .run(function ($rootScope,$location,$route,$timeout,$log,FontLoader,FBLoader,cfpLoadingBar,CheckRoutingFactory,KEYS) {
+  .run(function ($rootScope,$location,$route,$timeout,$log,FontLoader,FBLoader,cfpLoadingBar, AuthFactory ,CheckRoutingFactory, AUTH_EVENTS,KEYS) {
     // Load the facebook SDK asynchronously
     FBLoader.setScript();
     //Load fonts asynchronously
     FontLoader.setFonts();
 
-    // App is loading, so set isAppLoading to true and start a timer
     $rootScope.isAppLoading = true;
     $rootScope.startTime = new Date();
+    // App is loading, so set isAppLoading to true and start a timer
 
     // Start loading bar for app loading
     cfpLoadingBar.start();
+
+    var enable = ['','/','/home','/logout'];
+    $rootScope.$on('$routeChangeStart', function (event, next) {
+      var path = $location.path();
+      if(enable.indexOf(path) === -1)
+      {
+        $log.debug('+ Check Policie >',$location.path());
+
+        AuthFactory.isAuthenticated().then(function (response) {
+          $log.debug('+ IS AUTH',response);
+          if(!response)
+          {
+            event.preventDefault();
+            CheckRoutingFactory.notAuth();
+            $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+          }else{
+            return;
+          }
+        });
+      }
+      else {
+        $log.debug('+ Enable Routes ',$location.path());
+      }
+    });
   });
 })();

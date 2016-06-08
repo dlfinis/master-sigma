@@ -14,7 +14,7 @@
                 // Subscribe to broadcast of $stateChangeStart state event via AngularUI Router
           $rootScope.$on('$routeChangeStart', function (event, toState, toParams, fromState, fromParams, error) {
                   // If app is not already loading (since we started the loading bar in the config with the isAppLoading)
-            $log.debug('$routeChangeStart');
+            $log.debug('+ Loader $routeChangeStart');
             if (!$rootScope.isAppLoading) {
                     // $timeout returns a deferred promise to execute by the defined time of 400ms
                     // set isAppRouting true and start loading bar
@@ -35,7 +35,7 @@
 
                   // Logic to handle elapsed time of app loading phase else handle app routing
             if ($rootScope.isAppLoading) {
-              $log.debug('$routeChangeSucess');
+              $log.debug('+ Loader $routeChangeSucess');
                     // Find the elapsed difference between the present time and the startTime set in our config
               diff = new Date() - $rootScope.startTime;
 
