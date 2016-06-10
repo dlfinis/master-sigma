@@ -1,13 +1,7 @@
 <!-- <pre> {{$articlelist.data | json}}</pre> -->
 <div class="container">
   <div class="col-sm-12">
-    <div class="input-group">
-    <input type="text" class="form-control"/>
-    <span class="input-group-addon">
-        <i class="fa fa-search"></i>
-    </span>
-    </div>
-</div>
+    <div advanced-search source="$articlelist.data" query="$articlelist.queryParams"></div>
     <div class="sort-bar" ng-if="$articlelist.data && $articlelist.mcategories">
     <!-- <div class="sort-bar"> -->
         <div class="sort-item tab"
@@ -23,10 +17,6 @@
           Recomendados
         </div>
         <div class="sort-item sort-section">
-          <div class="sort-search">
-            <span class="field">Búsqueda: </span>
-            <input type="text" class="form-control select2-container" ng-model="$articlelist.textSearchContent">
-          </div>
           <div class="sort-category">
             <ui-select ng-init="$articlelist.getCategories()" ng-model="$articlelist.mcategory.selected" theme="select2">
              <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}
@@ -40,13 +30,21 @@
       </div>
     </div>
 
-    <div class="" ng-if="!$articlelist.data">
+    <div class="" ng-if="$articlelist.data.length == 0">
       <h4>No existen artículos para visualizar.</h4>
+      <div class="mnr-c">
+        <div class="med card-section">
+        <p style="padding-top:.33em"> La búsqueda de <em>{{$articlelist.queryParams}}</em> no obtuvo ningún resultado.  </p>
+        <p style="margin-top:1em">Sugerencias:</p>
+        <ul style="margin-left:1.3em;margin-bottom:2em">
+          <li>Comprueba que todas las palabras están escritas correctamente.</li>
+          <li>Intenta usar otras palabras.</li><li>Intenta usar palabras más generales.</li></ul>
+        </div>
+      </div>
     </div>
     <div class="col-sm-12 post animate-repeat"
     ng-animate="'animate'"
          ng-repeat="article in $articlelist.data
-            |filter: $articlelist.textSearchContent
             |filter: $articlelist.mcategory.selected.name
             |limitTo: $articlelist.perPage
             track by article.id
@@ -97,7 +95,7 @@
     </div>
   </div>
 
-  <div class="col-sm-12 text-center" ng-if="$articlelist.data">
+  <div class="col-sm-12 text-center" ng-show="$articlelist.data.length > 0">
     <uib-pagination
     boundary-links="true"
     total-items="$articlelist.totalItems"

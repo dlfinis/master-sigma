@@ -12,10 +12,9 @@
     $articlelist.mcategory = {};
     $articlelist.mcategories = [];
 
+    $articlelist.queryParams = '';
     $articlelist.pagination = {};
     $articlelist.props = {};
-
-    $log.debug($articlelist.source);
 
     $articlelist.clear = function ($event, $select){
                              //stops click event bubbling
@@ -35,6 +34,7 @@
         });
     };
 
+
     $articlelist.getArticles = function(props){
       ArticleListFactory.getArticles(props).then(function(response){
         // $articlelist.data = response.data.results ;
@@ -46,10 +46,12 @@
           articleList.push(article);
         });
 
+        $articlelist.setPagination(
+          articleList,
+          response.data.size,
+          Math.ceil(response.data.size/$articlelist.perPage) || 1
+        );
 
-        $articlelist.data = articleList;
-        $articlelist.totalItems = response.data.size;
-        $articlelist.numberOfPages = Math.ceil(response.data.size/$articlelist.perPage) || 1;
       });
     };
 
@@ -83,6 +85,12 @@
 
     $articlelist.startfrom = function(){
       return ($articlelist.perPage * $articlelist.currentPage)-($articlelist.perPage);
+    };
+
+    $articlelist.setPagination = function (list,size,limit) {
+      $articlelist.data = list;
+      $articlelist.totalItems = size;
+      $articlelist.numberOfPages = Math.ceil(size/limit) || 1;
     };
 
     $articlelist.pageChanged = function() {

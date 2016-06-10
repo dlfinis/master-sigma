@@ -27,25 +27,6 @@
     // Remove loading bar spinner
     cfpLoadingBarProvider.includeSpinner = false;
 
-    // $routeProvider.when('/', {   resolve: {
-    //                                     load: function (CheckRoutingFactory) {
-    //                                           return CheckRoutingFactory.isOK();
-    //                                           }
-    //                           },
-    // });
-    // $routeProvider.when('/home', {  template:'<home></home>',
-    //                                 resolve: {
-    //                                     load: function (CheckRoutingFactory) {
-    //                                           return CheckRoutingFactory.isOK();
-    //                                           }
-    //                                   }
-    //                               });
-    // $routeProvider.when('/', {   resolve: {
-    //   load: function (CheckRoutingFactory) {
-    //     return CheckRoutingFactory.isOK();
-    //   }
-    // }
-    // });
     $routeProvider.when('/',{template:'<home></home>'});
     $routeProvider.when('/home', {template:'<home></home>'});
     $routeProvider.when('/wall',

@@ -1,5 +1,6 @@
 (function() {
   angular.module('app.main',[ 'app.main.article',
+                              'app.main.article.advancedSearch',
                               'app.main.article.like',
                               'app.main.article.share',
                               'app.main.article.reading',

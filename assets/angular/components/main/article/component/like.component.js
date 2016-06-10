@@ -4,7 +4,7 @@
   function LikeFactory($http,$httpParamSerializer){
     return {
       havelike: function(articleID)
-            {
+      {
         return $http.get('/api/article/havelike',
           {
             params : {articleID:articleID}

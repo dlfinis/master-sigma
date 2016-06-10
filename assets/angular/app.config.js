@@ -32,8 +32,6 @@
             'wall' : 'angular/components/main/wall/',
             'rarticle' : 'angular/components/main/registry/rarticle/',
             'rcategory' : 'angular/components/main/registry/rcategory/'
-
-
           },
           'core' : {
             'origin' : 'angular/components/core/',

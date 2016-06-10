@@ -54,7 +54,7 @@ var jsFilesToInject = [
   'bower_components/angular-resource/angular-resource.js',
   'bower_components/angular-sanitize/angular-sanitize.js',
   'bower_components/angular-route/angular-route.js',
-
+  'bower_components/tv4/tv4.js',
 
   //Load Angular app
   'angular/app.config.js',
