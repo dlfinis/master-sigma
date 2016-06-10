@@ -8,6 +8,8 @@
 var Promise = require('bluebird');
 var moment = require('moment');
 var graph = require('fbgraph');
+var _limit;
+var _size;
 var _wpm = 250;
 var _querySuccessRate = 0.5;
 
@@ -432,21 +434,20 @@ module.exports = {
           return isSuccessfulQuery(whereQuery,success);
         });
 
-            // articles.sort(function(a, b) {
-            //     return ArticleService.getRecom(b.likes.length,b.shares.length,b.visits.length) -
-            //             ArticleService.getRecom(a.likes.length,a.shares.length,a.visits.length);
-            // });
-            //
-            // articles.some(function (article,index){
-            //         if(article.state !== 'disable')
-            //           articlesList.push(ArticleService.getArticleStructure(article));
-            //         return articlesList.length >= (ArticleService._limit - 1);
-            // });
+        articles.some(function (article,index){
+          if(article.state !== 'disable')
+            articlesList.push(ArticleService.getArticleStructure(article));
+          return articlesList.length >= (ArticleService._limit - 1);
+        });
+
+        articlesList.sort(function(a, b) {
+          return b.date - a.date;
+        });
 
         resolve({
           size:ArticleService._size,
-          total:articles.length,
-          results:articles
+          total:articlesList.length,
+          results:articlesList
         }
             );
       });
