@@ -60,8 +60,11 @@ module.exports = {
     adapter: 'redis',
     host: process.env.REDISCLOUD_URL || 'pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com',
     port: process.env.REDISCLOUD_PORT || 12873,
-    ttl: 1200,
-    pass: process.env.REDISCLOUD_PASSWORD || 'mastersigma92'
+    ttl: 3600,
+    pass: process.env.REDISCLOUD_PASSWORD || 'mastersigma92',
+    cookie: {
+      maxAge: 2 * 60 * 60 * 1000
+    }
   },
   /***************************************************************************
   * Set the port in the production environment to 80                        *
@@ -80,7 +83,7 @@ module.exports = {
    * Set the log level in production environment to 'silent'                 *
    ***************************************************************************/
   log: {
-    level: 'verbose'
+    level: 'silly'
   }
 
 };
