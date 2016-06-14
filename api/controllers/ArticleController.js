@@ -76,7 +76,7 @@ module.exports = {
     where = dupJSONKeysBySpace(where);
     sails.log.debug('+ Where > ',where);
 
-    ArticleQueryService.getArticleListBase(ArticleQueryService._baseQuery(req),where)
+    ArticleQueryService.getArticleListByQuery(ArticleQueryService._baseQuery(req),where)
     .then(function(response){
       return res.json(response);
     })

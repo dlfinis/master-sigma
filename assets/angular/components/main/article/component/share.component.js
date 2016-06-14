@@ -101,7 +101,7 @@
                         $facebook.api('/'+completeSID)
                             .then(function(share){
                               if(share){
-                                $log.debug('+ Share info save in DB');
+                                $log.debug('+ Share success by adding in DB');
                                 controller.setShare(share.id,scope.source.id,share.message);
                                 scope.stats = scope.stats+1;
                               }

@@ -12,6 +12,7 @@ var Promise = require('bluebird');
 var _limit;
 var _size;
 var _skip;
+var _successRate = 0.5;
 
 var self = {
   _accentMap : function () {
@@ -42,9 +43,8 @@ var self = {
     }
     return ret;
   },
-  _querySuccessRate : function () {
-    return 0.5;
-  },
+  _querySuccessRate : _successRate
+  ,
   searchString : function (str,wstr){
     if(_.isArray(str)) str = JSON.stringify(str);
     return self._accentFold(str).search(new RegExp(self._accentFold(wstr), 'i')) > -1;
@@ -57,11 +57,26 @@ var self = {
     if(_.isArray(content)) content = JSON.stringify(content);
     if(_.isArray(prms)){
       _.each(prms,function(pElem){ if(self.searchString(content,pElem)) success = success +1;});
-      return  self.isSuccessfulQuery(prms,success);
+      if(self.isSuccessfulQuery(prms,success)) return success;
+      else return 0;
     }
     else{
       return self.searchString(content,prms);
     }
+  },
+  filterByParams : function (arr,prms) {
+    return _.filter(arr,function(aElem){
+      var success = 0;
+      _.each(_.keys(prms),function(wkElem){ //Parameters of query
+        if(_.has(aElem,wkElem))
+        {
+          var matches = self.matchWord(aElem[wkElem],prms[wkElem]);
+          if(matches > 0) success = success + matches;
+        }
+      });
+      aElem.success = success;
+      return self.isSuccessfulQuery(prms,success);
+    });
   }
 };
 
@@ -106,10 +121,11 @@ module.exports = {
       });
     });
   },
-  getArticleListBase : function (articleQuery,whereQuery){
+  getArticleListByQuery : function (articleQuery,whereQuery){
     return new Promise(function(resolve){
 
       var articlesList = [];
+      var blacklist = ['general', 'date'];
 
       delete articleQuery._criteria['limit'];
       articleQuery.sort('createdAt DESC');
@@ -118,23 +134,35 @@ module.exports = {
 
         articles = _.filter(articles,function(aElem){
           var success = 0;
-          _.each(_.keys(whereQuery),function(wkElem){
+          _.each(_.keys(whereQuery),function(wkElem){ //Parameters of query
             if(_.has(aElem,wkElem))
             {
-              if(self.matchWord(aElem[wkElem],whereQuery[wkElem])) success = success +1;
+              var matches = self.matchWord(aElem[wkElem],whereQuery[wkElem]);
+              if(matches > 0) success = success + matches;
             }
           });
+          aElem.success = success;
           return self.isSuccessfulQuery(whereQuery,success);
+        });
+
+        sails.log.debug('After Query');
+        _.each(articles,function (el) {
+          sails.log.debug(el.id,'>:',el.title,'sc:',el.success);
+        });
+
+        sails.log.debug('Sorting');
+        articles.sort(function(a, b) {
+          return b.success - a.success;
+        });
+
+        _.each(articles,function (el) {
+          sails.log.debug('ID:',el.id,'+SCQuery',el.success);
         });
 
         articles.some(function (article,index){
           if(article.state !== 'disable')
             articlesList.push(ArticleService.getArticleStructure(article));
           return articlesList.length >= (ArticleService._limit - 1);
-        });
-
-        articlesList.sort(function(a, b) {
-          return b.date - a.date;
         });
 
         resolve({

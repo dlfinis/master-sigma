@@ -200,8 +200,11 @@ footer p {
   background: #3c6cbc;
   height: 40px;
   width: : 150px;
-
   color:#fff;
+}
+
+.advanced-search{
+  margin-bottom: 1.2em;  
 }
 
 .sort-bar{
