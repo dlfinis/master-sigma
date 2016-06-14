@@ -4,7 +4,7 @@
  * @description :: Server-side logic for managing homes
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-
+/*global UserService*/
 var passport = require('passport');
 module.exports = {
 
@@ -57,6 +57,7 @@ module.exports = {
   logout: function(req,res){
     sails.log.debug('+ AUTH.LOGOUT');
     req.session.destroy(function(err) {
+      sails.log.debug('+ AUTH.SESSION.DESTROY');
       req.logOut();
       return res.redirect('/');
     });

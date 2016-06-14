@@ -4,12 +4,8 @@
  * @description :: Server-side logic for managing article
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
- /*global Article User Like Share ArticleService UserService*/
+/*global Article Like ArticleService ArticleQueryService ArticleFBService UserService*/
 var Promise = require('bluebird');
-
-// TODO:
-//
-// Replace the following helper with the version in sails.util:
 
 // Attempt to parse JSON
 // If the parse fails, return the error object
@@ -61,7 +57,7 @@ module.exports = {
       });
   },
   findElems : function(req,res){
-    sails.log.debug('+ Find Dark');
+    sails.log.debug('+ Find Dark Elems');
 
 
     var where= req.params.all().query;
@@ -80,11 +76,7 @@ module.exports = {
     where = dupJSONKeysBySpace(where);
     sails.log.debug('+ Where > ',where);
 
-    ArticleService.setLimit(req.param('limit'));
-    ArticleService.setTotalSize(); // All size of articles in DB
-    UserService.current(req.user); // Set  current user
-
-    ArticleService.getArticleListBase(ArticleService._baseQuery(req),where)
+    ArticleQueryService.getArticleListBase(ArticleQueryService._baseQuery(req),where)
     .then(function(response){
       return res.json(response);
     })
@@ -95,23 +87,11 @@ module.exports = {
 
   },
   findAll:function(req,res){
-    var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUtil');
     var kindList = req.param('kind');
     var creator = req.param('creator');
     var category = req.param('category');
 
-    ArticleService.setLimit(req.param('limit'));
-    ArticleService.setTotalSize(); // All size of articles in DB
-    UserService.current(req.user); // Set  current user
-
-    var articleQuery = Article.find()
-                              .limit( actionUtil.parseLimit(req) )
-                              .skip( actionUtil.parseSkip(req) )
-                              .populate('creator')
-                              .populate('categories')
-                              .populate('likes')
-                              .populate('shares')
-                              .populate('visits');
+    var articleQuery = ArticleQueryService._baseQuery(req);
 
     if(creator)
       kindList = 'creator';
@@ -121,34 +101,34 @@ module.exports = {
 
     switch (kindList) {
     case 'normal': {
-      ArticleService.getArticleListNormal(articleQuery).then(function (response){
+      ArticleQueryService.getArticleListNormal(articleQuery).then(function (response){
         return res.ok(response);
       });
       break;
     }
 
     case 'recommend': {
-      ArticleService.getArticleListRecommend(articleQuery).then(function (response){
+      ArticleQueryService.getArticleListRecommend(articleQuery).then(function (response){
         return res.ok(response);
       });
       break;
     }
 
     case 'creator': {
-      ArticleService.getArticleListByCreator(articleQuery,creator).then(function (response){
+      ArticleQueryService.getArticleListByCreator(articleQuery,creator).then(function (response){
         return res.ok(response);
       });
       break;
     }
 
     case 'category': {
-      ArticleService.getArticleListByCategory(articleQuery,category).then(function (response){
+      ArticleQueryService.getArticleListByCategory(articleQuery,category).then(function (response){
         return res.ok(response);
       });
       break;
     }
     default:{
-      ArticleService.getArticleListNormal(articleQuery).then(function (response){
+      ArticleQueryService.getArticleListNormal(articleQuery).then(function (response){
         return res.ok(response);
       });
     }
@@ -201,56 +181,66 @@ module.exports = {
   },
   havelike : function(req,res){
     var articleID = req.param('articleID');
-    var userID = req.user.id;
+    var userID = UserService.me(req).id;
 
-    Like.findOne({article:articleID,user:userID}).exec(function foundRecord(err, record) {
+    Like.findOne({article:articleID,user:userID})
+    .exec(function foundRecord(err, record) {
       if(err)
       {
         sails.log(err);
         return res.ok(false);
       }
-
       return res.ok(record);
-
     });
   },
   setshare : function(req,res){
     var shareSID = req.param('shareSID');
     var articleID = req.param('articleID');
     var messageShare = req.param('messageShare');
-    var userID = UserService.me().id || req.user.id;
+    var userID = UserService.me(req).id;
 
     if(!shareSID || !articleID)
       return res.badRequest();
 
+    sails.log.debug('+ SHARE init to add in DB');
+
     if(shareSID && articleID)
-      ArticleService.share.set(shareSID,articleID,userID,messageShare)
+      ArticleFBService.share.set(shareSID,articleID,userID,messageShare)
       .then(function (response) {
+        sails.log.debug('+ SHARE success by adding at DB');
         return res.json(200,response);
       })
       .catch(function (err) {
+        sails.log.debug('+ SHARE failed to add ');
         return res.json(400,err);
       });
   },
   setlike : function(req,res){
     var articleID = req.param('articleID');
     var articleURL = req.param('articleURL');
-    var userID = UserService.me().id || req.user.id;
-    ArticleService.like.set(articleID,articleURL,userID)
+    var userID = UserService.me(req).id;
+
+    sails.log.debug('+ LIKE init to add in DB');
+    ArticleFBService.like.set(articleID,articleURL,userID)
     .then(function (response) {
+      sails.log.debug('+ LIKE success by adding at DB');
       return res.json(response);
     })
     .catch(function (err) {
+      sails.log.debug('+ LIKE failed to add ');
       return res.json(400,err);
     });
   },
   deletelike : function(req,res){
     var sid = req.param('articleSid');
-    ArticleService.like.delete(sid)
+    sails.log.debug('+ LIKE init to delete');
+    ArticleFBService.like.delete(sid)
     .then(function (response) {
+      sails.log.debug('+ LIKE success in delete');
       return res.json(response);
     })
     .catch(function (err) {
+      sails.log.debug('+ LIKE failed to delete ');
       return res.json(400,err);
     });
   },

@@ -14,7 +14,8 @@ module.exports = {
       request.session.user = user;
     }
   },
-  me : function () {
-    return _user;
+  me : function (req) {
+    if(!req) return _user;
+    return req.session.user || req.user;
   }
 };
