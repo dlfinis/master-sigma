@@ -9,10 +9,21 @@
 
 var Promise = require('bluebird');
 
-var _limit;
-var _size;
-var _skip;
-var _successRate = 0.5;
+var config = {
+  _limit : 0,
+  _skipe : 0,
+  _totalSize : 0,
+  _setLimit : function setLimit(limit) {
+    this._limit = limit;
+  },
+  _setSkip : function setSkip(skip) {
+    this._skip = skip;
+  },
+  _setTotalSize : function setTotalSize(size) {
+    this._totalSize = size;
+  },
+  _successRate : 0.5
+};
 
 var self = {
   _accentMap : function () {
@@ -43,8 +54,6 @@ var self = {
     }
     return ret;
   },
-  _querySuccessRate : _successRate
-  ,
   searchString : function (str,wstr){
     if (_.isNull(str) || _.isUndefined(str)) { return false; }
 
@@ -54,7 +63,7 @@ var self = {
     return self._accentFold(str).search(new RegExp(self._accentFold(wstr), 'i')) > -1;
   },
   isSuccessfulQuery : function (arr,cnt){
-    return !!(cnt >= (Math.round(_.size(arr)*self._querySuccessRate)));
+    return !!(cnt >= (Math.round(_.size(arr)*config._successRate)));
   },
   matchWord : function (content,prms) {
     var success = 0;
@@ -107,53 +116,79 @@ module.exports = {
 
   _baseQuery :function (req) {
     UserService.current(req.user); // Set  current user
-    ArticleQueryService.setTotalSize(); // All size of articles in DB
-    return Article.find()
-                        .limit(ArticleQueryService.setLimit(req))
-                        .skip(ArticleQueryService.setSkip(req))
+
+    ArticleQueryService.getTotalSize().then(function (size) {
+      config._setTotalSize(size); // All size of articles in DB
+    });
+    config._setLimit(ArticleQueryService.getLimit(req));
+    config._setSkip(ArticleQueryService.getSkip(req));
+    var query = Article.find()
+                        .limit(ArticleQueryService.getLimit(req))
+                        .skip(ArticleQueryService.getSkip(req))
+                        .sort('updatedAt DESC')
                         .populate('creator')
                         .populate('categories')
                         .populate('likes')
                         .populate('shares')
-                        .populate('visits');
-  },
-  setLimit: function (req) {
-    var DEFAULT_LIMIT = sails.config.blueprints.defaultLimit || 10;
-    var limit = req.param('limit') || (typeof req.options.limit !== 'undefined' ? req.options.limit : DEFAULT_LIMIT);
-    if (limit) { limit = +limit; }
-    ArticleService._limit = limit || sails.config.blueprints.defaultLimit || 10;
-    return limit;
-  },
-  setSkip: function (req) {
-    var DEFAULT_SKIP = 0;
-    var skip = req.param('skip') || (typeof req.options.skip !== 'undefined' ? req.options.skip : DEFAULT_SKIP);
-    if (skip) { skip = +skip; }
-    ArticleService._skip = skip;
-    return skip;
-  },
-  setTotalSize: function () {
-    ArticleQueryService.getTotalSize().then(function countRecord(size) {
-      ArticleQueryService._size = size;
-    });
+                        .populate('visits')
+                        .where({state:['create', 'edit']});
+
+    return query;
   },
   getTotalSize : function (){
     return new Promise(function (resolve){
-      Article.count().exec(function countCB(err, found){
+      Article.count({state:['create', 'edit']}).exec(function countCB(err, found){
         if(err) sails.log.warn(err);
         resolve(found);
+      });
+    });
+  },
+  getLimit: function (req) {
+    var DEFAULT_LIMIT = sails.config.blueprints.defaultLimit || 10;
+    var limit = req.param('limit') || (typeof req.options.limit !== 'undefined' ? req.options.limit : DEFAULT_LIMIT);
+    if (limit) { limit = +limit; }
+    return limit;
+  },
+  getSkip: function (req) {
+    var DEFAULT_SKIP = 0;
+    var skip = req.param('skip') || (typeof req.options.skip !== 'undefined' ? req.options.skip : DEFAULT_SKIP);
+    if (skip) { skip = +skip; }
+    return skip;
+  },
+  getArticleListBase : function (articleListData){
+    return new Promise(function(resolve){
+      var articlesList = [];
+
+      // sails.log.debug('-->Original Size of Elements:',articleListData.length);
+      // articleListData = _.filter(articleListData,function (article,index) {
+      //   if(article.state === 'disable')
+      //     sails.log.debug('-Disable id:',article.id,'>:',article.success || article.title,'+:',article.updatedAt);
+      //   return article.state !== 'disable';
+      // });
+
+      sails.log.debug('-->Total Original Size of Elements:',config._totalSize,'>',
+      'Total Size of Elements Found:',articleListData.length);
+      articleListData.some(function (article,index) {
+        sails.log.debug('-i:',index+1,'id:',article.id,'>:',article.success || article.title,'+:',article.updatedAt);
+        articlesList.push(ArticleService.getArticleStructure(article));
+        return articlesList.length === config._limit;
+      });
+
+      resolve({
+        size:articleListData.length, // Total Size of Elements
+        total:articlesList.length, // Number Elements respect to limit & state
+        results:articlesList //Elements
       });
     });
   },
   getArticleListByQuery : function (articleQuery,whereQuery){
     return new Promise(function(resolve){
 
-      var articlesList = [];
       var blacklist = ['general', 'date'];
       var whereGeneral = [];
       var whereDate = [];
 
       delete articleQuery._criteria['limit'];
-      articleQuery.sort('createdAt DESC');
 
       articleQuery.then(function (articles){
 
@@ -162,183 +197,124 @@ module.exports = {
         whereDate = _.pick(whereQuery, 'date');
         whereQuery = _.omit(whereQuery, blacklist);
 
+
         if(!_.isEmpty(whereGeneral))
         {
           sails.log('->Query General');
           articles = self.filterGeneral(articles,whereGeneral);
         }
-        if(!_.isEmpty(whereQuery))
+
+        if(!_.isEmpty(whereQuery) && !_.isNull(whereQuery))
         {
           sails.log('->Query By Params');
           articles = self.filterByParams(articles,whereQuery);
         }
+
         sails.log.debug('-->After of Query');
         _.each(articles,function (el) {
           sails.log.debug(el.id,'>:',el.title,'sc:',el.success);
         });
 
-        sails.log.debug('-->Sorting Query Results');
         articles.sort(function(a, b) {
           return b.success - a.success;
         });
 
-        _.each(articles,function (el) {
-          sails.log.debug('ID:',el.id,'+SCQuery',el.success);
-        });
-
-        articles.some(function (article,index){
-          if(article.state !== 'disable')
-            articlesList.push(ArticleService.getArticleStructure(article));
-          return articlesList.length >= (ArticleService._limit - 1);
-        });
-
-        resolve({
-          size:ArticleQueryService._size,
-          total:articlesList.length,
-          results:articlesList
+        ArticleQueryService.getArticleListBase(articles)
+        .then(function (response) {
+          resolve(response);
         });
       });
     });
   },
   getArticleListNormal : function (articleQuery){
     return new Promise(function(resolve){
-      var articlesList = [];
-      var totalSize = 0;
-      articleQuery.sort('updatedAt DESC');
       articleQuery.then(function (articles){
 
-        articles.forEach(function (article){
-          if(article.state !== 'disable')
-            articlesList.push(ArticleService.getArticleStructure(article));
-        });
-
-        articlesList.sort(function(a, b) {
+        articles.sort(function(a, b) {
           return (b.date - a.date)+(b.id - a.id);
         });
 
-        resolve (
-          {
-            size:ArticleQueryService._size, //Total Size of elements in Article
-            total:articlesList.length, //Based respect the limit of the query
-            results:articlesList //Articles List Data
-          });
-
+        ArticleQueryService.getArticleListBase(articles)
+        .then(function (response) {
+          response.size = config._totalSize;
+          resolve(response);
+        });
       });
     });
   },
   getArticleListRecommend : function (articleQuery){
     return new Promise(function(resolve){
 
-      var articlesList = [];
-
-          // articleQuery.limit(totalSize);
       delete articleQuery._criteria['limit'];
-      articleQuery.sort('createdAt DESC');
 
       articleQuery.then(function (articles){
+
         articles.sort(function(a, b) {
           return ArticleService.getRecom(b.likes.length,b.shares.length,b.visits.length) -
                         ArticleService.getRecom(a.likes.length,a.shares.length,a.visits.length);
         });
 
-            // _.each(articles, function (article){
-            //      articlesList.push(ArticleService.getArticleStructure(article));
-            // });
-        articles.some(function (article,index){
-          if(article.state !== 'disable')
-            articlesList.push(ArticleService.getArticleStructure(article));
-          return articlesList.length >= (ArticleService._limit - 1);
+        ArticleQueryService.getArticleListBase(articles)
+        .then(function (response) {
+          resolve(response);
         });
-            // articlesList.sort(function(a, b) {
-            //     return b.date - a.date;
-            // });
-            //
-            // articlesList.sort(function(a, b) {
-            //     return a.recommend - b.recommend;
-            // });
-        resolve({
-          size:ArticleQueryService._size,
-          total:articlesList.length,
-          results:articlesList
-        }
-            );
+
       });
     });
   },
   getArticleListByCreator : function (articleQuery,creator){
     return new Promise(function(resolve){
-      var articlesList = [];
-      var totalSize = 0;
-
-      articleQuery.sort('createdAt DESC');
 
       delete articleQuery._criteria['limit'];
 
 
       User.findOne({name:creator}).then( function(creatorRecord){
-        sails.log.debug('+ Creator >'+JSON.stringify(creatorRecord));
-        articleQuery.where({'creator':creatorRecord.id});
-        articleQuery
-        .then(function (articles){
-          articles.some(function (article,index){
-            if(article.state !== 'disable')
-              articlesList.push(ArticleService.getArticleStructure(article));
-            return articlesList.length >= (ArticleService._limit - 1);
-          });
 
-          articlesList.sort(function(a, b) {
+        sails.log.debug('+ Filter By Creator >'+JSON.stringify(creatorRecord));
+
+        articleQuery.where({'creator':creatorRecord.id});
+
+        articleQuery.then(function (articles){
+          articles.sort(function(a, b) {
             return b.date - a.date;
           });
 
-          resolve (
-            {
-              size:articles.length,
-              total:articlesList.length,
-              results:articlesList
-            });
-        })
-          .catch(function(err){
-            sails.log.error(err);
+          ArticleQueryService.getArticleListBase(articles)
+          .then(function (response) {
+            resolve(response);
           });
+        })
+        .catch(function(err){
+          sails.log.error(err);
+        });
+
       });
 
     });
   },
   getArticleListByCategory : function (articleQuery,category){
     return new Promise(function(resolve){
-      var articlesList = [];
-      var totalSize = 0;
-      articleQuery.sort('createdAt DESC');
+      delete articleQuery._criteria['limit'];
       articleQuery.then(function (articles){
 
+        articles = _.map(articles,function (article) {
+          var exist = _.find(article.categories, function(acElem) {
+            return acElem.name == category;
+          });
 
-        articles.some(function (article,index){
-          if(article.categories)
-                          {
-            if(article.state !== 'disable')
-                            {
-              var exist = _.find(article.categories, function(element) {
-                return element.name == category;
-              });
-
-              if(exist)
-                articlesList.push(ArticleService.getArticleStructure(article));
-            }
-          }
-          return articlesList.length >= (ArticleService._limit - 1);
+          if(exist)
+            return article;
         });
 
-        articlesList.sort(function(a, b) {
+
+        articles.sort(function(a, b) {
           return b.date - a.date;
         });
 
-        resolve (
-          {
-            size:articles.length,
-            total:articlesList.length,
-            results:articlesList
-          });
-
+        ArticleQueryService.getArticleListBase(articles)
+        .then(function (response) {
+          resolve(response);
+        });
 
       });
     });

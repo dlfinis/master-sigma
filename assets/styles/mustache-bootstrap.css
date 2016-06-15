@@ -92,8 +92,9 @@
 }
 
 .fade-out {
-  transition: 1.50s linear all;
+  transition: 1.05s linear all;
   opacity: 0;
+  display:none;
 }
 
 .fade-in-out {

@@ -11,6 +11,11 @@
           var diff,
             timeoutPromise;
 
+          scope.$on('$viewContentLoaded', function () {
+            $log.debug('+ Ready Document');
+            $rootScope.isReady = true;
+          });        
+
           // Subscribe to broadcast of $stateChangeStart state event via AngularUI Router
           $rootScope.$on('$routeChangeStart', function (event, toState, toParams, fromState, fromParams, error) {
             // If app is not already loading (since we started the loading bar in the config with the isAppLoading)

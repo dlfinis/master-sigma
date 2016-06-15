@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  function ArticleListCtrl($scope,$q,$sce,$log,$rootScope,ArticleListFactory,ModalBaseFactory)
+  function ArticleListCtrl($scope,$q,$sce,$log,$element,ArticleListFactory,ModalBaseFactory)
   {
     var $articlelist = this;
 
@@ -15,21 +15,7 @@
     $articlelist.queryParams = '';
     $articlelist.pagination = {};
     $articlelist.props = {};
-
-    $scope.$on('$viewContentLoaded', function () {
-      console.log('+ Ready Wall Document');
-      // $log.debug('+ Ready Document');
-      // $rootScope.isOK = true;
-      $rootScope.isReady = true;
-      // angular.element().addClass('fade-out');
-    });
-
-    angular.element(document).ready(function () {
-      console.log('+ Ready Wall Document');
-      // $log.debug('+ Ready Document');
-      // $rootScope.isOK = true;
-      $rootScope.isReady = true;
-    });
+    $articlelist.pagerData = false;
 
     $articlelist.clear = function ($event, $select){
       //stops click event bubbling
@@ -112,6 +98,8 @@
       $log.log('Page changed to: ' + $articlelist.currentPage );
       $log.log('Item: ' + $articlelist.startfrom()  );
 
+      $articlelist.pagerData = true;
+
       $articlelist.getNextArticleData($articlelist.startfrom());
     };
 
@@ -129,15 +117,15 @@
           'limit':$articlelist.perPage
         }))
           .then(function(response){
+            $log.debug('+ GET Next Articles List Data ');
             $log.debug(response.data.results);
-            var articleList = [];
-            angular.forEach( response.data.results, function(article) {
-              articleList.push(article);
-            });
-            $articlelist.data = articleList;
+            if(response.data.results.length > 0) $articlelist.pagerData = false;
+            else $articlelist.pagerData = true;
+            $articlelist.data = response.data.results;
           })
           .catch(function (err) {
             $log.error(err.stack);
+            $articlelist.pagerData = true;
           });
     };
 

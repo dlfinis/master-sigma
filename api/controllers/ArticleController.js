@@ -10,10 +10,12 @@ var Promise = require('bluebird');
 
 // Split string values in an array of specific key of object JSON
 function dupJSONKeysBySpace(json) {
-  _.each(json,function (element,index) {
-    json[index] = element.match(/[A-zÀ-ÿ]+|\d+/ig);
-  });
-  return  json;
+  if(!_.isEmpty(json) && _.isObject(json))
+    _.each(json,function (element,index) {
+      json[index] = element.match(/[A-zÀ-ÿ]+|\d+/ig);
+    });
+
+  return json;
 }
 
 module.exports = {
@@ -37,7 +39,9 @@ module.exports = {
         })
           .then(function(allItems) {
             sails.log.debug('Total Elements:'+allItems.length);
-            return res.ok(allItems);
+            Article.count().exec(function (err, size){
+              return res.json(200,{size:size,total:allItems.length,results:allItems});
+            });
           });
       })
       .catch(function(err){
@@ -98,34 +102,34 @@ module.exports = {
     switch (kindList) {
     case 'normal': {
       ArticleQueryService.getArticleListNormal(articleQuery).then(function (response){
-        return res.ok(response);
+        return res.json(200,response);
       });
       break;
     }
 
     case 'recommend': {
       ArticleQueryService.getArticleListRecommend(articleQuery).then(function (response){
-        return res.ok(response);
+        return res.json(200,response);
       });
       break;
     }
 
     case 'creator': {
       ArticleQueryService.getArticleListByCreator(articleQuery,creator).then(function (response){
-        return res.ok(response);
+        return res.json(200,response);
       });
       break;
     }
 
     case 'category': {
       ArticleQueryService.getArticleListByCategory(articleQuery,category).then(function (response){
-        return res.ok(response);
+        return res.json(200,response);
       });
       break;
     }
     default:{
       ArticleQueryService.getArticleListNormal(articleQuery).then(function (response){
-        return res.ok(response);
+        return res.json(200,response);
       });
     }
     }
