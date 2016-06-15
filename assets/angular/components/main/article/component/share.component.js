@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function ShareFactory($http,$rootScope,$q,$timeout,Session)
+  function ShareFactory($http,$rootScope,$q,$timeout,$Session)
   {
     return {
       setshare: function(shareSID,articleID,messageShare)
@@ -27,12 +27,12 @@
         //         return $http.get('/share',{ params:prms });
         //       }
         // });
-        if(Session.get()) // From Begin Login User
+        if($Session.get()) // From Begin Login User
               {
           var prms = {
             where : {
               article: articleID,
-              user: Session.get().user.uid
+              user: $Session.get().uid
             }
           };
 
@@ -70,7 +70,7 @@
   angular.module('app.main.article.share', [])
          .factory('ShareFactory',ShareFactory)
          .controller('ShareCtrl',ShareCtrl)
-         .directive('share', function($log,$facebook,partial,Session){
+         .directive('share', function($log,$facebook,partial,$Session){
            return {
              restrict: 'EA',
              scope: {
@@ -93,7 +93,7 @@
                    .then(function(response){
                       if(response && !response.error_code)
                       {
-                        var user = Session.get().user;
+                        var user = $Session.get();
                         $log.debug('+ FB Share user ',user);
                         $log.debug('+ FB Share user.uid ',user.uid);
                         var completeSID = user.uid+'_'+response.post_id;

@@ -1,30 +1,45 @@
 (function(module) {
   'use strict';
 
-  function Session (localStorageService) {
-    this.create = function (userInfo) {
-      localStorageService.set('me',userInfo);
-    };
-    this.get = function () {
-      return localStorageService.get('me');
-    };
-    this.destroy = function () {
-      localStorageService.remove('me');
-    };
+  function SessionProvider() {
+    //the provider recipe for services require you specify a $get function
+    this.$get = ['localStorageService',function (localStorageService){
+      return {
+        create : function (userInfo) {
+          localStorageService.set('me',userInfo);
+        },
+        get : function () {
+          return localStorageService.get('me');
+        },
+        destroy : function () {
+          localStorageService.remove('me');
+        },
+        clearAll : function () {
+          localStorageService.clearAll();
+        }
+      };
+    }];
   }
 
-  function AuthFactory ($q, $log, $rootScope, $location,$http,Session) {
+  function AuthFactory ($q, $log, $rootScope, $location, $http, $Session) {
     var authService = {};
+
+
     authService.login = function () {
-    var deferred = $q.defer();
+      var deferred = $q.defer();
+      $log.debug('+ AUTH LOGIN');
       $http
           .get('/me')
           .then(function (response) {
-            $log.debug('+ Set Session user ',response.data);
-            Session.create(response.data);
+            if(!$Session.get())
+            {
+              $log.debug('+ Set Session user ',response.data);
+              $Session.create(response.data);
+            }
             deferred.resolve(true);
           })
           .catch(function(err){
+            $log.debug('+ NOT Data User');
             deferred.resolve(false);
           });
 
@@ -33,14 +48,17 @@
 
     authService.isAuthenticated = function () {
       var deferred = $q.defer();
-      if(Session.get() && Session.get().user) {
-        $log.debug('+ Session user ',Session.get().user);
-        deferred.resolve(true);
-      }
-      else
-      {
-        deferred.resolve(authService.login());
-      }
+      authService.login().then(function (response) {
+        if(response) {
+          $log.debug('+ Session user ', $Session.get());
+          deferred.resolve(true);
+        }
+        else
+        {
+          deferred.resolve(false);
+        }
+      });
+
 
       return deferred.promise;
     };
@@ -50,13 +68,13 @@
         authorizedRoles = [authorizedRoles];
       }
       return (authService.isAuthenticated() &&
-      authorizedRoles.indexOf(Session.userRole) !== -1);
+      authorizedRoles.indexOf($Session.userRole) !== -1);
     };
 
     authService.logout = function () {
       $log.debug('+ LOGOUT');
       $http.get('/auth/logout').then(function () {
-        Session.destroy();
+        $Session.destroy();
         $location.path('/');
       });
     };
@@ -78,7 +96,8 @@
     };
   }
 
-  module.factory('AuthFactory',AuthFactory)
-        .service('Session',Session);
+  module
+    .provider('$Session',SessionProvider)
+    .factory('AuthFactory',AuthFactory);
 
 })(angular.module('app.core.auth',[]));

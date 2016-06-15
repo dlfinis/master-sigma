@@ -1,7 +1,7 @@
 (function(){
   'use strict';
 
-  function ArticleListCtrl($scope,$q,$sce,$log,ArticleListFactory,ModalBaseFactory)
+  function ArticleListCtrl($scope,$q,$sce,$log,$rootScope,ArticleListFactory,ModalBaseFactory)
   {
     var $articlelist = this;
 
@@ -16,14 +16,29 @@
     $articlelist.pagination = {};
     $articlelist.props = {};
 
+    $scope.$on('$viewContentLoaded', function () {
+      console.log('+ Ready Wall Document');
+      // $log.debug('+ Ready Document');
+      // $rootScope.isOK = true;
+      $rootScope.isReady = true;
+      // angular.element().addClass('fade-out');
+    });
+
+    angular.element(document).ready(function () {
+      console.log('+ Ready Wall Document');
+      // $log.debug('+ Ready Document');
+      // $rootScope.isOK = true;
+      $rootScope.isReady = true;
+    });
+
     $articlelist.clear = function ($event, $select){
-                             //stops click event bubbling
+      //stops click event bubbling
       $event.stopPropagation();
-                             //to allow empty field, in order to force a selection remove the following line
+      //to allow empty field, in order to force a selection remove the following line
       $select.selected = undefined;
-                             //reset search query
+      //reset search query
       $select.search = undefined;
-                             //focus and open dropdown
+      //focus and open dropdown
       $select.activate();
     };
 

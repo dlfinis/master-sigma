@@ -15,13 +15,31 @@
                          'app.main',
                          'app.config'
                        ])
-  .config(['INIT','KEYS','$routeProvider','$logProvider','$compileProvider','$facebookProvider','cfpLoadingBarProvider',function(INIT,KEYS,$routeProvider,$logProvider,$compileProvider,$facebookProvider,cfpLoadingBarProvider) {
+  .config([ 'INIT',
+            'KEYS',
+            '$routeProvider',
+            '$logProvider',
+            '$SessionProvider',
+            '$compileProvider',
+            '$facebookProvider',
+            'cfpLoadingBarProvider',
+            'localStorageServiceProvider',
+  function( INIT,
+            KEYS,
+            $routeProvider,
+            $logProvider,
+            $SessionProvider,
+            $compileProvider,
+            $facebookProvider,
+            cfpLoadingBarProvider,
+            localStorageServiceProvider) {
 
     if (!location.host.match(INIT.development)) {
       $compileProvider.debugInfoEnabled(false);
       $logProvider.debugEnabled(false);
     }
 
+    //Set Facebook API configuration
     $facebookProvider.setAppId(KEYS.fbClientID);
 
     // Remove loading bar spinner
@@ -34,9 +52,7 @@
         template: '<articlelist source="_source"></articlelist>',
         resolve:{
           _source: function(ArticleListFactory,$timeout){
-            return $timeout(function () {
-              return ArticleListFactory._source_init();
-            }, 2000 );
+            return ArticleListFactory._source_init();
           }
         },
         controller: function($scope, _source){
@@ -55,7 +71,7 @@
     $routeProvider.otherwise({redirectTo: '/'});
   }])
   /*CONFIG*/
-  .run(function ($rootScope,$location,$route,$timeout,$log,FontLoader,FBLoader,cfpLoadingBar, AuthFactory ,CheckRoutingFactory, AUTH_EVENTS,KEYS) {
+  .run(function ($rootScope,$location,$route,$timeout,$log,FontLoader,FBLoader, cfpLoadingBar, AuthFactory ,CheckRoutingFactory, AUTH_EVENTS,KEYS) {
     // Load the facebook SDK asynchronously
     FBLoader.setScript();
     //Load fonts asynchronously

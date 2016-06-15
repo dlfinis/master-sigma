@@ -7,19 +7,8 @@
 /*global Article Like ArticleService ArticleQueryService ArticleFBService UserService*/
 var Promise = require('bluebird');
 
-// Attempt to parse JSON
-// If the parse fails, return the error object
-// If JSON is falsey, return null
-// (this is so that it will be ignored if not specified)
-function tryToParseJSON (json) {
-  if (!_.isString(json)) return null;
-  try {
-    return JSON.parse(json);
-  }
-  catch (e) { return e; }
-}
 
-// Duplicate specific key of object JSON
+// Split string values in an array of specific key of object JSON
 function dupJSONKeysBySpace(json) {
   _.each(json,function (element,index) {
     json[index] = element.match(/[A-zÀ-ÿ]+|\d+/ig);
@@ -60,13 +49,20 @@ module.exports = {
     sails.log.debug('+ Find Dark Elems');
 
 
-    var where= req.params.all().query;
+    var where = req.params.all().query;
     sails.log.debug('+ Where Raw > ',where);
 
-    if (_.isString(where)) {
-      where = tryToParseJSON(where);
-    }else{
-      return res.json(401,'Bad query');
+
+    try{
+      if (_.isString(where)) {
+        where = JSON.parse(where);
+      }
+      else{
+        return res.json(400,{ error: 'Badly structured query' });
+      }
+    }
+    catch(e){
+      return res.json(400,{ error: 'Badly structured query' });
     }
 
     // Omit any params w/ undefined values
@@ -74,7 +70,7 @@ module.exports = {
 
     // In a value of json key with space convert these in elements
     where = dupJSONKeysBySpace(where);
-    sails.log.debug('+ Where > ',where);
+    sails.log.debug('+ Where Process > ',where);
 
     ArticleQueryService.getArticleListByQuery(ArticleQueryService._baseQuery(req),where)
     .then(function(response){
@@ -82,7 +78,7 @@ module.exports = {
     })
     .catch(function(err){
       sails.log.warn(err);
-      return res.json(500,'Not Data');
+      return res.json(500,{ error: 'Not Data' });
     });
 
   },

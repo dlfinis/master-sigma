@@ -29,7 +29,7 @@ var self = {
     };
   },
   _accentFold : function (str) {
-    if (!str) { return ''; }
+    if (_.isNull(str) || _.isUndefined(str)) { return ''; }
 
     var ret = '';
     for (var i = 0; i < str.length; i++) {
@@ -46,7 +46,11 @@ var self = {
   _querySuccessRate : _successRate
   ,
   searchString : function (str,wstr){
-    if(_.isArray(str)) str = JSON.stringify(str);
+    if (_.isNull(str) || _.isUndefined(str)) { return false; }
+
+    if(_.isArray(str) || _.isObject(str)) str = JSON.stringify(str);
+    str = JSON.stringify(str);
+    // Convert accent of the string , and search by reg expression
     return self._accentFold(str).search(new RegExp(self._accentFold(wstr), 'i')) > -1;
   },
   isSuccessfulQuery : function (arr,cnt){
@@ -54,15 +58,34 @@ var self = {
   },
   matchWord : function (content,prms) {
     var success = 0;
-    if(_.isArray(content)) content = JSON.stringify(content);
+    if (_.isNull(content) || _.isUndefined(content)) { return 0; }
+
+    if(_.isArray(content) || _.isObject(content)) content = JSON.stringify(content);
+
     if(_.isArray(prms)){
-      _.each(prms,function(pElem){ if(self.searchString(content,pElem)) success = success +1;});
+      _.each(prms,function(pElem){
+        if(self.searchString(content,pElem)) success = success + 1;
+      });
       if(self.isSuccessfulQuery(prms,success)) return success;
-      else return 0;
     }
     else{
-      return self.searchString(content,prms);
+      if(self.searchString(content,prms)) return 1;
     }
+
+    return 0;
+  },
+  filterGeneral : function (arr,prms) {
+    return _.filter(arr,function(aElem){
+      var success = 0;
+      _.each(prms,function(pElem){ //Parameters of query
+        _.each(_.keys(aElem),function(akElem){
+          var matches = self.matchWord(aElem[akElem],pElem);
+          if(matches > 0) success = success + matches;
+        });
+      });
+      aElem.success = success;
+      return self.isSuccessfulQuery(prms,success);
+    });
   },
   filterByParams : function (arr,prms) {
     return _.filter(arr,function(aElem){
@@ -126,31 +149,35 @@ module.exports = {
 
       var articlesList = [];
       var blacklist = ['general', 'date'];
+      var whereGeneral = [];
+      var whereDate = [];
 
       delete articleQuery._criteria['limit'];
       articleQuery.sort('createdAt DESC');
 
       articleQuery.then(function (articles){
 
-        articles = _.filter(articles,function(aElem){
-          var success = 0;
-          _.each(_.keys(whereQuery),function(wkElem){ //Parameters of query
-            if(_.has(aElem,wkElem))
-            {
-              var matches = self.matchWord(aElem[wkElem],whereQuery[wkElem]);
-              if(matches > 0) success = success + matches;
-            }
-          });
-          aElem.success = success;
-          return self.isSuccessfulQuery(whereQuery,success);
-        });
+        // Omit built-in runtime config (like query modifiers)
+        whereGeneral = _.pick(whereQuery, 'general');
+        whereDate = _.pick(whereQuery, 'date');
+        whereQuery = _.omit(whereQuery, blacklist);
 
-        sails.log.debug('After Query');
+        if(!_.isEmpty(whereGeneral))
+        {
+          sails.log('->Query General');
+          articles = self.filterGeneral(articles,whereGeneral);
+        }
+        if(!_.isEmpty(whereQuery))
+        {
+          sails.log('->Query By Params');
+          articles = self.filterByParams(articles,whereQuery);
+        }
+        sails.log.debug('-->After of Query');
         _.each(articles,function (el) {
           sails.log.debug(el.id,'>:',el.title,'sc:',el.success);
         });
 
-        sails.log.debug('Sorting');
+        sails.log.debug('-->Sorting Query Results');
         articles.sort(function(a, b) {
           return b.success - a.success;
         });

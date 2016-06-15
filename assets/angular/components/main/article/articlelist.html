@@ -1,14 +1,14 @@
 <!-- <pre> {{$articlelist.data | json}}</pre> -->
 <div class="container">
   <div class="col-sm-12">
-    <div class="advanced-search" advanced-search source="$articlelist.data" query="$articlelist.queryParams"></div>
-    <div class="sort-bar" ng-if="$articlelist.data && $articlelist.mcategories">
-    <!-- <div class="sort-bar"> -->
+    <div class="advanced-search ng-cloak fade-ng-cloak" advanced-search source="$articlelist.data" query="$articlelist.queryParams"></div>
+    <div class="sort-bar ng-cloak" ng-show="$articlelist.data.length > 0">
+      <div class="sort-item sort-section">
         <div class="sort-item tab"
           ng-class='{"active":$articlelist.normal}'
           ng-click="$articlelist.setNormalList()"
           >
-          Reciente
+          Recientes
         </div>
         <div class="sort-item tab"
           ng-class='{"active":$articlelist.recommend}'
@@ -16,21 +16,30 @@
           >
           Recomendados
         </div>
-        <div class="sort-item sort-section">
-          <div class="sort-category">
-            <ui-select ng-init="$articlelist.getCategories()" ng-model="$articlelist.mcategory.selected" theme="select2">
-             <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}
-             <a class="btn btn-xs" ng-click="$articlelist.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
-             </ui-select-match>
-             <ui-select-choices repeat="mcategory in $articlelist.mcategories | orderBy:'name' | PropsFormat: {name: $select.search}">
-               <div ng-bind-html="mcategory.name | highlight: $select.search"></div>
-             </ui-select-choices>
-            </ui-select>
-          </div>
+        <div class="sort-item tab"
+          ng-class='{"active":$articlelist.recommend}'
+          >
+          <i class="fa fa-thumbs-up" aria-hidden="true">*</i>
+        </div>
+        <div class="sort-item tab"
+          ng-class='{"active":$articlelist.recommend}'
+          >
+          <i class="fa fa-share-square-o" aria-hidden="true">*</i>
+        </div>
+      </div>
+       <div class="sort-category ng-cloak fade-ng-cloak" ng-if="$articlelist.mcategories.length > 0">
+        <ui-select ng-init="$articlelist.getCategories()" ng-model="$articlelist.mcategory.selected" theme="select2">
+         <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}
+         <a class="btn btn-xs" ng-click="$articlelist.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
+         </ui-select-match>
+         <ui-select-choices repeat="mcategory in $articlelist.mcategories | orderBy:'name' | PropsFormat: {name: $select.search}">
+           <div ng-bind-html="mcategory.name | highlight: $select.search"></div>
+         </ui-select-choices>
+        </ui-select>
       </div>
     </div>
 
-    <div class="" ng-if="$articlelist.data.length == 0">
+    <div class="not-articles" ng-if="$articlelist.data.length == 0">
       <h4>No existen artículos para visualizar.</h4>
       <div class="mnr-c">
         <div class="med card-section">
@@ -42,41 +51,42 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-12 post animate-repeat"
-    ng-animate="'animate'"
-         ng-repeat="article in $articlelist.data
+    <div class="article">
+      <div class="col-sm-12 post animate-repeat"
+          ng-animate="'animate'"
+          ng-repeat="article in $articlelist.data
             |filter: $articlelist.mcategory.selected.name
             |limitTo: $articlelist.perPage
             track by article.id
             "
         uid ="{{::article.uid}}"
-    >
-            <a class="image-box" ng-href="{{::article.url}}" ng-click="$articlelist.setVisit(article)" target="_blank">
-            <img class="image"
-            ng-src="/images/spinner.gif"
-            lazy-img="{{::$articlelist.getTrustedResource(article.image) ||'/images/submarine.png' }}"
-            alt=""/>
-            </a>
-            <div control
-                 source="article"
-                 list="$articlelist.data"
-            ></div>
-            <div id="title" class="title"><h3 ng-bind="article.title"></h3></div>
-            <div class="box">
-                <div class="info">
-                  <div class="creator"
-                       ng-bind="article.creator.name"
-                       ng-click="$articlelist.setCreatorList(article.creator)"></div>
-                  <div class="period" period data="{{::article.date }}"></div>
-                  <span>&#8226;</span>
-                  <div class="reading" reading stats="article.stats"></div>
-                  <span ng-if="article.state === 'edit'">&#8226;</span>
-                  <div class="edition" ng-if="article.state === 'edit'">Editado</div>
-                  <div class="visits" ng-if="article.visits > 0">{{article.visits}} Visitas</div>
-                </div>
-                <p class="text" id="description" ng-bind="article.description"></p>
-                <div openlater source="article"></div>
-             </div>
+      >
+        <a class="image-box" ng-href="{{::article.url}}" ng-click="$articlelist.setVisit(article)" target="_blank">
+        <img class="image"
+        ng-src="/images/spinner.gif"
+        lazy-img="{{::$articlelist.getTrustedResource(article.image) ||'/images/submarine.png' }}"
+        alt=""/>
+        </a>
+        <div control
+             source="article"
+             list="$articlelist.data"
+        ></div>
+        <div id="title" class="title"><h3 ng-bind="article.title"></h3></div>
+        <div class="box">
+            <div class="info">
+              <div class="creator"
+                   ng-bind="article.creator.name"
+                   ng-click="$articlelist.setCreatorList(article.creator)"></div>
+              <div class="period" period data="{{::article.date }}"></div>
+              <span>&#8226;</span>
+              <div class="reading" reading stats="article.stats"></div>
+              <span ng-if="article.state === 'edit'">&#8226;</span>
+              <div class="edition" ng-if="article.state === 'edit'">Editado</div>
+              <div class="visits" ng-if="article.visits > 0">{{article.visits}} Visitas</div>
+            </div>
+            <p class="text" id="description" ng-bind="article.description"></p>
+            <div openlater source="article"></div>
+        </div>
         <div class="social-bar" >
           <div class="section-btn">
             <like
@@ -92,23 +102,26 @@
             </div>
           </div>
         </div>
+      </div>
     </div>
   </div>
 
-  <div class="col-sm-12 text-center" ng-show="$articlelist.data.length > 0">
-    <uib-pagination
-    boundary-links="true"
-    total-items="$articlelist.totalItems"
-    max-size="$articlelist.maxSizeItems"
-    num-pages="numPages"
-    ng-model="$articlelist.currentPage"
-    ng-change="$articlelist.pageChanged()"
-    class="pagination"
-    force-ellipses="true"
-    previous-text="&lsaquo;"
-    next-text="&rsaquo;"
-    first-text="&laquo;"
-    last-text="&raquo;">
-    </uib-pagination>
+  <div class="pagination">
+    <div class="col-sm-12 text-center" ng-show="$articlelist.data.length > 0">
+      <uib-pagination
+      boundary-links="true"
+      total-items="$articlelist.totalItems"
+      max-size="$articlelist.maxSizeItems"
+      num-pages="numPages"
+      ng-model="$articlelist.currentPage"
+      ng-change="$articlelist.pageChanged()"
+      class="pagination"
+      force-ellipses="true"
+      previous-text="&lsaquo;"
+      next-text="&rsaquo;"
+      first-text="&laquo;"
+      last-text="&raquo;">
+      </uib-pagination>
+    </div>
   </div>
 </div>
