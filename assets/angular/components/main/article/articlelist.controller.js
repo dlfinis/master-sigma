@@ -50,7 +50,7 @@
         $articlelist.setPagination(
           articleList,
           response.data.size,
-          Math.ceil(response.data.size/$articlelist.perPage) || 1
+          $articlelist.perPage
         );
 
       });
@@ -74,15 +74,17 @@
     $articlelist.totalItems = 0;
     $articlelist.maxSizeItems = 10; // Numbers of Pages
 
-    if($scope.source)
-      {
-      $articlelist.data = $scope.source.articlelist.results;
+    var init_source = $scope.$watch('source', function(newValue, oldValue) {
+      $log.debug('+ Article Load Source',newValue,'>',oldValue);
       $articlelist.mcategories = $scope.source.categories.results;
-
-      $articlelist.totalItems = $scope.source.articlelist.size;
-      $articlelist.numberOfPages =
-            Math.ceil($articlelist.totalItems/ArticleListFactory._params().perPage) || 1;
-    }
+      $articlelist.setPagination(
+        $scope.source.articlelist.results,
+        $scope.source.articlelist.size,
+        ArticleListFactory._params().perPage
+      );
+      $articlelist.normal = true;
+      init_source();
+    });
 
     $articlelist.startfrom = function(){
       return ($articlelist.perPage * $articlelist.currentPage)-($articlelist.perPage);

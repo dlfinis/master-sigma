@@ -1,6 +1,6 @@
 body {
     font-family: Helvetica,Arial,sans-serif;
-    background: url('/images/background/seamless_paper_texture.png') repeat fixed;
+    /*background: url('/images/background/seamless_paper_texture.png') repeat fixed;*/
     font-size: 14px;
     /*background: url('/images/background/polka-dot-2.png') no-repeat center center fixed;*/
     /*-webkit-background-size: cover;
@@ -105,8 +105,7 @@ li[disabled] {
 .box {
     margin-bottom: 20px;
     padding: 1% 2%;
-    background: #fff;
-    /*background: rgba(255,255,255,0.9);*/
+    background: #f7f7f7;
 }
 
 .intro-text {
@@ -205,7 +204,8 @@ footer p {
 }
 
 .advanced-search{
-  margin-bottom: 1.2em;
+  margin-bottom: 1.25em;
+  box-shadow: 0px 2px 10px -2px #c5c6ce
 }
 
 .sort-bar{
@@ -214,7 +214,8 @@ footer p {
   width: 100%;
   height: 30px;
   background: #6D84B4;
-  font-size: 0.9em;
+  font-size: 0.825em;
+  box-shadow: 0px 0px 10px 0px #7c8495;
 }
 
 .sort-bar .sort-item{
@@ -222,7 +223,7 @@ footer p {
 }
 
 .sort-bar .sort-item.tab{
-  padding: 6px 2%;
+  padding: 6px 11px;
   background: #4C6598;
   color: #fff;
   cursor: pointer;
@@ -230,15 +231,17 @@ footer p {
 }
 
 .sort-bar .sort-item.tab.active{
-  background: #3A5795;
-  font-weight: bolder;
+  background: #2f4981;
+}
+
+.sort-bar .sort-item.tab::focus{
+  background: #3B5998;
 }
 
 .sort-bar .sort-section{
   display: inline-block;
   float: left;
   width: 70%;
-  margin: 0 0.3%;
 }
 
 .sort-bar .sort-search {
@@ -309,13 +312,15 @@ footer p {
 }
 
 .post {
-  margin-bottom:2%;
+  margin-bottom:4%;
   padding: 0px;
+  box-shadow: 0px 2px 15px -1px #7c8495;
 }
 
 .post .image-box{
   background: #344557;
 }
+
 .post .title{
   padding-top: 10px;
   padding-bottom: 5px;
@@ -398,8 +403,8 @@ footer p {
   right: 0;
   width: 100%;
   height: 60px;
-  background: #fff;
-  background: linear-gradient(to bottom , rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 85%);
+  background: #f7f7f7;
+  background: linear-gradient(to bottom , transparent, #f7f7f7 85%);
 }
 
 .post .image{
@@ -448,7 +453,8 @@ footer p {
   background: #e0e0e0;;
   border-top: 1px solid #CCCCCC;
   cursor: pointer;
-  box-shadow: 0px 5px 10px -2px #7c8495;
+  vertical-align: bottom;
+  /*box-shadow: 0px 5px 10px -2px #7c8495;*/
 }
 
 .post .social-bar .categories{
