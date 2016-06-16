@@ -5,7 +5,7 @@
 <div class="modal-body">
 <div class="source">
   <span>&#8226; </span><div class="reading" reading stats="article.stats"></div>
-  <a class="external" ng-href="{{::article.url}}" target="_blank">
+  <a class="external" ng-href="{{::article.url}}" ng-click="close()" target="_blank">
     <i class="fa fa-external-link"></i> Abrir Página
   </a>
 </div>
@@ -26,8 +26,8 @@
 
 <div class="modal-footer">
   <div class="note">
-    Si no se visualiza adecuadamente. 
-    Por favor pulsa en <em><i class="fa fa-external-link"></i> Abrir Página</em>
+    Si no se visualiza adecuadamente.
+    Por favor pulsa en  <em><i class="fa fa-external-link"></i>Abrir Página</em>
   </div>
   <div class="post">
     <div class="social-bar" >

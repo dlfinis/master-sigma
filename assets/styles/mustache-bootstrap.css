@@ -186,3 +186,7 @@
 .select2-results {
     max-height: 110px !important;
 }
+
+.embed-responsive-4by3 {
+  padding-bottom: 72%;
+}
