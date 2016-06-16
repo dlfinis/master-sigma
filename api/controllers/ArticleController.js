@@ -87,11 +87,14 @@ module.exports = {
 
   },
   findAll:function(req,res){
-    var kindList = req.param('kind');
+    var kindList = req.param('kind') || 'normal';
+
     var creator = req.param('creator');
     var category = req.param('category');
 
     var articleQuery = ArticleQueryService._baseQuery(req);
+
+    sails.log('+ Find All Elements. Kind of List:',kindList);
 
     if(creator)
       kindList = 'creator';
@@ -127,7 +130,23 @@ module.exports = {
       });
       break;
     }
+
+    case 'liked': {
+      ArticleQueryService.getArticleListMostLiked(articleQuery).then(function (response){
+        return res.json(200,response);
+      });
+      break;
+    }
+
+    case 'shared': {
+      ArticleQueryService.getArticleListMostShared(articleQuery).then(function (response){
+        return res.json(200,response);
+      });
+      break;
+    }
+
     default:{
+      sails.log('-Default List');
       ArticleQueryService.getArticleListNormal(articleQuery).then(function (response){
         return res.json(200,response);
       });

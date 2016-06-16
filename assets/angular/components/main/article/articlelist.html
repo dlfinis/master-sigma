@@ -17,12 +17,14 @@
           Recomendados
         </div>
         <div class="sort-item tab"
-          ng-class='{"active":$articlelist.recommend}'
+          ng-class='{"active":$articlelist.liked}'
+          ng-click="$articlelist.setMostLikedList()"
           >
           <i class="fa fa-thumbs-up" aria-hidden="true">*</i>
         </div>
         <div class="sort-item tab"
-          ng-class='{"active":$articlelist.recommend}'
+          ng-class='{"active":$articlelist.shared}'
+          ng-click="$articlelist.setMostSharedList()"
           >
           <i class="fa fa-share-square-o" aria-hidden="true">*</i>
         </div>

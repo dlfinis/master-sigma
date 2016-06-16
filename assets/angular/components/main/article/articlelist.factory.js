@@ -47,7 +47,7 @@
       getArticles: function(props)
           {
         var prms = {};
-        if(props.kind === 'normal' || props.kind === 'recommend')
+        if(props.kind === 'normal' || props.kind === 'recommend' || props.kind === 'liked' || props.kind === 'shared')
           prms.kind = props.kind;
 
         if(props.limit != 'undefined')

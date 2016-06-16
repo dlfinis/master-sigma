@@ -137,7 +137,9 @@
       };
       $articlelist.getArticles($articlelist.props);
       $articlelist.normal = true;
-      $articlelist.recommend = false;
+      $articlelist.recommend = !$articlelist.normal;
+      $articlelist.liked = !$articlelist.normal;
+      $articlelist.shared = !$articlelist.normal;
       $articlelist.currentPage = 1;
     };
 
@@ -149,7 +151,9 @@
       };
       $articlelist.getArticles($articlelist.props);
       $articlelist.recommend = true;
-      $articlelist.normal = false;
+      $articlelist.normal = !$articlelist.recommend;
+      $articlelist.liked = !$articlelist.recommend;
+      $articlelist.shared = !$articlelist.recommend;
       $articlelist.currentPage = 1;
     };
 
@@ -176,6 +180,34 @@
       $articlelist.getArticles($articlelist.props);
       $articlelist.recommend = false;
       $articlelist.normal = true;
+      $articlelist.currentPage = 1;
+    };
+
+    $articlelist.setMostLikedList = function()
+    {
+      $articlelist.props = {
+        'kind': 'liked',
+        'limit': $articlelist.perPage
+      };
+      $articlelist.getArticles($articlelist.props);
+      $articlelist.liked = true;
+      $articlelist.normal = !$articlelist.liked;
+      $articlelist.recommend = !$articlelist.liked;
+      $articlelist.shared = !$articlelist.liked;
+      $articlelist.currentPage = 1;
+    };
+
+    $articlelist.setMostSharedList = function()
+    {
+      $articlelist.props = {
+        'kind': 'shared',
+        'limit': $articlelist.perPage
+      };
+      $articlelist.getArticles($articlelist.props);
+      $articlelist.shared = true;
+      $articlelist.normal = !$articlelist.shared;
+      $articlelist.recommend = !$articlelist.shared;
+      $articlelist.liked = !$articlelist.shared;
       $articlelist.currentPage = 1;
     };
 

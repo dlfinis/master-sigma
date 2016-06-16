@@ -227,6 +227,7 @@ module.exports = {
     });
   },
   getArticleListNormal : function (articleQuery){
+    sails.log.debug('+ List of all elements');
     return new Promise(function(resolve){
       articleQuery.then(function (articles){
 
@@ -243,6 +244,7 @@ module.exports = {
     });
   },
   getArticleListRecommend : function (articleQuery){
+    sails.log.debug('+ List of elements recommends based on formula');
     return new Promise(function(resolve){
 
       delete articleQuery._criteria['limit'];
@@ -263,6 +265,7 @@ module.exports = {
     });
   },
   getArticleListByCreator : function (articleQuery,creator){
+    sails.log.debug('+ List of elements filter by creator');
     return new Promise(function(resolve){
 
       delete articleQuery._criteria['limit'];
@@ -293,6 +296,7 @@ module.exports = {
     });
   },
   getArticleListByCategory : function (articleQuery,category){
+    sails.log.debug('+ List of elements filter by category');
     return new Promise(function(resolve){
       delete articleQuery._criteria['limit'];
       articleQuery.then(function (articles){
@@ -309,6 +313,42 @@ module.exports = {
 
         articles.sort(function(a, b) {
           return b.date - a.date;
+        });
+
+        ArticleQueryService.getArticleListBase(articles)
+        .then(function (response) {
+          resolve(response);
+        });
+
+      });
+    });
+  },
+  getArticleListMostLiked : function (articleQuery){
+    sails.log.debug('+ List of most liked elements:');
+    return new Promise(function(resolve){
+      delete articleQuery._criteria['limit'];
+      articleQuery.then(function (articles){
+
+        articles.sort(function(a, b) {
+          return b.likes.length - a.likes.length;
+        });
+
+        ArticleQueryService.getArticleListBase(articles)
+        .then(function (response) {
+          resolve(response);
+        });
+
+      });
+    });
+  },
+  getArticleListMostShared : function (articleQuery){
+    sails.log.debug('+ List of most shared elements:');
+    return new Promise(function(resolve){
+      delete articleQuery._criteria['limit'];
+      articleQuery.then(function (articles){
+
+        articles.sort(function(a, b) {
+          return b.shares.length - a.shares.length;
         });
 
         ArticleQueryService.getArticleListBase(articles)
