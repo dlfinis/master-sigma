@@ -21,7 +21,7 @@
       _source_init: function () {
         return $q.all([
           this.getArticles(this._props_normal()),
-          $http.get('/api/category/find')
+          $http.get('/api/category/findExist')
         ]).then(function(response){
           return {
             articlelist : response[0].data,
@@ -70,7 +70,7 @@
       },
       getCategories: function()
       {
-        return $http.get('/api/category/find')
+        return $http.get('/api/category/findExist')
         .then(function (response){
           return response.data.results;
         })

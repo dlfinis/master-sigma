@@ -13,8 +13,8 @@
 
           scope.$on('$viewContentLoaded', function () {
             $log.debug('+ Ready Document');
-            $rootScope.isReady = true;
-          });        
+            // $rootScope.isReady = true;
+          });
 
           // Subscribe to broadcast of $stateChangeStart state event via AngularUI Router
           $rootScope.$on('$routeChangeStart', function (event, toState, toParams, fromState, fromParams, error) {

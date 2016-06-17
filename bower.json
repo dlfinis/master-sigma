@@ -33,6 +33,7 @@
     "fontfaceobserver": "^1.7.1",
     "angular-resource": "^1.5.6",
     "angular-local-storage": "^0.2.7",
-    "tv4": "^1.2.7"
+    "tv4": "^1.2.7",
+    "isteven-angular-multiselect": "angular-multi-select#^4.0.0"
   }
 }

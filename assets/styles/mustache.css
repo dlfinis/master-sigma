@@ -247,11 +247,13 @@ footer p {
 .sort-bar .sort-category{
   display: inline-block;
   float: right;
+  width: 30%;
+  height: auto;
+  padding: 4px;
 }
 
 .sort-bar .sort-category .ui-select-container{
   min-width: 200px;
-  padding: 4px;
 }
 
 .sort-bar .sort-search .form-control{

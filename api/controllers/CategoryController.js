@@ -5,12 +5,27 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+/*global Article*/
 module.exports = {
-    index: function(req, res)
+    findExist: function(req, res)
     {
-        Category.find(function(err, categories)
-      {
-            res.send(categories);
+      sails.log.debug('+ Find Exist Categories present in All Articles');
+      Article.find({ state: { '!': 'disable' }})
+      .limit(999)
+      .populate('categories')
+      .then(function (articles) {
+        var categories = [];
+
+        _.each(_.pluck(articles,'categories'),function (cElem) {
+          _.each(_.omit(cElem,['add', 'remove']),function (cnElem) {
+            var dupCat = _.some(categories,function (ctElem) {
+              return ctElem.name === cnElem.name;
+            });
+            if(!dupCat) categories.push(cnElem);
+          });
+
         });
+        return res.json(200,{total: categories.length,results:categories});
+      });
     }
 };

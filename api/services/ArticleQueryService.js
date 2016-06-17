@@ -113,8 +113,14 @@ var self = {
 };
 
 module.exports = {
-
-  _baseQuery :function (req) {
+  /**
+   * Base query with default conditions on sort & state filter
+   * @param  {request} req
+   * @param  {string} sortQuery
+   * @param  {Criteria} stateCondition
+   * @return {query}
+   */
+  _baseQuery :function (req,sortQuery,stateCondition) {
     UserService.current(req.user); // Set  current user
 
     ArticleQueryService.getTotalSize().then(function (size) {
@@ -122,16 +128,15 @@ module.exports = {
     });
     config._setLimit(ArticleQueryService.getLimit(req));
     config._setSkip(ArticleQueryService.getSkip(req));
-    var query = Article.find()
+    var query = Article.find(stateCondition || { state: { '!': 'disable' }})
                         .limit(ArticleQueryService.getLimit(req))
                         .skip(ArticleQueryService.getSkip(req))
-                        .sort('updatedAt DESC')
+                        .sort(sortQuery || 'updatedAt DESC')
                         .populate('creator')
                         .populate('categories')
                         .populate('likes')
                         .populate('shares')
-                        .populate('visits')
-                        .where({state:['create', 'edit']});
+                        .populate('visits');
 
     return query;
   },
@@ -169,8 +174,10 @@ module.exports = {
       sails.log.debug('-->Total Original Size of Elements:',config._totalSize,'>',
       'Total Size of Elements Found:',articleListData.length);
       articleListData.some(function (article,index) {
-        sails.log.debug('-i:',index+1,'id:',article.id,'>:',article.success || article.title,'+:',article.updatedAt);
-        articlesList.push(ArticleService.getArticleStructure(article));
+        if(!_.isUndefined(article)){
+          sails.log.debug('-i:',index+1,'id:',article.id,'>:',article.success || article.title,'+:',article.updatedAt);
+          articlesList.push(ArticleService.getArticleStructure(article));
+        }
         return articlesList.length === config._limit;
       });
 
@@ -301,15 +308,11 @@ module.exports = {
       delete articleQuery._criteria['limit'];
       articleQuery.then(function (articles){
 
-        articles = _.map(articles,function (article) {
-          var exist = _.find(article.categories, function(acElem) {
-            return acElem.name == category;
+        articles = _.filter(articles,function (article) {
+          return _.some(article.categories, function(acElem) {
+            return acElem.name === category;
           });
-
-          if(exist)
-            return article;
         });
-
 
         articles.sort(function(a, b) {
           return b.date - a.date;

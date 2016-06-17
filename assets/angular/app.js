@@ -47,18 +47,7 @@
 
     $routeProvider.when('/',{template:'<home></home>'});
     $routeProvider.when('/home', {template:'<home></home>'});
-    $routeProvider.when('/wall',
-      {
-        template: '<articlelist source="_source"></articlelist>',
-        resolve:{
-          _source: function(ArticleListFactory,$timeout){
-            return ArticleListFactory._source_init();
-          }
-        },
-        controller: function($scope, _source){
-          $scope._source = _source;
-        }
-      });
+    $routeProvider.when('/wall',{template:'<articlelist></articlelist>'});
     $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
     $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
     $routeProvider.when('/logout', {
@@ -96,6 +85,7 @@
           if(!response)
           {
             event.preventDefault();
+            $rootScope.isReady = true;
             CheckRoutingFactory.notAuth();
             $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
           }else{

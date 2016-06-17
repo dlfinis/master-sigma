@@ -1,7 +1,7 @@
-(function(){
+(function(module){
   'use strict';
 
-  function ArticleListCtrl($scope,$q,$sce,$log,$element,ArticleListFactory,ModalBaseFactory)
+  function ArticleListCtrl($scope,$q,$sce,$log,$element,$rootScope,$timeout,ArticleListFactory,ModalBaseFactory)
   {
     var $articlelist = this;
 
@@ -17,6 +17,25 @@
     $articlelist.props = {};
     $articlelist.pagerData = false;
 
+    var select_event_category;
+    $element.querySelectorAll('#sort-category').bind('click mouseleave', function(event) {
+
+      if(event.type === 'click') select_event_category = '';
+      if(event.type === 'mouseout'
+        && select_event_category === 'clear'
+        && !$articlelist.mcategory.selected )
+      {
+        $timeout(function () {
+          $log.debug('- Set Default List');
+          $articlelist.setNormalList();
+          select_event_category = '';
+          event.preventDefault();
+        }, 1250 );
+      }
+
+    });
+
+
     $articlelist.clear = function ($event, $select){
       //stops click event bubbling
       $event.stopPropagation();
@@ -24,9 +43,12 @@
       $select.selected = undefined;
       //reset search query
       $select.search = undefined;
+
+      select_event_category = 'clear';
       //focus and open dropdown
-      $select.activate();
+      // $select.activate();
     };
+
 
     $articlelist.getCategories = function(){
       if(!$articlelist.mcategories)
@@ -35,6 +57,9 @@
         });
     };
 
+    $articlelist.onSelectCategory = function (item) {
+      $articlelist.setCategoryList(item);
+    };
 
     $articlelist.getArticles = function(props){
       ArticleListFactory.getArticles(props).then(function(response){
@@ -73,18 +98,6 @@
 
     $articlelist.totalItems = 0;
     $articlelist.maxSizeItems = 10; // Numbers of Pages
-
-    var init_source = $scope.$watch('source', function(newValue, oldValue) {
-      $log.debug('+ Article Load Source',newValue,'>',oldValue);
-      $articlelist.mcategories = $scope.source.categories.results;
-      $articlelist.setPagination(
-        $scope.source.articlelist.results,
-        $scope.source.articlelist.size,
-        ArticleListFactory._params().perPage
-      );
-      $articlelist.normal = true;
-      init_source();
-    });
 
     $articlelist.startfrom = function(){
       return ($articlelist.perPage * $articlelist.currentPage)-($articlelist.perPage);
@@ -240,9 +253,21 @@
       return resource;
     };
 
-    $articlelist.test = function test() {
-      return 'Test';
-    };
+    (function init() {
+    // load data, init scope, etc.
+      ArticleListFactory._source_init().then(function (response) {
+        $articlelist.setPagination(
+          response.articlelist.results,
+          response.articlelist.size,
+          ArticleListFactory._params().perPage
+        );
+        $rootScope.isReady = true;
+        $articlelist.normal = true;
+        $articlelist.mcategories = response.categories.results;
+      });
+
+    })();
+
   }
 
   angular.module('app.main.article')
