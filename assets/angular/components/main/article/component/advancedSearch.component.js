@@ -21,19 +21,20 @@
   var schema = {
     "type" : "object",
     "properties" : {
+      "general"   : { "type" : "string" },
       "description"   : { "type" : "string" },
       "title"  : { "type" : "string" },
       "date"  : { "type" : "string" },
-      "editor"  : { "type" : "string" }
+      "creator"  : { "type" : "string" }
     }
   };
 
-  function AdvancedSearchFactory ($http,$q,$log) {
+  function AdvancedSearchFactory ($http,$log) {
     return {
       find : function (query) {
         return $http.get('/api/article/findElems',
           {
-            params : {query:query}
+            params : { query : query }
           });
       },
       validateJSON : function (str) {
@@ -51,17 +52,54 @@
   function AdvancedSearchCtrl ($scope,$element,$attrs,$q,$log,AdvancedSearchFactory) {
     var $search = this;
     var $articlelist = $scope.$parent.$articlelist || undefined;
+    var whitelist = ['title','description','creator','date','general'];
 
+    $search.params = {};
+
+
+    var click_options = false;
+    $element.querySelectorAll('#options').bind('click', function (event) {
+
+      click_options = !click_options;
+      if(click_options)
+      {
+        $element.querySelectorAll('#search-box').css('display','block');
+        var vstr = $element.querySelectorAll('#txt-search').val();
+        var prms = $search.convertInParam(vstr);
+        console.log(prms);
+        $search.passParamsToModels(prms);
+        console.log($search.params);
+      }
+      else
+        $element.querySelectorAll('#search-box').css('display','none');
+
+    });
+
+    $element.querySelectorAll('#btn-txt-search').bind('click', function (event) {
+        $search.getArticlesElems();
+    });
 
     $element.querySelectorAll('#btn-search').bind('click', function (event) {
-      var vstr = $element.querySelectorAll('#txt-search').val();
-      $search.getArticlesElems(vstr);
+        // $search.getArticlesElems();
+        var vstr = $element.querySelectorAll('#txt-search').val();
+        var prms = $search.convertInParam(vstr);
+        $search.passParamsToModels(prms);
+        console.log($search.params);
     });
 
     $element.querySelectorAll('#txt-search').bind('keydown', function(event) {
       if(event.which === 13 ) {
         var vstr = $element.querySelectorAll('#txt-search').val();
-        $search.getArticlesElems(vstr);
+        var prms = $search.convertInParam(vstr);
+        $search.passParamsToModels(prms,$search.params);
+        event.preventDefault();
+      }
+    });
+
+    $element.querySelectorAll('#txt-title #txt-description #txt-creator #txt-general')
+    .bind('keydown', function(event) {
+      if(event.which === 13 ) {
+        $search.getArticlesElems();
         event.preventDefault();
       }
     });
@@ -89,13 +127,62 @@
       });
     };
 
-    $search.getArticlesElems = function (vstr){
-      $search.query = vstr;
-      if(!vstr) {
-        $articlelist.setNormalList();
-      }
+    $search.convertInParam = function (str) {
+        var rprms = str.match(/[A-zÀ-ÿ0-9]+\:[A-zÀ-ÿ0-9]+|[A-zÀ-ÿ0-9]+/ig);
+        var prms = {};
+
+        angular.forEach(rprms,function (rpElem) {
+          if(rpElem.indexOf(':') > -1)
+          {
+            var cstr = rpElem;
+            var ckey = cstr.substring(0,cstr.indexOf(':')).toLowerCase();
+              prms[ckey] = cstr.substring(cstr.indexOf(':')+1,cstr.length);
+            // if(whitelist.hasOwnProperty(ckey))
+            //   prms[ckey] = cstr.substring(cstr.indexOf(':')+1,cstr.length);
+            // else
+            //   prms.general = prms.general ? prms.general : '' + cstr;
+          }
+          else {
+            prms.general = prms.general ? prms.general : '' + rpElem;
+          }
+        });
+
+        return prms;
+    };
+
+    $search.passParamsToModels = function (oPrms) {
+      angular.forEach(oPrms,function (opValue,opKey) {
+        $search.params[opKey] = opValue;
+      });
+      $scope.$apply();
+    };
+
+    $search.getParam = function () {
+
+      $search.txt = '';
+      var prms = $search.params;
+      angular.forEach(prms, function(value, key) {
+        if(!angular.isUndefined(value) && value !== '')
+        {
+          $search.txt += key + ':' + value + ' ';
+        }else {
+          delete prms[key];
+        }
+      });
+
+      $search.params = {};
+      $element.querySelectorAll('#options').triggerHandler('click');
+
+      return JSON.stringify(prms);
+    };
+
+    $search.getArticlesElems = function (str){
+      var vstr = str || $search.getParam();
+
+      if($search.query) $search.query = vstr;
 
       $log.debug('+ is JSON search ',$search.isValidJSON(vstr));
+
       if($search.isValidJSON(vstr))
       {
         $log.debug('+ Send json search string ',vstr);
@@ -110,6 +197,7 @@
           return {
             restrict: 'EA',
             scope: {
+              model: '=ngModel',
               source: '=',
               query: '='
             },
@@ -118,76 +206,6 @@
             controllerAs: '$search',
             require: '^articlelist',
             templateUrl: partial.main.article+'tpl/advancedSearch.cmp.html'
-            // link : function(scope, $element, attrs, controller) {
-            //   // $log.debug(element.children());
-            //   // $log.debug(element.querySelectorAll('#options'));
-            //   // $log.debug(element.querySelectorAll('.input-group'));
-            //   //
-            //   // element.parent().bind('mouseenter', function() {
-            //   //   // element.show();
-            //   //   console.log('MEnter');
-            //   // });
-            //   // element.parent().bind('mouseleave', function() {
-            //   //   // element.hide();
-            //   //   console.log('MLeave');
-            //   // });
-            //   // element.querySelectorAll('#options').bind('mouseenter', function (e) {
-            //   //     console.log('+ Options');
-            //   //     console.log(e);
-            //   // });
-            //   // element.querySelectorAll('#options').bind('click', function (e) {
-            //   //     console.log(e);
-            //   // });
-            //
-            //   // element.querySelectorAll('#search-icon').bind('click', function(event) {
-            //   //   console.log(event);
-            //   //   // angular.element(this).addClass('hidden');
-            //   //   element.querySelectorAll('#collection').toggleClass('hidden');
-            //   // });
-            //   // element.querySelectorAll('#options').bind('click', function(event) {
-            //   //   console.log('Options');
-            //   // });
-            //   // element.querySelectorAll('#btn-search').bind('click', function(event) {
-            //   //   console.log('Options');
-            //   // });
-            //   // element.bind('mouseleave', function() {
-            //   //   // element.hide();
-            //   //   console.log('MLeave');
-            //   //   $timeout(function () {
-            //   //
-            //   //     console.log('Hidd Search');
-            //   //     element.querySelectorAll('#collection').toggleClass('hidden');
-            //   //   }, 5000);
-            //   // });
-            //
-            //   function getArticlesElems(){
-            //     var vstr = element.querySelectorAll('#txt-search').val();
-            //
-            //     if(!vstr) return false;
-            //
-            //     console.log(scope);
-            //     console.log(controller);
-            //     $log.debug('+ is JSON search ',controller.isValidJSON(vstr));
-            //     if(controller.isValidJSON(vstr))
-            //     {
-            //       $log.debug('+ Send json search string ',vstr);
-            //       controller.getArticlesList(vstr);
-            //     }
-            //   }
-            //
-            //   element.querySelectorAll('#btn-search').bind('click', function (e) {
-            //       console.log('+ Bind');
-            //       getArticlesElems();
-            //   });
-            //
-            //   element.querySelectorAll('#txt-search').bind('keydown', function(event) {
-            //
-            //     if(event.which === 13 ) {
-            //       getArticlesElems();
-            //       event.preventDefault();
-            //     }
-            //   });
-            // }
           };
         });
 

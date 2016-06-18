@@ -5,7 +5,8 @@
           'debug' : true,
           'elementlimit' : 10,
           'elementpage' : 10,
-          'development' : 'master.sigma'
+          'development' :{ logging:'verbose', domain:'master.sigma' },
+          'production' : { logging:'verbose', domain:'mastersigma-jaggerfly' }
         }
       )
       .constant(

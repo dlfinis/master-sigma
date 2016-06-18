@@ -34,9 +34,31 @@
             cfpLoadingBarProvider,
             localStorageServiceProvider) {
 
-    if (!location.host.match(INIT.development)) {
-      $compileProvider.debugInfoEnabled(false);
-      $logProvider.debugEnabled(false);
+    if (location.host.match(INIT.production.domain)) {
+
+      if(INIT.production.logging === 'verbose')
+      {
+        $compileProvider.debugInfoEnabled(true);
+        $logProvider.debugEnabled(true);
+      }
+      else {
+        $compileProvider.debugInfoEnabled(false);
+        $logProvider.debugEnabled(false);
+      }
+
+    }
+    if (location.host.match(INIT.development.domain)) {
+
+      if(INIT.development.logging === 'verbose')
+      {
+        $compileProvider.debugInfoEnabled(true);
+        $logProvider.debugEnabled(true);
+      }
+      else {
+        $compileProvider.debugInfoEnabled(false);
+        $logProvider.debugEnabled(false);
+      }
+
     }
 
     //Set Facebook API configuration
@@ -50,6 +72,7 @@
     $routeProvider.when('/wall',{template:'<articlelist></articlelist>'});
     $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
     $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
+    $routeProvider.when('/testpage', { template: '<testpage></testpage>' });
     $routeProvider.when('/logout', {
       resolve: {
         load: function (AuthFactory) {
@@ -73,22 +96,24 @@
     // Start loading bar for app loading
     cfpLoadingBar.start();
 
-    var enable = ['','/','/home','/logout'];
+    var enable = ['','/','/home','/logout','/testpage'];
     $rootScope.$on('$routeChangeStart', function (event, next) {
       var path = $location.path();
       if(enable.indexOf(path) === -1)
       {
         $log.debug('+ Check Policie >',$location.path());
+        $rootScope.isReadyPref = true;
 
         AuthFactory.isAuthenticated().then(function (response) {
           $log.debug('+ IS AUTH',response);
           if(!response)
           {
             event.preventDefault();
-            $rootScope.isReady = true;
             CheckRoutingFactory.notAuth();
             $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
           }else{
+            $log.debug('+ Auth Event',event);
+            $log.debug('+ Auth Next',next);
             return;
           }
         });

@@ -1,3 +1,29 @@
+<style>
+.search-box{
+  position: absolute;
+  border-style:solid;
+  border-color: #cecece;
+  border-width: 0px 1px 1px;
+  padding: 2%;
+  z-index: 100;
+  background-color: #eee;
+  border-radius: 0px;
+  display: none;
+  width: 90%;
+}
+
+.btn-search{
+  padding: 4px 30px;
+  font-size: 0.85em;
+}
+
+.form-control-action{
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+</style>
+
 <!-- <div style="position: relative; display: table;">
   <div id="search-icon">
   <span class="fa fa-search" aria-hidden="true"></span>
@@ -5,11 +31,10 @@
 </div> -->
 <div class="input-group">
     <div class="form-group has-feedback has-clear">
-      <input type="text" class="form-control input-sm" id="txt-search" placeholder="Búsqueda">
+      <input type="text" class="form-control input-sm" ng-model="$search.txt" id="txt-search" placeholder="Búsqueda">
       <!-- <span id="options" class="form-control-clear glyphicon glyphicon-option-vertical form-control-feedback"></span> -->
       <span id="options"
-        class="form-control-clear fa fa-ellipsis-v form-control-feedback"
-        style="pointer-events: auto;cursor:pointer;"
+        class="form-control-clear fa fa-ellipsis-v form-control-feedback form-control-action"
         aria-hidden="true">
       </span>
       <span class="form-control-clear glyphicon glyphicon-remove form-control-feedback hidden"></span>
@@ -17,4 +42,22 @@
     <span class="input-group-addon input-sm">
       <i id="btn-search" class="fa fa-search"></i>
     </span>
+</div>
+<div id="search-box" class="search-box ng-cloak fade-ng-cloak">
+  <div class="form-group has-feedback has-clear ng-cloak fade-ng-cloak">
+    <div>Título:</div>
+    <input type="text" class="form-control input-sm" ng-model="$search.params.title" id="txt-title" />
+
+    <div>Descripción:</div>
+    <input type="text" class="form-control input-sm" ng-model="$search.params.description" id="txt-description" />
+
+    <div>Autor:</div>
+    <input type="text" class="form-control input-sm" ng-model="$search.params.creator" id="txt-creator" />
+
+    <div>Contiene las palabras:</div>
+    <input type="text" class="form-control input-sm" ng-model="$search.params.general" id="txt-general" />
+  </div>
+  <a class="btn btn-default btn-search">
+    <i id="btn-search" class="fa fa-search"></i>
+  </a>
 </div>
