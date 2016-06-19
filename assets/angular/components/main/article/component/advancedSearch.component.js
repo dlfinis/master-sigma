@@ -77,22 +77,20 @@
     });
 
     $element.querySelectorAll('#btn-form-search').bind('click', function (event) {
-      console.log(event);
         $search.getArticlesElems();
     });
 
     $element.querySelectorAll('#btn-txt-search').bind('click', function (event) {
         // $search.getArticlesElems();
         var vstr = $element.querySelectorAll('#txt-search').val();
-        if(vstr)
+        if(!click_options)
         {
           var prms = $search.convertInParam(vstr);
           $search.passParamsToModels(prms);
         }else{
           $search.getArticlesElems();
+          $element.querySelectorAll('#search-box').css('display','none');
         }
-
-        $element.querySelectorAll('#search-box').css('display','none');
 
     });
 
@@ -211,7 +209,7 @@
       if($search.isValidJSON(vstr))
       {
         $log.debug('+ Send json search string ',vstr);
-        $search.getArticlesList(vstr);
+        if($articlelist) $search.getArticlesList(vstr);
       }
     };
   }
