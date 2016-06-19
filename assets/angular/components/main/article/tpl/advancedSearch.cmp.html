@@ -9,7 +9,6 @@
   background-color: #eee;
   border-radius: 0px;
   display: none;
-  width: 90%;
 }
 
 .btn-search{
@@ -20,6 +19,7 @@
 .form-control-action{
   pointer-events: auto;
   cursor: pointer;
+  z-index: 4;
 }
 
 </style>
@@ -40,7 +40,7 @@
       <span class="form-control-clear glyphicon glyphicon-remove form-control-feedback hidden"></span>
     </div>
     <span class="input-group-addon input-sm">
-      <i id="btn-search" class="fa fa-search"></i>
+      <i id="btn-txt-search" class="fa fa-search"></i>
     </span>
 </div>
 <div id="search-box" class="search-box ng-cloak fade-ng-cloak">
@@ -57,7 +57,8 @@
     <div>Contiene las palabras:</div>
     <input type="text" class="form-control input-sm" ng-model="$search.params.general" id="txt-general" />
   </div>
-  <a class="btn btn-default btn-search">
-    <i id="btn-search" class="fa fa-search"></i>
+  <a id="btn-form-search" class="btn btn-default btn-search">
+    <i class="fa fa-search"></i>
   </a>
+
 </div>

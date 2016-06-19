@@ -66,25 +66,34 @@
         $element.querySelectorAll('#search-box').css('display','block');
         var vstr = $element.querySelectorAll('#txt-search').val();
         var prms = $search.convertInParam(vstr);
-        console.log(prms);
         $search.passParamsToModels(prms);
-        console.log($search.params);
+        angular.element(document.getElementById('txt-search'))[0].disabled = true;
       }
       else
+      {
+        angular.element(document.getElementById('txt-search'))[0].disabled = false;
         $element.querySelectorAll('#search-box').css('display','none');
-
+      }
     });
 
-    $element.querySelectorAll('#btn-txt-search').bind('click', function (event) {
+    $element.querySelectorAll('#btn-form-search').bind('click', function (event) {
+      console.log(event);
         $search.getArticlesElems();
     });
 
-    $element.querySelectorAll('#btn-search').bind('click', function (event) {
+    $element.querySelectorAll('#btn-txt-search').bind('click', function (event) {
         // $search.getArticlesElems();
         var vstr = $element.querySelectorAll('#txt-search').val();
-        var prms = $search.convertInParam(vstr);
-        $search.passParamsToModels(prms);
-        console.log($search.params);
+        if(vstr)
+        {
+          var prms = $search.convertInParam(vstr);
+          $search.passParamsToModels(prms);
+        }else{
+          $search.getArticlesElems();
+        }
+
+        $element.querySelectorAll('#search-box').css('display','none');
+
     });
 
     $element.querySelectorAll('#txt-search').bind('keydown', function(event) {
@@ -96,7 +105,7 @@
       }
     });
 
-    $element.querySelectorAll('#txt-title #txt-description #txt-creator #txt-general')
+    $element.querySelectorAll('#search-box').find('input')
     .bind('keydown', function(event) {
       if(event.which === 13 ) {
         $search.getArticlesElems();
@@ -128,26 +137,36 @@
     };
 
     $search.convertInParam = function (str) {
-        var rprms = str.match(/[A-zÀ-ÿ0-9]+\:[A-zÀ-ÿ0-9]+|[A-zÀ-ÿ0-9]+/ig);
-        var prms = {};
+      // var gprms = str.match(/\w+\:\(([^)]+)\)/gi);
+      // var rprms = str.match(/[A-zÀ-ÿ0-9]+\:[A-zÀ-ÿ0-9]+|[A-zÀ-ÿ0-9]+/ig);
 
-        angular.forEach(rprms,function (rpElem) {
-          if(rpElem.indexOf(':') > -1)
+      var _rgw = /[A-zÀ-ÿ0-9]+/ig;
+      var rprms = str.match(/([A-zÀ-ÿ0-9]+\:[A-zÀ-ÿ0-9]+)|(\w+\:+\([^)]+\)+)|([A-zÀ-ÿ0-9])+/ig);
+      var prms = {};
+
+      angular.forEach(rprms,function (rpElem) {
+        if(rpElem.indexOf(':') > -1)
+        {
+          var cstr = rpElem;
+          var ckey = cstr.substring(0,cstr.indexOf(':')).toLowerCase();
+          if(rpElem.indexOf(':(') === -1)
           {
-            var cstr = rpElem;
-            var ckey = cstr.substring(0,cstr.indexOf(':')).toLowerCase();
+            if(whitelist.indexOf(ckey) > -1)
               prms[ckey] = cstr.substring(cstr.indexOf(':')+1,cstr.length);
-            // if(whitelist.hasOwnProperty(ckey))
-            //   prms[ckey] = cstr.substring(cstr.indexOf(':')+1,cstr.length);
-            // else
-            //   prms.general = prms.general ? prms.general : '' + cstr;
+            else
+              prms.general = prms.general ? prms.general : '' + cstr.match(_rgw).join(' ');
           }
-          else {
-            prms.general = prms.general ? prms.general : '' + rpElem;
+          else{
+            var acstr = cstr.substring(cstr.indexOf(':')+1,cstr.length).match(_rgw);
+            prms[ckey] = acstr.join(' ');
           }
-        });
+        }
+        else {
+          prms.general = prms.general ? prms.general : '' + rpElem;
+        }
+      });
 
-        return prms;
+      return prms;
     };
 
     $search.passParamsToModels = function (oPrms) {
@@ -155,6 +174,7 @@
         $search.params[opKey] = opValue;
       });
       $scope.$apply();
+      $search.txt = '';
     };
 
     $search.getParam = function () {
@@ -164,7 +184,12 @@
       angular.forEach(prms, function(value, key) {
         if(!angular.isUndefined(value) && value !== '')
         {
-          $search.txt += key + ':' + value + ' ';
+          if(value.match(/([A-zÀ-ÿ0-9])+/gi).length === 1)
+            $search.txt += key + ':' + value + ' ';
+          else{
+            $search.txt += key + ':(' + value + ') ';
+          }
+
         }else {
           delete prms[key];
         }
@@ -202,6 +227,10 @@
               query: '='
             },
             bindToController: true,
+            compile: function(element, attributes){
+              var wtxt_search = angular.element(document.getElementById('txt-search'))[0].clientWidth+2;
+              angular.element(document.getElementById('search-box')).css('width',wtxt_search+'px');
+            },
             controller: 'AdvancedSearchCtrl',
             controllerAs: '$search',
             require: '^articlelist',
