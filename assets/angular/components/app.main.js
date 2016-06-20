@@ -4,6 +4,7 @@
                               'app.main.article.like',
                               'app.main.article.share',
                               'app.main.article.reading',
+                              'app.main.article.related',
                               'app.main.article.period',
                               'app.main.article.openlater',
                               'app.main.registry',

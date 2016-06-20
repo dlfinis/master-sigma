@@ -203,16 +203,14 @@
           delete prms[key];
         }
       });
-
       $search.params = {};
+      $search.query = $search.txt;
       $scope.$apply();
       return JSON.stringify(prms);
     };
 
     $search.getArticlesElems = function (str){
       var vstr = str || $search.getParam();
-
-      if($search.query) $search.query = vstr;
 
       $log.debug('+ is JSON search ',$search.isValidJSON(vstr));
 
@@ -235,10 +233,6 @@
               query: '='
             },
             bindToController: true,
-            compile: function(){
-              var wtxt_search = angular.element(document.getElementById('txt-search'))[0].clientWidth+2;
-              if(wtxt_search > 2) angular.element(document.getElementById('search-box')).css('width',wtxt_search+'px');
-            },
             controller: 'AdvancedSearchCtrl',
             controllerAs: '$search',
             require: '^articlelist',
