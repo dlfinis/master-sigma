@@ -10,6 +10,8 @@
           shareSID : shareSID,
           articleID : articleID,
           messageShare : messageShare
+        }, {
+          ignoreLoadingBar: true
         });
       },
       getShareListInfo: function(articleID)
@@ -40,21 +42,15 @@
         }
 
       },
-      service_slow : function(term) {
-
-        var deferred = $q.defer();
-
+      testshare : function() {
+        var timer = $q.defer();
         $timeout(function() {
-          deferred.resolve([{ name: 'result 1' }]);
-        }, 1000);
+          timer.resolve(Math.round(Math.random())); //aborts the request when timed out
+          console.log('Time out');
+        }, 5750); //we set a timeout for 1250ms
 
-        return deferred.promise;
-      },
-      service : function(term) {
-
-        return $timeout(function() {
-          return [{ name: 'result 1' }];
-        }, 1000);
+        // The promise of the deferred task
+        return timer.promise;
       }
     };
   }
@@ -62,8 +58,16 @@
   function ShareCtrl($scope,ShareFactory)
   {
     var $share = this;
+    $share.loader = false;
+
+    $share.testShare = function() {
+      return ShareFactory.testshare();
+    };
     $share.setShare = function(shareSID,articleID,messageShare) {
       ShareFactory.setshare(shareSID,articleID,messageShare);
+    };
+    $share.changeLoader = function (value) {
+      $share.loader = value;
     };
   }
 
@@ -82,8 +86,8 @@
              controllerAs: '$share',
              templateUrl: partial.main.article+'tpl/share.cmp.html',
              link: function(scope, element, attr,controller) {
-               element.unbind();
-               element.bind('click', function(e) {
+               scope.setShare = function () {
+                 scope.loader = true;
                  $log.debug('+ Click Share Button');
                  $facebook.ui(
                    {
@@ -103,13 +107,16 @@
                               if(share){
                                 $log.debug('+ Share success by adding in DB');
                                 controller.setShare(share.id,scope.source.id,share.message);
+                                scope.loader = false;
                                 scope.stats = scope.stats+1;
                               }
                             });
                       }
+                    })
+                    .catch(function () {
+                      scope.loader = false;
                     });
-                 e.preventDefault();
-               });
+              };
              }
            };
          });

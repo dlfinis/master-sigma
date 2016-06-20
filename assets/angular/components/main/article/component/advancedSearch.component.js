@@ -1,22 +1,22 @@
 /*eslint quotes: [0, "single"]*/
-/*global tv4 */
+/*global tv4 event */
 (function(module) {
   'use strict';
 
-  var schemaT = {
-    "type": "object",
-    "properties": {
-      "foo": {
-        "properties": {
-          "test": {
-            "type": "string"
-          }
-        },
-        "type": "object"
-      }
-    },
-    "required": ["foo"]
-  };
+  // var schemaT = {
+  //   "type": "object",
+  //   "properties": {
+  //     "foo": {
+  //       "properties": {
+  //         "test": {
+  //           "type": "string"
+  //         }
+  //       },
+  //       "type": "object"
+  //     }
+  //   },
+  //   "required": ["foo"]
+  // };
 
   var schema = {
     "type" : "object",
@@ -30,7 +30,7 @@
     }
   };
 
-  function AdvancedSearchFactory ($http,$log) {
+  function AdvancedSearchFactory ($http) {
     return {
       find : function (query) {
         return $http.get('/api/article/findElems',
@@ -79,23 +79,22 @@
     });
 
     $element.querySelectorAll('#btn-form-search').bind('click', function (event) {
-        $search.getArticlesElems();
-        $element.querySelectorAll('#options').triggerHandler('click');
+      $search.getArticlesElems();
+      $element.querySelectorAll('#options').triggerHandler('click');
     });
 
     $element.querySelectorAll('#btn-txt-search').bind('click', function (event) {
-        // $search.getArticlesElems();
-        var vstr = $element.querySelectorAll('#txt-search').val();
-        if(!click_options)
-        {
-          var prms = $search.convertInParam(vstr);
-          $search.passParamsToModels(prms);
-          $search.getArticlesElems();
-        }else{
-          $search.getArticlesElems();
-          $element.querySelectorAll('#options').triggerHandler('click');
-        }
-
+      // $search.getArticlesElems();
+      var vstr = $element.querySelectorAll('#txt-search').val();
+      if(!click_options)
+      {
+        var prms = $search.convertInParam(vstr);
+        $search.passParamsToModels(prms);
+        $search.getArticlesElems();
+      }else{
+        $search.getArticlesElems();
+        $element.querySelectorAll('#options').triggerHandler('click');
+      }
     });
 
     $element.querySelectorAll('#txt-search').bind('keydown', function(event) {
@@ -112,6 +111,7 @@
     .bind('keydown', function(event) {
       if(event.which === 13 ) {
         $search.getArticlesElems();
+        $element.querySelectorAll('#options').triggerHandler('click');
         event.preventDefault();
       }
     });
@@ -154,7 +154,6 @@
           var ckey = cstr.substring(0,cstr.indexOf(':')).toLowerCase();
           if(rpElem.indexOf(':(') === -1)
           {
-            console.log(schema.hasO);
             if(schema.properties.hasOwnProperty(ckey) > -1)
               prms[ckey] = cstr.substring(cstr.indexOf(':')+1,cstr.length);
             else
@@ -166,7 +165,7 @@
           }
         }
         else {
-          prms.general = prms.general ? prms.general : '' + rpElem;
+          prms.general = (prms.general || '') + ' ' + rpElem;
         }
       });
 
@@ -188,6 +187,12 @@
       angular.forEach(prms, function(value, key) {
         if(!angular.isUndefined(value) && value !== '')
         {
+          if(key === 'general')
+          {
+            $search.txt +=  value + ' ';
+            return false;
+          }
+
           if(value.match(/([A-zÀ-ÿ0-9])+/gi).length === 1)
             $search.txt += key + ':' + value + ' ';
           else{
@@ -221,7 +226,7 @@
 
   module.factory('AdvancedSearchFactory',AdvancedSearchFactory)
         .controller('AdvancedSearchCtrl',AdvancedSearchCtrl)
-        .directive('advancedSearch', function( partial,$log,$q,$timeout){
+        .directive('advancedSearch', function( partial){
           return {
             restrict: 'EA',
             scope: {
@@ -230,7 +235,7 @@
               query: '='
             },
             bindToController: true,
-            compile: function(element, attributes){
+            compile: function(){
               var wtxt_search = angular.element(document.getElementById('txt-search'))[0].clientWidth+2;
               if(wtxt_search > 2) angular.element(document.getElementById('search-box')).css('width',wtxt_search+'px');
             },

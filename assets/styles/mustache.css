@@ -168,7 +168,7 @@ footer p {
 }
 
 .zIndex-10--loadingPage {
-  z-index: 1000;
+  z-index: 1050;
 }
 
 .loading{
@@ -182,9 +182,17 @@ footer p {
   left:0;
   right:0;
   overflow:hidden;
-  z-index: 1000;
+  z-index: 1050;
   /*position: fixed;*/
 
+}
+
+.loading-api{
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  height: 50vh;
+  opacity: 0.4;
 }
 
 .home .login{
@@ -500,6 +508,15 @@ footer p {
 .post .social-bar share{
   width: 50px;
   display: inline-block;
+}
+
+.post .social-bar like .fb-loader,
+.post .social-bar share .fb-loader{
+  padding-top: 2px;
+  padding-left: 0px;
+  height: 22px;
+  display: inline-block;
+  position : absolute;
 }
 
 .post .social-bar .section-btn .btn img{

@@ -5,7 +5,10 @@
     return {
       getReading: function(url)
           {
-        return $http.get('/api/article/reading?uri='+url);
+        return $http.get('/api/article/reading',{
+            params : { uri : url },
+            ignoreLoadingBar : true
+        });
       }
     };
   }
