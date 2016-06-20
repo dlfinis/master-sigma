@@ -65,6 +65,10 @@ var self = {
   isSuccessfulQuery : function (arr,cnt){
     return !!(cnt >= (Math.round(_.size(arr)*config._successRate)));
   },
+  isNotSuccessfulQuery : function (arr,cnt){
+    sails.log(cnt,(Math.round(_.size(arr)*config._successRate)),(cnt >= (Math.round(_.size(arr)*config._successRate))));
+    return !!(cnt >= (Math.round(_.size(arr)*config._successRate)));
+  },
   matchWord : function (content,prms) {
     var success = 0;
     if (_.isNull(content) || _.isUndefined(content)) { return 0; }
@@ -83,6 +87,26 @@ var self = {
 
     return 0;
   },
+  notMatchWord : function (content,prms) {
+    var success = true;
+    if (_.isNull(content) || _.isUndefined(content)) { return true; }
+
+    if(_.isArray(content) || _.isObject(content)) content = JSON.stringify(content);
+
+    if(_.isArray(prms)){
+      _.each(prms,function(pElem){
+        if(self.searchString(content,pElem)){
+          success = false;
+          return false;
+        }
+      });
+    }
+    else{
+      if(self.searchString(content,prms)) return false;
+    }
+
+    return success;
+  },
   filterGeneral : function (arr,prms) {
     return _.filter(arr,function(aElem){
       var success = 0;
@@ -94,6 +118,23 @@ var self = {
       });
       aElem.success = success;
       return self.isSuccessfulQuery(prms,success);
+    });
+  },
+  filterByNotContain : function (arr,prms) {
+    return _.filter(arr,function(aElem){
+      var sucess = false;
+      var not_match = true;
+      _.each(prms,function(pElem){ //Parameters of query
+        _.each(_.keys(aElem),function(akElem){
+          var match = self.notMatchWord(aElem[akElem],pElem);
+          if(!match) {
+            not_match = false;
+            return false;
+          }
+        });
+      });
+      aElem.success = not_match;
+      return not_match;
     });
   },
   filterByParams : function (arr,prms) {
@@ -191,19 +232,26 @@ module.exports = {
   getArticleListByQuery : function (articleQuery,whereQuery){
     return new Promise(function(resolve){
 
-      var blacklist = ['general', 'date'];
-      var whereGeneral = [];
-      var whereDate = [];
+      var blacklist = ['general', 'date','not'];
+      var whereGeneral,whereDate,whereNot;
+      whereGeneral = whereDate = whereNot = [];
 
       delete articleQuery._criteria['limit'];
 
       articleQuery.then(function (articles){
 
         // Omit built-in runtime config (like query modifiers)
+        whereNot = _.pick(whereQuery, 'not');
         whereGeneral = _.pick(whereQuery, 'general');
         whereDate = _.pick(whereQuery, 'date');
         whereQuery = _.omit(whereQuery, blacklist);
 
+
+        if(!_.isEmpty(whereNot))
+        {
+          sails.log('->Query Not Contain');
+          articles = self.filterByNotContain(articles,whereNot);
+        }
 
         if(!_.isEmpty(whereGeneral))
         {
