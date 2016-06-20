@@ -359,6 +359,19 @@ footer p {
   font-weight: 600;
 }
 
+.post .info .related{
+  position: absolute;
+  display: inline-block;
+  right: 0px;
+  padding-right: 3%;
+  cursor:pointer;
+}
+
+.post .info .related:hover,
+.post .info .related:active{
+  color:#3A5795;
+}
+
 .post .info .creator{
   color:#3A5795;
   line-height: 1em;
@@ -384,11 +397,6 @@ footer p {
   display: inline-block;
   padding: 0 0.5%;
   color: #a8b2c8;
-}
-
-.post .info .visits{
-  display: inline-block;
-  float: right;
 }
 
 .post .box .text {
@@ -451,6 +459,15 @@ footer p {
 
 .post hr{
   margin-bottom: 0px;
+}
+
+.post .visits{
+  display: inline-block;
+  float: right;
+  font-size: 0.85em;
+  color: #8F8F98;
+  padding-top: 3px;
+  font-weight: 600;
 }
 
 .post .social-bar{
