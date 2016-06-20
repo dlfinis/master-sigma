@@ -61,7 +61,7 @@
     $element.querySelectorAll('#options').bind('click', function (event) {
 
       click_options = !click_options;
-      if(click_options)
+      if(click_options) //Not visible
       {
         $element.querySelectorAll('#search-box').css('display','block');
         var vstr = $element.querySelectorAll('#txt-search').val();
@@ -69,7 +69,7 @@
         $search.passParamsToModels(prms);
         angular.element(document.getElementById('txt-search'))[0].disabled = true;
       }
-      else
+      else // Is visible
       {
         angular.element(document.getElementById('txt-search'))[0].disabled = false;
         $element.querySelectorAll('#search-box').css('display','none');
@@ -78,6 +78,7 @@
 
     $element.querySelectorAll('#btn-form-search').bind('click', function (event) {
         $search.getArticlesElems();
+        $element.querySelectorAll('#options').triggerHandler('click');
     });
 
     $element.querySelectorAll('#btn-txt-search').bind('click', function (event) {
@@ -87,9 +88,10 @@
         {
           var prms = $search.convertInParam(vstr);
           $search.passParamsToModels(prms);
+          $search.getArticlesElems();
         }else{
           $search.getArticlesElems();
-          $element.querySelectorAll('#search-box').css('display','none');
+          $element.querySelectorAll('#options').triggerHandler('click');
         }
 
     });
@@ -98,7 +100,8 @@
       if(event.which === 13 ) {
         var vstr = $element.querySelectorAll('#txt-search').val();
         var prms = $search.convertInParam(vstr);
-        $search.passParamsToModels(prms,$search.params);
+        $search.passParamsToModels(prms);
+        $search.getArticlesElems();
         event.preventDefault();
       }
     });
@@ -194,8 +197,7 @@
       });
 
       $search.params = {};
-      $element.querySelectorAll('#options').triggerHandler('click');
-
+      $scope.$apply();
       return JSON.stringify(prms);
     };
 
