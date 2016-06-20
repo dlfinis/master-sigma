@@ -54,8 +54,11 @@
     <div>Autor:</div>
     <input type="text" class="form-control input-sm" ng-model="$search.params.creator" id="txt-creator" />
 
-    <div>Contiene las palabras:</div>
+    <div>Contiene las siguientes palabras:</div>
     <input type="text" class="form-control input-sm" ng-model="$search.params.general" id="txt-general" />
+
+    <div><em>No</em> contiene las siguientes palabras:</div>
+    <input type="text" class="form-control input-sm" ng-model="$search.params.not" id="txt-not" />
   </div>
   <a id="btn-form-search" class="btn btn-default btn-search">
     <i class="fa fa-search"></i>
