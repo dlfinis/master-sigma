@@ -25,7 +25,8 @@
       "description"   : { "type" : "string" },
       "title"  : { "type" : "string" },
       "date"  : { "type" : "string" },
-      "creator"  : { "type" : "string" }
+      "creator"  : { "type" : "string" },
+      "not"  : { "type" : "string" }
     }
   };
 
@@ -52,10 +53,11 @@
   function AdvancedSearchCtrl ($scope,$element,$attrs,$q,$log,AdvancedSearchFactory) {
     var $search = this;
     var $articlelist = $scope.$parent.$articlelist || undefined;
-    var whitelist = ['title','description','creator','date','general'];
 
     $search.params = {};
 
+    var wtxt_search = angular.element(document.getElementById('txt-search'))[0].clientWidth+2;
+    if(wtxt_search > 2) angular.element(document.getElementById('search-box')).css('width',wtxt_search+'px');
 
     var click_options = false;
     $element.querySelectorAll('#options').bind('click', function (event) {
@@ -152,7 +154,8 @@
           var ckey = cstr.substring(0,cstr.indexOf(':')).toLowerCase();
           if(rpElem.indexOf(':(') === -1)
           {
-            if(whitelist.indexOf(ckey) > -1)
+            console.log(schema.hasO);
+            if(schema.properties.hasOwnProperty(ckey) > -1)
               prms[ckey] = cstr.substring(cstr.indexOf(':')+1,cstr.length);
             else
               prms.general = prms.general ? prms.general : '' + cstr.match(_rgw).join(' ');
@@ -229,7 +232,7 @@
             bindToController: true,
             compile: function(element, attributes){
               var wtxt_search = angular.element(document.getElementById('txt-search'))[0].clientWidth+2;
-              angular.element(document.getElementById('search-box')).css('width',wtxt_search+'px');
+              if(wtxt_search > 2) angular.element(document.getElementById('search-box')).css('width',wtxt_search+'px');
             },
             controller: 'AdvancedSearchCtrl',
             controllerAs: '$search',
