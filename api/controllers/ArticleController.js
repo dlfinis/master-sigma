@@ -239,10 +239,10 @@ module.exports = {
     var articleURL = req.param('articleURL');
     var userID = UserService.me(req).id;
 
-    sails.log.debug('+ LIKE init to add in DB');
+    sails.log.debug('+ LIKE init to add in DB ',articleID,articleURL,userID);
     ArticleFBService.like.set(articleID,articleURL,userID)
     .then(function (response) {
-      sails.log.debug('+ LIKE success by adding at DB');
+      if(response.created) sails.log.debug('+ LIKE success by adding at DB');
       return res.json(response);
     })
     .catch(function (err) {

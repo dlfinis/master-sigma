@@ -15,18 +15,17 @@ module.exports = {
   // Facebook login screen
   facebook: function (req, res) {
     sails.log.debug('+ AUTH.FACEBOOK PROVIDER');
-    passport.authenticate('facebook-canvas', {})(req, res, req.next);
+    passport.authenticate('facebook-canvas', { scope: [
+      'publish_actions',
+      'user_about_me',
+      'user_friends'
+    ],
+    failureRedirect: '/'
+  })(req, res, req.next);
   },
   'facebook/callback' : function (req,res,next) {
     sails.log.debug('+ AUTH.FACEBOOK CALLBACK');
-    passport.authenticate('facebook-canvas',{
-      scope: [
-        'publish_actions',
-        'user_about_me',
-        'user_friends'
-      ],
-      failureRedirect: '/'
-    },
+    passport.authenticate('facebook-canvas',{},
       function (err, user)
       {
         // sails.log.debug("Facebook Auth Response error=", err, "user=", user);

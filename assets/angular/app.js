@@ -92,6 +92,10 @@
   .run(function ($rootScope,$location,$route,$timeout,$log,FontLoader,FBLoader, cfpLoadingBar, AuthFactory ,CheckRoutingFactory, AUTH_EVENTS,KEYS) {
     // Load the facebook SDK asynchronously
     FBLoader.setScript();
+    $rootScope.$on('fb.load', function(e, FB) {
+      FB.Canvas.setAutoGrow(90);
+    });
+
     //Load fonts asynchronously
     FontLoader.setFonts();
 

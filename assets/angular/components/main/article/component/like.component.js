@@ -98,6 +98,7 @@
                                 })
                                 .catch(function(err){
                                   $log.error(err);
+                                  scope.loader = false;
                                 });
                  }
                  else {
@@ -113,6 +114,7 @@
                                })
                                .catch(function(err){
                                  $log.error(err);
+                                 scope.loader = false;
                                });
                  }
                };

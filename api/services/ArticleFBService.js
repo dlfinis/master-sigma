@@ -55,7 +55,7 @@
            })
            .catch(function(err){
              sails.log.warn(err);
-             return ({created:false,err : err});
+             throw 'Like: Not set like err';
            });
      },
      delete : function (sid) {
@@ -75,7 +75,7 @@
             })
             .catch(function(err){
               sails.log.warn(err);
-              return ({deleted:false,err : err});
+              throw 'Share: Not set share err';
             });
 
      }

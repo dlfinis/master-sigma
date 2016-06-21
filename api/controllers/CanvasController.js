@@ -4,6 +4,7 @@
  * @description :: Server-side logic for managing canvas
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
+/*global UserService */
 
 var passport = require('passport');
 var FB = require('fb');

@@ -183,6 +183,7 @@ footer p {
   right:0;
   overflow:hidden;
   z-index: 1050;
+  height: 1999px;
   /*position: fixed;*/
 
 }
@@ -402,7 +403,7 @@ footer p {
   width: 100%;
   white-space: nowrap;
   line-height: 20px;
-
+  cursor: pointer;
 }
 
 .post .info .related-box .list .item:before{
