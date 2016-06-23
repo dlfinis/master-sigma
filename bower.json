@@ -16,15 +16,15 @@
   ],
   "dependencies": {
     "angular-route": "^1.5.0",
-    "bootstrap-css": "^3.3.6",
     "angular-bootstrap": "^1.2.1",
     "angular-animate": "^1.5.0",
     "angular-bootstrap-ratings": "^0.11.2",
     "angular-i18n": "^1.5.0",
+    "angular-local-storage": "^0.2.7",
+    "bootstrap-css": "^3.3.6",
     "ui-select": "angular-ui-select#^0.14.9",
     "angular-sanitize": "^1.5.0",
     "angular-lazy-img": "^1.2.2",
-    "spin.js": "spinjs#^2.3.2",
     "angular-loading-bar": "^0.9.0",
     "ng-onload": "^0.2.1",
     "moment": "^2.12.0",
@@ -32,7 +32,6 @@
     "webfontloader": "^1.6.24",
     "fontfaceobserver": "^1.7.1",
     "angular-resource": "^1.5.6",
-    "angular-local-storage": "^0.2.7",
     "tv4": "^1.2.7",
     "isteven-angular-multiselect": "angular-multi-select#^4.0.0"
   }
