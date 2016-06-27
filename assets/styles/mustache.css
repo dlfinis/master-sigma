@@ -259,6 +259,7 @@ footer p {
   display: block;
   height: auto;
   padding: 4px 3px;
+  float: right;
 }
 
 .sort-bar .sort-category .ui-select-container{
