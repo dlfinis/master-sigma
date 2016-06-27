@@ -13,7 +13,6 @@
  *
  */
 
-var path = require('path');
 module.exports = function(grunt) {
 
 	grunt.config.set('watch', {
@@ -34,7 +33,7 @@ module.exports = function(grunt) {
           files: ['views/**/*']
         },
     options: {
-    	livereload : true,
+      livereload: true
           // livereload: {
           // 	host:'localhost',
           // 	port:9000,
@@ -45,7 +44,7 @@ module.exports = function(grunt) {
           // 	// key: grunt.file.read(__dirname + '/ssl/livereload/livereload.key'),
           // 	// cert: grunt.file.read(__dirname + '/ssl/livereload/liverealod.crt')
           // 	},
-        },
+        }
 
 	});
 

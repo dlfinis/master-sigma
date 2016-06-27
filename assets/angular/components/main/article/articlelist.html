@@ -1,6 +1,7 @@
 <!-- <pre> {{$articlelist.data | json}}</pre> -->
 <div class="container">
   <div class="col-sm-12">
+
     <div class="advanced-search ng-cloak fade-ng-cloak" advanced-search source="$articlelist.data" query="$articlelist.queryParams"></div>
     <div class="sort-bar ng-cloak" ng-show="$articlelist.data.length > 0">
       <div class="sort-item sort-section">
@@ -44,6 +45,12 @@
         </ui-select>
       </div>
     </div>
+
+
+    <div class="label-content">
+      Contenido
+    </div>
+
     <div class="not-articles" ng-if="$articlelist.data.length == 0 && !$articlelist.pagerData">
       <h4>No existen artículos para visualizar.</h4>
       <div class="mnr-c">
@@ -103,7 +110,7 @@
           </div>
           <div class="categories">
             <div class="category" ng-click="$articlelist.setCategoryList(category)" ng-repeat="category in article.categories">
-              <span>&#8226;</span>{{::category.name}}<i class="fa fa-tags" aria-hidden="true"></i>
+              <span>&#8226;{{::category.name}}</span><i class="fa fa-tags fa-fw" aria-hidden="true"></i>
             </div>
           </div>
         </div>

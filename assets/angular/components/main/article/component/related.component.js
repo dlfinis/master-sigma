@@ -18,7 +18,7 @@
             controllerAs: '$related',
             templateUrl: partial.main.article+'tpl/related.cmp.html',
             link: function (scope,element,attrs,controller) {
-              var click_related = false
+              var click_related = false;
               element.querySelectorAll('#btn-related').bind('click mouseenter', function (event) {
                   click_related = !click_related;
                   if(!click_related) // Not visible
