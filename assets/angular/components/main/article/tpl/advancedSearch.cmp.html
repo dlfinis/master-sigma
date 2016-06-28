@@ -16,6 +16,10 @@
   font-size: 0.85em;
 }
 
+.element{
+  margin-bottom : 1em;
+
+}
 .form-control-action{
   pointer-events: auto;
   cursor: pointer;
@@ -41,27 +45,73 @@
       </span>
       <span class="form-control-clear glyphicon glyphicon-remove form-control-feedback hidden"></span>
     </div>
-    <span class="input-group-addon input-sm">
+    <span class="input-group-addon input-sm" uib-tooltip="Búsqueda">
       <i id="btn-txt-search" class="fa fa-search"></i>
     </span>
 </div>
 <div id="search-box" class="search-box ng-cloak fade-ng-cloak">
   <div class="form-group has-feedback has-clear ng-cloak fade-ng-cloak">
-    <div>Título:</div>
-    <input type="text" class="form-control input-sm" ng-model="$search.params.title" id="txt-title" />
+    <div class="element">
+      <div>Título:</div>
+      <input type="text" class="form-control input-sm" ng-model="$search.params.title" id="txt-title" />
+    </div>
 
+    <div class="element">
     <div>Descripción:</div>
     <input type="text" class="form-control input-sm" ng-model="$search.params.description" id="txt-description" />
+    </div>
 
+    <div class="element">
     <div>Autor:</div>
     <input type="text" class="form-control input-sm" ng-model="$search.params.creator" id="txt-creator" />
+    </div>
 
+    <div class="element">
     <div>Contiene las siguientes palabras:</div>
     <input type="text" class="form-control input-sm" ng-model="$search.params.general" id="txt-general" />
+    </div>
 
+    <div class="element">
     <div><b><em>No</em></b> contiene las siguientes palabras:</div>
     <input type="text" class="form-control input-sm" ng-model="$search.params.not" id="txt-not" />
-  </div>
+    </div>
+
+    <div class="element">
+    <div class="date-bar"  style="width:40%">
+      <div>Rango de Fecha:</div>
+      <div class="input-group">
+
+        <input type="text" class="form-control input-sm"
+        id="txt-date"
+        ng-model="$search.params.date"
+        ng-readonly="true"
+        is-open="$search.datepopup.opened"
+        datepicker-options="$search.dateOptions"
+        current-text="Hoy"
+        clear-text="Limpiar"
+        close-text="Cerrar"
+        ng-focus="$search.datepopup.open($event)"
+        uib-datepicker-popup
+        uib-tooltip="Defina la fecha para la búsqueda"
+        />
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default btn-sm" ng-cloak ng-click="$search.datepopup.open($event)">
+            <i class="fa fa-calendar fa-fw" aria-hidden="true"></i>
+          </button>
+          <div style="margin-left:10px;display: inline-block;">
+            <button style="margin-left:2px;" id="dt-before" class="btn btn-sm btn-primary"
+            ng-click="$search.dateformat.set($event)"
+            ng-model="$search.params.dateformat"
+            uib-btn-radio="'before'">Antes</button>
+            <button style="margin-left:1px;" id="dt-after" class="btn btn-sm btn-success"
+            ng-click="$search.dateformat.set($event)"
+            ng-model="$search.params.dateformat"
+            uib-btn-radio="'after'">Después</button>
+          </div>
+        </span>
+      </div>
+    </div>
+    </div>
   <a id="btn-form-search" class="btn btn-default btn-search">
     <i class="fa fa-search"></i>
   </a>

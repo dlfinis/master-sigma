@@ -24,7 +24,12 @@
       "general"   : { "type" : "string" },
       "description"   : { "type" : "string" },
       "title"  : { "type" : "string" },
-      "date"  : { "type" : "string" },
+      "date"  : {
+        "properties" :{
+          "before"  : { "type" : "string" },
+          "after"  : { "type" : "string" }
+        }
+      },
       "creator"  : { "type" : "string" },
       "not"  : { "type" : "string" }
     }
@@ -50,11 +55,34 @@
     };
   }
 
-  function AdvancedSearchCtrl ($scope,$element,$attrs,$q,$log,AdvancedSearchFactory) {
+  function AdvancedSearchCtrl ($scope,$element,$attrs,$filter,$q,$log,AdvancedSearchFactory) {
     var $search = this;
     var $articlelist = $scope.$parent.$articlelist || undefined;
 
     $search.params = {};
+    $search.params.dateformat = 'before';
+
+    $search.dateOptions = {
+      formatYear: 'yyyy',
+      maxDate: new Date(),
+      startingDay: 1,
+      showWeeks: false
+    };
+
+    $search.datepopup = {
+      open : function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        $search.datepopup.opened = true;
+      },
+      opened : false
+    };
+
+    $search.dateformat = {
+      set : function(event) {
+        $search.params.dateformat = event.target.id === 'dt-before' ? 'before' : 'after' ;
+      }
+    };
 
     var wtxt_search = angular.element(document.getElementById('txt-search'))[0].clientWidth+2;
     if(wtxt_search > 2) angular.element(document.getElementById('search-box')).css('width',wtxt_search+'px');
@@ -142,9 +170,10 @@
     $search.convertInParam = function (str) {
       // var gprms = str.match(/\w+\:\(([^)]+)\)/gi);
       // var rprms = str.match(/[A-zÀ-ÿ0-9]+\:[A-zÀ-ÿ0-9]+|[A-zÀ-ÿ0-9]+/ig);
+      // var rprms = str.match(/([A-zÀ-ÿ0-9]+\:[A-zÀ-ÿ0-9]+)|(\w+\:+\([^)]+\)+)|([A-zÀ-ÿ0-9])+/ig);
 
       var _rgw = /[A-zÀ-ÿ0-9]+/ig;
-      var rprms = str.match(/([A-zÀ-ÿ0-9]+\:[A-zÀ-ÿ0-9]+)|(\w+\:+\([^)]+\)+)|([A-zÀ-ÿ0-9])+/ig);
+      var rprms = str.match(/([A-zÀ-ÿ0-9]+\:\d{4}-\d{2}-\d{2}|[A-zÀ-ÿ0-9]+\:\d{4}\/\d{2}\/\d{2})|([A-zÀ-ÿ0-9]+\:[A-zÀ-ÿ0-9]+)|(\w+\:+\([^)]+\)+)|([A-zÀ-ÿ0-9]+)/ig);
       var prms = {};
 
       angular.forEach(rprms,function (rpElem) {
@@ -174,8 +203,21 @@
 
     $search.passParamsToModels = function (oPrms) {
       angular.forEach(oPrms,function (opValue,opKey) {
-        $search.params[opKey] = opValue;
+        if(opKey === 'after' || opKey === 'before' || opKey === 'date')
+        {
+          if(Date.parse(opValue))
+          {
+            $search.params['dateformat'] = opKey === 'after' ? 'after' : 'before';
+            $search.params['date'] = new Date(opValue);
+          }
+        }
+        else {
+          $search.params[opKey] = opValue;
+        }
       });
+
+      $log.debug('> Params to Model');
+      $log.debug($search.params);
       $scope.$apply();
       $search.txt = '';
     };
@@ -184,16 +226,25 @@
 
       $search.txt = '';
       var prms = $search.params;
+      var prm_date = {};
+
+      if(prms.hasOwnProperty('date'))
+      {
+        $search.txt += prms['dateformat'] + ':' + $filter('date')(prms['date'], "yyyy/MM/dd") + ' ';
+        prm_date[prms['dateformat']] = prms['date'];
+        delete prms['date'];
+        delete prms['dateformat'];
+      }
+
       angular.forEach(prms, function(value, key) {
         if(!angular.isUndefined(value) && value !== '')
         {
+
           if(key === 'general')
           {
             $search.txt +=  value + ' ';
-            return false;
           }
-
-          if(value.match(/([A-zÀ-ÿ0-9])+/gi).length === 1)
+          else if(value.match(/([A-zÀ-ÿ0-9])+/gi).length === 1) //Only One word prm
             $search.txt += key + ':' + value + ' ';
           else{
             $search.txt += key + ':(' + value + ') ';
@@ -203,8 +254,10 @@
           delete prms[key];
         }
       });
+
+      prms.date = prm_date;
       $search.params = {};
-      $search.query = $search.txt;
+      if($search.queryParams !== undefined) $search.queryParams = $search.txt;
       $scope.$apply();
       return JSON.stringify(prms);
     };
@@ -212,7 +265,7 @@
     $search.getArticlesElems = function (str){
       var vstr = str || $search.getParam();
 
-      $log.debug('+ is JSON search ',$search.isValidJSON(vstr));
+      $log.debug('> is JSON search ',$search.isValidJSON(vstr));
 
       if($search.isValidJSON(vstr))
       {
@@ -230,7 +283,7 @@
             scope: {
               model: '=ngModel',
               source: '=',
-              query: '='
+              queryParams: '='
             },
             bindToController: true,
             controller: 'AdvancedSearchCtrl',

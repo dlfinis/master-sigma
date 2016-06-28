@@ -71,7 +71,7 @@
     // cfpLoadingBarProvider.spinnerTemplate = '<div style="margin:20% 0 0 50%;"><span class="fa fa-spinner fa-pulse fa-3x"></div>';
     // cfpLoadingBarProvider.spinnerTemplate = '<div style="text-align: center; left: 0px; height: 100%; width: 100%; z-index: 1050; color: rgb(52, 69, 87); top: 0px; background: rgb(52, 69, 87) none repeat scroll 0% 0%; opacity: 0.45; position: fixed;"><img style="width: 100%;" src="/images/spinner.gif"></div>';
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-    cfpLoadingBarProvider.spinnerTemplate = '<div style="position: absolute; top: 0px; left: 0px; background-color: rgb(52, 69, 87); color: rgb(246, 246, 246); height: 1999px; width: 100%; z-index: 1040; vertical-align: middle; opacity: 0.15; text-align: center; padding-top: 5px;"><span class="fa fa-refresh fa-spin fa-2x fa-fw" style="vertical-align: middle;"></span><div style="text-align: center; color: rgb(255, 245, 245); font-weight: bold; display: inline-block;">Procesando información...</div></div>';
+    cfpLoadingBarProvider.spinnerTemplate = '<div style="position: absolute; top: 0px; left: 0px; background-color: rgb(52, 69, 87); color: #EAEAEA; height: 1999px; width: 100%; z-index: 1040; vertical-align: middle; opacity: 0.35; text-align: center; padding-top: 5px;"><span class="fa fa-refresh fa-spin fa-2x fa-fw" style="vertical-align: middle;"></span><div style="text-align: center; color: rgb(255, 245, 245); font-weight: bold; display: inline-block;">Procesando información...</div></div>';
 
     $routeProvider.when('/',{template:'<home></home>'});
     $routeProvider.when('/home', {template:'<home></home>'});
