@@ -120,6 +120,21 @@ var self = {
       return self.isSuccessfulQuery(prms,success);
     });
   },
+  filterDate : function (arr,prm) {
+    if(!Date.parse(_.values(prm.date)[0]))
+      return [];
+
+    return _.filter(arr,function(aElem){
+      aElem.date = aElem.state === 'edit' ?
+      new Date(aElem.updatedAt) : new Date(aElem.createdAt);
+
+      if(_.has(prm.date,'before'))
+        return aElem.date.setHours(0,0,0) <= new Date(prm.date.before).setHours(0,0,0);
+
+      if(_.has(prm.date,'after'))
+        return aElem.date.setHours(0,0,0) >= new Date(prm.date.after).setHours(0,0,0);
+    });
+  },
   filterByNotContain : function (arr,prms) {
     return _.filter(arr,function(aElem){
       var sucess = false;
@@ -259,19 +274,26 @@ module.exports = {
           articles = self.filterGeneral(articles,whereGeneral);
         }
 
+
         if(!_.isEmpty(whereQuery) && !_.isNull(whereQuery))
         {
           sails.log('->Query By Params');
           articles = self.filterByParams(articles,whereQuery);
         }
 
+        articles.sort(function(a, b) {
+          return b.success - a.success;
+        });
+
+        if(!_.isEmpty(whereDate))
+        {
+          sails.log('->Query Date');
+          articles = self.filterDate(articles,whereDate);
+        }
+
         sails.log.debug('-->After of Query');
         _.each(articles,function (el) {
           sails.log.debug(el.id,'>:',el.title,'sc:',el.success);
-        });
-
-        articles.sort(function(a, b) {
-          return b.success - a.success;
         });
 
         ArticleQueryService.getArticleListBase(articles)

@@ -12,9 +12,8 @@ var Promise = require('bluebird');
 function dupJSONKeysBySpace(json) {
   if(!_.isEmpty(json) && _.isObject(json))
     _.each(json,function (element,index) {
-      json[index] = element.match(/[A-zÀ-ÿ0-9]+/ig);
+      if(element instanceof String) json[index] = element.match(/[A-zÀ-ÿ0-9]+/ig);
     });
-
   return json;
 }
 

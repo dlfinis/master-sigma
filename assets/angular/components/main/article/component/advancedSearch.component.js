@@ -1,5 +1,5 @@
 /*eslint quotes: [0, "single"]*/
-/*global tv4 event */
+/*global tv4 */
 (function(module) {
   'use strict';
 
