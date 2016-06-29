@@ -26,6 +26,10 @@ module.exports = {
 
         });
         return res.json(200,{total: categories.length,results:categories});
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(500,{total: 0,results:[]});
       });
     }
 };

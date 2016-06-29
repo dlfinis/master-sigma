@@ -7,6 +7,7 @@
 
 module.exports = {
   schema:'true',
+  autoUpdatedAt: false,
   // autoPK:false,
   attributes: {
     // Add a reference to Article
@@ -16,7 +17,7 @@ module.exports = {
     },
     related_article: {
       model: 'article',
-      required:true,
-    },
+      required:true
+    }
   }
 };

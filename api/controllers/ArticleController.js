@@ -25,6 +25,7 @@ module.exports = {
                               .limit( actionUtil.parseLimit(req) )
                               .skip( actionUtil.parseSkip(req) )
                               .sort( actionUtil.parseSort(req) )
+                              .populate('relateTo')
                               .populate('creator')
                               .populate('categories')
                               .populate('likes')
