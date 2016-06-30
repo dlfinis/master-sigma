@@ -13,7 +13,7 @@
 module.exports = {
 
   grunt: {
-    _hookTimeout: 100000
+    _hookTimeout: 120000
   },
 
   application_auth: {

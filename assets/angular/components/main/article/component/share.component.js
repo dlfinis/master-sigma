@@ -97,7 +97,7 @@
                    .then(function(response){
                       if(response && !response.error_code)
                       {
-                        var user = $Session.get();
+                        var user = $Session.get().user;
                         $log.debug('+ FB Share user ',user);
                         $log.debug('+ FB Share user.uid ',user.uid);
                         var completeSID = user.uid+'_'+response.post_id;
