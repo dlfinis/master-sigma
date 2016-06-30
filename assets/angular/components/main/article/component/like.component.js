@@ -7,7 +7,7 @@
       {
         return $http.get('/api/article/havelike',
           {
-            params : {articleID:articleID},
+            params : { articleID: articleID },
             ignoreLoadingBar : true
           });
       },
@@ -75,6 +75,7 @@
              controllerAs: '$like',
              templateUrl: partial.main.article+'tpl/like.cmp.html',
              link : function (scope, element, attrs, controller) {
+
                scope.checkstate = false;
                scope.loader = false;
 
@@ -84,6 +85,10 @@
 
                scope.doLike = function(){
                  scope.loader = true;
+
+                 if(scope.articleSid)
+                   scope.checkstate = true;
+
                  if((!scope.checkstate))
                    {
                    controller.setLike(scope.source.id,scope.source.url)

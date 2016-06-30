@@ -11,6 +11,37 @@
  var graph = require('fbgraph');
 
   var self ={
+    setOldLike : function(articleID,likeID){
+      return new Promise(
+        function (resolve,reject){
+          Like.update({article: articleID},{sid: likeID})
+          .exec(function(err,updated){
+            if(err) reject(err);
+            resolve(updated);
+          });
+        });
+    },
+    checkFBLike : function(likeSID){
+      return new Promise(
+          function (resolve,reject){
+            graph.get(likeSID,
+              function(err, response) {
+                if(err) reject(err);
+                resolve(response);
+              });
+          });
+    },
+    checkDBLike : function(articleID){
+      return Like.findOne({article: articleID}).then(function exist(like) {
+        if(like.sid)
+        {
+          return true;
+        }
+        else {
+          return false;
+        }
+      });
+    },
     setFBLike : function(articleURL){
       return new Promise(
           function (resolve,reject){
@@ -39,6 +70,11 @@
 
  module.exports = {
    like : {
+     check: function(articleID){
+       return self.checkDBLike(articleID).then(function (exist){
+         return exist;
+       });
+     },
      set : function (articleID,articleURL,userID) {
        return self.setFBLike(articleURL)
            .then(function(reslike){ return [reslike]; })
@@ -54,7 +90,17 @@
                });
            })
            .catch(function(err){
-             sails.log.warn(err);
+             sails.log.warn(err.message);
+             if(err && err.code === 3501 && err.message)
+             {
+               var originalID = err.message.substring(err.message.indexOf('ID: ')+4,err.message.length);
+               sails.log.error('Original Code',originalID);
+               self.setOldLike(articleID,originalID).then(function (updated){
+                 sails.log.debug('+ Re-Set like :',updated);
+                 return ({updated : true,record : updated});
+               });
+             }
+             sails.log.debug(err);
              throw 'Like: Not set like err';
            });
      },

@@ -10,12 +10,12 @@ module.exports = {
   autoUpdatedAt: false,
   // autoPK:false,
   attributes: {
-    // Add a reference to Article
-    main_article: {
+    // Add a reference to main Article
+    main: {
       model: 'article',
       required: true
     },
-    related_article: {
+    related: {
       model: 'article',
       required:true
     }

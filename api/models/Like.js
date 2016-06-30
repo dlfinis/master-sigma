@@ -11,6 +11,7 @@ module.exports = {
     sid: {
       type: 'STRING',
       required: true,
+      unique: true,
       index: true
     },
     // Add a reference to Article

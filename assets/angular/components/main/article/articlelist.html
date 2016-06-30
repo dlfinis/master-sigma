@@ -87,19 +87,19 @@
         <div id="title" class="title"><span ng-bind="article.title"></span></div>
         <div class="box">
             <div class="info">
-              <div data-related></div>
+              <div data-related source-id="{{::article.id}}" ng-cloak></div>
               <div class="creator"
                    ng-bind="article.creator.name"
                    ng-click="$articlelist.setCreatorList(article.creator)"></div>
               <div class="period" period data="{{::article.date }}"></div>
               <span>&#8226;</span>
-              <div class="reading" reading stats="article.stats"></div>
+              <div class="reading" reading stats="article.stats" ng-cloak></div>
               <span ng-if="article.state === 'edit'">&#8226;</span>
               <div class="edition" ng-if="article.state === 'edit'">Editado</div>
             </div>
             <p class="text" id="description" ng-bind="article.description"></p>
             <div class="visits" ng-if="article.visits > 0">{{article.visits}} Visitas</div>
-            <div openlater source="article"></div>
+            <div openlater source="article" lbl="Leer más..."></div>
         </div>
         <div class="social-bar" >
           <div class="section-btn">

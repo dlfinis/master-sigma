@@ -6,7 +6,7 @@
   function ModalBaseFactory($http,$log){
     return {
       setVisit: function(article,time)
-            {
+      {
         var prms = {};
         prms.articleID = article.id;
         prms.visitTime = time;
@@ -108,13 +108,15 @@
            return {
              restrict: 'AE',
              scope: {
-               source: '='
+               source: '=',
+               lbl: '@'
              },
              controller: 'OpenLaterCtrl',
              controllerAs: '$openlater',
              templateUrl: partial.main.article+'tpl/openlater.cmp.html',
              link : function (scope, element, attrs, controller) {
                element.bind('click', function(e){
+                 $log.debug('+ Open Site');
                  $log.debug(scope.source);
                  controller.openModal(scope.source);
                });

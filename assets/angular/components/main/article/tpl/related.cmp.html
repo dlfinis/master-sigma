@@ -1,13 +1,8 @@
-<style>
-
-</style>
-
-<a id="btn-related" class="related fa fa-gg-circle fa-2x" aria-hidden="true"></a>
+<a id="btn-related" class="related fa fa-gg-circle fa-2x" ng-show="relatedlist.length > 0" aria-hidden="true"></a>
 <div id="related-box" class="related-box">
   <div class="list">
-  <div class="item">Deep Learning podría mejorar los resultados del traductor de Google</div>
-  <div class="item">Bitcoin y secuestro</div>
-  <div class="item">No es magia, sólo ciencia: transforman las emisiones contaminantes de CO2 en rocas</div>
-  <div class="item">Cuando Rusia excavó un pozo de 12 kilómetros de profundidad “para ver qué pasaba”</div>
-</div>
+    <div ng-repeat="rlt in relatedlist">
+      <div class="item" openlater source="rlt.related" lbl="{{::rlt.related.title}}"></div>
+    </div>
+  </div>
 </div>

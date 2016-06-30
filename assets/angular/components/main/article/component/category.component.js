@@ -7,11 +7,6 @@
     $category.count = 0;
     $category.state = false;
     $category.model = 0;
-    $category.article_uid = '';
-    $category.setLike = function() {
-      $category.count++;
-      $category.state = !$category.state;
-    };
   }
 
   angular.module('app.main.article.category',['app.config'])

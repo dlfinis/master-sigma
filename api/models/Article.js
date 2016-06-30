@@ -62,7 +62,7 @@ module.exports = {
         // Add a reference to Article Related
         relateTo: {
           collection: 'article_related',
-          via: 'main_article'
+          via: 'main'
         },
         // Add a reference to Categories
         categories: {
@@ -74,7 +74,7 @@ module.exports = {
         // Add a reference to Like
         likes: {
           collection: 'like',
-          via: 'article',
+          via: 'article'
         },
         // Add a reference to Share
         shares: {

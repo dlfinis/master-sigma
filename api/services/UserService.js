@@ -8,7 +8,7 @@ var _user;
 module.exports = {
   current: function(user,origin,request) {
     if(user) _user = user;
-    if(request && origin && user){
+    if(request && origin && user && request.session){
       request.session.authenticated = true;
       request.session.origin = origin;
       request.session.user = user;

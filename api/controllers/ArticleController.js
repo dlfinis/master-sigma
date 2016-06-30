@@ -25,7 +25,6 @@ module.exports = {
                               .limit( actionUtil.parseLimit(req) )
                               .skip( actionUtil.parseSkip(req) )
                               .sort( actionUtil.parseSort(req) )
-                              .populate('relateTo')
                               .populate('creator')
                               .populate('categories')
                               .populate('likes')
@@ -249,6 +248,7 @@ module.exports = {
       sails.log.debug('+ LIKE failed to add ');
       return res.json(400,err);
     });
+
   },
   deletelike : function(req,res){
     var sid = req.param('articleSid');
