@@ -507,8 +507,9 @@ footer p {
   height: 250px;
   width: 100%;
   display: block;
-  height: 50vh;
   object-fit: cover;
+  max-height: 350px;
+  min-height: 200px;
 }
 
 .post .read-more{

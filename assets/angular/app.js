@@ -93,7 +93,9 @@
     // Load the facebook SDK asynchronously
     FBLoader.setScript();
     $rootScope.$on('fb.load', function(e, FB) {
-      FB.Canvas.setAutoGrow(90);
+      FB.Canvas.setAutoGrow();
+      FB.Canvas.setSize({height:800});
+      setTimeout('FB.Canvas.setAutoGrow()',500);
     });
 
     //Load fonts asynchronously
