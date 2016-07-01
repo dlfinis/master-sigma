@@ -1,0 +1,4 @@
+export REDISCLOUD_URL=pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com
+export REDISCLOUD_PORT=12873
+export REDISCLOUD_PASSWORD=mastersigma92
+

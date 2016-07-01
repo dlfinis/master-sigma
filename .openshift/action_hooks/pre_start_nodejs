@@ -5,6 +5,6 @@ export REDISCLOUD_URL=pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com
 export REDISCLOUD_PORT=12873
 export REDISCLOUD_PASSWORD=mastersigma92
 
-if [ -f "${OPENSHIFT_REPO_DIR}"/Gruntfile.js ]; then
-    (cd "${OPENSHIFT_REPO_DIR}"; node_modules/grunt-cli/bin/grunt prod)
-fi
+#if [ -f "${OPENSHIFT_REPO_DIR}"/Gruntfile.js ]; then
+#   (cd "${OPENSHIFT_REPO_DIR}"; node_modules/grunt-cli/bin/grunt prod)
+#fi
