@@ -64,6 +64,12 @@
       }, 4000);
     });
 
+
+    $uibModalInstance.closed.then(function(){
+      $log.debug('- Close Modal');
+      $uibModalInstance.dismiss('close');
+    });
+
     $modal.diffTime = function(){
       var diff = (new Date() - $modal.startTime)/(1000); //segs
       return Math.round(diff);
@@ -81,12 +87,38 @@
     };
   }
 
-  function OpenLaterCtrl($scope,$log,ScraperFactory,ModalFactory)
+  function OpenLaterCtrl($log,$window,ScraperFactory,ModalFactory)
   {
     var $openlater = this;
     $openlater.openModal = function (article)
     {
       var $modalInstance = ModalFactory.getModal(article);
+
+      $modalInstance.rendered.then(function (){
+        $log.log('-Rendered Modal');
+      });
+
+      $modalInstance.opened.then(function (){
+        $log.debug('-Opened Modal');
+        $window.FB.Canvas.getPageInfo(
+          function(info) {
+            // Get the document offset of FB iFrame: FB scrollTop - FB offsetTop = offsetTop canvas
+            var offset = info.scrollTop - info.offsetTop;
+
+            // Get the window viewport height of FB iFrame: FB clientHeight - FB offsetTop
+            var viewportHeight = info.clientHeight - info.offsetTop;
+
+            // cache your dialog element
+            var $dialog = angular.element(document.getElementsByClassName('modal-dialog'));
+
+            // now set your dialog position
+            var positionWindow = (offset  + (viewportHeight/2)) - ($dialog.prop('offsetHeight')/2);
+            var styles = {
+              'top' : positionWindow+'px'
+            };
+            $dialog.css( styles );
+          });
+      });
 
       $modalInstance.result.then(function (ops){
         $log.debug('Options Modal:',JSON.stringify(ops));
@@ -94,7 +126,8 @@
          function () {
            $log.debug('Modal dismissed at: ' + new Date());
          }
-        );
+      );
+
     };
   }
 
@@ -104,7 +137,7 @@
          .factory('ModalFactory',ModalFactory)
          .controller('ModalCtrl',ModalCtrl)
          .controller('OpenLaterCtrl',OpenLaterCtrl)
-         .directive('openlater', function( partial,$log,$q){
+         .directive('openlater', function( partial,$log){
            return {
              restrict: 'AE',
              scope: {
@@ -115,7 +148,7 @@
              controllerAs: '$openlater',
              templateUrl: partial.main.article+'tpl/openlater.cmp.html',
              link : function (scope, element, attrs, controller) {
-               element.bind('click', function(e){
+               element.bind('click', function(event){
                  $log.debug('+ Open Site');
                  $log.debug(scope.source);
                  controller.openModal(scope.source);

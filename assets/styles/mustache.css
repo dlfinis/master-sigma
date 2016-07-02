@@ -167,9 +167,6 @@ footer p {
   left: 0;
 }
 
-.zIndex-10--loadingPage {
-  z-index: 1050;
-}
 
 .loading{
   width: 100%;
@@ -183,17 +180,9 @@ footer p {
   right:0;
   overflow:hidden;
   z-index: 1050;
-  height: 1999px;
+  height: 5999px;
   /*position: fixed;*/
 
-}
-
-.loading-api{
-  width: 100%;
-  display: block;
-  object-fit: cover;
-  height: 50vh;
-  opacity: 0.4;
 }
 
 .home .login{
@@ -710,7 +699,7 @@ footer p {
 }
 
 .modal.in .modal-dialog{
-  /*width: 80%;*/
+  width: 80%;
 }
 
 .modal .modal-header .btn{
