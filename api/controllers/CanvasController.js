@@ -14,7 +14,7 @@ module.exports = {
   login: function (req, res, next) {
     sails.log('+ .CANVAS');
 
-    passport.authenticate('facebook-canvas',{
+    passport.authenticate('facebook',{
       scope: [
         'publish_actions',
         'user_about_me',
@@ -55,7 +55,6 @@ module.exports = {
     sails.log.debug('+ POPUP ','/auth/facebook/canvas');
 
     var stringURL = FB.getLoginUrl({
-      display: 'popup',
       scope: 'publish_actions,user_about_me,user_friends',
       client_id: sails.config.application_auth.facebookClientID,
       redirect_uri: sails.config.application_auth.facebookAppURL

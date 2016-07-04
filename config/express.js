@@ -1,8 +1,8 @@
 var passport = require('passport'),
   // LocalStrategy = require('passport-local').Strategy,
   // TwitterStrategy = require('passport-twitter').Strategy,
-  // FacebookStrategy = require('passport-facebook').Strategy,
-  FacebookStrategy = require('passport-facebook-canvas').Strategy;
+  // FacebookStrategy = require('passport-facebook-canvas').Strategy;
+  FacebookStrategy = require('passport-facebook').Strategy;
 
 /**
  * Configure advanced options for the Express server inside of Sails.
@@ -10,6 +10,8 @@ var passport = require('passport'),
  * For more information on configuration, check out:
  * http://sailsjs.org/#documentation
  */
+/*global User*/
+
 module.exports.http = {
 
   customMiddleware: function (app) {
@@ -24,11 +26,12 @@ module.exports.http = {
       clientID: sails.config.application_auth.facebookClientID,
       clientSecret: sails.config.application_auth.facebookClientSecret,
       callbackURL: sails.config.application_auth.facebookCallbackURL,
-      profileFields: ['id',
+      profileFields: [  'id',
                         'displayName',
                         'name',
-                        'email',
                         'gender',
+                        'emails',
+                        'about',
                         'profileUrl'],
       enableProof: true
     }, verifyHandler));
@@ -44,23 +47,27 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (uid, done) {
-    // sails.log.debug("deserializeUser:", uid);
+  // sails.log.debug("deserializeUser:", uid);
   User.findOne({uid: uid}, function (err, user) {
-    done(err, user);
+    if(!err)
+      done(err, user);
+    else {
+      sails.log.warn('Invalid deserializeUser');
+      done(err,null);
+    }
   });
 });
 
-var fbgraph = require ('fbgraph');
 var verifyHandler = function (token, tokenSecret, profile, done) {
   process.nextTick(function () {
-        // Check handler
-        // sails.log.debug("=> verifyHandler with ", token, tokenSecret);
+    // Check handler
+    // sails.log.debug("=> verifyHandler with ", token, tokenSecret);
 
-        //Debug of information returned by Facebook
-        // sails.log.debug('+ Profile Facebook >');
-        // sails.log.debug(profile);
-    fbgraph.setAccessToken(token);
-    User.findOne({uid: profile.id}, function (err, user) {
+    //Debug of information returned by Facebook
+    // sails.log.debug('+ Profile Facebook >');
+    // sails.log.debug(JSON.stringify(profile));
+    require ('fbgraph').setAccessToken(token);
+    User.findOne({ uid: profile.id }, function (err, user) {
       if (user) {
         // sails.log.debug(user);
         return done(null, user);
@@ -87,6 +94,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
         }
 
         User.create(data, function (err, user) {
+          // sails.log(data);
           sails.log.debug('+ User create'+JSON.stringify(user));
           return done(err, user);
         });

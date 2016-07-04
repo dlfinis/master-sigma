@@ -46,7 +46,7 @@ module.exports = {
     ttl: 0,
     pass: process.env.REDISCLOUD_PASSWORD || 'mastersigma92',
     cookie: {
-      maxAge: 2 * 60 * 60 * 1000
+      maxAge: 6 * 60 * 60 * 1000
     }
   },
   // ssl: {
