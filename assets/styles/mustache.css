@@ -440,11 +440,16 @@ footer p {
     font-weight:600;
 }
 
+.post .content,
+.post .info .content{
+  display:block;
+}
 
 .post .info .creator{
   color:#3A5795;
   line-height: 1em;
   cursor:pointer;
+  display:inline-block;
 }
 
 .post .info .creator:hover{

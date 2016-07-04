@@ -12,8 +12,37 @@
 }
 
 .btn-search{
-  padding: 4px 30px;
   font-size: 0.85em;
+  background: #3A5795;
+  color: #ececec;
+  border-color: #3A5795;
+  border-radius: 2px;
+}
+
+.btn-search:hover{
+  background: #3A5795;
+  color: #ececec;
+}
+
+.btn-large-search{
+  padding: 4px 30px;
+  box-shadow: 0px 1px 3px #6b6d6f;
+}
+
+.btn-date{
+  box-shadow: none;
+  background: #f5f5f5;
+  border-color: #ccc;
+  border-radius:2px;
+}
+
+.date-bar .btn.active,
+.btn-date:active,
+.btn-date:hover{
+  box-shadow: none;
+  background-color: #eb9316;
+  border-color: #e38d13;
+  color:#ececec;
 }
 
 .element{
@@ -37,50 +66,67 @@
 
 <div class="input-group">
     <div class="form-group has-feedback has-clear">
-      <input type="text" class="form-control input-sm" ng-model="$search.txt" id="txt-search" placeholder="Búsqueda">
+      <input type="text"
+             class="form-control input-sm"
+             ng-model="$search.txt"
+             id="txt-search"
+             placeholder="Búsqueda">
       <!-- <span id="options" class="form-control-clear glyphicon glyphicon-option-vertical form-control-feedback"></span> -->
       <span id="options"
         class="form-control-clear fa fa-ellipsis-v form-control-feedback form-control-action"
-        aria-hidden="true">
+        aria-hidden="true"
+        >
       </span>
       <span class="form-control-clear glyphicon glyphicon-remove form-control-feedback hidden"></span>
     </div>
-    <span class="input-group-addon input-sm" uib-tooltip="Búsqueda">
+    <span class="input-group-addon input-sm btn-search" uib-tooltip="Búscar">
       <i id="btn-txt-search" class="fa fa-search"></i>
     </span>
 </div>
 <div id="search-box" class="search-box ng-cloak fade-ng-cloak">
-  <div class="form-group has-feedback has-clear ng-cloak fade-ng-cloak">
+  <div class="form-group has-feedback has-clear">
     <div class="element">
       <div>Título:</div>
-      <input type="text" class="form-control input-sm" ng-model="$search.params.title" id="txt-title" />
+      <input type="text" class="form-control input-sm"
+             ng-model="$search.params.title"
+             id="txt-title"
+             uib-tooltip="Título del recurso la búsqueda"/>
     </div>
 
     <div class="element">
     <div>Descripción:</div>
-    <input type="text" class="form-control input-sm" ng-model="$search.params.description" id="txt-description" />
+    <input type="text" class="form-control input-sm"
+           ng-model="$search.params.description"
+           id="txt-description"
+           uib-tooltip="Descripción de recurso de la búsqueda"/>
     </div>
 
     <div class="element">
     <div>Autor:</div>
-    <input type="text" class="form-control input-sm" ng-model="$search.params.creator" id="txt-creator" />
+    <input type="text" class="form-control input-sm"
+           ng-model="$search.params.creator"
+           id="txt-creator"
+           uib-tooltip="Nombre del autor" />
     </div>
 
     <div class="element">
     <div>Contiene las siguientes palabras:</div>
-    <input type="text" class="form-control input-sm" ng-model="$search.params.general" id="txt-general" />
+    <input type="text" class="form-control input-sm"
+           ng-model="$search.params.general"
+           id="txt-general" />
     </div>
 
     <div class="element">
     <div><b><em>No</em></b> contiene las siguientes palabras:</div>
-    <input type="text" class="form-control input-sm" ng-model="$search.params.not" id="txt-not" />
+    <input type="text" class="form-control input-sm"
+           ng-model="$search.params.not"
+           id="txt-not" />
     </div>
 
     <div class="element">
-    <div class="date-bar"  style="width:40%">
+    <div class="date-bar"  style="width:50%">
       <div>Rango de Fecha:</div>
       <div class="input-group">
-
         <input type="text" class="form-control input-sm"
         id="txt-date"
         ng-model="$search.params.date"
@@ -94,25 +140,33 @@
         uib-datepicker-popup
         uib-tooltip="Defina la fecha para la búsqueda"
         />
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-default btn-sm" ng-cloak ng-click="$search.datepopup.open($event)">
+        <div class="input-group-btn">
+          <button type="button"
+                  class="btn btn-default btn-sm"
+                  ng-cloak
+                  ng-click="$search.datepopup.open($event)"
+                  uib-tooltip="Escoga la fecha del calendario">
             <i class="fa fa-calendar fa-fw" aria-hidden="true"></i>
           </button>
           <div style="margin-left:10px;display: inline-block;">
-            <button style="margin-left:2px;" id="dt-before" class="btn btn-sm btn-primary"
+            <button style="margin-left:2px;" id="dt-before" class="btn btn-sm btn-date"
             ng-click="$search.dateformat.set($event)"
             ng-model="$search.params.dateformat"
-            uib-btn-radio="'before'">Antes</button>
-            <button style="margin-left:1px;" id="dt-after" class="btn btn-sm btn-success"
+            uib-btn-radio="'before'"
+            uib-tooltip="Antes de la fecha definida">Antes</button>
+            <button style="margin-left:1px;" id="dt-after" class="btn btn-sm btn-date"
             ng-click="$search.dateformat.set($event)"
             ng-model="$search.params.dateformat"
-            uib-btn-radio="'after'">Después</button>
+            uib-btn-radio="'after'"
+            uib-tooltip="Despúes de la fecha definida">Después</button>
           </div>
-        </span>
+        </div>
       </div>
     </div>
     </div>
-  <a id="btn-form-search" class="btn btn-default btn-search">
+  <a id="btn-form-search"
+     class="btn btn-default btn-search btn-large-search"
+     uib-tooltip="Buscar">
     <i class="fa fa-search"></i>
   </a>
 
