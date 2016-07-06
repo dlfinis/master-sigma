@@ -76,7 +76,7 @@
     $routeProvider.when('/',{template:'<home></home>'});
     $routeProvider.when('/home', {template:'<home></home>'});
     $routeProvider.when('/wall',{template:'<articlelist></articlelist>'});
-    $routeProvider.when('/legal/privacy',{template:'<privacy></privacy>'});
+    $routeProvider.when('/legal/policy',{template:'<policy></policy>'});
     $routeProvider.when('/legal/terms',{template:'<terms></terms>'});
     // $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
     // $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
@@ -95,7 +95,7 @@
     // Load the facebook SDK asynchronously
     FBLoader.setScript();
     $rootScope.$on('fb.load', function(e, FB) {
-      console.log('+ Init FB');
+      $log.debug('+ Init FB');
       FB.Canvas.setAutoGrow();
       FB.Canvas.setSize({height:800});
       setTimeout('FB.Canvas.setAutoGrow()',500);
@@ -111,10 +111,9 @@
     // Start loading bar for app loading
     cfpLoadingBar.start();
 
-    var enable = ['','/','/home','/logout','/testpage','/legal/privacy','/legal/terms'];
+    var enable = ['','/','/home','/logout','/testpage','/legal/policy','/legal/terms'];
     $rootScope.$on('$routeChangeStart', function (event, next) {
       var path = $location.path();
-      $log.debug(path,enable.indexOf(path));
       if(enable.indexOf(path) === -1)
       {
         $log.debug('+ Check Policie >',$location.path());
