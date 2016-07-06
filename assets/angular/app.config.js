@@ -6,7 +6,7 @@
           'elementlimit' : 10,
           'elementpage' : 10,
           'development' :{ logging:'verbose', domain:'master.sigma' },
-          'production' : { logging:'verbose', domain:'mastersigma-jaggerfly' }
+          'production' : { logging:'none', domain:'mastersigma-jaggerfly' }
         }
       )
       .constant(
@@ -37,6 +37,7 @@
           'core' : {
             'origin' : 'angular/components/core/',
             'page' : 'angular/components/core/page/',
+            'legal' : 'angular/components/core/legal/',
             'test' : 'angular/components/core/test/',
             'testpage' : 'angular/components/core/testpage/'
           }

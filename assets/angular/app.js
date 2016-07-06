@@ -76,9 +76,11 @@
     $routeProvider.when('/',{template:'<home></home>'});
     $routeProvider.when('/home', {template:'<home></home>'});
     $routeProvider.when('/wall',{template:'<articlelist></articlelist>'});
-    $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
-    $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
-    $routeProvider.when('/testpage', { template: '<testpage></testpage>' });
+    $routeProvider.when('/legal/privacy',{template:'<privacy></privacy>'});
+    $routeProvider.when('/legal/terms',{template:'<terms></terms>'});
+    // $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
+    // $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
+    // $routeProvider.when('/testpage', { template: '<testpage></testpage>' });
     $routeProvider.when('/logout', {
       resolve: {
         load: function (AuthFactory) {
@@ -109,9 +111,10 @@
     // Start loading bar for app loading
     cfpLoadingBar.start();
 
-    var enable = ['','/','/home','/logout','/testpage'];
+    var enable = ['','/','/home','/logout','/testpage','/legal/privacy','/legal/terms'];
     $rootScope.$on('$routeChangeStart', function (event, next) {
       var path = $location.path();
+      $log.debug(path,enable.indexOf(path));
       if(enable.indexOf(path) === -1)
       {
         $log.debug('+ Check Policie >',$location.path());
