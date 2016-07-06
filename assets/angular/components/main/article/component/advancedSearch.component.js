@@ -146,6 +146,7 @@
     });
 
     $search.clean = function () {
+      $search.txt = '';
       $search.params = {};
       $search.dateformat.value = 'before';
       $scope.apply();
