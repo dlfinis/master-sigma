@@ -49,6 +49,11 @@
               element.querySelectorAll('#btn-related').bind('click mouseenter', function (event) {
                 entry = !entry;
                 entering(entry);
+
+                $timeout(function () {
+                  entering(false);
+                }, 5000);
+
               });
 
               element.querySelectorAll('#related-box').bind('mouseleave', function (event) {
@@ -57,6 +62,7 @@
                 }, 100);
               });
             }
+
           };
         });
 

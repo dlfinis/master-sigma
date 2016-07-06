@@ -419,7 +419,7 @@ footer p {
   padding: 1% 4%;
   background: #4E5154;
   font-weight: bold;
-  font-size: 1.05em;
+  font-size: 1.25em;
 }
 .post .info .related-box .list{
   margin: 0px;
@@ -439,6 +439,7 @@ footer p {
   text-overflow: ellipsis;
   overflow-x: hidden;
   padding: 1.25% 2.50%;
+  font-size: 1.205em;
 }
 .post .info .related-box .list .item:hover{
     /*color:#28292a;*/

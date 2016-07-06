@@ -4,7 +4,7 @@
   border-style:solid;
   border-color: #cecece;
   border-width: 0px 1px 1px;
-  padding: 2%;
+  padding: 0.5% 2% 2%;
   z-index: 100;
   background-color: #eee;
   border-radius: 0px;
@@ -62,6 +62,13 @@
   border-radius: 1px;
 }
 
+.clean{
+  text-align: right;
+  font-size: 0.85em;
+  color: #909090;
+  display: block;
+}
+
 </style>
 
 <div class="input-group">
@@ -84,6 +91,7 @@
     </span>
 </div>
 <div id="search-box" class="search-box ng-cloak fade-ng-cloak">
+  <a class="clean" ng-click="$search.clean()">Limpiar</a>
   <div class="form-group has-feedback has-clear">
     <div class="element">
       <div>Título:</div>
@@ -151,14 +159,12 @@
           <div style="margin-left:10px;display: inline-block;">
             <button style="margin-left:2px;" id="dt-before" class="btn btn-sm btn-date"
             ng-click="$search.dateformat.set($event)"
-            ng-model="$search.params.dateformat"
-            uib-btn-radio="'before'"
-            uib-tooltip="Antes de la fecha definida">Antes</button>
+            ng-model="$search.dateformat.value"
+            uib-btn-radio="'before'">Antes</button>
             <button style="margin-left:1px;" id="dt-after" class="btn btn-sm btn-date"
             ng-click="$search.dateformat.set($event)"
-            ng-model="$search.params.dateformat"
-            uib-btn-radio="'after'"
-            uib-tooltip="Despúes de la fecha definida">Después</button>
+            ng-model="$search.dateformat.value"
+            uib-btn-radio="'after'">Después</button>
           </div>
         </div>
       </div>
