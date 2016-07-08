@@ -60,7 +60,7 @@ module.exports = {
     adapter: 'redis',
     host: process.env.REDISCLOUD_URL || 'pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com',
     port: process.env.REDISCLOUD_PORT || 12873,
-    ttl: 7200,
+    ttl: 1800,
     pass: process.env.REDISCLOUD_PASSWORD || 'mastersigma92',
     cookie: {
       maxAge: 6 * 60 * 60 * 1000

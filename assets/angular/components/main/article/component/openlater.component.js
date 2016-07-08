@@ -95,7 +95,7 @@
       var $modalInstance = ModalFactory.getModal(article);
 
       $modalInstance.rendered.then(function (){
-        $log.log('-Rendered Modal');
+        $log.debug('-Rendered Modal');
       });
 
       $modalInstance.opened.then(function (){

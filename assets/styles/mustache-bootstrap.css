@@ -188,5 +188,13 @@
 }
 
 .embed-responsive-4by3 {
-  padding-bottom: 68%;
+  padding-bottom: 67%;
+}
+
+@media screen and (min-width:1920px) {
+
+  .embed-responsive-4by3 {
+    padding-bottom: 55%;
+  }
+
 }
