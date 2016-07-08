@@ -191,8 +191,7 @@
   padding-bottom: 67%;
 }
 
-@media screen and (min-width:1920px) {
-
+@media screen and (min-width:1360px) {
   .embed-responsive-4by3 {
     padding-bottom: 55%;
   }
