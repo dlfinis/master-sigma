@@ -16,7 +16,7 @@ module.exports = {
 
     if(req.query && req.query.code){
       sails.log('+ Exist FB Code');
-      passport.authenticate('facebook-canvas',{ failureRedirect:'/',sucessRedirect: sails.config.application_auth.facebookAppURL });
+      passport.authenticate('facebook-canvas',{ failureRedirect:'/',sucessRedirect:'/#/wall' });
     }
 
     passport.authenticate('facebook-canvas',{
