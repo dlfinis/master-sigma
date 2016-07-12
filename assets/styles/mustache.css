@@ -738,10 +738,11 @@ footer p {
 
 .modal-title{
   overflow: hidden;
-  height: 40px;
+  height: auto;
   line-height: 20px;
   text-overflow: ellipsis;
   font-size: 1em;
+  max-height: 40px;
 }
 
 .modal .source{

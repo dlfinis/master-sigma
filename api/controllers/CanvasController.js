@@ -7,19 +7,20 @@
 /*global UserService */
 
 var passport = require('passport');
-var FB = require('fb');
+var graph = require('fbgraph');
 
 module.exports = {
   // Facebook login screen
   login: function (req, res, next) {
     sails.log('+ .CANVAS');
 
-    passport.authenticate('facebook',{
-      scope: [
-        'publish_actions',
-        'user_about_me',
-        'user_friends'
-      ]
+    if(req.query && req.query.code){
+      sails.log('+ Exist FB Code');
+      passport.authenticate('facebook-canvas',{ failureRedirect:'/',sucessRedirect:'/#/wall' });
+    }
+
+    passport.authenticate('facebook-canvas',{
+      scope: sails.config.application_auth.facebookAppScope
     },
     function (err, user)
     {
@@ -34,41 +35,50 @@ module.exports = {
         req.logIn(user, function (err) {
           if (err)
           {
-            sails.log('Auth Error', err);
+            sails.log('- Auth Error', err);
             return res.view('500');
           }
-          sails.log.debug('+ User Auth >',JSON.stringify(user));
+
+          sails.log.debug('+ User Login >',JSON.stringify(user));
           sails.log.debug('+ REDIRECT TO ','/#/wall');
           sails.log.debug('+ ORIGIN FB');
+
           UserService.current(user,'fb',req);
+
           return res.redirect('/#/wall');
 
         });
       } else {
         return res.redirect('/auth/canvas/autologin');
-        // this.autologin(req,res);
       }
     }
-  )(req, res, next);
+    )(req, res, next);
+
   },
   autologin: function(req,res){
     sails.log.debug('+ POPUP ','/auth/facebook/canvas');
 
-    var stringURL = FB.getLoginUrl({
-      scope: 'publish_actions,user_about_me,user_friends',
-      client_id: sails.config.application_auth.facebookClientID,
-      redirect_uri: sails.config.application_auth.facebookAppURL
+    var authUrl = graph.getOauthUrl({
+      'client_id':      sails.config.application_auth.facebookClientID
+    , 'redirect_uri':   sails.config.application_auth.facebookAppURL
+    , 'client_secret':  sails.config.application_auth.facebookClientSecret
+    , 'scope':         sails.config.application_auth.facebookAppScopeString
     });
-    sails.log.debug('+URL DIALOG FB ',stringURL);
+
+    sails.log('- URL Dialog',authUrl,req.protocol);
 
     var redirect_popup = ('<!DOCTYPE html>' +
                           '<body>'+
                           '<script type="text/javascript">'+
-                          'top.location.href = "$stringURL";'+
+                          'top.location.href = "$authUrl";'+
+                          // 'top.location.replace("$authUrl");'+
+                          //  'top.location.replace("/auth/facebook");' +
                           '</script>' +
                           '</body>' +
-                          '</html>').replace('$stringURL',stringURL);
+                          '</html>').replace('$authUrl',authUrl);
+
     return res.send(redirect_popup);
+
   },
   test:function(req,res){
     return res.json('OK!');

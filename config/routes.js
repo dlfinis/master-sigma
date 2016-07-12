@@ -46,50 +46,50 @@ module.exports.routes = {
           },
       */
 
-    'GET /me' :{
-        controller : 'UserController',
-        action : 'me',
-                skipAssets: true,
-      },
-    'GET /auth/facebook' :{
-      controller : 'AuthController',
-      action : 'facebook',
-              skipAssets: true,
-              origin: 'web'
-    },
-    'GET /auth/canvas' :{
-      controller : 'CanvasController',
-      action : 'login',
-              skipAssets: true,
-              origin: 'fb'
-    },
-    'GET /auth/canvas/autologin' :{
-      controller : 'CanvasController',
-      action : 'autologin',
-              skipAssets: true,
-              origin: 'fb'
-    },
-    'GET /auth/facebook/callback' :{
-      controller : 'AuthController',
-      action : 'facebook/callback',
-              skipAssets: true,
-              origin: 'web'
-    },
-    'POST /auth/facebook/canvas' : {
-      controller: 'CanvasController',
-      action: 'login',
-            skipAssets: true,
-            origin: 'fb'
-    },
-    'GET /auth/logout' :{
-      controller : 'AuthController',
-      action : 'logout',
-              skipAssets: true
-    },
-    /**
-    * Route for access to API of Scraper System
-    */
-    'GET /scraper' : 'ScraperController.site'
+  'GET /me' :{
+    controller : 'UserController',
+    action : 'me',
+    skipAssets: true
+  },
+  'GET /auth/facebook' :{
+    controller : 'AuthController',
+    action : 'facebook',
+    skipAssets: true,
+    origin: 'web'
+  },
+  'GET /auth/canvas' :{
+    controller : 'CanvasController',
+    action : 'login',
+    skipAssets: true,
+    origin: 'fb'
+  },
+  'GET /auth/canvas/autologin' :{
+    controller : 'CanvasController',
+    action : 'autologin',
+    skipAssets: true,
+    origin: 'fb'
+  },
+  'GET /auth/facebook/callback' :{
+    controller : 'AuthController',
+    action : 'facebook/callback',
+    skipAssets: true,
+    origin: 'web'
+  },
+  'POST /auth/facebook/canvas' : {
+    controller: 'CanvasController',
+    action: 'login',
+    skipAssets: true,
+    origin: 'fb'
+  },
+  'GET /auth/logout' :{
+    controller : 'AuthController',
+    action : 'logout',
+    skipAssets: true
+  },
+  /**
+  * Route for access to API of Scraper System
+  */
+  'GET /scraper' : 'ScraperController.site'
 
     /***************************************************************************
      *                                                                          *
