@@ -78,8 +78,8 @@
     $routeProvider.when('/wall',{template:'<articlelist></articlelist>'});
     $routeProvider.when('/legal/policy',{template:'<policy></policy>'});
     $routeProvider.when('/legal/terms',{template:'<terms></terms>'});
-    // $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
-    // $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
+    $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
+    $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
     // $routeProvider.when('/testpage', { template: '<testpage></testpage>' });
     $routeProvider.when('/logout', {
       resolve: {
