@@ -181,7 +181,6 @@ footer p {
   overflow:hidden;
   z-index: 1050;
   height: 9999px;
-  display: block;
   /*position: fixed;*/
 
 }
