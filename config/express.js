@@ -65,8 +65,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
     // sails.log.debug('=> verifyHandler with ', token, tokenSecret);
 
     // Debug of information returned by Facebook
-    sails.log.debug('+ Profile Facebook >');
-    sails.log.debug(JSON.stringify(profile));
+    sails.log.debug('+ Profile Facebook >',JSON.stringify(profile));
     require ('fbgraph').setAccessToken(token);
     User.findOne({ uid: profile.id }, function (err, user) {
 
@@ -80,8 +79,8 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
           uid: profile.id,
           name: profile.displayName || profile.name
         };
-        if ( _.isArray(profile.emails) || profile.email) {
-          data.email = profile.emails[0].value || profile.email;
+        if (profile.email) {
+          data.email = profile.email;
         }
         if (profile.name && (profile.name.givenName || profile.first_name)) {
           data.firstname = profile.name.givenName || profile.first_name;
