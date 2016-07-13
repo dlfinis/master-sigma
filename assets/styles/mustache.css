@@ -180,7 +180,8 @@ footer p {
   right:0;
   overflow:hidden;
   z-index: 1050;
-  height: 5999px;
+  height: 9999px;
+  display: block;
   /*position: fixed;*/
 
 }
@@ -834,10 +835,14 @@ footer p {
 }
 
 .modal .modal-footer .btn{
-  margin: 1.25% 1%;
-  padding: 0.5% 1.5%;
+  /*margin: 1.25% 1%;*/
+  padding: 7.5px 15px;
   cursor: pointer;
-  font-size: 0.925em;
+  font-size: 1em;
+}
+
+.modal .modal-footer .btn.btn-danger{
+  margin: 10px 1.95%;
 }
 
 .modal .modal-footer .redirect{

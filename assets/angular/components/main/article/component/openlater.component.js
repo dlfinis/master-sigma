@@ -76,8 +76,9 @@
     };
 
     $modal.close = function(){
+      console.log($modal.diffTime());
       if($modal.diffTime() > 15)
-        {
+      {
         $log.debug('Time:',$modal.diffTime());
         ModalBaseFactory.setVisit(article,$modal.diffTime());
         $uibModalInstance.close({visit:true,article:article.id});

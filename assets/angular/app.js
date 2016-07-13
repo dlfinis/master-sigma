@@ -71,7 +71,7 @@
     // cfpLoadingBarProvider.spinnerTemplate = '<div style="margin:20% 0 0 50%;"><span class="fa fa-spinner fa-pulse fa-3x"></div>';
     // cfpLoadingBarProvider.spinnerTemplate = '<div style="text-align: center; left: 0px; height: 100%; width: 100%; z-index: 1050; color: rgb(52, 69, 87); top: 0px; background: rgb(52, 69, 87) none repeat scroll 0% 0%; opacity: 0.45; position: fixed;"><img style="width: 100%;" src="/images/spinner.gif"></div>';
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-    cfpLoadingBarProvider.spinnerTemplate = '<div style="position: absolute; top: 0px; left: 0px; background-color: rgb(52, 69, 87); color: #EAEAEA; height: 5999px; width: 100%; z-index: 1040; vertical-align: middle; opacity: 0.35; text-align: center; padding-top: 5px;"><span class="fa fa-refresh fa-spin fa-2x fa-fw" style="vertical-align: middle;"></span><div style="text-align: center; color: rgb(255, 245, 245); font-weight: bold; display: inline-block;">Procesando información...</div></div>';
+    cfpLoadingBarProvider.spinnerTemplate = '<div style="position: absolute; top: 0px; left: 0px; background-color: rgb(52, 69, 87); color: #EAEAEA; height: 9999px; width: 100%; z-index: 1040; vertical-align: middle; opacity: 0.35; text-align: center; padding-top: 5px;"><span class="fa fa-refresh fa-spin fa-2x fa-fw" style="vertical-align: middle;"></span><div style="text-align: center; color: rgb(255, 245, 245); font-weight: bold; display: inline-block;">Procesando información...</div></div>';
 
     $routeProvider.when('/',{template:'<home></home>'});
     $routeProvider.when('/home', {template:'<home></home>'});
@@ -111,7 +111,7 @@
     // Start loading bar for app loading
     cfpLoadingBar.start();
 
-    var enable = ['','/','/home','/logout','/testpage','/legal/policy','/legal/terms'];
+    var enable = ['','/','/home','/registry/article','/registry/category','/logout','/testpage','/legal/policy','/legal/terms'];
     $rootScope.$on('$routeChangeStart', function (event, next) {
       var path = $location.path();
       if(enable.indexOf(path) === -1)

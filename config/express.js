@@ -65,10 +65,12 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
     // sails.log.debug('=> verifyHandler with ', token, tokenSecret);
 
     // Debug of information returned by Facebook
-    // sails.log.debug('+ Profile Facebook >');
-    // sails.log.debug(JSON.stringify(profile));
+    sails.log.debug('+ Profile Facebook >');
+    sails.log.debug(JSON.stringify(profile));
     require ('fbgraph').setAccessToken(token);
     User.findOne({ uid: profile.id }, function (err, user) {
+
+      try{
       if (user) {
         // sails.log.debug(user);
         return done(null, user);
@@ -78,7 +80,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
           uid: profile.id,
           name: profile.displayName || profile.name
         };
-        if ((profile.emails && profile.emails[0] && profile.emails[0].value )|| profile.email) {
+        if ( _.isArray(profile.emails) || profile.email) {
           data.email = profile.emails[0].value || profile.email;
         }
         if (profile.name && (profile.name.givenName || profile.first_name)) {
@@ -102,6 +104,10 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
           return done(err, user);
         });
 
+      }
+    }
+      catch(e){
+        sails.log.warning(e);
       }
     });
   });
