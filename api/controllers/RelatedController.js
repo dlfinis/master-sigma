@@ -39,7 +39,7 @@ module.exports = {
         });
       }
       else
-        return res.json(404,{total: 0,results:[]});
+        return res.json(200,{total: 0,results:[]});
     })
     .catch(function (err) {
       sails.log.warn(err);

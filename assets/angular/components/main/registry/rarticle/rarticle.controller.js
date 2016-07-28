@@ -2,7 +2,7 @@
 
   function RArticleCtrl($scope,RArticleFactory){
 
-    $registry = this;
+    var $registry = this;
     $registry.article = {};
     // $registry.categories = {};
 

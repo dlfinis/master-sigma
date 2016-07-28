@@ -2,7 +2,7 @@
 
   function RegistryCtrl($scope,RegistryFactory){
 
-    $registry = this;
+    var $registry = this;
     $registry.article = {};
     // $registry.categories = {};
 

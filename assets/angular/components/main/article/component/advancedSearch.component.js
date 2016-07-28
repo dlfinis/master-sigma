@@ -60,7 +60,7 @@
     var $articlelist = $scope.$parent.$articlelist || undefined;
 
     $search.params = {};
-    $search.params.dateformat = 'before';
+    $search.dateformat = 'before';
 
     $search.dateOptions = {
       formatYear: 'yyyy',
@@ -80,8 +80,9 @@
 
     $search.dateformat = {
       set : function(event) {
-        $search.params.dateformat = event.target.id === 'dt-before' ? 'before' : 'after' ;
-      }
+        $search.dateformat.value = event.target.id === 'dt-before' ? 'before' : 'after' ;
+      },
+      value : 'before'
     };
 
     var wtxt_search = angular.element(document.getElementById('txt-search'))[0].clientWidth+2;
@@ -144,6 +145,13 @@
       }
     });
 
+    $search.clean = function () {
+      $search.txt = '';
+      $search.params = {};
+      $search.dateformat.value = 'before';
+      $scope.apply();
+    };
+
     $search.isValidJSON = function (str) {
       return AdvancedSearchFactory.validateJSON(str);
     };
@@ -205,9 +213,10 @@
       angular.forEach(oPrms,function (opValue,opKey) {
         if(opKey === 'after' || opKey === 'before' || opKey === 'date')
         {
+          $log.debug('Data Model');
           if(Date.parse(opValue))
           {
-            $search.params['dateformat'] = opKey === 'after' ? 'after' : 'before';
+            $search.dateformat.value = opKey === 'after' ? 'after' : 'before';
             $search.params['date'] = new Date(opValue);
           }
         }
@@ -230,14 +239,13 @@
 
       if(prms.hasOwnProperty('date'))
       {
-        $search.txt += prms['dateformat'] + ':' + $filter('date')(prms['date'], "yyyy/MM/dd") + ' ';
-        prm_date[prms['dateformat']] = prms['date'];
+        $search.txt += $search.dateformat.value + ':' + $filter('date')(prms['date'], "yyyy/MM/dd") + ' ';
+        prm_date[$search.dateformat.value] = prms['date'];
         delete prms['date'];
-        delete prms['dateformat'];
       }
 
       angular.forEach(prms, function(value, key) {
-        if(!angular.isUndefined(value) && value !== '')
+        if(!angular.isUndefined(value) && value !== '' )
         {
 
           if(key === 'general')
@@ -255,10 +263,14 @@
         }
       });
 
-      prms.date = prm_date;
+      if(Object.keys(prm_date).length > 0)
+        prms.date = prm_date;
+
+
       $search.params = {};
       if($search.queryParams !== undefined) $search.queryParams = $search.txt;
       $scope.$apply();
+
       return JSON.stringify(prms);
     };
 

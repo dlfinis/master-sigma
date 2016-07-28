@@ -1,7 +1,7 @@
 {
   "name": "master-sigma",
   "private": true,
-  "version": "1.0.10",
+  "version": "1.1.0",
   "description": "A Angular & Sails application that use Facebook Platafomr & SDK",
   "keywords": [],
   "dependencies": {
@@ -14,7 +14,6 @@
     "connect-redis": "1.4.7",
     "ejs": "~0.8.4",
     "express": "~4.11.x",
-    "fb": "^1.0.2",
     "fbgraph": "^1.2.0",
     "follow-redirects": "^0.1.0",
     "graceful-fs": "^4.1.3",

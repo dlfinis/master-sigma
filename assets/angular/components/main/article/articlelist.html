@@ -11,24 +11,28 @@
         <div class="sort-item tab"
           ng-class='{"active":$articlelist.normal}'
           ng-click="$articlelist.setNormalList()"
+          uib-tooltip="Recursos recien publicados"
           >
           Recientes
         </div>
         <div class="sort-item tab"
           ng-class='{"active":$articlelist.recommend}'
           ng-click="$articlelist.setRecommendList()"
+          uib-tooltip="Recursos con mayor valoración"
           >
           Recomendados
         </div>
         <div class="sort-item tab"
           ng-class='{"active":$articlelist.liked}'
           ng-click="$articlelist.setMostLikedList()"
+          uib-tooltip="Recursos con más Me Gustas"
           >
           <i class="fa fa-thumbs-up" aria-hidden="true">*</i>
         </div>
         <div class="sort-item tab"
           ng-class='{"active":$articlelist.shared}'
           ng-click="$articlelist.setMostSharedList()"
+          uib-tooltip="Recursos con más Compartidos"
           >
           <i class="fa fa-share-square-o" aria-hidden="true">*</i>
         </div>
@@ -38,7 +42,8 @@
                     ng-model="$articlelist.mcategory.selected"
                     on-select="$articlelist.onSelectCategory($item)"
                     skip-focusser="true"
-                    theme="select2">
+                    theme="select2"
+                    uib-tooltip="Buscar por la categoría">
          <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}
          <a class="btn btn-xs" ng-click="$articlelist.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
          </ui-select-match>
@@ -74,7 +79,10 @@
             "
         uid ="{{::article.uid}}"
       >
-        <a class="image-box" ng-href="{{::article.url}}" ng-click="$articlelist.setVisit(article)" target="_blank">
+        <a class="image-box"
+           ng-href="{{::article.url}}"
+           ng-click="$articlelist.setVisit(article)"
+           target="_blank">
         <img class="image"
         ng-src="/images/spinner.gif"
         lazy-img="{{::$articlelist.getTrustedResource(article.image) ||'/images/submarine.png' }}"
@@ -87,10 +95,15 @@
         <div id="title" class="title"><span ng-bind="article.title"></span></div>
         <div class="box">
             <div class="info">
-              <div data-related source-id="{{::article.id}}" ng-cloak></div>
-              <div class="creator"
+              <div data-related
+                   source-id="{{::article.id}}"
+                   ng-cloak fade-ng-cloak></div>
+              <div class="content">
+                <div class="creator"
                    ng-bind="article.creator.name"
-                   ng-click="$articlelist.setCreatorList(article.creator)"></div>
+                   ng-click="$articlelist.setCreatorList(article.creator)"
+                   uib-tooltip="Recursos del creador"></div>
+              </div>
               <div class="period" period data="{{::article.date }}"></div>
               <span>&#8226;</span>
               <div class="reading" reading stats="article.stats" ng-cloak></div>
@@ -99,7 +112,10 @@
             </div>
             <p class="text" id="description" ng-bind="article.description"></p>
             <div class="visits" ng-if="article.visits > 0">{{article.visits}} Visitas</div>
-            <div openlater source="article" lbl="Leer más..."></div>
+            <div openlater
+                 source="article"
+                 lbl="Leer más..."
+            ></div>
         </div>
         <div class="social-bar" >
           <div class="section-btn">
@@ -107,8 +123,11 @@
               stats="article.likes"
               source="article"
               article-sid="article.ownlike.sid"
+              uib-tooltip="Me gusta"
             ></like>
-            <share stats="article.shares" source="article"></share>
+            <share stats="article.shares"
+                   source="article"
+                   uib-tooltip="Compartir"></share>
           </div>
           <div class="categories">
             <div class="category" ng-click="$articlelist.setCategoryList(category)" ng-repeat="category in article.categories">
@@ -121,7 +140,8 @@
   </div>
 
     <div id="pager" class="col-sm-12 text-center"
-         ng-hide="$articlelist.data.length == 0 &&  !$articlelist.pagerData">
+         ng-hide="$articlelist.data.length == 0 &&  !$articlelist.pagerData"
+         uib-tooltip="Páginas de los recursos disponibles">
       <uib-pagination
       boundary-links="true"
       total-items="$articlelist.totalItems"

@@ -23,6 +23,8 @@ module.exports = {
     enableFacebookAuth: true,
     facebookClientID: '1267766483237355',
     facebookClientSecret: 'a2f5e3a27b74a64bc0d1ecc2d3a9ec31',
+    facebookAppScopeString: 'email,user_birthday,user_friends,publish_actions',
+    facebookAppScope: [ 'email,user_birthday','user_friends','publish_actions'],
     facebookCallbackURL: 'https://mastersigma-jaggerfly.rhcloud.com/auth/facebook/callback',
     facebookAppURL: 'https://apps.facebook.com/master-sigma/'
   },
@@ -60,10 +62,10 @@ module.exports = {
     adapter: 'redis',
     host: process.env.REDISCLOUD_URL || 'pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com',
     port: process.env.REDISCLOUD_PORT || 12873,
-    ttl: 7200,
+    ttl: 1800,
     pass: process.env.REDISCLOUD_PASSWORD || 'mastersigma92',
     cookie: {
-      maxAge: 2 * 60 * 60 * 1000
+      maxAge: 6 * 60 * 60 * 1000
     }
   },
   /***************************************************************************

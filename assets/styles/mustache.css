@@ -167,9 +167,6 @@ footer p {
   left: 0;
 }
 
-.zIndex-10--loadingPage {
-  z-index: 1050;
-}
 
 .loading{
   width: 100%;
@@ -183,17 +180,9 @@ footer p {
   right:0;
   overflow:hidden;
   z-index: 1050;
-  height: 1999px;
+  height: 9999px;
   /*position: fixed;*/
 
-}
-
-.loading-api{
-  width: 100%;
-  display: block;
-  object-fit: cover;
-  height: 50vh;
-  opacity: 0.4;
 }
 
 .home .login{
@@ -426,6 +415,12 @@ footer p {
   font-weight:300;
 }
 
+.post .info .related-box .title{
+  padding: 1% 4%;
+  background: #4E5154;
+  font-weight: bold;
+  font-size: 1.25em;
+}
 .post .info .related-box .list{
   margin: 0px;
   display: block;
@@ -443,7 +438,8 @@ footer p {
 .post .info .related-box .list .item{
   text-overflow: ellipsis;
   overflow-x: hidden;
-  padding: 2% 2.5%;
+  padding: 1.25% 2.50%;
+  font-size: 1.205em;
 }
 .post .info .related-box .list .item:hover{
     /*color:#28292a;*/
@@ -451,11 +447,16 @@ footer p {
     font-weight:600;
 }
 
+.post .content,
+.post .info .content{
+  display:block;
+}
 
 .post .info .creator{
   color:#3A5795;
   line-height: 1em;
   cursor:pointer;
+  display:inline-block;
 }
 
 .post .info .creator:hover{
@@ -573,7 +574,6 @@ footer p {
   font-weight: 400;
   font-style: italic;
   font-size: 0.9em;
-  font-family: "Open Sans";
 }
 
 .post .social-bar .categories .category{
@@ -586,6 +586,7 @@ footer p {
   /*background-color: rgba(255, 255, 255, 0.9);*/
   /*border: 1px solid rgba(204, 204, 204, 0.15);*/
   cursor:pointer;
+  font-family: "Open Sans",Helvetica,Arial,sans-serif;
 }
 
 .post .social-bar .categories .category:hover{
@@ -709,27 +710,9 @@ footer p {
   cursor: pointer;
 }
 
-.modal {
-  text-align: center;
-  padding: 0!important;
-}
-
-.modal:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  margin-right: -4px;
-}
-
-.modal-dialog {
-  display: inline-block;
-  text-align: left;
-  vertical-align: middle;
-}
-
 .modal.in .modal-dialog{
-  /*width: 80%;*/
+  margin:0 auto;
+  width: 80%;
 }
 
 .modal .modal-header .btn{
@@ -755,10 +738,11 @@ footer p {
 
 .modal-title{
   overflow: hidden;
-  height: 40px;
+  height: auto;
   line-height: 20px;
   text-overflow: ellipsis;
   font-size: 1em;
+  max-height: 40px;
 }
 
 .modal .source{
@@ -850,10 +834,14 @@ footer p {
 }
 
 .modal .modal-footer .btn{
-  margin: 1.25% 1%;
-  padding: 0.5% 1.5%;
+  /*margin: 1.25% 1%;*/
+  padding: 7.5px 15px;
   cursor: pointer;
-  font-size: 0.925em;
+  font-size: 1em;
+}
+
+.modal .modal-footer .btn.btn-danger{
+  margin: 10px 1.95%;
 }
 
 .modal .modal-footer .redirect{

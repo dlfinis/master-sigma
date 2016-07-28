@@ -187,12 +187,27 @@
     max-height: 110px !important;
 }
 
+
 .embed-responsive-4by3 {
   padding-bottom: 60%;
+}
+
+@media screen and (max-width:640px) {
+  .embed-responsive-4by3 {
+    padding-bottom: 45%;
+  }
+
 }
 
 @media screen and (max-width:1024px) {
 	.embed-responsive-4by3 {
 	  padding-bottom: 55%;
 	}
+
+
+@media screen and (min-width:1360px) {
+  .embed-responsive-4by3 {
+    padding-bottom: 55%;
+  }
+
 }
