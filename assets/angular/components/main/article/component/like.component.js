@@ -22,11 +22,11 @@
             ignoreLoadingBar: true
           });
       },
-      deletelike: function(articleSid)
+      deletelike: function(likeSid)
       {
         return $http.delete('/api/article/deletelike',
           {
-            params : { articleSid:articleSid },
+            params : { likeSid:likeSid },
             ignoreLoadingBar : true
           });
       },
@@ -51,8 +51,8 @@
       return LikeFactory.setlike(articleID,articleURL);
     };
 
-    $like.deleteLike = function (articleSid){
-      return LikeFactory.deletelike(articleSid);
+    $like.deleteLike = function (likeSid){
+      return LikeFactory.deletelike(likeSid);
     };
 
     $like.testLike = function (){
@@ -69,7 +69,7 @@
              scope: {
                stats: '=',
                source: '=',
-               articleSid:'='
+               likeSid:'='
              },
              controller: 'LikeCtrl',
              controllerAs: '$like',
@@ -80,13 +80,13 @@
                scope.loader = false;
 
               // Check if exist previous like
-               if(scope.articleSid)
+               if(scope.likeSid)
                  scope.checkstate = true;
 
                scope.doLike = function(){
                  scope.loader = true;
 
-                 if(scope.articleSid)
+                 if(scope.likeSid)
                    scope.checkstate = true;
 
                  if((!scope.checkstate))
@@ -95,7 +95,7 @@
                                 .then(function (response){
                                   if(response.data.created) // created,record
                                   {
-                                    scope.articleSid = response.data.record.sid;
+                                    scope.likeSid = response.data.record.sid;
                                     scope.checkstate = true;
                                     scope.loader = false;
                                     scope.stats = scope.stats + 1;
@@ -107,14 +107,14 @@
                                 });
                  }
                  else {
-                   controller.deleteLike(scope.articleSid)
+                   controller.deleteLike(scope.likeSid)
                                .then(function(response){
                                  if(response.data)
                                  {
                                    scope.checkstate = false;
                                    scope.stats = scope.stats - 1;
                                    scope.loader = false;
-                                   scope.articleSid = '';
+                                   scope.likeSid = '';
                                  }
                                })
                                .catch(function(err){

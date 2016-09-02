@@ -43,13 +43,20 @@ module.exports = {
   //      password: 'eed57ee2',
   //      database: 'heroku_1014650bcf2946e'
   //     },
+    // sigmaPrd: {
+    //   adapter: 'sails-mysql',
+    //   host: process.env.OPENSHIFT_MYSQL_DB_HOST ,
+    //   port: process.env.OPENSHIFT_MYSQL_DB_PORT,
+    //  // Openshift Deploy
+    //   user: 'admin2gbmiNI',
+    //   password:'lJPfcp7n6ViH' ,
+    //   database: 'mastersigma'
+    // }
     sigmaPrd: {
       adapter: 'sails-mysql',
-      host: process.env.OPENSHIFT_MYSQL_DB_HOST ,
-      port: process.env.OPENSHIFT_MYSQL_DB_PORT,
-     // Openshift Deploy
-      user: 'admin2gbmiNI',
-      password:'lJPfcp7n6ViH' ,
+      host: 'localhost',
+      user: 'root',
+      password: 'root',
       database: 'mastersigma'
     }
   },

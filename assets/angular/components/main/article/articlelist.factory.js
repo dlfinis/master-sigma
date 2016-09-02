@@ -64,10 +64,6 @@
 
         return $http.get('/api/article/findAll', { params : prms });
       },
-      getInfo: function(articleID)
-          {
-        return '>'+articleID;
-      },
       getCategories: function()
       {
         return $http.get('/api/category/findExist')
@@ -77,37 +73,6 @@
         .catch(function (err) {
           console.error(err.stack);
         });
-      },
-      getHtmlData: function(url)
-          {
-        return $http.get('/api/article/htmldata?uri='+url);
-      },
-      setVisit: function(article,time)
-          {
-        var prms = {};
-        prms.articleID = article.id;
-        prms.visitTime = time;
-        $http.post('/api/visit/create',prms).then(function(record)
-             {
-          $log.debug(record.data);
-        }
-            ).catch(function (err) {
-              $log.error(err.stack);
-            });
-      },
-      getModal:function(article){
-        return $uibModal.open(
-          {
-            templateUrl: partial.main.article+'tpl/modal.cmp.html',
-            controller: 'ModalCtrl',
-            size: 'lg',
-            resolve: {
-              article: function(){
-                return article;
-              }
-            }
-                // backdrop: 'static'
-          });
       }
     };
   }

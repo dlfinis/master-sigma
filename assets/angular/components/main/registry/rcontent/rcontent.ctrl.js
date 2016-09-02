@@ -1,12 +1,12 @@
 (function () {
 
-  function RArticleCtrl($scope,RArticleFactory){
+  function RContentCtrl($scope,RContentFactory){
 
     var $registry = this;
-    $registry.article = {};
+    $registry.content = {};
     // $registry.categories = {};
 
-    RArticleFactory.getCategories()
+    RContentFactory.getCategories()
                   .then(function (response){
                     $registry.categories = response;
                   })
@@ -15,16 +15,16 @@
                   });
 
     $registry.reset = function(){
-      $registry.article = {};
-      $registry.articleForm.$setPristine();
+      $registry.content = {};
+      $registry.contentForm.$setPristine();
     };
 
     $registry.save = function(){
-      if(JSON.stringify($registry.article) === '{}')
+      if(JSON.stringify($registry.content) === '{}')
         {
-        console.log('Not article info');
+        console.log('Not content info');
       }else{
-        RArticleFactory.saveArticle($registry.article).then(function(response){
+        RContentFactory.saveContent($registry.content).then(function(response){
           if(response.status == 201)
             {
             $registry.reset();
@@ -34,11 +34,11 @@
       }
     };
 
-    // $registry.article.categories = {};
+    // $registry.content.categories = {};
 
   }
 
-  angular.module('app.main.registry.rarticle')
-         .controller('RArticleCtrl',RArticleCtrl);
+  angular.module('app.main.registry.rcontent')
+         .controller('RContentCtrl',RContentCtrl);
 
 })();

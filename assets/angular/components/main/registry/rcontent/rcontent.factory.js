@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function RArticleFactory($http,$rootScope){
+  function RContentFactory($http,$log,$rootScope){
     return {
       getCategories: function()
           {
@@ -16,28 +16,28 @@
           {
         return $http.get('/me');
       },
-      saveArticle : function(article){
-        console.log($rootScope.userProfile);
+      saveContent : function(content){
+        $log.debug($rootScope.userProfile);
         return this.getUser().then(function (response){
                 //  console.log(response.data.user);
-          article.creator = response.data.user.id;
-          return $http.post('/api/article/create',article).then(function (response){
-            console.log(response);
+          content.creator = response.data.user.id;
+          return $http.post('/api/article/create',content).then(function (response){
+            $log.debug(response);
             return response;
           })
                .catch(function (err) {
-                 console.error(err.stack);
+                 $log.error(err.stack);
                });
 
         })
              .catch(function (err) {
-               console.error(err.stack);
+               $log.error(err.stack);
              });
 
       }
     };
   }
 
-  angular.module('app.main.registry.rarticle')
-        .factory('RArticleFactory', RArticleFactory);
+  angular.module('app.main.registry.rcontent')
+        .factory('RContentFactory', RContentFactory);
 })();

@@ -38,7 +38,6 @@ var jsFilesToInject = [
 // 'js/dependencies/sails.io.js',
 
 // Load Angular App
-  'bower_components/fontfaceobserver/fontfaceobserver.js',
   'bower_components/moment/min/moment-with-locales.js',
   'bower_components/angular/angular.js',
   'bower_components/angular-i18n/angular-locale_es.js',

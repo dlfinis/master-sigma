@@ -2,6 +2,8 @@
 <div class="container">
   <div class="col-sm-12">
 
+    <div rbutton-add></div>
+
     <div class="advanced-search ng-cloak fade-ng-cloak" advanced-search
     source="$articlelist.data"
     queryParams="$articlelist.queryParams"></div>
@@ -122,7 +124,7 @@
             <like
               stats="article.likes"
               source="article"
-              article-sid="article.ownlike.sid"
+              like-sid="article.ownlike.sid"
               uib-tooltip="Me gusta"
             ></like>
             <share stats="article.shares"

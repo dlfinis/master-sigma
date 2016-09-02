@@ -34,6 +34,7 @@
             $facebookProvider,
             cfpLoadingBarProvider ) {
 
+    //Config enviroments
     if (location.host.match(INIT.production.domain)) {
 
       if(INIT.production.logging === 'verbose')
@@ -61,6 +62,7 @@
 
     }
 
+    //Interceptor of Http Requests
     $httpProvider.interceptors.push('apiInterceptor');
 
     //Set Facebook API configuration
@@ -73,12 +75,13 @@
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
     cfpLoadingBarProvider.spinnerTemplate = '<div style="position: absolute; top: 0px; left: 0px; background-color: rgb(52, 69, 87); color: #EAEAEA; height: 9999px; width: 100%; z-index: 1040; vertical-align: middle; opacity: 0.35; text-align: center; padding-top: 5px;"><span class="fa fa-refresh fa-spin fa-2x fa-fw" style="vertical-align: middle;"></span><div style="text-align: center; color: rgb(255, 245, 245); font-weight: bold; display: inline-block;">Procesando información...</div></div>';
 
+    //Define routes
     $routeProvider.when('/',{template:'<home></home>'});
     $routeProvider.when('/home', {template:'<home></home>'});
     $routeProvider.when('/wall',{template:'<articlelist></articlelist>'});
     $routeProvider.when('/legal/policy',{template:'<policy></policy>'});
     $routeProvider.when('/legal/terms',{template:'<terms></terms>'});
-    $routeProvider.when('/registry/article', { template: '<rarticle></rarticle>' });
+    $routeProvider.when('/registry/content', { template: '<rcontent></rcontent>' });
     $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
     // $routeProvider.when('/testpage', { template: '<testpage></testpage>' });
     $routeProvider.when('/logout', {
@@ -94,6 +97,8 @@
   .run(function ($rootScope,$location,$route,$timeout,$log,FontLoader,FBLoader, cfpLoadingBar, AuthFactory ,CheckRoutingFactory, AUTH_EVENTS,KEYS) {
     // Load the facebook SDK asynchronously
     FBLoader.setScript();
+
+    //Set dimensions on Canvas
     $rootScope.$on('fb.load', function(e, FB) {
       $log.debug('+ Init FB');
       FB.Canvas.setAutoGrow();
@@ -111,10 +116,21 @@
     // Start loading bar for app loading
     cfpLoadingBar.start();
 
-    var enable = ['','/','/home','/registry/article','/registry/category','/logout','/testpage','/legal/policy','/legal/terms'];
+    //Define enable routes without logging
+    var enableRoutes = [
+      '',
+      '/',
+      '/home',
+      '/registry/content',
+      '/registry/category',
+      '/logout',
+      '/testpage',
+      '/legal/policy',
+      '/legal/terms'];
+
     $rootScope.$on('$routeChangeStart', function (event, next) {
       var path = $location.path();
-      if(enable.indexOf(path) === -1)
+      if(enableRoutes.indexOf(path) === -1)
       {
         $log.debug('+ Check Policie >',$location.path());
         $rootScope.isReadyPref = true;
@@ -134,7 +150,7 @@
         });
       }
       else {
-        $log.debug('+ Enable Routes ',$location.path());
+        $log.debug('+ Enable route ',$location.path());
       }
     });
   });

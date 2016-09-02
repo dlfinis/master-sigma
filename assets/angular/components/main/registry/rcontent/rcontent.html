@@ -1,37 +1,37 @@
 <div class="row container">
   <div class="col-sm-12">
-    <legend>Registro de Artículos</legend>
-    <form name="$registry.articleForm" novalidate role="form">
+    <legend>Registro de Contenidos</legend>
+    <form name="$registry.contentForm" novalidate role="form">
        <div class="form-group">
       <label for="title">Título</label><br />
-      <input name="title" class="form-control" type="text" ng-model="$registry.article.title" ng-model-options="{ updateOn: 'blur' }" required />
+      <input name="title" class="form-control" type="text" ng-model="$registry.content.title" ng-model-options="{ updateOn: 'blur' }" required />
       <br />
     </div>
      <div class="form-group">
       <label for="url">URL de dirección web</label><br />
-      <input name="url" class="form-control" type="url" ng-model="$registry.article.url" ng-model-options="{ updateOn: 'blur' }" required />
+      <input name="url" class="form-control" type="url" ng-model="$registry.content.url" ng-model-options="{ updateOn: 'blur' }" required />
       <br />
     </div>
        <div class="form-group">
       <label for="image">URL de Imagen</label><br />
-      <input name="image" class="form-control" type="text" ng-model="$registry.article.image" ng-model-options="{ updateOn: 'blur' }" required />
+      <input name="image" class="form-control" type="text" ng-model="$registry.content.image" ng-model-options="{ updateOn: 'blur' }" required />
       <br />
       </div>
        <div class="form-group">
       <label for="description">Descripción</label><br />
-      <textarea name="description" class="form-control" ng-model="$registry.article.description" ng-model-options="{ updateOn: 'blur' }" required ></textarea>
+      <textarea name="description" class="form-control" ng-model="$registry.content.description" ng-model-options="{ updateOn: 'blur' }" required ></textarea>
       <br />
       </div>
        <div class="form-group">
       <label for="selectCategories"> Categoría: </label><br>
-      <ui-select multiple limit="3" tagging name="selectCategories" ng-model="$registry.article.categories" theme="select2" ng-disabled="disabled"  style="width: 100%;">
+      <ui-select multiple limit="3" tagging name="selectCategories" ng-model="$registry.content.categories" theme="select2" ng-disabled="disabled"  style="width: 100%;">
       <ui-select-match placeholder="Seleccione las categorías">{{$item.name}}</ui-select-match>
       <ui-select-choices repeat="category.id as category in $registry.categories | orderBy:'name' | filter:$select.search">
         {{category.name}}
       </ui-select-choices>
   </ui-select>
-      <!-- <p>Selected: {{$registry.article.categories}}</p> -->
-      <!-- <select name="multipleSelect" id="multipleSelect" ng-model="$registry.article.categories" multiple>
+      <!-- <p>Selected: {{$registry.content.categories}}</p> -->
+      <!-- <select name="multipleSelect" id="multipleSelect" ng-model="$registry.content.categories" multiple>
         <option ng-repeat="category in $registry.categories" value="{{category.id}}">{{category.name}}</option>
       </select><br> -->
       </div>
@@ -39,6 +39,6 @@
       <input type="button" ng-click="$registry.reset()" value="Limpiar" />
       <input type="submit" ng-click="$registry.save()" value="Guardar" />
     </form>
-    <pre>article = {{$registry.article | json}}</pre>
+    <pre>content = {{$registry.content | json}}</pre>
   </div>
 </div>

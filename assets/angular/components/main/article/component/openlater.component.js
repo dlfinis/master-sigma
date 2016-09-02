@@ -76,7 +76,7 @@
     };
 
     $modal.close = function(){
-      console.log($modal.diffTime());
+      $log.debug($modal.diffTime());
       if($modal.diffTime() > 15)
       {
         $log.debug('Time:',$modal.diffTime());
