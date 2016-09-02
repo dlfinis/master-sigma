@@ -2,10 +2,10 @@
   angular.module('app.main.registry.rcontent.buttonAdd', ['app.config'])
   .directive('rbuttonAdd',function (partial) {
     return {
-      restrict: 'E',
+      restrict: 'EA',
       scope: {},
       controller: 'RButtonAddCtrl',
-      controllerAs: '$radd',
+      controllerAs: '$rbtnAdd',
       templateUrl: partial.main.rcontent+'cmp/rbutton-add.html'
     };
   });
