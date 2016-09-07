@@ -22,6 +22,7 @@ var cssFilesToInject = [
   'bower_components/bootstrap-css/**/bootstrap.css',
   'bower_components/bootstrap-css/**/bootstrap-theme.css',
   'bower_components/ui-select/**/select.css',
+  'bower_components/ng-img-crop/compile/unminified/ng-img-crop.css',
   'styles/mustache.css'
 ];
 
@@ -46,6 +47,8 @@ var jsFilesToInject = [
   'bower_components/ui-select/dist/select.js',
   'bower_components/ng-onload/release/ng-onload.min.js',
   'bower_components/ng-facebook/ngFacebook.js',
+  'bower_components/ng-file-upload/ng-file-upload-all.js',
+  'bower_components/ng-img-crop/compile/unminified/ng-img-crop.js',
   'bower_components/angular-resource/angular-resource.js',
   'bower_components/angular-sanitize/angular-sanitize.js',
   'bower_components/angular-route/angular-route.js',

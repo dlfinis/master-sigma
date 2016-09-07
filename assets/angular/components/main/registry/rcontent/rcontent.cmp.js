@@ -5,7 +5,7 @@
       restrict: 'E',
       scope: {},
       controller: 'RContentCtrl',
-      controllerAs: '$registry',
+      controllerAs: '$rcontent',
       templateUrl: partial.main.rcontent+'rcontent.html'
     };
   });

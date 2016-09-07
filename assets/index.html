@@ -13,9 +13,8 @@
     <link rel="stylesheet" href="/bower_components/bootstrap-css/css/bootstrap.css"/>
     <link rel="stylesheet" href="/bower_components/bootstrap-css/css/bootstrap-theme.css"/>
     <link rel="stylesheet" href="/bower_components/ui-select/dist/select.css"/>
-    <link rel="stylesheet" href="/styles/mustache-bootstrap.css"/>
+    <link rel="stylesheet" href="/bower_components/ng-img-crop/compile/unminified/ng-img-crop.css"/>
     <link rel="stylesheet" href="/styles/mustache.css"/>
-    <link rel="stylesheet" href="/styles/select2.css"/>
     <!--STYLES END-->
     </head>
 <body>
@@ -27,11 +26,16 @@
         </div>
         </nav>
     </header> -->
-    <div route-loading-indicator></div>
-    <div id="loading-bar-container"> </div>
-    <div ng-if="!isAppLoading">
+    <!-- <div route-loading-indicator></div> -->
+    <!-- <div ng-hide="isAppLoading">
       <div class="header"></div>
       <div class="content ng-cloak fade-ng-cloak" data-ng-view></div>
+    </div> -->
+
+    <div>
+      <resolve-loader></resolve-loader>
+       <div class="header"></div>
+       <div ng-view class="fadein"></div>
     </div>
     <!--SCRIPTS-->
     <script src="/bower_components/moment/min/moment-with-locales.js"></script>
@@ -46,6 +50,8 @@
     <script src="/bower_components/ui-select/dist/select.js"></script>
     <script src="/bower_components/ng-onload/release/ng-onload.min.js"></script>
     <script src="/bower_components/ng-facebook/ngFacebook.js"></script>
+    <script src="/bower_components/ng-file-upload/ng-file-upload-all.js"></script>
+    <script src="/bower_components/ng-img-crop/compile/unminified/ng-img-crop.js"></script>
     <script src="/bower_components/angular-resource/angular-resource.js"></script>
     <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="/bower_components/angular-route/angular-route.js"></script>
@@ -83,13 +89,14 @@
     <script src="/angular/components/main/article/component/tdelta.component.js"></script>
     <script src="/angular/components/main/home/home.component.js"></script>
     <script src="/angular/components/main/pagination/pagination.mdl.js"></script>
-    <script src="/angular/components/main/registry/rarticle/rarticle.component.js"></script>
-    <script src="/angular/components/main/registry/rarticle/rarticle.controller.js"></script>
-    <script src="/angular/components/main/registry/rarticle/rarticle.factory.js"></script>
-    <script src="/angular/components/main/registry/rarticle/rbtnarticle.cpm.js"></script>
     <script src="/angular/components/main/registry/rcategory/rcategory.component.js"></script>
     <script src="/angular/components/main/registry/rcategory/rcategory.controller.js"></script>
     <script src="/angular/components/main/registry/rcategory/rcategory.factory.js"></script>
+    <script src="/angular/components/main/registry/rcontent/cmp/rbutton-add.cmp.js"></script>
+    <script src="/angular/components/main/registry/rcontent/cmp/rbutton-add.ctrl.js"></script>
+    <script src="/angular/components/main/registry/rcontent/rcontent.cmp.js"></script>
+    <script src="/angular/components/main/registry/rcontent/rcontent.ctrl.js"></script>
+    <script src="/angular/components/main/registry/rcontent/rcontent.factory.js"></script>
     <script src="/angular/components/main/registry/registry.component.js"></script>
     <script src="/angular/components/main/registry/registry.controller.js"></script>
     <script src="/angular/components/main/registry/registry.factory.js"></script>

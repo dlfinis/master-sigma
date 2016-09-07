@@ -1,11 +1,18 @@
 (function (module) {
 
-  function RButtonAddCtrl($location){
+  function RButtonAddCtrl($location,$element){
 
     var $rbtnAdd = this;
 
-    $rbtnAdd.redirect = function redirect(){
-      $location.path('/registry/content');
+
+    $rbtnAdd.redirect = {
+
+      create : function (){
+        $location.path('/registry/content');
+      },
+      edit : function (){
+        $location.path('/registry/contentlist');
+      }
     };
 
   }

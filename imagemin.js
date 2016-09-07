@@ -45,4 +45,5 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['imagemin']); // execute on both .png and .jpg
     grunt.registerTask('imagepng', ['imagemin:png']); // only .png files
     grunt.registerTask('imagejpg', ['imagemin:jpg']);// only .jpg files
-}
+
+};

@@ -43,8 +43,11 @@ module.exports.policies = {
   'canvas': {
     login : true,
     autologin : true
+  },
+  'test': {
+    '*': true
   }
-  // 'user': {
+  //   // 'user': {
   //   '*': true
   // },
   //

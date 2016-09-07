@@ -56,7 +56,8 @@ h3,
 h4,
 h5,
 h6,
-title {
+title,
+.label-content {
     text-transform: uppercase;
     font-family: Helvetica,Arial,sans-serif;
     font-weight: 700;
@@ -70,7 +71,8 @@ h3,
 h4,
 h5,
 h6,
-title {
+title,
+.label-content {
     text-transform: uppercase;
     font-family: "Ubuntu","Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 700;

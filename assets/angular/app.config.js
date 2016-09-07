@@ -6,7 +6,7 @@
           'elementlimit' : 10,
           'elementpage' : 10,
           'development' :{ logging:'verbose', domain:'master.sigma' },
-          'production' : { logging:'none', domain:'mastersigma-jaggerfly' }
+          'production' : { logging:'none', domain:'sigma.uta.edu.ec' }
         }
       )
       .constant(
@@ -31,7 +31,7 @@
             'article' : 'angular/components/main/article/',
             'home' : 'angular/components/main/home/',
             'wall' : 'angular/components/main/wall/',
-            'rarticle' : 'angular/components/main/registry/rarticle/',
+            'rcontent' : 'angular/components/main/registry/rcontent/',
             'rcategory' : 'angular/components/main/registry/rcategory/'
           },
           'core' : {

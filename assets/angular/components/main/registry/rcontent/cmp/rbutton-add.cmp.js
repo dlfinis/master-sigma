@@ -1,5 +1,5 @@
 (function () {
-  angular.module('app.main.registry.rcontent.buttonAdd', ['app.config'])
+  angular.module('app.main.registry.rcontent.rbuttonAdd', ['app.config'])
   .directive('rbuttonAdd',function (partial) {
     return {
       restrict: 'EA',

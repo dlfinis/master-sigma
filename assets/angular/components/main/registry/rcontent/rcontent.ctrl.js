@@ -1,40 +1,42 @@
 (function () {
 
-  function RContentCtrl($scope,RContentFactory){
+  function RContentCtrl($scope,$rootScope,RContentFactory){
 
-    var $registry = this;
-    $registry.content = {};
-    // $registry.categories = {};
+    var $rcontent = this;
+    $rcontent.content = {};
+    $rcontent.categories = [];
 
     RContentFactory.getCategories()
                   .then(function (response){
-                    $registry.categories = response;
+                    $rcontent.categories = response;
                   })
                   .catch(function (err) {
                     console.error(err.stack);
                   });
 
-    $registry.reset = function(){
-      $registry.content = {};
-      $registry.contentForm.$setPristine();
+    $rcontent.back = function () {
+      $rcontent.return = true;
+      window.history.back();
     };
 
-    $registry.save = function(){
-      if(JSON.stringify($registry.content) === '{}')
+    $rcontent.reset = function(){
+      $rcontent.content = {};
+      $rcontent.contentForm.$setPristine();
+    };
+
+    $rcontent.save = function(){
+      if(JSON.stringify($rcontent.content) === '{}')
         {
         console.log('Not content info');
       }else{
-        RContentFactory.saveContent($registry.content).then(function(response){
+        RContentFactory.saveContent($rcontent.content).then(function(response){
           if(response.status == 201)
             {
-            $registry.reset();
+            $rcontent.reset();
           }
         });
-          // console.log(delta );
       }
     };
-
-    // $registry.content.categories = {};
 
   }
 

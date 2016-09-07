@@ -60,8 +60,8 @@ process.chdir(__dirname);
     // keep track of whether callback has been invoked to prevent multiple invocations
     var invoked = false;
 
+    //API of Scraper Init;
     var process = childProcess.fork(scriptPath);
-    console.log('+ API of scraper init');
 
     process.on('data', function(data) {
       console.log(data.toString());
