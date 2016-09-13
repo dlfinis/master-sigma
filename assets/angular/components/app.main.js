@@ -10,6 +10,8 @@
                               'app.main.registry',
                               'app.main.registry.rcontent',
                               'app.main.registry.rcontent.rbuttonAdd',
+                              'app.main.registry.rcontent.rimageAdd',
+                              'app.main.registry.rcontent.rlist',
                               'app.main.registry.rcategory',
                               'app.main.home',
                               'app.main.wall'
