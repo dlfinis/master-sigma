@@ -6,7 +6,7 @@
       scope: {},
       controller: 'RButtonAddCtrl',
       controllerAs: '$rbtnAdd',
-      templateUrl: partial.main.rcontent+'component/rbutton-add/rbutton-add.html'
+      templateUrl: partial.main.rcontent+'component/rbutton-add/rbutton-add.cmp.html'
     };
   });
 

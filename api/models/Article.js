@@ -11,16 +11,9 @@ var uuid = require('node-uuid');
 module.exports = {
   schema: true,
   attributes: {
-    uid: {
-    type: 'STRING',
-    defaultsTo: function (){ return uuid.v4(); },
-    unique: true,
-    index: true,
-    uuidv4: true
-    },
     title: {
-    type: 'STRING',
-    required: true
+      type: 'STRING',
+      required: true
     },
     description:{
       type: 'TEXT',
@@ -69,7 +62,7 @@ module.exports = {
       collection: 'category',
       via: 'articles',
       dominant: true,
-      required: true
+      required: false
     },
     // Add a reference to Like
     likes: {

@@ -5,8 +5,8 @@
       restrict: 'EA',
       scope: {},
       controller: 'RImageAddCtrl',
-      controllerAs: '$rimageAdd'
-      // templateUrl: partial.main.rcontent+'component/rbutton-add/rbutton-add.html'
+      controllerAs: '$rimageAdd',
+      templateUrl: partial.main.rcontent+'component/rimage-add/rimage-add.cmp.html'
     };
   });
 

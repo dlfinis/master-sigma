@@ -3,9 +3,12 @@
 
   function RContentFactory($http,$log,$rootScope){
     return {
-      getCategories: function()
+      createCategory: function(){
+
+      },
+      getCategoriesList: function()
           {
-        return $http.get('/api/category/find').then(function (response){
+        return $http.get('/api/category/getList').then(function (response){
           return response.data.results;
         })
             .catch(function (err) {

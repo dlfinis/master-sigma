@@ -34,6 +34,7 @@
     "tv4": "^1.2.7",
     "isteven-angular-multiselect": "angular-multi-select#^4.0.0",
     "ng-file-upload-shim": "^12.2.5",
-    "ng-img-crop": "^0.3.2"
+    "ng-img-crop": "^0.3.2",
+    "ng-img-crop-full-extended": "ngImgCropFullExtended#^6.0.1"
   }
 }

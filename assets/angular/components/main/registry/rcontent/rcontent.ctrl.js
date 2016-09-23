@@ -6,13 +6,16 @@
     $rcontent.content = {};
     $rcontent.categories = [];
 
-    RContentFactory.getCategories()
-                  .then(function (response){
-                    $rcontent.categories = response;
-                  })
-                  .catch(function (err) {
-                    console.error(err.stack);
-                  });
+    $rcontent.loadCategories = function() {
+      RContentFactory.getCategories()
+                    .then(function (response){
+                      $rcontent.categories = response;
+                    })
+                    .catch(function (err) {
+                      console.error(err.stack);
+                    });
+    };
+
 
     $rcontent.back = function () {
       $rcontent.return = true;

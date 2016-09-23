@@ -4,7 +4,7 @@
  * @description :: Server-side logic for managing article
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-/*global Article Like ArticleService ArticleQueryService ArticleFBService UserService*/
+/*global Article Like ArticleService ArticleQueryService ArticleFBService UserService UploadFileService*/
 var Promise = require('bluebird');
 
 
@@ -18,6 +18,9 @@ function dupJSONKeysBySpace(json) {
 }
 
 module.exports = {
+  /**
+   * A search articles without refinement
+   */
   findRawAll: function(req,res){
     var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUtil');
     var articleQuery = Article.find()
@@ -48,8 +51,11 @@ module.exports = {
         return res.serverError(err);
       });
   },
+  /**
+   * Selective search of articles
+   */
   findElems : function(req,res){
-    sails.log.debug('+ Find Dark Elems');
+    sails.log.debug('+ Find Dark of Elems');
 
 
     var where = req.params.all().query;
@@ -85,6 +91,9 @@ module.exports = {
     });
 
   },
+  /**
+   * A complete search of all articles in the database
+   */
   findAll:function(req,res){
     var kindList = req.param('kind') || 'normal';
 
@@ -153,6 +162,9 @@ module.exports = {
     }
 
   },
+  /**
+   * Info of an article
+   */
   stats: function (req,res) {
     var URI = req.param('uri');
     ArticleService._getStats(URI).then(function (response) {
@@ -163,6 +175,9 @@ module.exports = {
       return res.badRequest(err);
     });
   },
+  /**
+   * Check if an article have connectivity
+   */
   alive : function (req,res) {
     var articleID = req.param('articleID');
     Article.findOne({id:articleID}).then(function foundRecord(article){
@@ -180,12 +195,14 @@ module.exports = {
     });
 
   },
+  /**
+   * Check if an article have https connectivity.
+   */
   secure : function (req,res) {
     var articleID = req.param('articleID');
     Article.findOne({id:articleID}).then(function foundRecord(article){
       if(!article)
         return res.notFound();
-
       article.isSecure()
               .then(function(secure){
                 return res.ok(secure);
@@ -305,6 +322,35 @@ module.exports = {
       if(err.errno !== 'ENOTFOUND') sails.log(err);
       return res.serverError('URL broke:'+req.param('uri'));
     });
+  },
+  create: function (req,res){
+    var article = {};
+    try{
+      article = {
+        title : req.param('title'),
+        description : req.param('description'),
+        url : req.param('url'),
+        image : UploadFileService.image(req,'image'),
+        state : 'disable',
+        creator : req.param('creator'),
+        categories : req.param('categories')
+      };
+    }catch(err){
+      sails.log.warning(err);
+      return res.serverError(err);
+    }
+
+    Article.create(article).exec(function (err, record) {
+      if(err) {
+        sails.log.warnig(err.code,err.details);
+        if(err.code === 'E_VALIDATION')
+          return res.badRequest({attributes:err.invalidAttributes});
+
+        return res.serverError(err);
+      }
+      sails.log.debug('+ Article create:', record);
+    });
+
   },
   test: function (req, res) {
     return res.json({ status: 'OK' });
