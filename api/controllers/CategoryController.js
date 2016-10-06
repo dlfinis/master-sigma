@@ -51,38 +51,35 @@ module.exports = {
 
     },
     setList: function (req,res) {
-      sails.log.debug('+ Set the new categories listed ');
+      sails.log.debug('+ Set categories listed ');
       var catList = req.param('list');
       var catIndexList = [];
 
+      if(!_.isArray(catList))
+        catList = [ catList ];
 
-        var fcPromise = _.map(catList,function (cElem) {
-            cElem = cElem.replace(/[^\w\s]/gi, '');
-            Category.findByName({'contains': cElem }).exec(function (err,category) {
-              if(err) sails.log.warn(err);
-              if(_.isEmpty(category) | _.isUndefined(category))
-              {
-                sails.log.debug('+ Create new category');
-                Category.create({ name: cElem}).exec(function (err, record) {
-                  if(err) return sails.log.warn(err);
-                  catIndexList.push(record.id);
-                });
-              }else {
-                console.log('Push',category.id);
-                catIndexList.push(category.id);
-                // tmp.push(category.id);
-                return category.id;
-              }
-            });
-
-          // return tmp;
-        });
-
-
-          console.log(catIndexList);
-          return res.json(200,{categories:catIndexList});
-
-
+      Promise.each(catList, function(cElem) {
+        cElem = String(cElem).replace(/[^\A-zÀ-ú\s]/gmi, '');
+        return Category.findByName({'contains': cElem })
+              .then(function (category) {
+                if(_.isEmpty(category) | _.isUndefined(category))
+                {
+                  sails.log.debug('+ Create new category');
+                  return Category.create({ name: cElem}).then(function (record) {
+                    sails.log.debug(record);
+                    catIndexList.push(record.id);
+                  });
+                }else {
+                  catIndexList.push(category[0].id);
+                }
+              });
+      }).then(function() {
+        return res.json(200,{total: catIndexList.length, results: catIndexList});
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,{categories:[]});
+      });
 
     }
 };

@@ -27,6 +27,9 @@ module.exports = {
     },
     profileUrl: 'STRING',
     password: 'STRING',
+    state:{
+      defaultsTo: 'query'
+    },
     // Add a reference to Article
     articles: {
       collection: 'article',
@@ -45,7 +48,7 @@ module.exports = {
   }
   // ,beforeCreate : function(values, next){
   //   sails.log('+ Before Create User ',JSON.stringify(values));
-  // 
+  //
   //   require('fbgraph').get('me?fields=birthday,link,email', function(err, response) {
   //     if(err) sails.log.error(err);
   //

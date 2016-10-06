@@ -7,11 +7,12 @@
                          'ngAnimate',
                          'ngOnload',
                          'angularLazyImg',
+                         'smart-table',
                          'ui.bootstrap',
                          'ui.select',
                          'ngResource',
                          'ngFacebook',
-                         'ngFileUpload', 
+                         'ngFileUpload',
                          'ngImgCrop',
                          'app.core',
                          'app.main',
@@ -83,9 +84,10 @@
     $routeProvider.when('/wall',{template:'<articlelist></articlelist>'});
     $routeProvider.when('/legal/policy',{template:'<policy></policy>'});
     $routeProvider.when('/legal/terms',{template:'<terms></terms>'});
-    $routeProvider.when('/registry/content', { template: '<rcontent></rcontent>' });
+    $routeProvider.when('/registry/content/:id?', { template: '<rcontent></rcontent>' });
+    $routeProvider.when('/registry/content/list', { template: '<rcontent-list></rcontent-list>' });
     $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
-    $routeProvider.when('/testpage', { template: '<testpage></testpage>' });
+    $routeProvider.when('/testpage/:tid?', { template: '<testpage></testpage>' });
     $routeProvider.when('/logout', {
       resolve: {
         load: function (AuthFactory) {
@@ -121,9 +123,12 @@
       '/',
       '/home',
       '/registry/content',
+      '/registry/content/',
+      '/registry/content/list',
       '/registry/category',
       '/logout',
       '/testpage',
+      '/testpage/',
       '/legal/policy',
       '/legal/terms'];
 

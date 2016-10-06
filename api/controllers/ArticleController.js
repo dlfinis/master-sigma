@@ -162,6 +162,19 @@ module.exports = {
     }
 
   },
+  findOne: function (req, res) {
+
+    var articleQuery = ArticleQueryService._baseOneQuery(req);
+
+    sails.log('+ Find an specific Element');
+    ArticleQueryService.getArticleByField(articleQuery).then(function (response){
+        return res.json(200,response);
+    })
+    .catch(function (err) {
+        return res.json(400,err);
+    });
+
+  },
   /**
    * Info of an article
    */
@@ -330,34 +343,31 @@ module.exports = {
         title : req.param('title'),
         description : req.param('description'),
         url : req.param('url'),
-        image : UploadFileService.image(req,'image'),
-        state : 'disable',
+        image : req.param('image'),
         creator : req.param('creator'),
         categories : req.param('categories')
       };
     }catch(err){
-      sails.log.warning(err);
+      sails.log.warn(err);
       return res.serverError(err);
     }
 
-    Article.create(article).exec(function (err, record) {
-      if(err) {
-        sails.log.warnig(err.code,err.details);
-        if(err.code === 'E_VALIDATION')
-          return res.badRequest({attributes:err.invalidAttributes});
+    sails.log.debug(article);
 
-        return res.serverError(err);
-      }
-      sails.log.debug('+ Article create:', record);
-    });
+    if(article.creator && article.image && article.categories && article.image)
+      Article.create(article).exec(function (err, record) {
+        if(err) {
+          sails.log.warn(err.code,err.details);
+          if(err.code === 'E_VALIDATION')
+            return res.badRequest({attributes:err.invalidAttributes});
+          return res.serverError(err);
+        }
+        sails.log.debug('+ Article create:', record);
+        return res.ok('id:', record);
+      });
+    else{
+      return res.badRequest({err:'invalidAttributes'});
+    }
 
-  },
-  test: function (req, res) {
-    return res.json({ status: 'OK' });
-  },
-  testID: function (req, res) {
-    var nameID = req.param('name');
-    sails.log(req.param(nameID));
-    return res.json({ status: 'OKID' });
   }
 };

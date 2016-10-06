@@ -196,6 +196,25 @@ module.exports = {
 
     return query;
   },
+  _baseOneQuery :function (req) {
+    UserService.current(req.user); // Set  current user
+
+    var field = req.param('field');
+    var fvalue = req.param('value');
+    var fquery = {};
+    fquery[field] = fvalue ;
+
+    console.log(fquery);
+
+    var query = Article.findOne(fquery)
+                        .populate('creator')
+                        .populate('categories')
+                        .populate('likes')
+                        .populate('shares')
+                        .populate('visits');
+
+    return query;
+  },
   getTotalSize : function (){
     return new Promise(function (resolve){
       Article.count({state:['create', 'edit']}).exec(function countCB(err, found){
@@ -242,6 +261,45 @@ module.exports = {
         total:articlesList.length, // Number Elements respect to limit & state
         results:articlesList //Elements
       });
+    });
+  },
+  getArticleByField : function (articleQuery){
+    return new Promise(function(resolve,reject){
+      articleQuery.then(function (article) {
+
+        if(_.isUndefined(article))
+        {
+          sails.log.debug('-->Not found element');
+          return  reject(new Error('No found element'));
+        }
+
+        sails.log.debug('-->Element Found:');
+        sails.log.debug('-i:',1,'id:',article.id,'>:',article.success || article.title,'+:',article.updatedAt);
+
+        article = ArticleService.getArticleStructure(article);
+
+        return resolve({
+          total: 1, // 1
+          results: article //Element
+        });
+      });
+
+      // console.log(articleData);
+      // if(!_.isUndefined(articleData))
+      // {
+      //   sails.log.debug('-->Element Found:',articleData.length);
+      //   var article = ArticleService.getArticleStructure(articleData);
+      //   sails.log.debug('-i:',1,'id:',article.id,'>:',article.success || article.title,'+:',article.updatedAt);
+      //
+      //   resolve({
+      //     total:article.length, // 1
+      //     results:article //Element
+      //   });
+      // }
+      // else
+      // {
+      //   reject([]);
+      // }
     });
   },
   getArticleListByQuery : function (articleQuery,whereQuery){

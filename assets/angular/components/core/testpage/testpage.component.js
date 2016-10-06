@@ -32,10 +32,15 @@
     };
   }
 
-  function TestPageCtrl(TestPageFactory,Upload,$scope,$sce, $element, $attrs, $timeout){
+  function TestPageCtrl(TestPageFactory, Upload, $scope, $sce, $element, $attrs, $timeout, $route){
     // I want `data` to be injected from the resolve...
     // as it would if this was a "standalone" controller
     // console.log('$scope.data: '+ $scope.data);
+
+    $scope.params = function () {
+      return $route.current.params;
+    };
+
     $scope.uploadPic = function(file) {
       file.upload = Upload.upload({
         url: 'https://master.sigma/api/test/uploadImage',
@@ -57,6 +62,7 @@
     };
 
     $scope.uploadCropPic = function (imageUrl,name) {
+      console.log(imageUrl,name);
       Upload.upload({
           url: 'https://master.sigma/api/test/uploadImage',
           data: {

@@ -1,10 +1,7 @@
 (function (module) {
 
   function RImageAddCtrl(){
-
     var $rimageAdd = this;
-
-
   }
 
   module.controller('RImageAddCtrl',RImageAddCtrl);

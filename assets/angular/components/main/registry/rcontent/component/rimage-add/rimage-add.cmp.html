@@ -35,33 +35,38 @@
     <br>
   </form> -->
 
-  <form name="myForm">
-       <div>Crop Image and Upload</div>
-       <button ngf-select ng-model="picFile" accept="image/*">
-           Seleccione una imagen:</button>
-       <div ngf-drop ng-model="picFile" ngf-pattern="image/*"
-            class="cropArea">
-           <!-- <img-crop image="picFile  | ngfDataUrl"
-           result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
-           </img-crop> -->
-           <img-crop
-           ng-init="croppedDataUrl=''"
-           image="picFile | ngfDataUrl"
-           area-type="rectangle"
-           aspect-ratio="1.5"
-           result-image="croppedDataUrl"
-           result-image-size='{w: 450,h: 200}'
-           init-max-area="true">
-           </img-crop>
-       </div>
-       <div>
-           <img ng-src="{{croppedDataUrl}}" />
-       </div>
-       <button ng-click="uploadCropPic(croppedDataUrl, picFile.name)">Submit</button>
+       <!-- <button ngf-select ng-model="picFile" accept="image/*">
+           Seleccione una imagen:</button> -->
+      <!-- <button type="button" class="btn btn-default btn-sm" ngf-select ng-model="picFile" accept="image/*">
+         Seleccione una imagen:</button> -->
+      <input type="file" ngf-select ng-model="picFile" name="image"
+                accept="image/*" ngf-max-size="3MB" required
+                ngf-model-invalid="errorFile">
+      <div class="image-resource">
+          <div class="viewImage" ng-if="picFile === ''"/>
+      </div>
+      <div class="image-resource" ng-show="picFile">
+        <div ngf-drop ng-model="picFile" ngf-pattern="image/*"
+             class="cropSource">
+            <img-crop
+            image="picFile | ngfDataUrl"
+            area-type="rectangle"
+            aspect-ratio="1.7"
+            result-image="croppedDataUrl"
+            result-image-size='{w: 340,h: 200}'
+            init-max-area="true"
+            ng-init="croppedDataUrl=''"
+            >
+            </img-crop>
+        </div>
+        <div class="cropImage">
+            <img ng-src="{{croppedDataUrl}}" />
+            <!-- <img ng-src="{{croppedDataUrl || (image.constructor === String ? image : croppedDataUrl)}}" /> -->
+        </div>
+      </div>
 
-       <span class="progress" ng-show="progress >= 0">
+       <!-- <span class="progress" ng-show="progress >= 0">
          <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
        </span>
        <span ng-show="result">Subida completada</span>
-       <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-   </form>
+       <span class="err" ng-show="errorMsg">{{errorMsg}}</span> -->

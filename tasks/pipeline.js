@@ -15,7 +15,6 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
-
   'bower_components/angular/*.css',
   'bower_components/angular-bootstrap/*.css',
   'bower_components/angular-loading-bar/build/loading-bar.css',
@@ -48,6 +47,7 @@ var jsFilesToInject = [
   'bower_components/ng-onload/release/ng-onload.min.js',
   'bower_components/ng-facebook/ngFacebook.js',
   'bower_components/ng-file-upload/ng-file-upload-all.js',
+  'bower_components/angular-smart-table/dist/smart-table.js',
   // 'bower_components/ng-img-crop/compile/unminified/ng-img-crop.js',
   'bower_components/ng-img-crop-full-extended/compile/unminified/ng-img-crop.js',
   'bower_components/angular-resource/angular-resource.js',

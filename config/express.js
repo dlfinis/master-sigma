@@ -106,7 +106,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
       }
     }
       catch(e){
-        sails.log.warning(e);
+        sails.log.warn(e);
       }
     });
   });

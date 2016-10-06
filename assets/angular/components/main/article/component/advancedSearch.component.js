@@ -3,21 +3,6 @@
 (function(module) {
   'use strict';
 
-  // var schemaT = {
-  //   "type": "object",
-  //   "properties": {
-  //     "foo": {
-  //       "properties": {
-  //         "test": {
-  //           "type": "string"
-  //         }
-  //       },
-  //       "type": "object"
-  //     }
-  //   },
-  //   "required": ["foo"]
-  // };
-
   var schema = {
     "type" : "object",
     "properties" : {
@@ -89,7 +74,7 @@
     if(wtxt_search > 2) angular.element(document.getElementById('search-box')).css('width',wtxt_search+'px');
 
     var click_options = false;
-    $element.querySelectorAll('#options').bind('click', function (event) {
+    $element.querySelectorAll('#options').bind('click', function () {
 
       click_options = !click_options;
       if(click_options) //Not visible
@@ -107,12 +92,12 @@
       }
     });
 
-    $element.querySelectorAll('#btn-form-search').bind('click', function (event) {
+    $element.querySelectorAll('#btn-form-search').bind('click', function () {
       $search.getArticlesElems();
       $element.querySelectorAll('#options').triggerHandler('click');
     });
 
-    $element.querySelectorAll('#btn-txt-search').bind('click', function (event) {
+    $element.querySelectorAll('#btn-txt-search').bind('click', function () {
       // $search.getArticlesElems();
       var vstr = $element.querySelectorAll('#txt-search').val();
       if(!click_options)

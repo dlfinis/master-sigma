@@ -1,84 +1,93 @@
-<div class="container" class='ng-cloak' ng-hide="$rcontent.return">
+<div class="container" class='ng-cloak' ng-hide="$rcontent.return" ng-show="$rcontent.ready">
   <div class="col-sm-12">
       <div id="floating-button-back" >
         <p class="iplus" ng-click="$rcontent.back()" ><i class="fa fa-angle-double-left" aria-hidden="true"></i></p>
     </div>
 
-
-    <legend>Registro de Contenidos</legend>
-    <form name="$rcontent.contentForm" novalidate role="form">
+    <legend id="heading">Registro de Contenidos</legend>
+    <div class="lbl-list-content"><a ng-href="/registry/content/list">Lista de contenidos creados</a></div>
+    <button type="button" class="btn btn-default btn-sm" ng-click="$rcontent.test()">
+      Test
+    </button>
+    <!-- <div id="alert-create" class="alert alert-success" ng-show="$rcontent.contentForm.$submitted && $rcontent.content === '{}'"> -->
+    <div id="alert-create" class="alert alert-sm alert-success fade-in"
+      ng-focus="$rcontent.contentCreated"
+      ng-show="$rcontent.contentForm.$pristine && $rcontent.contentForm.$submitted">
+      Almacenado con  <strong>éxito!</strong>
+    </div>
+    <form name="$rcontent.contentForm" ng-init="$rcontent.initContent()" role="form" id="contentForm" novalidate>
        <div class="form-group">
-      <label for="title">Título</label><br />
+      <label for="title">Título *</label><br />
       <input name="title" class="form-control" type="text" ng-model="$rcontent.content.title" ng-model-options="{ updateOn: 'blur' }" required />
-      <i ng-show="$rcontent.contentForm.$error.required">*required</i>
+      <span class="notf notf-alert" ng-show="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
+        <i ng-show="$rcontent.contentForm.title.$error.required">Es un párametro requerido</i>
+      </span>
       <br />
     </div>
-     <div class="form-group">
-      <label for="url">URL de dirección web</label><br />
-      <input name="url" class="form-control" type="url" ng-model="$rcontent.content.url" ng-model-options="{ updateOn: 'blur' }" required />
-      <i ng-show="$rcontent.contentForm.$error.required">*required</i>
+     <div class="form-group" id="url">
+      <label for="url">URL de dirección web *</label><br />
+      <input name="url" class="form-control" type="url"
+        ng-model="$rcontent.content.url"
+        ng-model-options="{ updateOn: 'blur' }"
+        required />
+      <span class="notf notf-alert" ng-show="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
+        <i ng-show="$rcontent.contentForm.url.$error.required">Es un párametro requerido</i>
+        <i ng-show="$rcontent.contentForm.url.$error.exist">La dirección web ya existe</i>
+      </span>
+      <br />
+    </div>
+    <div class="form-group">
+      <label for="image">Recurso de image *</label><br />
+      <div id="image" rimage-add ng-model="$rcontent.content.image" ng-cloak></div>
+      <pre>{{$rcontent.content.image | json}}</pre>
+      <pre>{{$rcontent.contentForm.image | json}}</pre>
+      <span class="notf notf-alert">
+        <i ng-show="$rcontent.contentForm.image.$error.required">Es un párametro requerido</i><br/>
+        <i ng-show="$rcontent.contentForm.image.$error.maxSize">Es un recurso muy grande
+            {{errorFile.size / 1000000|number:1}}MB: max 3M</i><br/>
+      </span>
       <br />
     </div>
        <div class="form-group">
-      <label for="image">Recurso de Imagen</label><br />
-      <input name="image" class="form-control" type="text" ng-model="$rcontent.content.image" ng-model-options="{ updateOn: 'blur' }" required />
-      <br />
-      </div>
-       <div class="form-group">
-      <label for="description">Descripción</label><br />
+      <label for="description">Descripción *</label><br />
       <textarea name="description" class="form-control vresize" ng-model="$rcontent.content.description" ng-model-options="{ updateOn: 'blur' }" required ></textarea>
-      <i ng-show="$rcontent.contentForm.$error.required">*required</i>
+      <span class="notf notf-alert" ng-show="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
+        <i ng-show="$rcontent.contentForm.description.$error.required">Es un párametro requerido</i>
+      </span>
       <br />
       </div>
        <div class="form-group">
-      <label for="selectCategories"> Categoría: </label><br>
-      <!-- <ui-select name="selectCategories" multiple limit="3" tagging  ng-model="$rcontent.content.categories"
-      theme="select2" ng-disabled="disabled"  style="width: 100%;">
-      <ui-select-match placeholder="Seleccione las categorías">{{$item.name}}</ui-select-match>
-      <ui-select-choices repeat="category.id as category in $rcontent.categories | orderBy:'name' | filter:$select.search">
-        {{category.name}}
-      </ui-select-choices>
-  </ui-select> -->
-  <ui-select name="selectCategories" tagging tagging-label=" ['Nueva' categoría]"
-  multiple limit="4"
-  ng-init="$rcontent.loadCategories()"
-  ng-model="$rcontent.content.categories"
-  theme="bootstrap" sortable="true" style="width: 100%;">
-  <ui-select-match placeholder="Seleccione las categorías del contenido. Límite: 4">{{$item}}</ui-select-match>
-  <ui-select-choices repeat="category in $rcontent.categories | filter:$select.search">
-  {{::category}}
-  </ui-select-choices>
-  </ui-select>
-      <p>Selected: {{$rcontent.content.categories}}</p>
+      <label for="categories"> Categoría: *</label><br>
 
-      <ui-select multiple tagging tagging-label="(custom 'new' label)" ng-model="$rcontent.colors" theme="bootstrap" sortable="true" ng-disabled="ctrl.disabled" style="width: 300px;" title="Choose a color">
-      <ui-select-match placeholder="Select colors...">{{$item}}</ui-select-match>
-      <ui-select-choices repeat="color in $rcontent.availableColors | filter:$select.search">
-        {{color}}
-      </ui-select-choices>
-    </ui-select>
-    <p>Selected: {{$rcontent.colors}}</p>
-
-      <!-- <ui-select multiple tagging="ctrl.tagTransform" ng-model="ctrl.multipleDemo.selectedPeople" theme="bootstrap"
-      ng-disabled="ctrl.disabled" style="width: 800px;" title="Choose a person">
-    <ui-select-match placeholder="Select person...">{{$item.name}} &lt;{{$item.email}}&gt;</ui-select-match>
-    <ui-select-choices repeat="person in ctrl.people | propsFilter: {name: $select.search, age: $select.search}" group-by="'country'">
-      <div ng-if="person.isTag" ng-bind-html="(person.name | highlight: $select.search) +' (new)'"></div>
-      <div ng-if="!person.isTag" ng-bind-html="person.name + person.isTag| highlight: $select.search"></div>
-      <small>
-        email: {{person.email}}
-        age: <span ng-bind-html="''+person.age | highlight: $select.search"></span>
-      </small>
-    </ui-select-choices>
-  </ui-select> -->
-      <!-- <select name="multipleSelect" id="multipleSelect" ng-model="$rcontent.content.categories" multiple>
-        <option ng-repeat="category in $rcontent.categories" value="{{category.id}}">{{category.name}}</option>
-      </select><br> -->
+        <ui-select name="categories" tagging tagging-label=" ['Nueva' categoría]"
+        multiple limit="4"
+        ng-init="$rcontent.loadCategories()"
+        ng-model="$rcontent.content.categories"
+        theme="bootstrap" sortable="true" style="width: 100%;" ui-select-required>
+        <ui-select-match placeholder="Seleccione las categorías del contenido. Límite: 4">{{$item}}</ui-select-match>
+        <ui-select-choices repeat="category in $rcontent.categories | filter:$select.search">
+        {{::category}}
+        </ui-select-choices>
+        </ui-select>
+        <span class="notf notf-alert" ng-show="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
+          <i ng-show="$rcontent.contentForm.categories.$error.required">Es un párametro requerido</i>
+        </span>
+        <pre>{{$rcontent.content.categories | json}}</pre>
+        <pre>{{$rcontent.contentForm.categories | json}}</pre>
       </div>
       <br /><br />
       <input type="button" ng-click="$rcontent.reset()" value="Limpiar" />
-      <input type="submit" ng-disabled="$rcontent.contentForm.$valid" ng-click="$rcontent.save()" value="Guardar" />
+      <input type="submit" ng-click="$rcontent.save()" value="Guardar" />
     </form>
-    <!-- <pre>content = {{$rcontent.content | json}}</pre> -->
+
+    <div class="alert alert-danger fade in" ng-show="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
+      <strong>Revisar!</strong> Es necesario llenar los párametros.
+    </div>
+
+    <pre>{{$rcontent.contentForm.$error | json}}</pre>
+    <pre>{{$rcontent.contentForm.$dirty | json}}</pre>
+    <pre>{{$rcontent.contentForm.$invalid | json}}</pre>
+
+    <pre>content = {{$rcontent.content | json}}</pre>
   </div>
 </div>
