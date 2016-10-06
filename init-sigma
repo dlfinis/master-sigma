@@ -1,0 +1,9 @@
+
+#!/bin/bash
+
+clear
+# git pull origin development && git checkout development 
+# git submodule foreach git pull origin master
+  git pull && git submodule update -i -r
+  npm install
+# bower install

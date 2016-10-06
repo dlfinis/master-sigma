@@ -26,6 +26,7 @@ logs
 results
 
 node_modules
+web-scraper
 
 npm-debug.log
 

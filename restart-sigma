@@ -1,0 +1,6 @@
+
+#!/bin/bash
+
+clear
+ pm2 restart app.js --name sigma -x -- --prod 
+ pm2 logs
