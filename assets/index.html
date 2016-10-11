@@ -7,7 +7,14 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <title>Master Sigma</title>
     <!--STYLES-->
-    <link rel="stylesheet" href="min/production.min.css"/>
+    <link rel="stylesheet" href="/bower_components/angular/angular-csp.css"/>
+    <link rel="stylesheet" href="/bower_components/angular-bootstrap/ui-bootstrap-csp.css"/>
+    <link rel="stylesheet" href="/bower_components/angular-loading-bar/build/loading-bar.css"/>
+    <link rel="stylesheet" href="/bower_components/bootstrap-css/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/bower_components/bootstrap-css/css/bootstrap-theme.css"/>
+    <link rel="stylesheet" href="/bower_components/ui-select/dist/select.css"/>
+    <link rel="stylesheet" href="/bower_components/ng-img-crop/compile/unminified/ng-img-crop.css"/>
+    <link rel="stylesheet" href="/styles/importer.css"/>
     <!--STYLES END-->
     </head>
 <body>
@@ -31,7 +38,78 @@
        <div ng-view class="fadein"></div>
     </div>
     <!--SCRIPTS-->
-    <script src="min/production.min.js"></script>
+    <script src="/bower_components/moment/min/moment-with-locales.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-i18n/angular-locale_es.js"></script>
+    <script src="/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="/bower_components/webfontloader/webfontloader.js"></script>
+    <script src="/bower_components/angular-lazy-img/release/angular-lazy-img.js"></script>
+    <script src="/bower_components/angular-loading-bar/build/loading-bar.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="/bower_components/ui-select/dist/select.js"></script>
+    <script src="/bower_components/ng-onload/release/ng-onload.min.js"></script>
+    <script src="/bower_components/ng-facebook/ngFacebook.js"></script>
+    <script src="/bower_components/ng-file-upload/ng-file-upload-all.js"></script>
+    <script src="/bower_components/angular-smart-table/dist/smart-table.js"></script>
+    <script src="/bower_components/ng-img-crop-full-extended/compile/unminified/ng-img-crop.js"></script>
+    <script src="/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/bower_components/tv4/tv4.js"></script>
+    <script src="/angular/app.config.js"></script>
+    <script src="/angular/components/core/auth/auth.mdl.js"></script>
+    <script src="/angular/components/core/fb/fb.loader.mdl.js"></script>
+    <script src="/angular/components/core/fontloader/fontloader.mdl.js"></script>
+    <script src="/angular/components/core/http/http.interceptor.mdl.js"></script>
+    <script src="/angular/components/core/legal/policy/policy.component.js"></script>
+    <script src="/angular/components/core/legal/terms/terms.component.js"></script>
+    <script src="/angular/components/core/page/footer.cmp.js"></script>
+    <script src="/angular/components/core/page/header.cmp.js"></script>
+    <script src="/angular/components/core/request-control-list/control.list.component.js"></script>
+    <script src="/angular/components/core/request-control-list/control.list.controller.js"></script>
+    <script src="/angular/components/core/request-control-list/control.list.factory.js"></script>
+    <script src="/angular/components/core/router/router.check.routing.mdl.js"></script>
+    <script src="/angular/components/core/router/router.loading.indicator.cmp.js"></script>
+    <script src="/angular/components/core/test/test.component.js"></script>
+    <script src="/angular/components/core/test/test.controller.js"></script>
+    <script src="/angular/components/core/test/test.factory.js"></script>
+    <script src="/angular/components/core/testpage/testpage.component.js"></script>
+    <script src="/angular/components/main/article/articlelist.component.js"></script>
+    <script src="/angular/components/main/article/articlelist.controller.js"></script>
+    <script src="/angular/components/main/article/articlelist.factory.js"></script>
+    <script src="/angular/components/main/article/articlelist.filter.js"></script>
+    <script src="/angular/components/main/article/component/advancedSearch.component.js"></script>
+    <script src="/angular/components/main/article/component/category.component.js"></script>
+    <script src="/angular/components/main/article/component/like.component.js"></script>
+    <script src="/angular/components/main/article/component/openlater.component.js"></script>
+    <script src="/angular/components/main/article/component/period.component.js"></script>
+    <script src="/angular/components/main/article/component/reading.component.js"></script>
+    <script src="/angular/components/main/article/component/related.component.js"></script>
+    <script src="/angular/components/main/article/component/share.component.js"></script>
+    <script src="/angular/components/main/article/component/tdelta.component.js"></script>
+    <script src="/angular/components/main/home/home.component.js"></script>
+    <script src="/angular/components/main/pagination/pagination.mdl.js"></script>
+    <script src="/angular/components/main/registry/rcategory/rcategory.component.js"></script>
+    <script src="/angular/components/main/registry/rcategory/rcategory.controller.js"></script>
+    <script src="/angular/components/main/registry/rcategory/rcategory.factory.js"></script>
+    <script src="/angular/components/main/registry/rcontent/component/rbutton-add/rbutton-add.cmp.js"></script>
+    <script src="/angular/components/main/registry/rcontent/component/rbutton-add/rbutton-add.ctrl.js"></script>
+    <script src="/angular/components/main/registry/rcontent/component/rimage-add/rimage-add.cmp.js"></script>
+    <script src="/angular/components/main/registry/rcontent/component/rimage-add/rimage-add.ctrl.js"></script>
+    <script src="/angular/components/main/registry/rcontent/component/rlist/rlist.cmp.js"></script>
+    <script src="/angular/components/main/registry/rcontent/component/rlist/rlist.ctrl.js"></script>
+    <script src="/angular/components/main/registry/rcontent/rcontent.cmp.js"></script>
+    <script src="/angular/components/main/registry/rcontent/rcontent.ctrl.js"></script>
+    <script src="/angular/components/main/registry/rcontent/rcontent.factory.js"></script>
+    <script src="/angular/components/main/registry/registry.component.js"></script>
+    <script src="/angular/components/main/registry/registry.controller.js"></script>
+    <script src="/angular/components/main/registry/registry.factory.js"></script>
+    <script src="/angular/components/main/wall/wall.component.js"></script>
+    <script src="/angular/components/main/wall/wall.controller.js"></script>
+    <script src="/angular/components/app.core.js"></script>
+    <script src="/angular/components/app.main.js"></script>
+    <script src="/angular/app.js"></script>
     <!--SCRIPTS END-->
 </body>
 </html>
