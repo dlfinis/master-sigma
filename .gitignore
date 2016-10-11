@@ -7,7 +7,7 @@
 .tmp
 .assets
 assets/bower_components/
-
+.sass-cache
 
 ########################
 # node.js / npm
