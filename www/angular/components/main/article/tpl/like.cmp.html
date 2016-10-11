@@ -1,0 +1,11 @@
+<div class="stats" ng-show="stats > 0 " ng-bind="stats"></div>
+<img class="fb-loader" src="/images/fb-loader.gif" ng-show="loader"/>
+<button type="button"
+        class="btn"
+        article-sid="{{articleSid}}"
+        ng-model="checkstate"
+        ng-class="{on:checkstate,exist:stats > 0}"
+        ng-click="doLike()"
+        ng-disabled="loader">
+  <i class="fa fa-thumbs-o-up fa-2x"></i>
+</button>

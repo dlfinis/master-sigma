@@ -1,0 +1,10 @@
+<!-- <div ng-init="$share.getShareListInfo(source.id)" class="stats" ng-show="stats > 0 " ng-bind="stats"></div> -->
+<div class="stats" ng-show="stats > 0 " ng-bind="stats"></div>
+<img class="fb-loader" src="/images/fb-loader.gif" ng-show="loader"/>
+<button type="button"
+        class="btn"
+        ng-click="setShare()"
+        ng-class="{exist:stats > 0}"
+        ng-disabled="loader">
+  <i class="fa fa-share-square-o fa-2x"></i>
+</button>

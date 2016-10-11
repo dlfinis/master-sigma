@@ -22,7 +22,7 @@ var cssFilesToInject = [
   'bower_components/bootstrap-css/**/bootstrap-theme.css',
   'bower_components/ui-select/**/select.css',
   'bower_components/ng-img-crop/compile/unminified/ng-img-crop.css',
-  'styles/mustache.css'
+  'styles/**/*.css'
 ];
 
 
