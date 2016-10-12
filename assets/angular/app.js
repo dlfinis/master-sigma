@@ -19,7 +19,7 @@
                          'app.config'
                        ])
   .config([ 'INIT',
-            'KEYS',
+            'FB',
             '$httpProvider',
             '$routeProvider',
             '$logProvider',
@@ -28,7 +28,7 @@
             '$facebookProvider',
             'cfpLoadingBarProvider',
   function( INIT,
-            KEYS,
+            FB,
             $httpProvider,
             $routeProvider,
             $logProvider,
@@ -69,7 +69,8 @@
     $httpProvider.interceptors.push('apiInterceptor');
 
     //Set Facebook API configuration
-    $facebookProvider.setAppId(KEYS.fbClientID);
+    $facebookProvider.setAppId(FB.clientID);
+    $facebookProvider.setPermissions(FB.permissions);
 
     // Remove loading bar spinner
     // cfpLoadingBarProvider.includeSpinner = false;
@@ -88,6 +89,15 @@
     $routeProvider.when('/registry/content/:id?', { template: '<rcontent></rcontent>' });
     $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
     $routeProvider.when('/testpage/:tid?', { template: '<testpage></testpage>' });
+    $routeProvider.when('/login', {
+      resolve: {
+        load: function ($facebook) {
+          return $facebook.login().then(function(response) {
+            console.log(response);
+          });
+        }
+      }
+    });
     $routeProvider.when('/logout', {
       resolve: {
         load: function (AuthFactory) {
@@ -134,7 +144,7 @@
       $rootScope.isAppLoading = true;
       $rootScope.startTime = new Date();
       // App is loading, so set isAppLoading to true and start a timer
-
+      // Prev and Next route
       var path = $location.path();
       if(enableRoutes.indexOf(path) === -1)
       {

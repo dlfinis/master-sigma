@@ -20,8 +20,9 @@
         }
       )
       .constant(
-        'KEYS',{
-          'fbClientID' : 1267766483237355
+        'FB',{
+          'clientID' : 1267766483237355,
+          'permissions': 'email,user_birthday,user_friends,publish_actions'
         }
       )
       .constant(
