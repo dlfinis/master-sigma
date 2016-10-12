@@ -1,102 +1,66 @@
-<style>
-  .st-sort-ascent:before {
-    content: '\25B2';
-}
-
-.st-sort-descent:before {
-    content: '\25BC';
-}
-
-.table-container{
-    height:500px;
-    overflow-y:scroll;
-}
-
-.loading-indicator {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    width: 100%;
-    text-align: center;
-    padding: 0.7em; }
-
-.loading-indicator:before {
-    display: inline-block;
-    margin: 0 0.4em;
-    min-width: 1em;
-    min-height: 1em;
-    border-top: 4px solid #646464;
-    border-right: 4px solid #e6e6e6;
-    border-left: 4px solid #e6e6e6;
-    border-bottom: 4px solid #646464;
-    content: "";
-    -webkit-animation: halfspin 1s ease infinite;
-    -moz-animation: halfspin 1s ease infinite;
-    -o-animation: halfspin 1s ease infinite;
-    animation: halfspin 1s ease infinite;
-    border-radius: 100%; }
-
-@-webkit-keyframes halfspin {
-    to {
-        -webkit-transform: rotate(180deg);
-        -moz-transform: rotate(180deg);
-        transform: rotate(180deg); } }
-
-@-moz-keyframes halfspin {
-    to {
-        -webkit-transform: rotate(180deg);
-        -moz-transform: rotate(180deg);
-        transform: rotate(180deg); } }
-
-@keyframes halfspin {
-    to {
-        -webkit-transform: rotate(180deg);
-        -moz-transform: rotate(180deg);
-        transform: rotate(180deg); } }
-</style>
-<div class="container" class='ng-cloak' ng-hide="$rlist.return">
+<div class="container ng-cloak content-list"  ng-init="$rlist.init()" ng-hide="$rlist.return">
   <div class="col-sm-12">
       <div id="floating-button-back" >
         <p class="iplus" ng-click="$rlist.back()" ><i class="fa fa-angle-double-left" aria-hidden="true"></i></p>
       </div>
     <legend>Lista de Contenidos</legend>
-
-    <p>{{$rlist.creator()}}</p>
+    <div id="alert-create" class="alert alert-sm alert-success fade-in"
+      dismiss-on-timeout="2000"
+      ng-show="$rlist.delete.status">
+      Eliminado con <strong>éxito!</strong></br>
+      <b>Contenido:</b>
+      <p><i>{{::$rlist.delete.content.title}}</i></p>
+    </div>
     <div class="">
-    <table st-table="$rlist.rowColl" class="table table-striped">
+    <table st-table="displayList" st-safe-src="$rlist.contentList" class="table table-striped">
     	<thead>
-    	<tr>
-    		<th>first name</th>
-    		<th>last name</th>
-    		<th>birth date</th>
-    		<th>balance</th>
-    		<th>email</th>
+        <tr>
+          <th colspan="9"><input st-search="" class="form-control input-sm" placeholder="Búsqueda global..." type="text"/></th>
+          </br>
+        </tr>
+      <tr>
+        <th>#</th>
+        <th>Título</th>
+        <th>Fecha</th>
+        <th><i class="fa fa-thumbs-up" aria-hidden="true">*</i></th>
+        <th><i class="fa fa-share-square-o" aria-hidden="true">*</i></th>
+        <th><i class="fa fa-eye" aria-hidden="true">*</i></th>
+        <th>Estado</th>
     	</tr>
     	</thead>
     	<tbody>
-    	<tr ng-repeat="row in $rlist.rowColl">
-    		<td>{{row.firstName}}</td>
-    		<td>{{row.lastName}}</td>
-    		<td>{{row.birthDate}}</td>
-    		<td>{{row.balance}}</td>
-    		<td>{{row.email}}</td>
+    	<tr ng-repeat="content in displayList track by $index">
+    		<td>{{::$index+1}}</td>
+    		<td>{{::content.title}}</td>
+    		<td>{{::content.date | date}}</td>
+    		<td>{{::content.likes}}</td>
+    		<td>{{::content.shares}}</td>
+    		<td>{{::content.visits}}</td>
+    		<td class="state">{{::content.state}}</td>
         <td>
-          <button type="button" ng-click="$rlist.editRow(row)" class="btn btn-sm">
+          <button type="button" ng-click="$rlist.editContent(content.id)" class="btn btn-sm btn-td btn-default">
             <i class="glyphicon glyphicon-edit">
             </i>
           </button>
         </td>
         <td>
-        <button type="button" ng-click="$rlist.removeRow(row)" class="btn btn-sm btn-danger">
+        <button type="button" ng-click="$rlist.removeContent(content)" class="btn btn-sm btn-td btn-danger">
 				<i class="glyphicon glyphicon-remove-circle">
 				</i>
 			</button>
       </td>
     	</tr>
     	</tbody>
+      <tfoot>
+        <tr>
+          <td colspan="9" class="text-center">
+            <div st-pagination="" st-items-by-page="10" st-displayed-pages="3"></div>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </div>
-  <div>
+  <!-- <div>
     <div class="table-container">
       <table st-table="$rlist.rowCollection" st-pagination-scroll  st-pipe="$rlist.callServer" class="table table-striped">
 	<thead>
@@ -129,7 +93,7 @@
 </div>
 <div ng-show="isLoading" class="loading-indicator"></div>
   </div>
-
+ -->
 
   </div>
 </div>

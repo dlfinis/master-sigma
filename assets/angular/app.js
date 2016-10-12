@@ -84,8 +84,8 @@
     $routeProvider.when('/wall',{template:'<articlelist></articlelist>'});
     $routeProvider.when('/legal/policy',{template:'<policy></policy>'});
     $routeProvider.when('/legal/terms',{template:'<terms></terms>'});
+    $routeProvider.when('/registry/list', { template: '<rcontent-list></rcontent-list>' });
     $routeProvider.when('/registry/content/:id?', { template: '<rcontent></rcontent>' });
-    $routeProvider.when('/registry/content/list', { template: '<rcontent-list></rcontent-list>' });
     $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
     $routeProvider.when('/testpage/:tid?', { template: '<testpage></testpage>' });
     $routeProvider.when('/logout', {
@@ -122,9 +122,6 @@
       '',
       '/',
       '/home',
-      '/registry/content',
-      '/registry/content/',
-      '/registry/content/list',
       '/registry/category',
       '/logout',
       '/testpage',

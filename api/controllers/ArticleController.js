@@ -114,6 +114,10 @@ module.exports = {
     case 'normal': {
       ArticleQueryService.getArticleListNormal(articleQuery).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -121,6 +125,10 @@ module.exports = {
     case 'recommend': {
       ArticleQueryService.getArticleListRecommend(articleQuery).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -128,6 +136,10 @@ module.exports = {
     case 'creator': {
       ArticleQueryService.getArticleListByCreator(articleQuery,creator).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -135,6 +147,10 @@ module.exports = {
     case 'category': {
       ArticleQueryService.getArticleListByCategory(articleQuery,category).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -142,6 +158,10 @@ module.exports = {
     case 'liked': {
       ArticleQueryService.getArticleListMostLiked(articleQuery).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -149,6 +169,10 @@ module.exports = {
     case 'shared': {
       ArticleQueryService.getArticleListMostShared(articleQuery).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -157,6 +181,10 @@ module.exports = {
       sails.log('-Default List');
       ArticleQueryService.getArticleListNormal(articleQuery).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
     }
     }
@@ -370,7 +398,7 @@ module.exports = {
       return res.badRequest({err:'invalidAttributes'});
     }
   },
-  update: function (req,res){
+  updt: function (req,res){
     var article = {};
     try{
       article = {

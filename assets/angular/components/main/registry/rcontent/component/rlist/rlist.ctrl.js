@@ -1,6 +1,6 @@
 (function (module) {
 
-  function RListCtrl($location, $log, $element, $timeout, AuthFactory){
+  function RListCtrl($location, $q, $log, $element, $timeout, RListFactory){
 
     var $rlist = this;
 
@@ -9,83 +9,57 @@
       window.history.back();
     };
 
-    $rlist.creator = function () {
-      AuthFactory.isAuthenticated().then(function (response) {
-        $log.debug('+ IS AUTH',response);
-        return response;
+    RListFactory.getCreator().then(function (response) {
+        console.log(response);
+    });
+
+    $rlist.contentList = [];
+
+    $rlist.init = function () {
+      $q.when(RListFactory.getContentList()).then(function (contentList) {
+        if(contentList)
+        {
+          contentList = contentList.map(function(cElem, index, arr) {
+            var content = {
+              id : cElem.id,
+              title : cElem.title,
+              likes : cElem.likes,
+              shares : cElem.shares,
+              visits : cElem.visits,
+              state : cElem.state === 'disable' ? 'En revisión' : cElem.state === 'edit' ? 'Editado':'Creado',
+              date : cElem.date
+            };
+            return content;
+          });
+        }
+          $rlist.contentList = contentList;
+      })
+      .catch(function (err) {
+        $log.err(err);
       });
     };
 
-    $rlist.rowColl = [
-       {firstName: 'Laurent', lastName: 'Renard', birthDate: new Date('1987-05-21'), balance: 102, email: 'whatever@gmail.com'},
-       {firstName: 'Blandine', lastName: 'Faivre', birthDate: new Date('1987-04-25'), balance: -2323.22, email: 'oufblandou@gmail.com'},
-       {firstName: 'Francoise', lastName: 'Frere', birthDate: new Date('1955-08-27'), balance: 42343, email: 'raymondef@gmail.com'}
-   ];
-          var nameList = ['Pierre', 'Pol', 'Jacques', 'Robert', 'Elisa'];
-          var familyName = ['Dupont', 'Germain', 'Delcourt', 'bjip', 'Menez'];
 
-          $rlist.isLoading = false;
-          $rlist.rowCollection = [];
+    $rlist.editContent = function (contentID) {
+      RListFactory.editContent(contentID);
+    };
 
-
-          function createRandomItem() {
-              var
-                  firstName = nameList[Math.floor(Math.random() * 4)],
-                  lastName = familyName[Math.floor(Math.random() * 4)],
-                  age = Math.floor(Math.random() * 100),
-                  email = firstName + lastName + '@whatever.com',
-                  balance = Math.random() * 3000;
-
-              return {
-                  firstName: firstName,
-                  lastName: lastName,
-                  age: age,
-                  email: email,
-                  balance: balance
-              };
+    $rlist.removeContent = function (content) {
+      RListFactory.deleteContent(content.id).then(function (response) {
+        if(response)
+        {
+          var index = $rlist.contentList.indexOf(content);
+          if (index != -1) {
+            $rlist.contentList.splice(index, 1);
           }
 
-          function getAPage() {
-              var data = [];
-              for (var j = 0; j < 20; j++) {
-                  data.push(createRandomItem());
-              }
-              return data;
-          }
-
-          var lastStart = 0;
-          var maxNodes = 40;
-
-          $rlist.callServer = function getData(tableState) {
-
-              //here you could create a query string from tableState
-              //fake ajax call
-              $rlist.isLoading = true;
-
-              $timeout(function () {
-
-                  //if we reset (like after a search or an order)
-                  if (tableState.pagination.start === 0) {
-                      $rlist.rowCollection = getAPage();
-                  } else {
-                      //we load more
-                      $rlist.rowCollection = $rlist.rowCollection.concat(getAPage());
-
-                      //remove first nodes if needed
-                      if (lastStart < tableState.pagination.start && $rlist.rowCollection.length > maxNodes) {
-                          //remove the first nodes
-                          $rlist.rowCollection.splice(0, 20);
-                      }
-                  }
-
-                  lastStart = tableState.pagination.start;
-
-                  $rlist.isLoading = false;
-              }, 1000);
-
-          };
-
-          $rlist.rowCollection = getAPage();
+          $rlist.delete = { status: true,content: $rlist.content };
+          $timeout(function () {
+            $rlist.delete = {};
+          }, 1500);
+        }
+      });
+    };
 
   }
 
