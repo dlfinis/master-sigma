@@ -72,10 +72,10 @@ module.exports = {
     url: 'http://'+ (process.env.NODE_HOST || '127.0.0.1') +':'+process.env.SCRAPER_PORT
   },
   /***************************************************************************
-   * Set the log level in production environment to 'silent'                 *
+   * Set the log level in production environment to 'silent'/'verbose'/'silly'*
    ***************************************************************************/
   log: {
-    level: 'debug'
+    level: 'verbose'
   }
 
 };
