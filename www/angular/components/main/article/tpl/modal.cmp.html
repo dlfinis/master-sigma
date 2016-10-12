@@ -1,0 +1,55 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{article.title}}</h4>
+</div>
+
+<div class="modal-body">
+<div class="source">
+  <span>&#8226; </span><div class="reading" reading stats="article.stats"></div>
+  <a class="external" ng-href="{{::article.url}}" ng-click="close()" target="_blank">
+    <i class="fa fa-external-link"></i> Abrir Página
+  </a>
+</div>
+<div class="embed-responsive embed-responsive-4by3">
+  <div class="loader" ng-hide="siteError" ng-class="{fadeInOut: sitePath}" >
+    <img class="" src="/images/spinner-2.gif"/>
+  </div>
+  <iframe ng-hide="siteError" class="embed-responsive-item" sandbox="allow-scripts allow-popups"
+  ng-src="{{::sitePath}}" ng-onload="hello">
+    <p>Tu navegador no soporta iframes.</p>
+  </iframe>
+  <div ng-if="siteError" >
+    Nos encontramos con dificultades técnicas, por favor abre la página externamente.
+  </div>
+</div>
+
+</div>
+
+<div class="modal-footer">
+  <div class="note">
+    Si no se visualiza adecuadamente.
+    Por favor pulsa en  <em><i class="fa fa-external-link"></i>Abrir Página</em>
+  </div>
+  <div class="post">
+    <div class="social-bar" >
+          <div class="categories">
+              <div class="category"
+              ng-repeat="category in article.categories | limitTo:4">
+              <span>&#8226;</span>{{::category.name}}
+              </div>
+          </div>
+          <div class="section-btn" uid-post="{{::article.uid}}">
+            <like
+            stats="article.likes"
+            source="article"
+            like-sid="article.ownlike.sid"></like>
+            <share stats="article.shares" source="article"></share>
+          </div>
+    </div>
+  </div>
+    <button ng-disabled="!exit" class="btn btn-danger" type="button" ng-click="close()">
+      <i class="fa fa-times"></i> Salir
+    </button>
+</div>
+<script>
+  <!-- console._inspectorCommandLineAPI.clear(); -->
+</script>

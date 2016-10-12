@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es" data-ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <title>Master Sigma</title>
+    <!--STYLES-->
+    <link rel="stylesheet" href="min/production.min.css"/>
+    <!--STYLES END-->
+    </head>
+<body>
+    <!--
+    <header>
+        <nav class="navbar navbar-default">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/#/"><i class="fa fa-home fa-lg"></i></a>
+        </div>
+        </nav>
+    </header> -->
+    <!-- <div route-loading-indicator></div> -->
+    <!-- <div ng-hide="isAppLoading">
+      <div class="header"></div>
+      <div class="content ng-cloak fade-ng-cloak" data-ng-view></div>
+    </div> -->
+
+    <div>
+      <resolve-loader></resolve-loader>
+       <div class="header"></div>
+       <div ng-view class="fadein"></div>
+    </div>
+    <!--SCRIPTS-->
+    <script src="min/production.min.js"></script>
+    <!--SCRIPTS END-->
+</body>
+</html>

@@ -1,0 +1,9 @@
+<a id="btn-related" class="related fa fa-gg-circle fa-2x" ng-show="relatedlist.length > 0" aria-hidden="true"></a>
+<div id="related-box" class="related-box">
+  <div class="title">Recursos Relacionados</div>
+  <div class="list">
+    <div ng-repeat="rlt in relatedlist">
+      <div class="item" openlater source="rlt.related" lbl="{{::rlt.related.title}}"></div>
+    </div>
+  </div>
+</div>

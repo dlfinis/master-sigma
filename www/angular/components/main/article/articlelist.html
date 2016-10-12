@@ -1,0 +1,164 @@
+<!-- <pre> {{$articlelist.data | json}}</pre> -->
+<div class="container fade-ng-cloak" ng-if="$articlelist.ok">
+  <div class="col-sm-12">
+
+    <div rbutton-add class="fade-ng-cloak"></div>
+
+    <div class="advanced-search" advanced-search
+    source="$articlelist.data"
+    queryParams="$articlelist.queryParams"
+    ng-hide="$articlelist.error.init"></div>
+
+    <div class="sort-bar ng-cloak fade-ng-cloak"
+    ng-hide="$articlelist.error.init">
+      <div class="sort-item sort-section">
+        <div class="sort-item tab"
+          ng-class='{"active":$articlelist.normal}'
+          ng-click="$articlelist.setNormalList()"
+          uib-tooltip="Recursos recien publicados"
+          >
+          Recientes
+        </div>
+        <div class="sort-item tab"
+          ng-class='{"active":$articlelist.recommend}'
+          ng-click="$articlelist.setRecommendList()"
+          uib-tooltip="Recursos con mayor valoración"
+          >
+          Recomendados
+        </div>
+        <div class="sort-item tab"
+          ng-class='{"active":$articlelist.liked}'
+          ng-click="$articlelist.setMostLikedList()"
+          uib-tooltip="Recursos con más Me Gustas"
+          >
+          <i class="fa fa-thumbs-up" aria-hidden="true">*</i>
+        </div>
+        <div class="sort-item tab"
+          ng-class='{"active":$articlelist.shared}'
+          ng-click="$articlelist.setMostSharedList()"
+          uib-tooltip="Recursos con más Compartidos"
+          >
+          <i class="fa fa-share-square-o" aria-hidden="true">*</i>
+        </div>
+      </div>
+       <div id="sort-category" class="sort-category">
+        <ui-select  ng-init="$articlelist.getCategories()"
+                    ng-model="$articlelist.mcategory.selected"
+                    on-select="$articlelist.onSelectCategory($item)"
+                    skip-focusser="true"
+                    theme="select2"
+                    uib-tooltip="Buscar por la categoría">
+         <ui-select-match placeholder="Seleccione una categoría ">{{$select.selected.name}}
+         <a class="btn btn-xs" ng-click="$articlelist.clear($event, $select)"><i class="glyphicon glyphicon-remove"></i></a>
+         </ui-select-match>
+         <ui-select-choices repeat="mcategory in $articlelist.mcategories | orderBy:'name' | PropsFormat: {name: $select.search}">
+           <div ng-bind-html="mcategory.name | highlight: $select.search"></div>
+         </ui-select-choices>
+        </ui-select>
+      </div>
+    </div>
+
+    <div class="label-content">
+      Contenido
+    </div>
+
+    <div class="not-articles ng-cloak fade-ng-cloak" ng-if="($articlelist.data.length == 0 && !$articlelist.pagerData) || $articlelist.error.get">
+      <h4>No existen artículos para visualizar.</h4>
+      <div class="mnr-c">
+        <div class="med card-section">
+        <p style="padding-top:.33em"> La búsqueda de <em>{{$articlelist.queryParams}}</em> no obtuvo ningún resultado.  </p>
+        <p style="margin-top:1em">Sugerencias:</p>
+        <ul style="margin-left:1.3em;margin-bottom:2em">
+          <li>Comprueba que todas las palabras están escritas correctamente.</li>
+          <li>Intenta usar otras palabras.</li><li>Intenta usar palabras más generales.</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="article ng-cloak fade-ng-cloak">
+      <div class="col-sm-12 post animate-repeat "
+          ng-animate="'animate'"
+          ng-repeat="article in $articlelist.data
+            |limitTo: $articlelist.perPage
+            track by article.id
+            "
+        uid ="{{::article.uid}}"
+      >
+        <a class="image-box"
+           ng-href="{{::article.url}}"
+           ng-click="$articlelist.setVisit(article)"
+           target="_blank">
+        <img class="image"
+        ng-src="/images/spinner.gif"
+        lazy-img="{{::$articlelist.getTrustedResource(article.image) ||'/images/submarine.png' }}"
+        alt=""/>
+        </a>
+        <div control
+             source="article"
+             list="$articlelist.data"
+        ></div>
+        <div id="title" class="title"><span ng-bind="article.title"></span></div>
+        <div class="box">
+            <div class="info">
+              <div data-related
+                   source-id="{{::article.id}}"
+                   ng-cloak fade-ng-cloak></div>
+              <div class="content">
+                <div class="creator"
+                   ng-bind="article.creator.name"
+                   ng-click="$articlelist.setCreatorList(article.creator)"
+                   uib-tooltip="Recursos del creador"></div>
+              </div>
+              <div class="period" period data="{{::article.date }}"></div>
+              <span>&#8226;</span>
+              <div class="reading" reading stats="article.stats" ng-cloak></div>
+              <span ng-if="article.state === 'edit'">&#8226;</span>
+              <div class="edition" ng-if="article.state === 'edit'">Editado</div>
+            </div>
+            <p class="text" id="description" ng-bind="article.description"></p>
+            <div class="visits" ng-if="article.visits > 0">{{article.visits}} Visitas</div>
+            <div openlater
+                 source="article"
+                 lbl="Leer más..."
+            ></div>
+        </div>
+        <div class="social-bar" >
+          <div class="section-btn">
+            <like
+              stats="article.likes"
+              source="article"
+              like-sid="article.ownlike.sid"
+              uib-tooltip="Me gusta"
+            ></like>
+            <share stats="article.shares"
+                   source="article"
+                   uib-tooltip="Compartir"></share>
+          </div>
+          <div class="categories">
+            <div class="category" ng-click="$articlelist.setCategoryList(category)" ng-repeat="category in article.categories">
+              <span>&#8226;{{::category.name}}</span><i class="fa fa-tags fa-fw" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div id="pager" class="col-sm-12 text-center"
+         ng-hide="$articlelist.data.length == 0 &&  !$articlelist.pagerData || $articlelist.error.get || $articlelist.error.init"
+         uib-tooltip="Páginas de los recursos disponibles">
+      <uib-pagination
+      boundary-links="true"
+      total-items="$articlelist.totalItems"
+      max-size="$articlelist.maxSizeItems"
+      num-pages="numPages"
+      ng-model="$articlelist.currentPage"
+      ng-change="$articlelist.pageChanged()"
+      class="pagination"
+      force-ellipses="true"
+      previous-text="&lsaquo;"
+      next-text="&rsaquo;"
+      first-text="&laquo;"
+      last-text="&raquo;">
+      </uib-pagination>
+    </div>
+</div>
