@@ -367,6 +367,7 @@ module.exports = {
   },
   create: function (req,res){
     var article = {};
+    console.log();
     try{
       article = {
         title : req.param('title'),

@@ -24,7 +24,6 @@
   function AuthFactory ($q, $log, $rootScope, $location, $http, $Session) {
     var authService = {};
 
-
     authService.login = function () {
       var deferred = $q.defer();
       $log.debug('+ AUTH LOGIN');
@@ -32,7 +31,7 @@
           .get('/me')
           .then(function (response) {
             $log.debug('+ Set Session user ',response.data);
-            $Session.clearAll();
+            $Session.destroy();
             $Session.create(response.data);
             deferred.resolve(true);
           })

@@ -33,7 +33,7 @@
        <div class="form-group">
       <label for="title">Título *</label><br />
       <input name="title" class="form-control" type="text" ng-model="$rcontent.content.title" ng-model-options="{ updateOn: 'blur' }" required />
-      <span class="notf notf-alert" ng-if="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
+      <span class="notf notf-alert">
         <i ng-if="$rcontent.contentForm.title.$error.required">Es un párametro requerido</i>
       </span>
       <br />
@@ -43,11 +43,11 @@
       <input name="url" class="form-control" type="url"
         ng-model="$rcontent.content.url"
         ng-model-options="{ updateOn: 'blur' }"
+        ng-change="$rcontent.updateUrl()"
         required />
-      <!-- <span class="notf notf-alert" ng-if="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid"> -->
       <span class="notf notf-alert">
-        <i ng-if="$rcontent.contentForm.url.$error.required">Es un párametro requerido</i>
-        <i ng-if="$rcontent.contentForm.url.$error.exist">La dirección web ya existe</i>
+        <i ng-if="$rcontent.contentForm.url.$error.required">Es un párametro requerido</i></br>
+        <i ng-if="$rcontent.contentForm.$submitted && $rcontent.contentForm.url.$error.unique">La dirección web ya existe</i>
       </span>
       <br />
     </div>
@@ -66,7 +66,7 @@
        <div class="form-group">
       <label for="description">Descripción *</label><br />
       <textarea name="description" class="form-control vresize" ng-model="$rcontent.content.description" ng-model-options="{ updateOn: 'blur' }" required ></textarea>
-      <span class="notf notf-alert" ng-show="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
+      <span class="notf notf-alert" ng-if="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
         <i ng-show="$rcontent.contentForm.description.$error.required">Es un párametro requerido</i>
       </span>
       <br />
@@ -95,9 +95,12 @@
       <input type="submit" ng-click="$rcontent.save()" value="Guardar" />
     </form>
 
-    <!-- <pre>{{$rcontent.contentForm.$error | json}}</pre>
-    <pre>{{$rcontent.contentForm.$dirty | json}}</pre>
-    <pre>{{$rcontent.contentForm.$invalid | json}}</pre> -->
+    <pre>Pristine {{$rcontent.contentForm.$pristine | json}}</pre>
+    <pre>Dirty {{$rcontent.contentForm.$dirty | json}}</pre>
+    <pre>Invalid {{$rcontent.contentForm.$invalid | json}}</pre>
+    <pre>Valid {{$rcontent.contentForm.$valid | json}}</pre>
+    <pre>Submitted {{$rcontent.contentForm.$submitted | json}}</pre>
+    <pre>Error {{$rcontent.contentForm.$error | json}}</pre>
 
     <!-- <pre>content = {{$rcontent.content | json}}</pre> -->
   </div>

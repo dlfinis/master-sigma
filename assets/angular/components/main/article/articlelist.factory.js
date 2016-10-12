@@ -30,7 +30,6 @@
         });
       },
       getUser: function () {
-
         return ContentFactory.getUser();
       },
       getArticles: function(props)

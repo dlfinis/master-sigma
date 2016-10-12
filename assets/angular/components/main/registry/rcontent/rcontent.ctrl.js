@@ -16,8 +16,6 @@
       categories:['Información','Botánica']
     };
 
-
-
     $rcontent.initContent = function () {
       if($route.current.params.id){
         RContentFactory.getContent($route.current.params.id).then(function (response) {
@@ -30,9 +28,15 @@
           angular.copy($rcontent.contentOriginal, $rcontent.content);
         });
       }
-
     };
 
+    $q.when(RContentFactory.getCategoriesList())
+                    .then(function (response){
+                      $rcontent.categories = response;
+                    })
+                    .catch(function (err) {
+                      console.error(err.stack);
+                    });
 
 
     $rcontent.getFileImage = function (urlImage) {
@@ -45,14 +49,8 @@
       $rcontent.content = $rcontent.testContent;
     };
 
-    $rcontent.loadCategories = function() {
-      RContentFactory.getCategoriesList()
-                    .then(function (response){
-                      $rcontent.categories = response;
-                    })
-                    .catch(function (err) {
-                      console.error(err.stack);
-                    });
+    $rcontent.updateUrl = function(){
+      $rcontent.contentForm.url.$setValidity('unique', true);
     };
 
     $rcontent.back = function () {
@@ -112,10 +110,10 @@
         $log.error('Ctrl',err);
         $rcontent.contentInvalid = true;
         $rcontent.focusHeading();
-        $rcontent.contentForm.$invalid = true;
-        if(!angular.isUndefined(err.data) && !angular.isUndefined(err.data.attributes.url))
+        if(!angular.isUndefined(err.data))
         {
-          $rcontent.contentForm.url.$error = { exist : true};
+          if(!angular.isUndefined(err.data.attributes.url))
+            $rcontent.contentForm.url.$setValidity('unique', false);
         }
       });
 

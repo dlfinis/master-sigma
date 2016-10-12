@@ -6,7 +6,10 @@
 
     var $articlelist = this;
 
-    $articlelist.user = ArticleListFactory.getUser();
+    $q.when(ArticleListFactory.getUser()).then(function (user) {
+      $articlelist.user = user;
+    });
+    
     $articlelist.data = [];
     $articlelist.error = {};
 
