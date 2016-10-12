@@ -171,6 +171,7 @@ module.exports = {
         return res.json(200,response);
     })
     .catch(function (err) {
+        sails.log.warn(err);
         return res.json(400,err);
     });
 
@@ -362,12 +363,45 @@ module.exports = {
             return res.badRequest({attributes:err.invalidAttributes});
           return res.serverError(err);
         }
-        sails.log.debug('+ Article create:', record);
+        sails.log.debug('+ Article created:', record);
         return res.ok('id:', record);
       });
     else{
       return res.badRequest({err:'invalidAttributes'});
     }
+  },
+  update: function (req,res){
+    var article = {};
+    try{
+      article = {
+        id: req.param('id'),
+        title : req.param('title'),
+        description : req.param('description'),
+        url : req.param('url'),
+        image : req.param('image'),
+        creator : req.param('creator'),
+        categories : req.param('categories')
+      };
+    }catch(err){
+      sails.log.warn(err);
+      return res.serverError(err);
+    }
 
+    sails.log.debug(article);
+
+    if(article.creator && article.image && article.categories && article.image)
+      Article.update({id:article.id},article).exec(function (err, record) {
+        if(err) {
+          sails.log.warn(err.code,err.details);
+          if(err.code === 'E_VALIDATION')
+            return res.badRequest({attributes:err.invalidAttributes});
+          return res.serverError(err);
+        }
+        sails.log.debug('+ Article updated:', record);
+        return res.ok({id:record[0].id});
+      });
+    else{
+      return res.badRequest({err:'invalidAttributes'});
+    }
   }
 };

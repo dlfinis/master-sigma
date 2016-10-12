@@ -1,11 +1,12 @@
 (function(){
   'use strict';
 
-  function ArticleListCtrl($scope,$q,$sce,$log,$element,$rootScope,$timeout,ArticleListFactory,ModalBaseFactory)
+  function ArticleListCtrl($scope,$q,$sce,$log,$element,$timeout,ArticleListFactory,ModalBaseFactory)
   {
 
     var $articlelist = this;
 
+    $articlelist.user = ArticleListFactory.getUser();
     $articlelist.data = [];
     $articlelist.error = {};
 

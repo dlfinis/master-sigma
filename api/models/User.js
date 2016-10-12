@@ -18,7 +18,9 @@ module.exports = {
     },
     name: 'STRING',
     email: 'STRING',
+    //create/edit/query
     state:{
+      type: 'STRING',
       defaultsTo: 'query',
       size: '20'
     },

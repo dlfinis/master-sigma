@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  function ArticleListFactory($http,$log,$uibModal,$q,partial,INIT){
+  function ArticleListFactory($http,$log,$uibModal,$q,AuthFactory,partial,INIT){
     return {
       _params: function () {
         return {
@@ -43,6 +43,9 @@
             .catch(function (err) {
               $log.error(err.stack);
             });
+      },
+      getUser: function () {
+        return AuthFactory.getUser();
       },
       getArticles: function(props)
           {

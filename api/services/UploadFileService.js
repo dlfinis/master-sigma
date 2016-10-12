@@ -5,7 +5,9 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-var dir_images = './assets/post/images/';
+ // var udir_images = './assets/content/images/';
+var uimage = '/content/image/';
+var dir_content_image = '../../assets'+uimage;
 var Promise = require('bluebird');
 module.exports = {
   /**
@@ -18,12 +20,13 @@ module.exports = {
     return new Promise(function (resolve,reject){
       sails.log.debug('+ Upload image file');
       req.file(field).upload({
-        dirname: dir_images,
+        dirname: dir_content_image,
         saveAs: function(_file,cb){
           /* optional. default file name */
           var oNameFile = _file.filename;
           var extFile = oNameFile.substr(oNameFile.lastIndexOf('.'),oNameFile.length);
           var fileName = require('randomstring').generate(7) + extFile;
+          _file.filename = fileName;
           cb(null,fileName);
         },
         maxBytes: 3 * 1024 * 1024
@@ -37,6 +40,10 @@ module.exports = {
         }
 
         sails.log.debug('Image',file);
+        if(file[0].field === 'image')
+        {
+          file[0].fd = uimage + file[0].filename;
+        }
         resolve(file[0]);
       });
     });
@@ -46,7 +53,7 @@ module.exports = {
     sails.log.debug('+ Upload images files');
 
     req.file(field).upload({
-      dirname: dir_images,
+      dirname: dir_content_image,
       saveAs: function(_file,cb){
         /* optional. default file name */
         var oNameFile = _file.filename;

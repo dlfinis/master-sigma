@@ -56,13 +56,18 @@ module.exports = {
       var catIndexList = [];
 
       if(!_.isArray(catList))
-        catList = [ catList ];
+      {
+        if(catList === undefined)
+          return res.json(400,{categories:[]});
+        else
+          catList = [ catList ];
+      }
 
       Promise.each(catList, function(cElem) {
         cElem = String(cElem).replace(/[^\A-zÀ-ú\s]/gmi, '');
         return Category.findByName({'contains': cElem })
               .then(function (category) {
-                if(_.isEmpty(category) | _.isUndefined(category))
+                if(_.isEmpty(category))
                 {
                   sails.log.debug('+ Create new category');
                   return Category.create({ name: cElem}).then(function (record) {

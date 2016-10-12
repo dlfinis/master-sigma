@@ -6,6 +6,7 @@
 .rigging
 .tmp
 .assets
+assets/content
 assets/bower_components/
 .sass-cache
 

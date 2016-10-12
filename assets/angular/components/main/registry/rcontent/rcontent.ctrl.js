@@ -1,11 +1,10 @@
 (function () {
 
-  function RContentCtrl($scope, $log, $element, $window, $http, $route, $rootScope, RContentFactory){
+  function RContentCtrl($scope, $q, $log, $element, $window, $http, $route, $rootScope, RContentFactory){
 
     var $rcontent = this;
     $rcontent.content = {};
     $rcontent.categories = [];
-    $rcontent.contentCreated = false;
 
     $rcontent.testContent =
     {
@@ -23,13 +22,17 @@
       if($route.current.params.id){
         RContentFactory.getContent('id',$route.current.params.id).then(function (response) {
           $rcontent.getFileImage(response.image);
+          response.categories = response.categories.map(function(currentValue, index, arr)
+          {
+            return currentValue.name;
+          });
           $rcontent.content = response;
+
         });
       }
-        angular.element(document).ready(function () {
-          $rcontent.ready = true;
-        });
+
     };
+
 
 
     $rcontent.getFileImage = function (urlImage) {
@@ -57,28 +60,60 @@
       window.history.back();
     };
 
+    $rcontent.focusHeading = function () {
+      $window.scrollTo(0, angular.element(document.getElementById('heading')).offsetTop);
+    };
+
     $rcontent.reset = function(){
       $rcontent.content = {};
       $rcontent.contentForm.$setPristine();
       $scope.$broadcast('clean');
-      $window.scrollTo(0, angular.element(document.getElementById('heading')).offsetTop);
+      $rcontent.focusHeading();
+    };
+
+    $rcontent.resetMessages = function () {
+      $rcontent.contentCreated = false;
+      $rcontent.contentUpdated = false;
+      $rcontent.contentInvalid = false;
     };
 
     $rcontent.save = function(){
 
       if(JSON.stringify($rcontent.content) === '{}')
       {
-        console.log('Not content info');
+        $log.err('Not content info');
       }else {
+        $rcontent.resetMessages();
+        var tmpContent = angular.copy($rcontent.content);
 
-        console.log('Form',$rcontent.contentForm);
+        console.log('Ctrl',$rcontent.content);
 
-        if (!$rcontent.contentForm.$valid) {
-          console.log(angular.element(document.getElementById('contentForm')));
-          console.log(angular.element(document.getElementById('contentForm')).find('.ng-invalid'));
-          // angular.element('[name=' + $rcontent.contentForm.$name + ']').find('.ng-invalid:visible:first').focus();
-          return false;
+
+        if($route.current.params.id){
+          RContentFactory.updateContent($rcontent.content).then(function (response) {
+              $log.debug('Update ok',response);
+              if(response && response.status < 299)
+              {
+                $rcontent.reset();
+                $rcontent.contentUpdated = true;
+              }else {
+                $rcontent.content = angular.copy(tmpContent);
+              }
+          }).catch(function (err) {
+            $rcontent.content = angular.copy(tmpContent);
+            $log.debug('- Ctrl',err);
+          });
         }
+        //
+        // if (!$rcontent.contentForm.$valid) {
+        //   console.log(angular.element(document.getElementById('contentForm')));
+        //   console.log(angular.element(document.getElementById('contentForm')).find('.ng-invalid'));
+        //   $rcontent.contentInvalid = true;
+        //   $rcontent.focusHeading();
+        //   // angular.element('[name=' + $rcontent.contentForm.$name + ']').find('.ng-invalid:visible:first').focus();
+        //   return false;
+        // }
+        //
 
               // var tmpContent = $rcontent.content;
               // RContentFactory.saveContent($rcontent.content)
@@ -94,11 +129,11 @@
               // .catch(function (err) {
               //   $log.error('Ctrl',err.stack);
               // });
-              console.log($element);
-              console.log($element[0]);
-              console.log(Object.keys($element[0]));
-              console.log(Object.keys($element.querySelectorAll('#alert-success')));
-              $rcontent.contentCreated = true;
+              // console.log($element);
+              // console.log($element[0]);
+              // console.log(Object.keys($element[0]));
+              // console.log(Object.keys($element.querySelectorAll('#alert-success')));
+              // $rcontent.contentCreated = true;
       }
     };
 

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function RContentFactory($http,$log,$q,$rootScope,$timeout,Upload){
+  function RContentFactory($http,$log,$q,$rootScope,$timeout,Upload,AuthFactory){
     return {
       isCreatedContent: function(url){
         return $http.get('/api/article/find',{ params: { where: { url: url } }})
@@ -11,11 +11,8 @@
       },
       getUser : function()
       {
-        return $http.get('me').then(function (response){
-          return response.data.user;
-        })
-        .catch(function (err) {
-          $log.error(err.stack);
+        return AuthFactory.getUser().then(function (user) {
+          return user;
         });
       },
       getContent: function(contentField,contentID){
@@ -87,37 +84,38 @@
           }
         });
       },
-      updateContent : function(content,copyContent){
+      updateContent : function(content){
+        console.log('Fct',content);
+
         var promises = [
           this.getUser(),
           this.setCategoriesList(content.categories)
         ];
 
-        if(content.image.constructor === String)
-          promises.push();
+        if(content.image.constructor !== String)
+          promises.push(this.setImage(content.image));
 
-            
-            return $q.all([ this.getUser(),
-                          this.setCategoriesList(content.categories),
-                          this.setImage(content.image)
-                          ])
+
+            return $q.all(promises)
             .then(function(values) {
-              var resUser = content.creator || values[0].id,
+              var resUser = values[0].id,
                 resCatList = values[1],
-                resImageUrl = copyContent.image !== content.image ? values[2].fd : content.image;
+                resImageUrl = content.image.constructor !== String ? values[2].fd : content.image;
 
+                console.log(values[2]);
               content.creator = resUser;
               content.categories = resCatList;
               content.image = resImageUrl;
 
-              return $http.post('/api/article/create',content).then(function (response) {
-                console.log(response);
-                return response.data;
+
+              return $http.post('/api/article/update',content).then(function (response) {
+                return response;
               });
 
             })
            .catch(function (err) {
              $log.error('Factory',err);
+             return false;
            });
       }
     };

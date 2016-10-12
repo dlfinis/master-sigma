@@ -4,9 +4,8 @@
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
-
+/*global Article */
 var Promise = require('bluebird');
-var uuid = require('node-uuid');
 
 module.exports = {
   schema: true,
@@ -126,23 +125,19 @@ module.exports = {
               resolve(false);
             });
         });
-    },
-    setDead : function () {
-      var _state = this.state;
-      if(_state !== 'disable')
-        Article.update(_id,{ state: 'disable' }).exec(function afterwards(err, updated){
-          if (err) {
-            return;
-          }
-        });
     }
   },
   beforeUpdate : function(values, next){
-    sails.log('+ Before Update'+JSON.stringify(values));
-    // if((values.title || values.url || values.description || values.image || values.kind ) &&
-    //     !(values.title && values.url && values.description && values.image && values.kind))
-    //       values.state = 'edit';
-    next();
+    sails.log('+ Before Update',JSON.stringify(values));
+
+    if(values.state === 'disable') {
+      return next();
+    }
+
+    if((values.title || values.url || values.description || values.image || values.kind ) &&
+        !(values.title && values.url && values.description && values.image && values.kind))
+      values.state = 'edit';
+    return next();
   },
   toJSON : function(){
     var obj = this.Object();

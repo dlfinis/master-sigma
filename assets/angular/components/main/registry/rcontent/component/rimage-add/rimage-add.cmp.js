@@ -14,7 +14,6 @@
         scope.picFile= '';
         scope.croppedDataUrl = '';
         var ngModel = ctrls[1];
-        scope.picUrlFile = null;
 
 
         if (attrs.required !== undefined) {
@@ -24,11 +23,19 @@
         }
 
         scope.$on('initImage', function (event, data) {
-          // scope.picUrlFile = data.url;
-          element.querySelectorAll('.viewImage').css({
+          if(data.url)
+          {
+            element.querySelectorAll('.viewImage').css({
             'background-image': 'url(' + data.url + ')',
             'background-repeat': 'no-repeat'
             });
+          } else{
+            element.querySelectorAll('.viewImage').css({
+            'background-image': 'url(/images/submarine.png)',
+            'background-repeat': 'no-repeat'
+            });
+          }
+          scope.form.image.$setValidity('required',true);
         });
 
         scope.$on('clean', function (event, data) {
