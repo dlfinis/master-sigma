@@ -35,12 +35,29 @@ module.exports = {
    ***************************************************************************/
 
   connections: {
+    // Heroku Deploy
+  //  sigmaDv: {
+  //      adapter: 'sails-mysql',
+  //      host: 'us-cdbr-iron-east-03.cleardb.net',
+  //      user: 'bad812654b4b13',
+  //      password: 'eed57ee2',
+  //      database: 'heroku_1014650bcf2946e'
+  //     },
+    // sigmaPrd: {
+    //   adapter: 'sails-mysql',
+    //   host: process.env.OPENSHIFT_MYSQL_DB_HOST ,
+    //   port: process.env.OPENSHIFT_MYSQL_DB_PORT,
+    //  // Openshift Deploy
+    //   user: 'admin2gbmiNI',
+    //   password:'lJPfcp7n6ViH' ,
+    //   database: 'mastersigma'
+    // }
     sigmaPrd: {
       adapter: 'sails-mysql',
-      host: process.env.DB_HOST || 'localhost',
-      user: process.env.DB_USER || 'sigma',
-      password: process.env.DB_PASSWORD || 'sigma2016',
-      database: process.env.DB  || 'db_sigma'
+      host: 'localhost',
+      user: 'root',
+      password: 'root',
+      database: 'mastersigma'
     }
   },
   models: {
@@ -50,10 +67,10 @@ module.exports = {
   },
   session: {
     adapter: 'redis',
-    host: process.env.REDIS_HOST || 'pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com',
-    port: process.env.REDIS_PORT || 12873 || 6379,
+    host: process.env.REDISCLOUD_URL || 'pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com',
+    port: process.env.REDISCLOUD_PORT || 12873,
     ttl: 1800,
-    pass: process.env.REDIS_PASSWORD || 'mastersigma92' || '',
+    pass: process.env.REDISCLOUD_PASSWORD || 'mastersigma92',
     cookie: {
       maxAge: 6 * 60 * 60 * 1000
     }
@@ -61,21 +78,21 @@ module.exports = {
   /***************************************************************************
   * Set the port in the production environment to 80                        *
   ***************************************************************************/
-  host: process.env.NODE_HOST || '127.0.0.1',
+  host: process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
 
-  port: process.env.NODE_PORT || 8080,
+  port: process.env.OPENSHIFT_NODEJS_PORT || 8080,
   //  port: process.env.PORT || 1337,
 
   environment: process.env.NODE_ENV || 'development',
 
   scraper : {
-    url: 'http://'+ (process.env.NODE_HOST || '127.0.0.1') +':'+process.env.SCRAPER_PORT
+    url: 'http://'+ (process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1') +':'+3100
   },
   /***************************************************************************
    * Set the log level in production environment to 'silent'                 *
    ***************************************************************************/
   log: {
-    level: 'debug'
+    level: 'silly'
   }
 
 };

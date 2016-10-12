@@ -26,7 +26,7 @@ module.exports = {
   models: {
     schema: true,
     connection: 'sigmaDv',
-    migrate: 'safe'
+    migrate: 'alter'
   },
   application_auth: {
     enableLocalAuth: true,
