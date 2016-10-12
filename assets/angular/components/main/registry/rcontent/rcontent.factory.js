@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function RContentFactory($http,$log,$q,$rootScope,$timeout,Upload){
+  function RContentFactory($http,$log,$q,$rootScope,$timeout,Upload,ContentFactory){
     return {
       isCreatedContent: function(url){
         return $http.get('/api/article/find',{ params: { where: { url: url } }})
@@ -9,20 +9,20 @@
                   return response.data.results;
                 });
       },
+      findDiff: function (original, edited) {
+        var diff = {};
+        for (var key in original) {
+          if(!angular.equals(original[key], edited[key]))
+            diff[key] = edited[key];
+        }
+        return diff;
+      },
       getUser : function()
       {
-        return $http.get('me').then(function (response){
-          return response.data.user;
-        })
-        .catch(function (err) {
-          $log.error(err.stack);
-        });
+        return ContentFactory.getUser();
       },
-      getContent: function(contentField,contentID){
-        return $http.get('/api/article/findOne',{ params: { field: contentField, value: contentID }})
-                .then(function (response){
-                  return response.data.results;
-                });
+      getContent: function(contentID){
+        return ContentFactory.getContent('id',contentID);
       },
       getCategoriesList: function()
       {
@@ -55,70 +55,59 @@
         }
       },
       saveContent : function(content){
-        return this.isCreatedContent(content.url).then(function (response) {
-          if(response.length > 0)
-          {
-            return { status: 400 , msg: 'Exists url'};
-          }
-          else
-          {
-            return $q.all([ this.getUser(),
-                          this.setCategoriesList(content.categories),
-                          this.setImage(content.image)
-                          ])
-            .then(function(values) {
-              var resUser = values[0].id,
-                resCatList = values[1],
-                resImageUrl = values[2].fd;
+        return $q.all([ this.getUser(),
+                      this.setCategoriesList(content.categories),
+                      this.setImage(content.image)
+                      ])
+        .then(function(values) {
+          var resUser = values[0].id;
+          content.creator = resUser;
 
-              content.creator = resUser;
-              content.categories = resCatList;
-              content.image = resImageUrl;
+          if(!angular.isUndefined(content.categories))
+            content.categories = values[1];
 
-              return $http.post('/api/article/create',content).then(function (response) {
-                console.log(response);
-                return response.data;
-              });
+          if(!angular.isUndefined(content.image))
+            content.image = content.image.constructor !== String ? values[values.length-1].fd : content.image;
 
-            })
-           .catch(function (err) {
-             $log.error('Factory',err);
-           });
-          }
+          return $http.post('/api/article/create',content).then(function (response) {
+            return response;
+          });
+
         });
+
       },
-      updateContent : function(content,copyContent){
+      updateContent : function(contentID,content){
         var promises = [
-          this.getUser(),
-          this.setCategoriesList(content.categories)
+          this.getUser()
         ];
 
-        if(content.image.constructor === String)
-          promises.push();
+        if(!angular.isUndefined(content.categories) && content.categories.length > 0)
+          promises.push(this.setCategoriesList(content.categories));
 
-            
-            return $q.all([ this.getUser(),
-                          this.setCategoriesList(content.categories),
-                          this.setImage(content.image)
-                          ])
-            .then(function(values) {
-              var resUser = content.creator || values[0].id,
-                resCatList = values[1],
-                resImageUrl = copyContent.image !== content.image ? values[2].fd : content.image;
+        if(!angular.isUndefined(content.image) && content.image.constructor !== String)
+          promises.push(this.setImage(content.image));
 
-              content.creator = resUser;
-              content.categories = resCatList;
-              content.image = resImageUrl;
 
-              return $http.post('/api/article/create',content).then(function (response) {
-                console.log(response);
-                return response.data;
-              });
+        return $q.all(promises)
+        .then(function(values) {
+          if(!angular.isUndefined(content.creator))
+            content.creator = values[0].id;
 
-            })
-           .catch(function (err) {
-             $log.error('Factory',err);
-           });
+          if(!angular.isUndefined(content.categories))
+            content.categories = values[1];
+
+          if(!angular.isUndefined(content.image))
+            content.image = content.image.constructor !== String ? values[values.length-1].fd : content.image;
+
+          return $http.put('/api/article/'+contentID,content).then(function (response) {
+            return response;
+          });
+
+        })
+       .catch(function (err) {
+         $log.error('Factory',err);
+         return false;
+       });
       }
     };
   }

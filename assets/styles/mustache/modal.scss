@@ -3,10 +3,11 @@
   width: 80%;
 }
 
-.modal .modal-header .btn{
-  float:right;
+.modal{
+  .modal-header .btn{
+    float:right;
+  }
 }
-
 
 .modal .modal-header {
     padding: 5px 15px;

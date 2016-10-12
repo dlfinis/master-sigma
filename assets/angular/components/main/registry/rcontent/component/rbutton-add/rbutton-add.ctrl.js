@@ -11,7 +11,7 @@
         $location.path('/registry/content');
       },
       edit : function (){
-        $location.path('/registry/content/list');
+        $location.path('/registry/list');
       }
     };
 

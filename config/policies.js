@@ -27,33 +27,33 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,
-  '*': 'sessionAuth',
+  '*': 'sessionAuth'
 
-  'home': {
+  ,'home': {
     index: true
-  },
-  'user': {
+  }
+  ,'user': {
     me: true
-  },
-  'auth': {
+  }
+  ,'auth': {
     facebook: true,
     'facebook/callback': true,
     logout: true
-  },
-  'canvas': {
+  }
+  ,'canvas': {
     login : true,
     autologin : true
-  },
-  'test': {
-    '*': true
   }
-  //   // 'user': {
+  //,'test': {
+  //   '*': true
+  // }
+  // ,'user': {
   //   '*': true
   // },
-  //
-  // 'article': {
+
+  // ,'article': {
   //   '*': true
-  // },
+  // }
   //
   // 'category': {
   //   '*': true

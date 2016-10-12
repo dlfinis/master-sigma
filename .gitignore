@@ -6,8 +6,9 @@
 .rigging
 .tmp
 .assets
+assets/content
 assets/bower_components/
-
+.sass-cache
 
 ########################
 # node.js / npm
@@ -24,11 +25,11 @@ lib-cov
 pids
 logs
 results
+npm-debug.log
 
 node_modules
 web-scraper
-
-npm-debug.log
+www
 
 
 ########################

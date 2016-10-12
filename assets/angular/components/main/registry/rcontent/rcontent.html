@@ -5,22 +5,36 @@
     </div>
 
     <legend id="heading">Registro de Contenidos</legend>
-    <div class="lbl-list-content"><a ng-href="/registry/content/list">Lista de contenidos creados</a></div>
-    <button type="button" class="btn btn-default btn-sm" ng-click="$rcontent.test()">
+    <div class="lbl-list-content"><a ng-href="/#/registry/list">Lista de contenidos creados</a></div>
+    <!-- <button type="button" class="btn btn-default btn-sm" ng-click="$rcontent.test()">
       Test
-    </button>
+    </button> -->
     <!-- <div id="alert-create" class="alert alert-success" ng-show="$rcontent.contentForm.$submitted && $rcontent.content === '{}'"> -->
     <div id="alert-create" class="alert alert-sm alert-success fade-in"
-      ng-focus="$rcontent.contentCreated"
-      ng-show="$rcontent.contentForm.$pristine && $rcontent.contentForm.$submitted">
+      dismiss-on-timeout="2000"
+      ng-if="$rcontent.contentCreated">
       Almacenado con  <strong>éxito!</strong>
     </div>
+
+    <div id="alert-create" class="alert alert-sm alert-success fade-in"
+      dismiss-on-timeout="2000"
+      ng-if="$rcontent.contentUpdated">
+      Actualizado con  <strong>éxito!</strong>
+    </div>
+
+    <div id="alert-create" class="alert alert-sm alert-danger fade-in"
+      dismiss-on-timeout="2000"
+      ng-if="$rcontent.contentInvalid">
+      <span class="close" data-dismiss="alert">&times;</span>
+      Revise los <strong>párametros!</strong>
+    </div>
+
     <form name="$rcontent.contentForm" ng-init="$rcontent.initContent()" role="form" id="contentForm" novalidate>
        <div class="form-group">
       <label for="title">Título *</label><br />
       <input name="title" class="form-control" type="text" ng-model="$rcontent.content.title" ng-model-options="{ updateOn: 'blur' }" required />
-      <span class="notf notf-alert" ng-show="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
-        <i ng-show="$rcontent.contentForm.title.$error.required">Es un párametro requerido</i>
+      <span class="notf notf-alert" ng-if="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
+        <i ng-if="$rcontent.contentForm.title.$error.required">Es un párametro requerido</i>
       </span>
       <br />
     </div>
@@ -30,20 +44,21 @@
         ng-model="$rcontent.content.url"
         ng-model-options="{ updateOn: 'blur' }"
         required />
-      <span class="notf notf-alert" ng-show="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
-        <i ng-show="$rcontent.contentForm.url.$error.required">Es un párametro requerido</i>
-        <i ng-show="$rcontent.contentForm.url.$error.exist">La dirección web ya existe</i>
+      <!-- <span class="notf notf-alert" ng-if="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid"> -->
+      <span class="notf notf-alert">
+        <i ng-if="$rcontent.contentForm.url.$error.required">Es un párametro requerido</i>
+        <i ng-if="$rcontent.contentForm.url.$error.exist">La dirección web ya existe</i>
       </span>
       <br />
     </div>
     <div class="form-group">
       <label for="image">Recurso de image *</label><br />
       <div id="image" rimage-add ng-model="$rcontent.content.image" ng-cloak></div>
-      <pre>{{$rcontent.content.image | json}}</pre>
-      <pre>{{$rcontent.contentForm.image | json}}</pre>
+      <!-- <pre>{{$rcontent.content.image | json}}</pre> -->
+      <!-- <pre>{{$rcontent.contentForm.image | json}}</pre> -->
       <span class="notf notf-alert">
-        <i ng-show="$rcontent.contentForm.image.$error.required">Es un párametro requerido</i><br/>
-        <i ng-show="$rcontent.contentForm.image.$error.maxSize">Es un recurso muy grande
+        <i ng-if="$rcontent.contentForm.image.$error.required">Es un párametro requerido</i><br/>
+        <i ng-if="$rcontent.contentForm.image.$error.maxSize">Es un recurso muy grande
             {{errorFile.size / 1000000|number:1}}MB: max 3M</i><br/>
       </span>
       <br />
@@ -72,22 +87,18 @@
         <span class="notf notf-alert" ng-show="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
           <i ng-show="$rcontent.contentForm.categories.$error.required">Es un párametro requerido</i>
         </span>
-        <pre>{{$rcontent.content.categories | json}}</pre>
-        <pre>{{$rcontent.contentForm.categories | json}}</pre>
+        <!-- <pre>{{$rcontent.content.categories | json}}</pre> -->
+        <!-- <pre>{{$rcontent.contentForm.categories | json}}</pre> -->
       </div>
       <br /><br />
       <input type="button" ng-click="$rcontent.reset()" value="Limpiar" />
       <input type="submit" ng-click="$rcontent.save()" value="Guardar" />
     </form>
 
-    <div class="alert alert-danger fade in" ng-show="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
-      <strong>Revisar!</strong> Es necesario llenar los párametros.
-    </div>
-
-    <pre>{{$rcontent.contentForm.$error | json}}</pre>
+    <!-- <pre>{{$rcontent.contentForm.$error | json}}</pre>
     <pre>{{$rcontent.contentForm.$dirty | json}}</pre>
-    <pre>{{$rcontent.contentForm.$invalid | json}}</pre>
+    <pre>{{$rcontent.contentForm.$invalid | json}}</pre> -->
 
-    <pre>content = {{$rcontent.content | json}}</pre>
+    <!-- <pre>content = {{$rcontent.content | json}}</pre> -->
   </div>
 </div>

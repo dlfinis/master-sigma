@@ -204,8 +204,6 @@ module.exports = {
     var fquery = {};
     fquery[field] = fvalue ;
 
-    console.log(fquery);
-
     var query = Article.findOne(fquery)
                         .populate('creator')
                         .populate('categories')
@@ -263,6 +261,7 @@ module.exports = {
       });
     });
   },
+  //Get One article
   getArticleByField : function (articleQuery){
     return new Promise(function(resolve,reject){
       articleQuery.then(function (article) {
@@ -284,22 +283,6 @@ module.exports = {
         });
       });
 
-      // console.log(articleData);
-      // if(!_.isUndefined(articleData))
-      // {
-      //   sails.log.debug('-->Element Found:',articleData.length);
-      //   var article = ArticleService.getArticleStructure(articleData);
-      //   sails.log.debug('-i:',1,'id:',article.id,'>:',article.success || article.title,'+:',article.updatedAt);
-      //
-      //   resolve({
-      //     total:article.length, // 1
-      //     results:article //Element
-      //   });
-      // }
-      // else
-      // {
-      //   reject([]);
-      // }
     });
   },
   getArticleListByQuery : function (articleQuery,whereQuery){
@@ -401,14 +384,19 @@ module.exports = {
   },
   getArticleListByCreator : function (articleQuery,creator){
     sails.log.debug('+ List of elements filter by creator');
-    return new Promise(function(resolve){
+    return new Promise(function(resolve,reject){
 
       delete articleQuery._criteria['limit'];
 
 
       User.findOne({name:creator}).then( function(creatorRecord){
 
-        sails.log.debug('+ Filter By Creator >'+JSON.stringify(creatorRecord));
+        sails.log.debug('+ Filter By Creator >',JSON.stringify(creatorRecord));
+        if(_.isUndefined(creatorRecord))
+        {
+          sails.log.debug('-->Not found element of the creator');
+          return  reject(new Error('No found element of the creator'));
+        }
 
         articleQuery.where({'creator':creatorRecord.id});
 

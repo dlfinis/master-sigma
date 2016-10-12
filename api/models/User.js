@@ -18,6 +18,12 @@ module.exports = {
     },
     name: 'STRING',
     email: 'STRING',
+    //create/edit/query
+    state:{
+      type: 'STRING',
+      defaultsTo: 'query',
+      size: '20'
+    },
     firstname: 'STRING',
     lastname: 'STRING',
     gender: 'STRING',
@@ -27,9 +33,6 @@ module.exports = {
     },
     profileUrl: 'STRING',
     password: 'STRING',
-    state:{
-      defaultsTo: 'query'
-    },
     // Add a reference to Article
     articles: {
       collection: 'article',

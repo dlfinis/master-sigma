@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  function ArticleListFactory($http,$log,$uibModal,$q,partial,INIT){
+  function ArticleListFactory($http,$log,$uibModal,$q,ContentFactory,partial,INIT){
     return {
       _params: function () {
         return {
@@ -28,21 +28,10 @@
             categories : response[1].data
           };
         });
-
       },
-      isAlive: function(articleID)
-          {
-        var prms = {
-          articleID : articleID
-        };
+      getUser: function () {
 
-        return $http.get('/article/isAlive',{ params : prms  }).then(function (response){
-          $log.debug(response.data);
-          return response.data;
-        })
-            .catch(function (err) {
-              $log.error(err.stack);
-            });
+        return ContentFactory.getUser();
       },
       getArticles: function(props)
           {
