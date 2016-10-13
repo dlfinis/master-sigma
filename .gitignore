@@ -9,7 +9,7 @@
 assets/content
 assets/bower_components/
 .sass-cache
-
+content/
 ########################
 # node.js / npm
 ########################

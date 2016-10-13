@@ -63,13 +63,13 @@ module.exports = {
   ***************************************************************************/
   host: process.env.NODE_HOST || '127.0.0.1',
 
-  port: process.env.NODE_PORT || 8080,
-  //  port: process.env.PORT || 1337,
+  //port: process.env.NODE_PORT || 8080,
+  port: process.env.PORT || 1337,
 
   environment: process.env.NODE_ENV || 'development',
 
   scraper : {
-    url: 'http://'+ (process.env.NODE_HOST || '127.0.0.1') +':'+process.env.SCRAPER_PORT
+    url: 'http://'+ (process.env.NODE_HOST || '127.0.0.1') +':'+ process.env.SCRAPER_PORT || 3100
   },
   /***************************************************************************
    * Set the log level in production environment to 'silent'/'verbose'/'silly'*

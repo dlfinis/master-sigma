@@ -24,18 +24,15 @@
   function AuthFactory ($q, $log, $rootScope, $location, $http, $Session) {
     var authService = {};
 
-
     authService.login = function () {
       var deferred = $q.defer();
       $log.debug('+ AUTH LOGIN');
       $http
           .get('/me')
           .then(function (response) {
-            if(!$Session.get())
-            {
-              $log.debug('+ Set Session user ',response.data);
-              $Session.create(response.data);
-            }
+            $log.debug('+ Set Session user ',response.data);
+            $Session.destroy();
+            $Session.create(response.data);
             deferred.resolve(true);
           })
           .catch(function(err){
@@ -48,19 +45,45 @@
 
     authService.isAuthenticated = function () {
       var deferred = $q.defer();
-      authService.login().then(function (response) {
-        if(response) {
-          $log.debug('+ Session user ', $Session.get());
-          deferred.resolve(true);
-        }
-        else
-        {
-          deferred.resolve(false);
-        }
-      });
+      if(!$Session.get())
+      {
+        authService.login().then(function (response) {
+          if(response)
+          {
+            deferred.resolve(true);
+          }
+          else {
+            deferred.resolve(false);
+          }
+        });
+      }
+      else
+        deferred.resolve(true);
 
 
       return deferred.promise;
+    };
+
+    authService.getUser = function () {
+      var deferred = $q.defer();
+      if(!$Session.get())
+      {
+        authService.login().then(function (response) {
+          if(response)
+          {
+            deferred.resolve($Session.get().user);
+          }
+          else {
+            deferred.resolve(false);
+          }
+        });
+      }
+      else {
+        deferred.resolve($Session.get().user);
+      }
+
+      return deferred.promise;
+
     };
 
     authService.isAuthorized = function (authorizedRoles) {

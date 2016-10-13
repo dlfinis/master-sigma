@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
 	grunt.registerTask('buildProd', [
-		'compileAssetsProd',
+		'compileAssets',
 		'concat',
 		'uglify',
 		'cssmin',

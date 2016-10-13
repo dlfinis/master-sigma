@@ -21,6 +21,8 @@ module.exports.http = {
     var path = require('path');
 
     app.use('/website/static', express.static(path.resolve(__dirname, '../web-scraper/public')));
+    console.log(path.resolve(__dirname, '/content/image'));
+    app.use('/content/image', express.static(path.resolve(__dirname, 'content/image')));
 
     passport.use(new FacebookStrategy({
       clientID: sails.config.application_auth.facebookClientID,
