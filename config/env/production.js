@@ -25,7 +25,7 @@ module.exports = {
     facebookClientSecret: 'a2f5e3a27b74a64bc0d1ecc2d3a9ec31',
     facebookAppScopeString: 'email,user_birthday,user_friends,publish_actions',
     facebookAppScope: [ 'email,user_birthday','user_friends','publish_actions'],
-    facebookCallbackURL: 'https://sigma.uta.edu.ec/auth/facebook/callback',
+    facebookCallbackURL: 'https://master.sigma/auth/facebook/callback',
     facebookAppURL: 'https://apps.facebook.com/master-sigma/'
   },
 
@@ -33,9 +33,14 @@ module.exports = {
    * Set the default database connection for models in the production        *
    * environment (see config/connections.js and config/models.js )           *
    ***************************************************************************/
-
+  error:{
+	global: true
+  },
+  paths: {
+        public: 'www'
+  },
   connections: {
-    sigmaPrd: {
+    sigmaDB: {
       adapter: 'sails-mysql',
       host: process.env.DB_HOST || 'localhost',
       user: process.env.DB_USER || 'sigma',
@@ -45,7 +50,7 @@ module.exports = {
   },
   models: {
     schema: true,
-    connection: 'sigmaPrd',
+    connection: 'sigmaDB',
     migrate: 'safe'
   },
   session: {
@@ -75,7 +80,7 @@ module.exports = {
    * Set the log level in production environment to 'silent'/'verbose'/'silly'*
    ***************************************************************************/
   log: {
-    level: 'verbose'
+    level: 'silent'
   }
 
 };

@@ -1,0 +1,55 @@
+{
+  apps : [
+	{
+    name       : "scraper",
+    script     : "./web-scraper/app/index.js",
+	args: "",
+    instances  : 2,
+    exec_mode  : "cluster",
+		env: {
+		  "SCRAPER_PORT": 7000
+		}
+  	},	
+	{
+    name        : "zeus",
+    script      : "./app.js",
+    watch       : false,
+	max_restarts: 10,
+	min_uptime  : 5000,
+	autorestart: true,
+	args: "--prod --www --debug --port 7100 --db msigmadb --portdb 3306 --userdb root --passdb root",
+		env: {
+		  "SCRAPER_PORT": process.env.SCRAPER_PORT,
+		  "NODE_ENV": "production"
+		}
+  	},
+	{
+    name        : "ares",
+    script      : "./app.js",
+    watch       : false,
+	max_restarts: 10,
+	min_uptime  : 5000,
+	autorestart: true,
+	args: "--prod --www --debug --port 7200 --db msigmadb --portdb 3306 --userdb root --passdb root",
+		env: {
+		  "SCRAPER_PORT": process.env.SCRAPER_PORT,
+		  "NODE_ENV": "production"
+		}
+  	},
+	{
+    name        : "apolo",
+    script      : "./app.js",
+    watch       : false,
+	max_restarts: 10,
+	min_uptime  : 5000,
+	autorestart: true,
+	args: "--prod --www --debug --port 7300 --db msigmadb --portdb 3306 --userdb root --passdb root",
+		env: {
+		  "SCRAPER_PORT": process.env.SCRAPER_PORT,
+		  "NODE_ENV": "production"
+		}
+  	}
+  ]
+}
+
+

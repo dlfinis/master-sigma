@@ -1,9 +1,18 @@
-
 #!/bin/bash
 
-clear
-# git pull origin development && git checkout development 
-# git submodule foreach git pull origin master
-  git pull && git submodule update -i -r
-  npm install
-# bower install
+	clear
+	# git pull origin development && git checkout development 
+	# git submodule foreach git pull origin master
+	git pull && git submodule update -i -r
+	npm install
+#   bower install
+
+	if [ "$1" = "dev" ]; then
+		echo 'Development Deploy'
+	elif [ "$1" = "prod" ]
+	then 
+		echo 'Production Deploy'
+		./node_modules/grunt-cli/bin/grunt buildProd
+	fi
+
+
