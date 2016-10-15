@@ -17,7 +17,7 @@
 	max_restarts: 10,
 	min_uptime  : 5000,
 	autorestart: true,
-	args: "--prod --www --debug --port 7100 --db msigmadb --portdb 3306 --userdb root --passdb root",
+	args: "--prod --www --verbose --port 7100 --db msigmadb --portdb 3306 --userdb root --passdb root",
 		env: {
 		  "SCRAPER_PORT": process.env.SCRAPER_PORT,
 		  "NODE_ENV": "production"
@@ -30,7 +30,7 @@
 	max_restarts: 10,
 	min_uptime  : 5000,
 	autorestart: true,
-	args: "--prod --www --debug --port 7200 --db msigmadb --portdb 3306 --userdb root --passdb root",
+	args: "--prod --www --verbose --port 7200 --db msigmadb --portdb 3306 --userdb root --passdb root",
 		env: {
 		  "SCRAPER_PORT": process.env.SCRAPER_PORT,
 		  "NODE_ENV": "production"
@@ -43,7 +43,7 @@
 	max_restarts: 10,
 	min_uptime  : 5000,
 	autorestart: true,
-	args: "--prod --www --debug --port 7300 --db msigmadb --portdb 3306 --userdb root --passdb root",
+	args: "--prod --www --verbose --port 7300 --db msigmadb --portdb 3306 --userdb root --passdb root",
 		env: {
 		  "SCRAPER_PORT": process.env.SCRAPER_PORT,
 		  "NODE_ENV": "production"

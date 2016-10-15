@@ -6,7 +6,6 @@
 .rigging
 .tmp
 .assets
-assets/content
 assets/bower_components/
 .sass-cache
 content/
@@ -28,8 +27,7 @@ results
 npm-debug.log
 
 node_modules
-web-scraper
-www
+www/
 
 
 ########################

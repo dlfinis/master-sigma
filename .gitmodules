@@ -1,3 +1,0 @@
-[submodule "web-scraper"]
-	path = web-scraper
-	url = https://github.com/dlfinis/sigma-api-website-scraper.git
