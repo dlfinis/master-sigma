@@ -7,8 +7,8 @@
 .tmp
 .assets
 assets/bower_components/
-
-
+.sass-cache
+content/
 ########################
 # node.js / npm
 ########################
@@ -24,11 +24,10 @@ lib-cov
 pids
 logs
 results
-
-node_modules
-
 npm-debug.log
 
+node_modules/
+www/
 
 ########################
 # misc / editors

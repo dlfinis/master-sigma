@@ -11,7 +11,7 @@ module.exports = {
 
     time: {
       type:'FLOAT',
-      defaultsTo:0,
+      defaultsTo:1,
       required:true
     },
     // Add a reference to Article

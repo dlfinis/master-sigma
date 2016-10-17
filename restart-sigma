@@ -1,0 +1,11 @@
+
+#!/bin/bash
+
+clear
+## pm2 restart app.js --name sigma -x -- --prod 
+# pm2 delete sigma
+# pm2 start app.js --name sigma -x -- --prod 
+# pm2 logs
+pm2 delete all
+pm2 start process-pm2.json
+

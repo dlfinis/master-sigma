@@ -5,8 +5,7 @@
       restrict: 'E',
       scope: {},
       controller: 'RegistryCtrl',
-      controllerAs: '$registry',
-      templateUrl: partial.main.registry+'registry.html'
+      controllerAs: '$registry'
     };
   });
 

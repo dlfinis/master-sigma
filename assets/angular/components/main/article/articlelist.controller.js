@@ -1,11 +1,17 @@
-(function(module){
+(function(){
   'use strict';
 
-  function ArticleListCtrl($scope,$q,$sce,$log,$element,$rootScope,$timeout,ArticleListFactory,ModalBaseFactory)
+  function ArticleListCtrl($scope,$q,$sce,$log,$element,$timeout,ArticleListFactory,ModalBaseFactory)
   {
+
     var $articlelist = this;
 
+    $q.when(ArticleListFactory.getUser()).then(function (user) {
+      $articlelist.user = user;
+    });
+    
     $articlelist.data = [];
+    $articlelist.error = {};
 
     $articlelist.textSearchContent= '';
 
@@ -34,7 +40,6 @@
       }
 
     });
-
 
     $articlelist.clear = function ($event, $select){
       //stops click event bubbling
@@ -67,8 +72,8 @@
 
         var articleList = [];
         angular.forEach( response.data.results, function(article) {
-                //  $log.debug("Recommend > "+article.recommend);
-                //  $log.debug("State > "+article.state);
+        //  $log.debug("Recommend > "+article.recommend);
+        //  $log.debug("State > "+article.state);
           articleList.push(article);
         });
 
@@ -80,12 +85,6 @@
 
       });
     };
-
-
-    // $articlelist.$watchCollection('data', function (newValue,oldValue) {
-    //   $log.debug(newValue);
-    //   $log.debug(oldValue);
-    // });
 
     /**
      * Pagination
@@ -233,17 +232,6 @@
       return false;
     };
 
-    $articlelist.isSecure = function(articleID)
-    {
-      return  ArticleListFactory.isSecure(articleID)
-      .then(function(data){
-        return true;
-      })
-      .catch(function(err){
-        return false;
-      });
-    };
-
     $articlelist.getTrustedResource = function(resource)
     {
       //exist url with protocol
@@ -253,24 +241,33 @@
       return resource;
     };
 
+    // Load data, init scope, etc.
     (function init() {
-    // load data, init scope, etc.
-      ArticleListFactory._source_init().then(function (response) {
+
+      $q.when(ArticleListFactory._source_init(),function success(response) {
         $articlelist.setPagination(
-          response.articlelist.results,
-          response.articlelist.size,
-          ArticleListFactory._params().perPage
-        );
-        $rootScope.isReady = true;
+            response.articlelist.results,
+            response.articlelist.size,
+            ArticleListFactory._params().perPage
+          );
+          //Hide Loader
+        $articlelist.ok = true;
+
         $articlelist.normal = true;
         $articlelist.mcategories = response.categories.results;
+
+      },function error(e) {
+        $log.error('- Error get contents',e);
+        $articlelist.ok = true;
+        $articlelist.error.init = true;
       });
 
     })();
+
 
   }
 
   angular.module('app.main.article')
          .controller('ArticleListCtrl',ArticleListCtrl);
-        //  .controller('ModalCtrl',ModalCtrl);
+
 })();

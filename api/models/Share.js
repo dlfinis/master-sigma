@@ -4,10 +4,12 @@
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
+
 var graph = require('fbgraph');
 function completeSID(userID,shareSID){
 
-  var userSID,completeSID;
+  var userSID;
+  var completeSID;
   return User.findOne({id:userID}).then(function(user){
     if(user)
     {
@@ -41,8 +43,8 @@ module.exports = {
     user: {
       model: 'user',
       required: true
-    },
-  },
+    }
+  }
   // afterCreate : function(record,next){
   //   completeSID(record.user,record.sid).then(function(_sid){
   //     if(record.sid && _sid )

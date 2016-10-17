@@ -15,17 +15,13 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
-// 'fonts/fontawesome/*.css',
-// 'fonts/ubuntu/*.css',
-// 'fonts/oxygen/*.css',
-// 'fonts/opensans/*.css',
-// 'fonts/base.css',
   'bower_components/angular/*.css',
   'bower_components/angular-bootstrap/*.css',
   'bower_components/angular-loading-bar/build/loading-bar.css',
   'bower_components/bootstrap-css/**/bootstrap.css',
   'bower_components/bootstrap-css/**/bootstrap-theme.css',
   'bower_components/ui-select/**/select.css',
+  'bower_components/ng-img-crop/compile/unminified/ng-img-crop.css',
   'styles/**/*.css'
 ];
 
@@ -38,7 +34,6 @@ var jsFilesToInject = [
 // 'js/dependencies/sails.io.js',
 
 // Load Angular App
-  'bower_components/fontfaceobserver/fontfaceobserver.js',
   'bower_components/moment/min/moment-with-locales.js',
   'bower_components/angular/angular.js',
   'bower_components/angular-i18n/angular-locale_es.js',
@@ -51,6 +46,10 @@ var jsFilesToInject = [
   'bower_components/ui-select/dist/select.js',
   'bower_components/ng-onload/release/ng-onload.min.js',
   'bower_components/ng-facebook/ngFacebook.js',
+  'bower_components/ng-file-upload/ng-file-upload-all.js',
+  'bower_components/angular-smart-table/dist/smart-table.js',
+  // 'bower_components/ng-img-crop/compile/unminified/ng-img-crop.js',
+  'bower_components/ng-img-crop-full-extended/compile/unminified/ng-img-crop.js',
   'bower_components/angular-resource/angular-resource.js',
   'bower_components/angular-sanitize/angular-sanitize.js',
   'bower_components/angular-route/angular-route.js',

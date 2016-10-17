@@ -4,7 +4,7 @@
  * @description :: Server-side logic for managing article
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-/*global Article Like ArticleService ArticleQueryService ArticleFBService UserService*/
+/*global Article Like ArticleService ArticleQueryService ArticleFBService UserService UploadFileService*/
 var Promise = require('bluebird');
 
 
@@ -18,6 +18,9 @@ function dupJSONKeysBySpace(json) {
 }
 
 module.exports = {
+  /**
+   * A search articles without refinement
+   */
   findRawAll: function(req,res){
     var actionUtil = require('../../node_modules/sails/lib/hooks/blueprints/actionUtil');
     var articleQuery = Article.find()
@@ -48,8 +51,11 @@ module.exports = {
         return res.serverError(err);
       });
   },
+  /**
+   * Selective search of articles
+   */
   findElems : function(req,res){
-    sails.log.debug('+ Find Dark Elems');
+    sails.log.debug('+ Find Dark of Elems');
 
 
     var where = req.params.all().query;
@@ -85,6 +91,9 @@ module.exports = {
     });
 
   },
+  /**
+   * A complete search of all articles in the database
+   */
   findAll:function(req,res){
     var kindList = req.param('kind') || 'normal';
 
@@ -105,6 +114,10 @@ module.exports = {
     case 'normal': {
       ArticleQueryService.getArticleListNormal(articleQuery).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -112,6 +125,10 @@ module.exports = {
     case 'recommend': {
       ArticleQueryService.getArticleListRecommend(articleQuery).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -119,6 +136,10 @@ module.exports = {
     case 'creator': {
       ArticleQueryService.getArticleListByCreator(articleQuery,creator).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -126,6 +147,10 @@ module.exports = {
     case 'category': {
       ArticleQueryService.getArticleListByCategory(articleQuery,category).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -133,6 +158,10 @@ module.exports = {
     case 'liked': {
       ArticleQueryService.getArticleListMostLiked(articleQuery).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -140,6 +169,10 @@ module.exports = {
     case 'shared': {
       ArticleQueryService.getArticleListMostShared(articleQuery).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
       break;
     }
@@ -148,11 +181,32 @@ module.exports = {
       sails.log('-Default List');
       ArticleQueryService.getArticleListNormal(articleQuery).then(function (response){
         return res.json(200,response);
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
       });
     }
     }
 
   },
+  findOne: function (req, res) {
+
+    var articleQuery = ArticleQueryService._baseOneQuery(req);
+
+    sails.log('+ Find an specific Element');
+    ArticleQueryService.getArticleByField(articleQuery).then(function (response){
+        return res.json(200,response);
+    })
+    .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,err);
+    });
+
+  },
+  /**
+   * Info of an article
+   */
   stats: function (req,res) {
     var URI = req.param('uri');
     ArticleService._getStats(URI).then(function (response) {
@@ -163,6 +217,9 @@ module.exports = {
       return res.badRequest(err);
     });
   },
+  /**
+   * Check if an article have connectivity
+   */
   alive : function (req,res) {
     var articleID = req.param('articleID');
     Article.findOne({id:articleID}).then(function foundRecord(article){
@@ -180,12 +237,14 @@ module.exports = {
     });
 
   },
+  /**
+   * Check if an article have https connectivity.
+   */
   secure : function (req,res) {
     var articleID = req.param('articleID');
     Article.findOne({id:articleID}).then(function foundRecord(article){
       if(!article)
         return res.notFound();
-
       article.isSecure()
               .then(function(secure){
                 return res.ok(secure);
@@ -306,12 +365,72 @@ module.exports = {
       return res.serverError('URL broke:'+req.param('uri'));
     });
   },
-  test: function (req, res) {
-    return res.json({ status: 'OK' });
+  create: function (req,res){
+    var article = {};
+    console.log();
+    try{
+      article = {
+        title : req.param('title'),
+        description : req.param('description'),
+        url : req.param('url'),
+        image : req.param('image'),
+        creator : req.param('creator'),
+        categories : req.param('categories')
+      };
+    }catch(err){
+      sails.log.warn(err);
+      return res.serverError(err);
+    }
+
+    sails.log.debug(article);
+
+    if(article.creator && article.image && article.categories && article.image)
+      Article.create(article).exec(function (err, record) {
+        if(err) {
+          sails.log.warn(err.code,err.details);
+          if(err.code === 'E_VALIDATION')
+            return res.badRequest({attributes:err.invalidAttributes});
+          return res.serverError(err);
+        }
+        sails.log.debug('+ Article created:', record);
+        return res.ok('id:', record);
+      });
+    else{
+      return res.badRequest({err:'invalidAttributes'});
+    }
   },
-  testID: function (req, res) {
-    var nameID = req.param('name');
-    sails.log(req.param(nameID));
-    return res.json({ status: 'OKID' });
+  updt: function (req,res){
+    var article = {};
+    try{
+      article = {
+        id: req.param('id'),
+        title : req.param('title'),
+        description : req.param('description'),
+        url : req.param('url'),
+        image : req.param('image'),
+        creator : req.param('creator'),
+        categories : req.param('categories')
+      };
+    }catch(err){
+      sails.log.warn(err);
+      return res.serverError(err);
+    }
+
+    sails.log.debug(article);
+
+    if(article.creator && article.image && article.categories && article.image)
+      Article.update({id:article.id},article).exec(function (err, record) {
+        if(err) {
+          sails.log.warn(err.code,err.details);
+          if(err.code === 'E_VALIDATION')
+            return res.badRequest({attributes:err.invalidAttributes});
+          return res.serverError(err);
+        }
+        sails.log.debug('+ Article updated:', record);
+        return res.ok({id:record[0].id});
+      });
+    else{
+      return res.badRequest({err:'invalidAttributes'});
+    }
   }
 };

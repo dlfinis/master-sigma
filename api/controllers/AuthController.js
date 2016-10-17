@@ -47,7 +47,7 @@ module.exports = {
 
             UserService.current(user,'web',req);
 
-            return res.redirect('/#/wall');
+            return res.redirect('#/wall');
           });
         }
       }

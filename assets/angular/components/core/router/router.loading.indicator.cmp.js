@@ -4,7 +4,7 @@
     .directive('routeLoadingIndicator',function ($rootScope,$log,$timeout,cfpLoadingBar) {
       return {
         restrict: 'EA',
-        template: '<div class="col-lg-12 loading" ng-class="{\'fade-out\':isReady}">'+
+        template: '<div class="col-lg-12 loading" ng-class="{\'fade-out\': !isAppLoading, unfade: isAppLoading}">'+
                   '<img src="/images/spinner-2.gif"/>'+
                   '</div>',
         link: function(scope, element, attrs) {
@@ -15,6 +15,10 @@
             $log.debug('+ Ready Document');
             if(!$rootScope.isReadyPref)
               $rootScope.isReady = true;
+          });
+
+          $rootScope.$on('$locationChangeSuccess', function() {
+              console.log('LocationChange');
           });
 
           // Subscribe to broadcast of $stateChangeStart state event via AngularUI Router
@@ -48,7 +52,8 @@
               // If 800ms has elapsed, isAppLoading is set to false
               // else create a timeout to set isAppLoading to false after 800ms has elapsed since the startTime was set
               if (diff > 800) {
-                $rootScope.isAppLoading = false;
+                // if(!$rootScope.isReadyPref)
+                  $rootScope.isAppLoading = false;
                 cfpLoadingBar.complete();
               } else {
                 $timeout(function () {

@@ -8,7 +8,7 @@
         var prms = {
           uri : url
         };
-        return $http.get('/api/article/stats',
+        return $http.get('api/article/stats',
           {
             params : prms,
             ignoreLoadingBar : true

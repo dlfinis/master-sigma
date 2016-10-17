@@ -31,7 +31,7 @@ module.exports = function forbidden (data, options) {
   // Only include errors in response if application environment
   // is not set to 'production'.  In production, we shouldn't
   // send back any identifying information about errors.
-  if (sails.config.environment === 'production') {
+  if (sails.config.environment === 'production' && sails.config.keepResponseErrors !== true) {
     data = undefined;
   }
 
@@ -40,20 +40,37 @@ module.exports = function forbidden (data, options) {
     return res.jsonx(data);
   }
 
+  // If error glaba is true, render the error file
+  if (sails.config.errors.global === true || sails.config.hooks.views === false ) {
+	sails.log.verbose('Render file respond',res.statusCode);
+	return res.sendfile(sails.config.paths.public + '/error.html');
+  }
+
   // If second argument is a string, we take that to mean it refers to a view.
   // If it was omitted, use an empty object (`{}`)
   options = (typeof options === 'string') ? { view: options } : options || {};
+
+  // Attempt to prettify data for views, if it's a non-error object
+  var viewData = data;
+  if (!(viewData instanceof Error) && 'object' == typeof viewData) {
+    try {
+      viewData = require('util').inspect(data, {depth: null});
+    }
+    catch(e) {
+      viewData = undefined;
+    }
+  }
 
   // If a view was provided in options, serve it.
   // Otherwise try to guess an appropriate view, or if that doesn't
   // work, just send JSON.
   if (options.view) {
-    return res.view(options.view, { data: data });
+    return res.view(options.view, { data: viewData, title: 'Forbidden' });
   }
 
   // If no second argument provided, try to serve the default view,
   // but fall back to sending JSON(P) if any errors occur.
-  else return res.view('403', { data: data }, function (err, html) {
+  else return res.view('403', { data: viewData, title: 'Forbidden' }, function (err, html) {
 
     // If a view error occured, fall back to JSON(P).
     if (err) {

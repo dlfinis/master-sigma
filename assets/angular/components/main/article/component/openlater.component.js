@@ -10,7 +10,7 @@
         var prms = {};
         prms.articleID = article.id;
         prms.visitTime = time;
-        $http.post('/api/visit/create',prms)
+        $http.post('api/visit/create',prms)
         .then(function(record)
         {
           $log.debug(record.data);
@@ -76,7 +76,7 @@
     };
 
     $modal.close = function(){
-      console.log($modal.diffTime());
+      $log.debug($modal.diffTime());
       if($modal.diffTime() > 15)
       {
         $log.debug('Time:',$modal.diffTime());

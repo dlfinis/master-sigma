@@ -5,7 +5,7 @@
     return {
       getCategories: function()
           {
-        return $http.get('/api/category/find').then(function (response){
+        return $http.get('api/category/find').then(function (response){
           return response.data.results;
         })
             .catch(function (err) {
@@ -16,7 +16,7 @@
         return $http.get('/me').then(function (response){
                 //  console.log(response.data.user);
           article.creator = response.user.id;
-          return $http.post('/api/article/create',article).then(function (response){
+          return $http.post('api/article/create',article).then(function (response){
             console.log(response);
             return response;
           })

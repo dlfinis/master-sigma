@@ -18,6 +18,12 @@ module.exports = {
     },
     name: 'STRING',
     email: 'STRING',
+    //create/edit/query
+    state:{
+      type: 'STRING',
+      defaultsTo: 'query',
+      size: '20'
+    },
     firstname: 'STRING',
     lastname: 'STRING',
     gender: 'STRING',
@@ -45,7 +51,7 @@ module.exports = {
   }
   // ,beforeCreate : function(values, next){
   //   sails.log('+ Before Create User ',JSON.stringify(values));
-  // 
+  //
   //   require('fbgraph').get('me?fields=birthday,link,email', function(err, response) {
   //     if(err) sails.log.error(err);
   //

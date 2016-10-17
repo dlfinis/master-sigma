@@ -5,7 +5,7 @@
     return {
       getReading: function(url)
           {
-        return $http.get('/api/article/reading',{
+        return $http.get('api/article/reading',{
             params : { uri : url },
             ignoreLoadingBar : true
         });

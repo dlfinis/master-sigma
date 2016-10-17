@@ -21,6 +21,7 @@ module.exports.http = {
     var path = require('path');
 
     app.use('/website/static', express.static(path.resolve(__dirname, '../web-scraper/public')));
+    app.use('/content/image', express.static(path.resolve(__dirname, '../content/image')));
 
     passport.use(new FacebookStrategy({
       clientID: sails.config.application_auth.facebookClientID,
@@ -65,7 +66,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
     // sails.log.debug('=> verifyHandler with ', token, tokenSecret);
 
     // Debug of information returned by Facebook
-    sails.log.debug('+ Profile Facebook >',JSON.stringify(profile));
+    sails.log.debug('+ Profile Facebook >',profile);
     require ('fbgraph').setAccessToken(token);
     User.findOne({ uid: profile.id }, function (err, user) {
 
@@ -75,13 +76,14 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
         return done(null, user);
       } else {
         var data = {
-          provider: 'facebook',
+          provider: profile.provider,
           uid: profile.id,
           name: profile.displayName || profile.name
         };
-        if (profile.email) {
-          data.email = profile.email;
+        if (profile.emails[0] || profile._json.email) {
+          data.email = profile.emails[0].value || profile._json.email;
         }
+
         if (profile.name && (profile.name.givenName || profile.first_name)) {
           data.firstname = profile.name.givenName || profile.first_name;
         }
@@ -91,8 +93,8 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
         if (profile.gender) {
           data.gender = profile.gender;
         }
-        if (profile.birthday) {
-          data.birthday = profile.birthday;
+        if (profile.birthday || profile._json.birthday) {
+          data.birthday = profile._json.birthday;
         }
         if (profile.profileUrl || profile.link  ) {
           data.profileUrl = profile.profileUrl || profile.link;
@@ -106,7 +108,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
       }
     }
       catch(e){
-        sails.log.warning(e);
+        sails.log.warn(e);
       }
     });
   });

@@ -26,7 +26,7 @@ module.exports = {
   models: {
     schema: true,
     connection: 'sigmaDv',
-    migrate: 'safe'
+    migrate: 'alter'
   },
   application_auth: {
     enableLocalAuth: true,
@@ -55,7 +55,7 @@ module.exports = {
   //   key: require('fs').readFileSync(__dirname + '/ssl/server.key'),
   //   cert: require('fs').readFileSync(__dirname + '/ssl/server.crt')
   // },
-  port: process.env.PORT || 1337,
+  port: process.env.PORT || 8080,
   scraper : {
     url: 'http://'+'127.0.0.1'+':'+3100
   },

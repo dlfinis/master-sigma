@@ -1,12 +1,16 @@
 <!-- <pre> {{$articlelist.data | json}}</pre> -->
-<div class="container">
+<div class="container fade-ng-cloak" ng-if="$articlelist.ok">
   <div class="col-sm-12">
 
-    <div class="advanced-search ng-cloak fade-ng-cloak" advanced-search
-    source="$articlelist.data"
-    queryParams="$articlelist.queryParams"></div>
+    <div rbutton-add class="fade-ng-cloak" ng-if="$articlelist.user.state !== 'query'"></div>
 
-    <div class="sort-bar ng-cloak" ng-show="$articlelist.data.length > 0">
+    <div class="advanced-search" advanced-search
+    source="$articlelist.data"
+    queryParams="$articlelist.queryParams"
+    ng-hide="$articlelist.error.init"></div>
+
+    <div class="sort-bar ng-cloak fade-ng-cloak"
+    ng-hide="$articlelist.error.init">
       <div class="sort-item sort-section">
         <div class="sort-item tab"
           ng-class='{"active":$articlelist.normal}'
@@ -37,7 +41,7 @@
           <i class="fa fa-share-square-o" aria-hidden="true">*</i>
         </div>
       </div>
-       <div id="sort-category" class="sort-category ng-cloak fade-ng-cloak">
+       <div id="sort-category" class="sort-category">
         <ui-select  ng-init="$articlelist.getCategories()"
                     ng-model="$articlelist.mcategory.selected"
                     on-select="$articlelist.onSelectCategory($item)"
@@ -58,7 +62,7 @@
       Contenido
     </div>
 
-    <div class="not-articles" ng-if="$articlelist.data.length == 0 && !$articlelist.pagerData">
+    <div class="not-articles ng-cloak fade-ng-cloak" ng-if="($articlelist.data.length == 0 && !$articlelist.pagerData) || $articlelist.error.get">
       <h4>No existen artículos para visualizar.</h4>
       <div class="mnr-c">
         <div class="med card-section">
@@ -70,8 +74,8 @@
         </div>
       </div>
     </div>
-    <div class="article">
-      <div class="col-sm-12 post animate-repeat"
+    <div class="article ng-cloak fade-ng-cloak">
+      <div class="col-sm-12 post animate-repeat "
           ng-animate="'animate'"
           ng-repeat="article in $articlelist.data
             |limitTo: $articlelist.perPage
@@ -122,7 +126,7 @@
             <like
               stats="article.likes"
               source="article"
-              article-sid="article.ownlike.sid"
+              like-sid="article.ownlike.sid"
               uib-tooltip="Me gusta"
             ></like>
             <share stats="article.shares"
@@ -140,7 +144,7 @@
   </div>
 
     <div id="pager" class="col-sm-12 text-center"
-         ng-hide="$articlelist.data.length == 0 &&  !$articlelist.pagerData"
+         ng-hide="$articlelist.data.length == 0 &&  !$articlelist.pagerData || $articlelist.error.get || $articlelist.error.init"
          uib-tooltip="Páginas de los recursos disponibles">
       <uib-pagination
       boundary-links="true"

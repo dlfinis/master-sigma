@@ -1,9 +1,8 @@
 module.exports = function (grunt) {
-	grunt.registerTask('compileAssets', [
+	grunt.registerTask('compileAssets', [	
 		'clean:dev',
-		// 'jst:dev',
-		// 'less:dev',
+		'less:dev',
+		'ngtemplates:dev',
 		'copy:dev'
-		// 'coffee:dev'
 	]);
 };

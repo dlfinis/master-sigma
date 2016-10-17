@@ -196,6 +196,23 @@ module.exports = {
 
     return query;
   },
+  _baseOneQuery :function (req) {
+    UserService.current(req.user); // Set  current user
+
+    var field = req.param('field');
+    var fvalue = req.param('value');
+    var fquery = {};
+    fquery[field] = fvalue ;
+
+    var query = Article.findOne(fquery)
+                        .populate('creator')
+                        .populate('categories')
+                        .populate('likes')
+                        .populate('shares')
+                        .populate('visits');
+
+    return query;
+  },
   getTotalSize : function (){
     return new Promise(function (resolve){
       Article.count({state:['create', 'edit']}).exec(function countCB(err, found){
@@ -242,6 +259,30 @@ module.exports = {
         total:articlesList.length, // Number Elements respect to limit & state
         results:articlesList //Elements
       });
+    });
+  },
+  //Get One article
+  getArticleByField : function (articleQuery){
+    return new Promise(function(resolve,reject){
+      articleQuery.then(function (article) {
+
+        if(_.isUndefined(article))
+        {
+          sails.log.debug('-->Not found element');
+          return  reject(new Error('No found element'));
+        }
+
+        sails.log.debug('-->Element Found:');
+        sails.log.debug('-i:',1,'id:',article.id,'>:',article.success || article.title,'+:',article.updatedAt);
+
+        article = ArticleService.getArticleStructure(article);
+
+        return resolve({
+          total: 1, // 1
+          results: article //Element
+        });
+      });
+
     });
   },
   getArticleListByQuery : function (articleQuery,whereQuery){
@@ -343,14 +384,19 @@ module.exports = {
   },
   getArticleListByCreator : function (articleQuery,creator){
     sails.log.debug('+ List of elements filter by creator');
-    return new Promise(function(resolve){
+    return new Promise(function(resolve,reject){
 
       delete articleQuery._criteria['limit'];
 
 
       User.findOne({name:creator}).then( function(creatorRecord){
 
-        sails.log.debug('+ Filter By Creator >'+JSON.stringify(creatorRecord));
+        sails.log.debug('+ Filter By Creator >',JSON.stringify(creatorRecord));
+        if(_.isUndefined(creatorRecord))
+        {
+          sails.log.debug('-->Not found element of the creator');
+          return  reject(new Error('No found element of the creator'));
+        }
 
         articleQuery.where({'creator':creatorRecord.id});
 

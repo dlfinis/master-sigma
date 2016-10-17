@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  function ArticleListFactory($http,$log,$uibModal,$q,partial,INIT){
+  function ArticleListFactory($http,$log,$uibModal,$q,ContentFactory,partial,INIT){
     return {
       _params: function () {
         return {
@@ -21,28 +21,16 @@
       _source_init: function () {
         return $q.all([
           this.getArticles(this._props_normal()),
-          $http.get('/api/category/findExist')
+          $http.get('api/category/findExist')
         ]).then(function(response){
           return {
             articlelist : response[0].data,
             categories : response[1].data
           };
         });
-
       },
-      isAlive: function(articleID)
-          {
-        var prms = {
-          articleID : articleID
-        };
-
-        return $http.get('/article/isAlive',{ params : prms  }).then(function (response){
-          $log.debug(response.data);
-          return response.data;
-        })
-            .catch(function (err) {
-              $log.error(err.stack);
-            });
+      getUser: function () {
+        return ContentFactory.getUser();
       },
       getArticles: function(props)
           {
@@ -62,52 +50,17 @@
         if(props.category != 'undefined')
           prms.category = props.category;
 
-        return $http.get('/api/article/findAll', { params : prms });
-      },
-      getInfo: function(articleID)
-          {
-        return '>'+articleID;
+        return $http.get('api/article/findAll', { params : prms });
       },
       getCategories: function()
       {
-        return $http.get('/api/category/findExist')
+        return $http.get('api/category/findExist')
         .then(function (response){
           return response.data.results;
         })
         .catch(function (err) {
           console.error(err.stack);
         });
-      },
-      getHtmlData: function(url)
-          {
-        return $http.get('/api/article/htmldata?uri='+url);
-      },
-      setVisit: function(article,time)
-          {
-        var prms = {};
-        prms.articleID = article.id;
-        prms.visitTime = time;
-        $http.post('/api/visit/create',prms).then(function(record)
-             {
-          $log.debug(record.data);
-        }
-            ).catch(function (err) {
-              $log.error(err.stack);
-            });
-      },
-      getModal:function(article){
-        return $uibModal.open(
-          {
-            templateUrl: partial.main.article+'tpl/modal.cmp.html',
-            controller: 'ModalCtrl',
-            size: 'lg',
-            resolve: {
-              article: function(){
-                return article;
-              }
-            }
-                // backdrop: 'static'
-          });
       }
     };
   }

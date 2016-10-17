@@ -5,7 +5,10 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-/*global Article*/
+/*global Article Category*/
+
+var Promise = require('bluebird');
+
 module.exports = {
     findExist: function(req, res)
     {
@@ -31,5 +34,57 @@ module.exports = {
         sails.log.warn(err);
         return res.json(500,{total: 0,results:[]});
       });
+    },
+    getList: function (req,res) {
+
+      sails.log.debug('+ Get a list of all categories');
+      Category.find().then(function (categories) {
+        categories = _.map(categories,function getName(cElem) {
+            return cElem.name;
+        });
+        return res.json(200,{total: categories.length,results:categories});
+      })
+      .catch(function(err){
+        sails.log.warn(err);
+        return res.json(500,{total: 0,results:[]});
+      });
+
+    },
+    setList: function (req,res) {
+      sails.log.debug('+ Set categories listed ');
+      var catList = req.param('list');
+      var catIndexList = [];
+
+      if(!_.isArray(catList))
+      {
+        if(catList === undefined)
+          return res.json(400,{categories:[]});
+        else
+          catList = [ catList ];
+      }
+
+      Promise.each(catList, function(cElem) {
+        cElem = String(cElem).replace(/[^\A-zÀ-ú\s]/gmi, '');
+        return Category.findByName({'contains': cElem })
+              .then(function (category) {
+                if(_.isEmpty(category))
+                {
+                  sails.log.debug('+ Create new category');
+                  return Category.create({ name: cElem}).then(function (record) {
+                    sails.log.debug(record);
+                    catIndexList.push(record.id);
+                  });
+                }else {
+                  catIndexList.push(category[0].id);
+                }
+              });
+      }).then(function() {
+        return res.json(200,{total: catIndexList.length, results: catIndexList});
+      })
+      .catch(function (err) {
+        sails.log.warn(err);
+        return res.json(400,{categories:[]});
+      });
+
     }
 };

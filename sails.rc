@@ -1,6 +1,10 @@
 {
-    "hooks": {
-      "sockets": false,
-      "pubsub": false
-    }
+  "hooks": {
+     "sockets": false,
+     "pubsub": false,
+	 "views": false
+   }
+  "paths": {
+    "public": "assets"
+  }
 }

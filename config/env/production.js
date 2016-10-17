@@ -25,7 +25,7 @@ module.exports = {
     facebookClientSecret: 'a2f5e3a27b74a64bc0d1ecc2d3a9ec31',
     facebookAppScopeString: 'email,user_birthday,user_friends,publish_actions',
     facebookAppScope: [ 'email,user_birthday','user_friends','publish_actions'],
-    facebookCallbackURL: 'https://mastersigma-jaggerfly.rhcloud.com/auth/facebook/callback',
+    facebookCallbackURL: 'https://'+(process.env.HOST_ADDR || 'master.sigma')+'/auth/facebook/callback',
     facebookAppURL: 'https://apps.facebook.com/master-sigma/'
   },
 
@@ -33,37 +33,32 @@ module.exports = {
    * Set the default database connection for models in the production        *
    * environment (see config/connections.js and config/models.js )           *
    ***************************************************************************/
-
+  errors:{
+	global: true
+  },
+  paths: {
+        public: 'www'
+  },
   connections: {
-    // Heroku Deploy
-  //  sigmaDv: {
-  //      adapter: 'sails-mysql',
-  //      host: 'us-cdbr-iron-east-03.cleardb.net',
-  //      user: 'bad812654b4b13',
-  //      password: 'eed57ee2',
-  //      database: 'heroku_1014650bcf2946e'
-  //     },
-    sigmaPrd: {
+    sigmaDB: {
       adapter: 'sails-mysql',
-      host: process.env.OPENSHIFT_MYSQL_DB_HOST ,
-      port: process.env.OPENSHIFT_MYSQL_DB_PORT,
-     // Openshift Deploy
-      user: 'admin2gbmiNI',
-      password:'lJPfcp7n6ViH' ,
-      database: 'mastersigma'
+      host: process.env.DB_HOST || 'localhost',
+      user: process.env.DB_USER || 'sigma',
+      password: process.env.DB_PASSWORD || 'sigma2016',
+      database: process.env.DB  || 'db_sigma'
     }
   },
   models: {
     schema: true,
-    connection: 'sigmaPrd',
+    connection: 'sigmaDB',
     migrate: 'safe'
   },
   session: {
     adapter: 'redis',
-    host: process.env.REDISCLOUD_URL || 'pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com',
-    port: process.env.REDISCLOUD_PORT || 12873,
+    host: process.env.REDIS_HOST || 'pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com',
+    port: process.env.REDIS_PORT || 12873 || 6379,
     ttl: 1800,
-    pass: process.env.REDISCLOUD_PASSWORD || 'mastersigma92',
+    pass: process.env.REDIS_PASSWORD || 'mastersigma92' || '',
     cookie: {
       maxAge: 6 * 60 * 60 * 1000
     }
@@ -71,21 +66,21 @@ module.exports = {
   /***************************************************************************
   * Set the port in the production environment to 80                        *
   ***************************************************************************/
-  host: process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
+  host: process.env.NODE_HOST || '127.0.0.1',
 
-  port: process.env.OPENSHIFT_NODEJS_PORT || 8080,
-  //  port: process.env.PORT || 1337,
+  //port: process.env.NODE_PORT || 8080,
+  port: process.env.PORT || 1337,
 
   environment: process.env.NODE_ENV || 'development',
 
   scraper : {
-    url: 'http://'+ (process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1') +':'+3100
+    url: 'http://'+ (process.env.NODE_HOST || '127.0.0.1') +':'+ process.env.SCRAPER_PORT || 3100
   },
   /***************************************************************************
-   * Set the log level in production environment to 'silent'                 *
+   * Set the log level in production environment to 'silent'/'verbose'/'silly'*
    ***************************************************************************/
   log: {
-    level: 'silly'
+    level: 'silent'
   }
 
 };

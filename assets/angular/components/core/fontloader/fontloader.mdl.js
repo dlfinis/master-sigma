@@ -1,3 +1,4 @@
+/* global WebFont */
 (function () {
   'use strict';
 
