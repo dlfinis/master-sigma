@@ -39,10 +39,16 @@ module.exports = function badRequest(data, options) {
   }
 
   // If the user-agent wants JSON, always respond with JSON
-  // If views are disabled, revert to json
-  if (req.wantsJSON || sails.config.hooks.views === false) {
+  if (req.wantsJSON) {
     return res.jsonx(data);
   }
+
+  // If error glaba is true, render the error file
+  if (sails.config.errors.global === true || sails.config.hooks.views === false ) {
+	sails.log.verbose('Render file respond',res.statusCode);
+	return res.sendfile(sails.config.paths.public + '/error.html');
+  }
+
 
   // If second argument is a string, we take that to mean it refers to a view.
   // If it was omitted, use an empty object (`{}`)

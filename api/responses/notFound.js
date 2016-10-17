@@ -41,16 +41,16 @@ module.exports = function notFound (data, options) {
   }
 
 
-  // If views are disabled, render a file
-	if (sails.config.hooks.views === false) {
-		sails.log.verbose('Render file respond',res.statusCode);
-		return res.sendfile(sails.config.paths.public + '/'+res.statusCode+'.html');
-	}
-
   // If the user-agent wants JSON, always respond with JSON
-	if (req.wantsJSON) {
-		return res.jsonx(data);
-	}
+  if (req.wantsJSON) {
+    return res.jsonx(data);
+  }
+
+  // If error glaba is true, render the error file
+  if (sails.config.errors.global === true || sails.config.hooks.views === false ) {
+	sails.log.verbose('Render file respond',res.statusCode);
+	return res.sendfile(sails.config.paths.public + '/error.html');
+  }
  
 
   // If second argument is a string, we take that to mean it refers to a view.
