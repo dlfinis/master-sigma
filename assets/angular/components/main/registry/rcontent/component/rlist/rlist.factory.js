@@ -21,7 +21,7 @@
           });
         })
         .catch(function (err) {
-          $log.err(err);
+          $log.error(err);
           return false;
         });
       },

@@ -6,7 +6,7 @@
   function RelatedFactory($log,$http) {
     return {
       get: function (id) {
-        return $http.get('/api/related/find',
+        return $http.get('api/related/find',
         { params:{ id: id },
           ignoreLoadingBar : true
         });

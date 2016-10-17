@@ -8,8 +8,8 @@
  // var udir_images = './assets/content/images/';
 //var dir_content_image = '../../assets'+uimage;
 
-var uimage = '/content/image/';
-var dir_content_image = '../..'+uimage;
+var uimage = 'content/image/';
+var dir_content_image = '../../'+uimage;
 var Promise = require('bluebird');
 module.exports = {
   /**

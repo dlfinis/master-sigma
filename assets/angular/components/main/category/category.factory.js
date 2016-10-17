@@ -5,7 +5,7 @@
     return {
       getList: function()
       {
-        return $http.get('/api/category/getList').then(function (response){
+        return $http.get('api/category/getList').then(function (response){
           return response.data.results;
         })
         .catch(function (err) {
@@ -14,7 +14,7 @@
       },
       setList: function(catList)
       {
-        return $http.get('/api/category/setList',{ params: { list: catList }})
+        return $http.get('api/category/setList',{ params: { list: catList }})
                 .then(function (response){
                   return response.data.results;
                 });

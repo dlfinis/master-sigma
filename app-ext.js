@@ -25,6 +25,7 @@ module.exports = {
 	program.option('--silly');
 	program.option('--www');
 	program.option('--host [Host]');
+	program.option('--hostaddr [HostAddr]');
 	program.option('--port [Port]');
 	program.option('--db [DB]');
 	program.option('--hostdb [hostDb]');
@@ -49,6 +50,10 @@ module.exports = {
 	if(program.host){
 		process.env['NODE_HOST'] = program.host;		
 		config.host = program.host;
+	}
+
+	if(program.hostaddr){
+		process.env['HOST_ADDR'] = program.hostaddr;
 	}
 
 	if(program.port){

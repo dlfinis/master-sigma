@@ -145,7 +145,7 @@
 
       if(JSON.stringify($rcontent.content) === '{}')
       {
-        $log.err('Not content info');
+        $log.error('Not content info');
       }else {
         $rcontent.resetMessages();
 

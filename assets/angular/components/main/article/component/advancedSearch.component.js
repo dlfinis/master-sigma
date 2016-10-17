@@ -23,7 +23,7 @@
   function AdvancedSearchFactory ($http) {
     return {
       find : function (query) {
-        return $http.get('/api/article/findElems',
+        return $http.get('api/article/findElems',
           {
             params : { query : query }
           });

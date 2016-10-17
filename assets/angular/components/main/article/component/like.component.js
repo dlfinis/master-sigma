@@ -5,7 +5,7 @@
     return {
       havelike: function(articleID)
       {
-        return $http.get('/api/article/havelike',
+        return $http.get('api/article/havelike',
           {
             params : { articleID: articleID },
             ignoreLoadingBar : true
@@ -13,7 +13,7 @@
       },
       setlike: function(articleID,articleURL)
       {
-        return $http.post('/api/article/setlike',
+        return $http.post('api/article/setlike',
           {
             articleID:articleID ,
             articleURL:articleURL
@@ -24,7 +24,7 @@
       },
       deletelike: function(likeSid)
       {
-        return $http.delete('/api/article/deletelike',
+        return $http.delete('api/article/deletelike',
           {
             params : { likeSid:likeSid },
             ignoreLoadingBar : true

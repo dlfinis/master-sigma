@@ -13,6 +13,12 @@
 module.exports = function(grunt) {
 
 	grunt.config.set('concat', {
+		options: {
+		    stripBanners: {
+				block: true,
+				line: true
+			}
+    	},
 		js: {
 			src: require('../pipeline').jsFilesToInject,
 			dest: '.tmp/public/concat/production.js'

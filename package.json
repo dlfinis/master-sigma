@@ -68,6 +68,7 @@
     "connect-livereload": "^0.5.4",
     "eslint-plugin-angular": "^1.0.1",
     "eslint-plugin-node": "^1.4.0",
+    "grunt-angular-templates": "^1.1.0",
     "grunt-eslint": "^18.1.0",
     "lorem-ipsum": "^1.0.3",
     "sails-hook-autoreload": "^0.13.1"

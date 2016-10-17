@@ -21,7 +21,7 @@
       _source_init: function () {
         return $q.all([
           this.getArticles(this._props_normal()),
-          $http.get('/api/category/findExist')
+          $http.get('api/category/findExist')
         ]).then(function(response){
           return {
             articlelist : response[0].data,
@@ -50,11 +50,11 @@
         if(props.category != 'undefined')
           prms.category = props.category;
 
-        return $http.get('/api/article/findAll', { params : prms });
+        return $http.get('api/article/findAll', { params : prms });
       },
       getCategories: function()
       {
-        return $http.get('/api/category/findExist')
+        return $http.get('api/category/findExist')
         .then(function (response){
           return response.data.results;
         })

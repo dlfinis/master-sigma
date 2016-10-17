@@ -4,7 +4,7 @@
   function RContentFactory($http,$log,$q,$rootScope,$timeout,Upload,ContentFactory){
     return {
       isCreatedContent: function(url){
-        return $http.get('/api/article/find',{ params: { where: { url: url } }})
+        return $http.get('api/article/find',{ params: { where: { url: url } }})
                 .then(function (response){
                   return response.data.results;
                 });
@@ -26,7 +26,7 @@
       },
       getCategoriesList: function()
       {
-        return $http.get('/api/category/getList').then(function (response){
+        return $http.get('api/category/getList').then(function (response){
           return response.data.results;
         })
         .catch(function (err) {
@@ -35,7 +35,7 @@
       },
       setCategoriesList: function(catList)
       {
-        return $http.get('/api/category/setList',{ params: { list: catList }})
+        return $http.get('api/category/setList',{ params: { list: catList }})
                 .then(function (response){
                   return response.data.results;
                 });
@@ -44,7 +44,7 @@
       {
 
         if(imageBlob)
-          return Upload.upload({ url: '/api/upload/image',
+          return Upload.upload({ url: 'api/upload/image',
                                 data: {image : imageBlob}
                             })
                             .then(function (response){
@@ -69,7 +69,7 @@
           if(!angular.isUndefined(content.image))
             content.image = content.image.constructor !== String ? values[values.length-1].fd : content.image;
 
-          return $http.post('/api/article/create',content).then(function (response) {
+          return $http.post('api/article/create',content).then(function (response) {
             return response;
           });
 
@@ -99,7 +99,7 @@
           if(!angular.isUndefined(content.image))
             content.image = content.image.constructor !== String ? values[values.length-1].fd : content.image;
 
-          return $http.put('/api/article/'+contentID,content).then(function (response) {
+          return $http.put('api/article/'+contentID,content).then(function (response) {
             return response;
           });
 

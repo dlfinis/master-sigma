@@ -35,7 +35,7 @@
           $rlist.contentList = contentList;
       })
       .catch(function (err) {
-        $log.err(err);
+        $log.error(err);
       });
     };
 

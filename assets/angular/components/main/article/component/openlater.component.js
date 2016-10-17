@@ -10,7 +10,7 @@
         var prms = {};
         prms.articleID = article.id;
         prms.visitTime = time;
-        $http.post('/api/visit/create',prms)
+        $http.post('api/visit/create',prms)
         .then(function(record)
         {
           $log.debug(record.data);
