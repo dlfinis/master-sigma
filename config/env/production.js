@@ -25,7 +25,7 @@ module.exports = {
     facebookClientSecret: 'a2f5e3a27b74a64bc0d1ecc2d3a9ec31',
     facebookAppScopeString: 'email,user_birthday,user_friends,publish_actions',
     facebookAppScope: [ 'email,user_birthday','user_friends','publish_actions'],
-    facebookCallbackURL: 'https://'+(process.env.HOST_ADDR || 'master.sigma')+'/auth/facebook/callback',
+    facebookCallbackURL: 'https://'+(process.env.HOSTNAME || 'master.sigma')+(process.env.SUB_HOSTNAME || '')+'/auth/facebook/callback',
     facebookAppURL: 'https://apps.facebook.com/master-sigma/'
   },
 
