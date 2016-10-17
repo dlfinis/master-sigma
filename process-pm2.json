@@ -51,7 +51,7 @@
       autorestart: true,
       args: "--prod --www --verbose --port 7300 --db msigmadb --portdb 3306 --userdb root --passdb root",
       env: {
-		  "SCRAPER_PORT": processs.env.SCRAPER_PORT,
+		  "SCRAPER_PORT": process.env.SCRAPER_PORT,
 		  "NODE_ENV": "production",
 		  "HOSTNAME": "master.sigma",
 		  "SUB_HOSTNAME": "/apolo"
