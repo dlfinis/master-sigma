@@ -1,63 +1,63 @@
 {
   apps : [
     {
-      name       : 'scraper',
-      script     : './web-scraper/app/index.js',
-      args: '',
+      name       : "scraper",
+      script     : "./web-scraper/app/index.js",
+      args: "",
       instances  : 2,
       max_restarts: 10,
-      exec_mode  : 'cluster',
+      exec_mode  : "cluster",
       env: {
-		  'SCRAPER_PORT': 7000
+		  "SCRAPER_PORT": 7000
       }
   	},
     {
-      name        : 'zeus',
-      script      : './app.js',
+      name        : "zeus",
+      script      : "./app.js",
       instances : 2,
       watch       : false,
       max_restarts: 10,
       min_uptime  : 5000,
       autorestart: true,
-      args: '--prod --www --verbose --port 7100 --db msigmadb --portdb 3306 --userdb root --passdb root',
+      args: "--prod --www --verbose --port 7100 --db msigmadb --portdb 3306 --userdb root --passdb root",
       env: {
-		  'SCRAPER_PORT': process.env.SCRAPER_PORT,
-		  'NODE_ENV': 'production',
-		  'HOSTNAME': 'master.sigma',
-		  'SUB_HOSTNAME': '/zeus'
+		  "SCRAPER_PORT": process.env.SCRAPER_PORT,
+		  "NODE_ENV": "production",
+		  "HOSTNAME": "master.sigma",
+		  "SUB_HOSTNAME": "/zeus"
       }
   	},
     {
-      name        : 'ares',
-      script      : './app.js',
+      name        : "ares",
+      script      : "./app.js",
       watch       : false,
       max_restarts: 10,
       min_uptime  : 5000,
       autorestart: true,
-      args: '--prod --www --verbose --port 7200 --db msigmadb --portdb 3306 --userdb root --passdb root',
+      args: "--prod --www --verbose --port 7200 --db msigmadb --portdb 3306 --userdb root --passdb root",
       env: {
-		  'SCRAPER_PORT': process.env.SCRAPER_PORT,
-		  'NODE_ENV': 'production',
-		  'HOSTNAME': 'master.sigma',
-		  'SUB_HOSTNAME': '/ares'
+		  "SCRAPER_PORT": process.env.SCRAPER_PORT,
+		  "NODE_ENV": "production",
+		  "HOSTNAME": "master.sigma",
+		  "SUB_HOSTNAME": "/ares"
       }
   	},
     {
-      name        : 'apolo',
-      script      : './app.js',
+      name        : "apolo",
+      script      : "./app.js",
       watch       : false,
       max_restarts: 10,
       min_uptime  : 5000,
       autorestart: true,
-      args: '--prod --www --verbose --port 7300 --db msigmadb --portdb 3306 --userdb root --passdb root',
+      args: "--prod --www --verbose --port 7300 --db msigmadb --portdb 3306 --userdb root --passdb root",
       env: {
-		  'SCRAPER_PORT': processs.env.SCRAPER_PORT,
-		  'NODE_ENV': 'production',
-		  'HOSTNAME': 'master.sigma',
-		  'SUB_HOSTNAME': '/apolo'
+		  "SCRAPER_PORT": processs.env.SCRAPER_PORT,
+		  "NODE_ENV": "production",
+		  "HOSTNAME": "master.sigma",
+		  "SUB_HOSTNAME": "/apolo"
       }
   	}
-  ];
+  ]
 }
 
 
