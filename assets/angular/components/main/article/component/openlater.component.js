@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   function ScraperFactory($log,$resource){
-    return $resource('/scraper/?url=:url', {url:'@url'});
+    return $resource('scraper/?url=:url', {url:'@url'});
   }
   function ModalBaseFactory($http,$log){
     return {
@@ -101,24 +101,25 @@
 
       $modalInstance.opened.then(function (){
         $log.debug('-Opened Modal');
-        $window.FB.Canvas.getPageInfo(
-          function(info) {
-            // Get the document offset of FB iFrame: FB scrollTop - FB offsetTop = offsetTop canvas
-            var offset = info.scrollTop - info.offsetTop;
+        if(!angular.isUndefined($window.FB.Canvas))
+          $window.FB.Canvas.getPageInfo(
+            function(info) {
+              // Get the document offset of FB iFrame: FB scrollTop - FB offsetTop = offsetTop canvas
+              var offset = info.scrollTop - info.offsetTop;
 
-            // Get the window viewport height of FB iFrame: FB clientHeight - FB offsetTop
-            var viewportHeight = info.clientHeight - info.offsetTop;
+              // Get the window viewport height of FB iFrame: FB clientHeight - FB offsetTop
+              var viewportHeight = info.clientHeight - info.offsetTop;
 
-            // cache your dialog element
-            var $dialog = angular.element(document.getElementsByClassName('modal-dialog'));
+              // cache your dialog element
+              var $dialog = angular.element(document.getElementsByClassName('modal-dialog'));
 
-            // now set your dialog position
-            var positionWindow = (offset  + (viewportHeight/2)) - ($dialog.prop('offsetHeight')/2);
-            var styles = {
-              'top' : positionWindow+'px'
-            };
-            $dialog.css( styles );
-          });
+              // now set your dialog position
+              var positionWindow = (offset  + (viewportHeight/2)) - ($dialog.prop('offsetHeight')/2);
+              var styles = {
+                'top' : positionWindow+'px'
+              };
+              $dialog.css( styles );
+            });
       });
 
       $modalInstance.result.then(function (ops){

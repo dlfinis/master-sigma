@@ -16,12 +16,13 @@ module.exports = {
   facebook: function (req, res) {
     sails.log.debug('+ AUTH.FACEBOOK PROVIDER');
     passport.authenticate('facebook-canvas', {
-      scope: sails.config.application_auth.facebookAppScope,
-      failureRedirect: '/'
+      scope: sails.config.application_auth.facebookAppScope
     })(req, res, req.next);
   },
   'facebook/callback' : function (req,res,next) {
+    //Review process . JWT
     sails.log.debug('+ AUTH.FACEBOOK CALLBACK');
+    console.log(require('url').parse(req.url).pathname);
     passport.authenticate('facebook-canvas',{},
       function (err, user)
       {
@@ -42,12 +43,11 @@ module.exports = {
             }
 
             sails.log.debug('+ User Login >',JSON.stringify(user));
-            sails.log.debug('+ REDIRECT TO ','/#/wall');
+            sails.log.debug('+ REDIRECT TO ',process.env.SUB_HOSTNAME+'/#/wall');
             sails.log.debug('+ ORIGIN WEB');
 
             UserService.current(user,'web',req);
-
-            return res.redirect('#/wall');
+            return res.redirect(process.env.SUB_HOSTNAME+'/#/wall');
           });
         }
       }
@@ -58,7 +58,7 @@ module.exports = {
     req.session.destroy(function(err) {
       sails.log.debug('+ AUTH.SESSION.DESTROY');
       req.logOut();
-      return res.redirect('/');
+      return res.redirect(process.env.SUB_HOSTNAME+'/');
     });
   }
 };

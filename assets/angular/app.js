@@ -22,18 +22,22 @@
             'FB',
             '$httpProvider',
             '$routeProvider',
+            '$locationProvider',
             '$logProvider',
             '$SessionProvider',
             '$compileProvider',
+            'lazyImgConfigProvider',
             '$facebookProvider',
             'cfpLoadingBarProvider',
   function( INIT,
             FB,
             $httpProvider,
             $routeProvider,
+            $locationProvider,
             $logProvider,
             $SessionProvider,
             $compileProvider,
+            lazyImgConfigProvider,
             $facebookProvider,
             cfpLoadingBarProvider ) {
 
@@ -68,6 +72,19 @@
     //Interceptor of Http Requests
     $httpProvider.interceptors.push('apiInterceptor');
 
+    lazyImgConfigProvider.setOptions({
+      // offset: 100, // how early you want to load image (default = 100)
+      errorClass: 'error', // in case of loading image failure what class should be added (default = null)
+      // successClass: 'success', // in case of loading image success what class should be added (default = null)
+      onError: function(image){
+        console.log('- Img not found:',image.src);
+        angular.element( image.$elem ).attr('src','images/submarine.png');
+
+      } // function fired on loading error
+      // onSuccess: function(image){}, // function fired on loading success
+      // container: angular.element(scrollable) // if scrollable container is not $window then provide it here
+    });
+
     //Set Facebook API configuration
     $facebookProvider.setAppId(FB.clientID);
     $facebookProvider.setPermissions(FB.permissions);
@@ -77,7 +94,16 @@
     // cfpLoadingBarProvider.spinnerTemplate = '<div style="margin:20% 0 0 50%;"><span class="fa fa-spinner fa-pulse fa-3x"></div>';
     // cfpLoadingBarProvider.spinnerTemplate = '<div style="text-align: center; left: 0px; height: 100%; width: 100%; z-index: 1050; color: rgb(52, 69, 87); top: 0px; background: rgb(52, 69, 87) none repeat scroll 0% 0%; opacity: 0.45; position: fixed;"><img style="width: 100%;" src="/images/spinner.gif"></div>';
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-    cfpLoadingBarProvider.spinnerTemplate = '<div style="position: absolute; top: 0px; left: 0px; background-color: rgb(52, 69, 87); color: #EAEAEA; height: 9999px; width: 100%; z-index: 1040; vertical-align: middle; opacity: 0.55; text-align: center; padding-top: 5px;"><span class="fa fa-refresh fa-spin fa-3x fa-fw" style="vertical-align: middle;"></span><div style="text-align: center; color: rgb(255, 245, 245); font-weight: bold; display: inline-block;">Procesando información...</div></div>';
+    var body = document.body, html = document.documentElement;
+    var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    cfpLoadingBarProvider.spinnerTemplate = '<div id="loading-bar" \
+    style="position: absolute; top: 0px; left: 0px; background-color: rgb(52, 69, 87); \
+    color: #EAEAEA; height: '+height+'px; width: 100%; z-index: 1050; vertical-align: middle; \
+    opacity: 0.55; text-align: center; padding-top: 5px;">\
+    <span class="fa fa-refresh fa-spin fa-3x fa-fw" style="vertical-align: middle;"></span>\
+    <div style="text-align: center; color: rgb(255, 245, 245); font-weight: bold; display: inline-block;">\
+    Procesando información...</div>\
+    </div>';
 
     //Define routes
     $routeProvider.when('/',{template:'<home></home>'});
@@ -106,6 +132,9 @@
       }
     });
     $routeProvider.otherwise({redirectTo: '/'});
+    // use the HTML5 History API
+    // Not possible, half Sails & Angular
+    // $locationProvider.html5Mode(true);
   }])
   /*CONFIG*/
   .run(function ($rootScope,$location,$route,$timeout,$log,FontLoader,FBLoader, cfpLoadingBar, AuthFactory ,CheckRoutingFactory, AUTH_EVENTS) {
@@ -139,6 +168,10 @@
       '/legal/policy',
       '/legal/terms'];
 
+      var initRoutes = [
+        '/',
+        '/home'
+      ];
 
     $rootScope.$on('$routeChangeStart', function (event) {
       $rootScope.isAppLoading = true;
@@ -164,6 +197,7 @@
         });
       }
       else {
+        if(initRoutes.indexOf(path) > -1) AuthFactory.logout();
         $rootScope.isReadyPref = true;
         $log.debug('+ Enable route ',$location.path());
       }

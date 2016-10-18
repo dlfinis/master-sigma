@@ -18,11 +18,11 @@ module.exports = {
     },
     name: 'STRING',
     email: 'STRING',
-    //create/edit/query
-    state:{
+    //consumer/editor
+    status:{
       type: 'STRING',
-      defaultsTo: 'query',
-      size: '20'
+      defaultsTo: 'consumer',
+      size: '15'
     },
     firstname: 'STRING',
     lastname: 'STRING',

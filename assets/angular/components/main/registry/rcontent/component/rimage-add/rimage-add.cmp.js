@@ -49,7 +49,7 @@
 
 
         scope.$watch('croppedDataUrl', function() {
-          if(scope.picFile.name)
+          if(scope.picFile.name && scope.croppedDataUrl)
           {
             $log.debug('+ Image cropped');
             var image =  Upload.dataUrltoBlob(scope.croppedDataUrl,scope.picFile.name);

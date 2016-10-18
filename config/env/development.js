@@ -37,7 +37,7 @@ module.exports = {
     facebookClientSecret: 'a2f5e3a27b74a64bc0d1ecc2d3a9ec31',
     facebookAppScopeString: 'email,user_birthday,user_friends,publish_actions',
     facebookAppScope: [ 'email,user_birthday','user_friends','publish_actions'],
-    facebookCallbackURL: 'https://master.sigma/auth/facebook/callback',
+    facebookCallbackURL: 'https://'+(process.env.HOSTNAME || 'master.sigma')+(process.env.SUB_HOSTNAME || '')+'/auth/facebook/callback',
     facebookAppURL: 'https://apps.facebook.com/master-sigma/'
   },
   session: {
@@ -57,7 +57,7 @@ module.exports = {
   // },
   port: process.env.PORT || 8080,
   scraper : {
-    url: 'http://'+'127.0.0.1'+':'+3100
+    url: 'http://'+ (process.env.NODE_HOST || '127.0.0.1') +':'+ process.env.SCRAPER_PORT || 3100
   },
   log: {
     level: 'verbose'

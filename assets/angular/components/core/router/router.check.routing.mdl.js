@@ -9,7 +9,7 @@
           return true;
         } else {
           var deferred = $q.defer();
-          $http.post('/me')
+          $http.post(me)
                          .success(function (response) {
                            if(response.auth)
                                {
@@ -29,7 +29,7 @@
         }
       },
       getCurrentUser : function () {
-        return $http.get('/me').then(function (response) {
+        return $http.get('me').then(function (response) {
           return response.user;
         })
                .catch(function (err) {
@@ -44,7 +44,7 @@
           return true;
         } else {
           var deferred = $q.defer();
-          $http.get('/me')
+          $http.get('me')
                           .success(function (response) {
                             if(response.user)
                                {

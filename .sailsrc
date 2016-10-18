@@ -2,6 +2,7 @@
  "hooks": {
      "sockets": false,
      "pubsub": false,
-	 "views": false
+	   "views": false,
+     "i18n": false
    }
 }

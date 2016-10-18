@@ -12,7 +12,7 @@ module.exports = {
       id: req.session.user.id,
       uid: req.session.user.uid,
       name: req.session.user.name,
-      state: req.session.user.state,
+      status: req.session.user.status,
       origin: req.session.origin
     }
     });

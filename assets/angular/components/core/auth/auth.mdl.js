@@ -28,7 +28,7 @@
       var deferred = $q.defer();
       $log.debug('+ AUTH LOGIN');
       $http
-          .get('/me')
+          .get('me')
           .then(function (response) {
             $log.debug('+ Set Session user ',response.data);
             $Session.destroy();
@@ -50,16 +50,16 @@
         authService.login().then(function (response) {
           if(response)
           {
-            deferred.resolve(true);
+            deferred.resolve($Session.get().user);
           }
           else {
             deferred.resolve(false);
           }
         });
       }
-      else
+      else {
         deferred.resolve(true);
-
+      }
 
       return deferred.promise;
     };
@@ -96,7 +96,7 @@
 
     authService.logout = function () {
       $log.debug('+ LOGOUT');
-      $http.get('/auth/logout').then(function () {
+      $http.get('auth/logout').then(function () {
         $Session.destroy();
         $location.path('/');
       });

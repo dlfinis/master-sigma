@@ -13,7 +13,7 @@
             });
       },
       saveArticle : function(article){
-        return $http.get('/me').then(function (response){
+        return $http.get('me').then(function (response){
                 //  console.log(response.data.user);
           article.creator = response.user.id;
           return $http.post('api/article/create',article).then(function (response){

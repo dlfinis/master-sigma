@@ -16,7 +16,7 @@ module.exports = {
 
     if(req.query && req.query.code){
       sails.log('+ Exist FB Code');
-      passport.authenticate('facebook-canvas',{ failureRedirect:'/',sucessRedirect:'#/wall' });
+      passport.authenticate('facebook-canvas',{ failureRedirect:'/',sucessRedirect:process.env.SUB_HOSTNAME+'/#/wall'});
     }
 
     passport.authenticate('facebook-canvas',{
@@ -39,13 +39,13 @@ module.exports = {
             return res.view('500');
           }
 
-          sails.log.debug('+ User Login >',JSON.stringify(user));
-          sails.log.debug('+ REDIRECT TO ','#/wall');
+          sails.log.debug('+ User Login >',user);
+          sails.log.debug('+ REDIRECT TO ','/#/wall');
           sails.log.debug('+ ORIGIN FB');
 
           UserService.current(user,'fb',req);
 
-          return res.redirect('#/wall');
+          return res.redirect(process.env.SUB_HOSTNAME+'/#/wall');
 
         });
       } else {

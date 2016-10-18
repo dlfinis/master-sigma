@@ -14,7 +14,7 @@
       },
       getUser : function()
           {
-        return $http.get('/me');
+        return $http.get('me');
       },
       saveCategory: function(category){
         return $http.post('api/category/create',category).then(function (response){
