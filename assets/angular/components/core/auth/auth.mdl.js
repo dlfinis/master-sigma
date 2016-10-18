@@ -66,21 +66,31 @@
 
     authService.getUser = function () {
       var deferred = $q.defer();
-      if(!$Session.get())
-      {
-        authService.login().then(function (response) {
-          if(response)
-          {
-            deferred.resolve($Session.get().user);
-          }
-          else {
-            deferred.resolve(false);
-          }
-        });
-      }
-      else {
-        deferred.resolve($Session.get().user);
-      }
+      // if(!$Session.get())
+      // {
+      //   authService.login().then(function (response) {
+      //     if(response)
+      //     {
+      //       deferred.resolve($Session.get().user);
+      //     }
+      //     else {
+      //       deferred.resolve(false);
+      //     }
+      //   });
+      // }
+      // else {
+      //   deferred.resolve($Session.get().user);
+      // }
+      authService.login().then(function (response) {
+        if(response)
+        {
+          deferred.resolve($Session.get().user);
+        }
+        else {
+          deferred.resolve(false);
+        }
+      });
+      
 
       return deferred.promise;
 

@@ -49,7 +49,8 @@ module.exports = {
 
         });
       } else {
-        return res.redirect('/auth/canvas/autologin');
+        //return res.redirect('/auth/canvas/autologin');
+        return res.redirect(process.env.SUB_HOSTNAME+'/auth/canvas/autologin');
       }
     }
     )(req, res, next);

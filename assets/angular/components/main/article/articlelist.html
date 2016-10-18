@@ -2,8 +2,8 @@
 <div class="container fade-ng-cloak" ng-if="$articlelist.ok">
   <div class="col-sm-12">
 
-    <div rbutton-add class="fade-ng-cloak" ng-if="$articlelist.user.status !== 'consumer'"></div>
-
+    <div rbutton-add class="fade-ng-cloak" ng-if="$articlelist.user.status === 'editor'"></div>
+    <!--<p>{{$articlelist.user}}</p>-->
     <div class="advanced-search" advanced-search
     source="$articlelist.data"
     queryParams="$articlelist.queryParams"

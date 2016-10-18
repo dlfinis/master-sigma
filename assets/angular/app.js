@@ -98,7 +98,7 @@
     var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
     cfpLoadingBarProvider.spinnerTemplate = '<div id="loading-bar" \
     style="position: absolute; top: 0px; left: 0px; background-color: rgb(52, 69, 87); \
-    color: #EAEAEA; height: '+height+'px; width: 100%; z-index: 1050; vertical-align: middle; \
+    color: #EAEAEA; height: '+(height || 5000) +'px; width: 100%; z-index: 1050; vertical-align: middle; \
     opacity: 0.55; text-align: center; padding-top: 5px;">\
     <span class="fa fa-refresh fa-spin fa-3x fa-fw" style="vertical-align: middle;"></span>\
     <div style="text-align: center; color: rgb(255, 245, 245); font-weight: bold; display: inline-block;">\

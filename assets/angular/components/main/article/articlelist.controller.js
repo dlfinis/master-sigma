@@ -7,8 +7,6 @@
     var $articlelist = this;
 
     $q.when(ArticleListFactory.getUser()).then(function (user) {
-      console.log(user)
-      ;
       $articlelist.user = user;
     });
 

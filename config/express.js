@@ -1,3 +1,4 @@
+
 var passport = require('passport'),
   // LocalStrategy = require('passport-local').Strategy,
   // TwitterStrategy = require('passport-twitter').Strategy,
@@ -80,12 +81,13 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
           uid: profile.id,
           name: profile.displayName || profile.name
         };
-        if (profile.emails[0] || profile._json.email) {
-          data.email = profile.emails[0].value || profile._json.email;
+        
+	if ( profile._json || profile.email || profile.emails[0]) {
+          data.email =  profile.email || profile.emails[0].value || profile._json.email;
         }
 
         if (profile.name && (profile.name.givenName || profile.first_name)) {
-          data.firstname = profile.name.givenName || profile.first_name;
+          data.firstname = (profile.name.givenName || profile.first_name) + profile.middle_name;
         }
         if (profile.name && (profile.name.familyName || profile.last_name)) {
           data.lastname = profile.name.familyName || profile.last_name;
@@ -93,8 +95,8 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
         if (profile.gender) {
           data.gender = profile.gender;
         }
-        if (profile.birthday || profile._json.birthday) {
-          data.birthday = profile._json.birthday;
+        if (profile.birthday || profile._json) {
+          data.birthday = profile.birthday || profile._json.birthday;
         }
         if (profile.profileUrl || profile.link  ) {
           data.profileUrl = profile.profileUrl || profile.link;

@@ -26,6 +26,8 @@ module.exports = {
 	program.option('--www');
 	program.option('--host [Host]');
 	program.option('--hostname [HostName]');
+	program.option('--fbid [FBId]');
+	program.option('--fbsecret [FBSecret]');
 	program.option('--subhostname [SubHostName]');
 	program.option('--port [Port]');
 	program.option('--db [DB]');
@@ -59,6 +61,14 @@ module.exports = {
 
 	if(program.subhostname){
 		process.env['SUB_HOSTNAME'] = program.subhostname;
+	}
+
+	if(program.fbid){
+		process.env['FB_ID'] = program.fbid;
+	}
+
+	if(program.fbsecret){
+		process.env['FB_SECRET'] = program.fbsecret;
 	}
 
 	if(program.port){
