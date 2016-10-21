@@ -20,7 +20,7 @@
       max_restarts: 10,
       min_uptime  : 5000,
       autorestart: true,
-      args: "--prod --www --verbose --port 7100 --db db_sigma --portdb 3306 --userdb sigma --passdb sigma2016",
+      args: "--prod --www --verbose --port 7100 --db db_sigma --portdb 3306 --userdb sigma --passdb sigma2016 --rhostdb '127.0.0.1' --rportdb 6379 --rpassdb ''",
       env: {
 		  "SCRAPER_PORT": 7000,
 		  "NODE_ENV": "production",
@@ -38,7 +38,7 @@
       max_restarts: 10,
       min_uptime  : 5000,
       autorestart: true,
-      args: "--prod --www --verbose --port 7200 --db db_sigma2 --portdb 3306 --userdb sigma --passdb sigma2016",
+      args: "--prod --www --verbose --port 7200 --db db_sigma2 --portdb 3306 --userdb sigma --passdb sigma2016 --rhostdb '127.0.0.1' --rportdb 6379 --rpassdb ''",
       env: {
 		  "SCRAPER_PORT": 7000,
 		  "NODE_ENV": "production",
@@ -56,7 +56,7 @@
       max_restarts: 10,
       min_uptime  : 5000,
       autorestart: true,
-      args: "--prod --www --verbose --port 7300 --db db_sigma3 --portdb 3306 --userdb sigma --passdb sigma2016",
+      args: "--prod --www --verbose --port 7300 --db db_sigma3 --portdb 3306 --userdb sigma --passdb sigma2016 --rhostdb '127.0.0.1' --rportdb 6379 --rpassdb ''",
       env: {
 		  "SCRAPER_PORT": 7000,
 		  "NODE_ENV": "production",

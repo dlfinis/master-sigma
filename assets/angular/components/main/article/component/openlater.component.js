@@ -1,5 +1,30 @@
 (function () {
   'use strict';
+  function findString(arr,str){
+      var value = false;
+        arr.forEach(function(item){
+           if(item.indexOf(str) >= -1)
+            value = true;
+        });
+        return value;
+  }
+
+  function NotScraper(url){
+    var types = [
+      'pdf','txt','png','jpeg','jpg','bmp','doc','docx'
+    ];
+
+    var sites = [
+      'youtube','vimeo','daily','imgur'
+    ];
+
+      if(findString(types,url) || findString(sites,url))
+      {
+        return true;
+      }
+        return false;
+  
+  }
   function ScraperFactory($log,$resource){
     return $resource('scraper/?url=:url', {url:'@url'});
   }
@@ -48,7 +73,7 @@
     $modal.visit = 0;
     $modal.sitePath;
 
-    $q.when(ScraperFactory.get({'url':article.url}).$promise,
+    $q.when(ScraperFactory.get({'url':encodeURI(article.url)}).$promise,
       function(response){
         $modal.sitePath = $sce.trustAsResourceUrl('/website'+response.previewPath);
       },
@@ -88,9 +113,22 @@
     };
   }
 
-  function OpenLaterCtrl($log,$window,ScraperFactory,ModalFactory)
+  function OpenLaterCtrl($log,$window,ScraperFactory,ModalFactory,ModalBaseFactory)
   {
     var $openlater = this;
+
+    $openlater.NotScraper = function(article){
+      if(NotScraper(article.url))
+      {
+        ModalBaseFactory.setVisit(article,1);
+        article.visits = article.visits + 1;
+        return true;
+      }else
+      {
+        return false;
+      }
+    };
+
     $openlater.openModal = function (article)
     {
       var $modalInstance = ModalFactory.getModal(article);
@@ -151,9 +189,15 @@
              templateUrl: partial.main.article+'tpl/openlater.cmp.html',
              link : function (scope, element, attrs, controller) {
                element.bind('click', function(event){
+                if(!controller.NotScraper(scope.source))
+                { 
                  $log.debug('+ Open Site');
                  $log.debug(scope.source);
                  controller.openModal(scope.source);
+                }
+                else{
+                  $log.debug('+ Redirect to different type of Site');
+                }
                });
              }
            };

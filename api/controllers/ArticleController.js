@@ -310,7 +310,7 @@ module.exports = {
 
   },
   deletelike : function(req,res){
-    var sid = req.param('articleSid');
+    var sid = req.param('likeSid');
     sails.log.debug('+ LIKE init to delete');
     ArticleFBService.like.delete(sid)
     .then(function (response) {
@@ -319,6 +319,7 @@ module.exports = {
     })
     .catch(function (err) {
       sails.log.debug('+ LIKE failed to delete ');
+      if(req.session.user.origin === 'fb') return res.redirect(302,'/')
       return res.json(400,err);
     });
   },

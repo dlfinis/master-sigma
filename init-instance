@@ -1,0 +1,9 @@
+#!/bin/bash
+
+clear
+
+
+./node_modules/grunt-cli/bin/grunt buildProd
+pm2 start process-pm2.json --only "$1"
+
+

@@ -3,7 +3,13 @@
 <head>
     <!--<base href="/sigma/">-->
    <script>
-    document.write("<base href='"+ document.location.pathname  + "' >");
+    console.log(window.location.pathname,document.location.pathname)
+    var	bs = document.location.pathname;
+    
+   if(document.location.pathname.lastIndexOf('/') == 0)
+      bs = document.location.pathname + '/';
+    
+    document.write("<base href='"+ bs + "' >");
    </script>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">

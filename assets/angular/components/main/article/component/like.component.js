@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function LikeFactory($http,$timeout,$q){
+  function LikeFactory($http,$timeout,$q, $rootScope){
     return {
       havelike: function(articleID)
       {
@@ -13,6 +13,8 @@
       },
       setlike: function(articleID,articleURL)
       {
+        console.log(articleID,articleURL);
+        if(articleID && articleURL)
         return $http.post('api/article/setlike',
           {
             articleID:articleID ,
@@ -21,14 +23,20 @@
           {
             ignoreLoadingBar: true
           });
+        else
+          return false;
       },
       deletelike: function(likeSid)
       {
+        console.log(likeSid);
+        if(likeSid)
         return $http.delete('api/article/deletelike',
           {
             params : { likeSid:likeSid },
             ignoreLoadingBar : true
           });
+        else
+          return false;
       },
       testlike: function(){
         var timer = $q.defer();
@@ -103,6 +111,7 @@
                                 })
                                 .catch(function(err){
                                   $log.error(err);
+                                  $rootScope.error.login = true;
                                   scope.loader = false;
                                 });
                  }

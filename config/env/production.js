@@ -57,10 +57,10 @@ module.exports = {
     adapter: 'redis',
     host: process.env.REDIS_HOST || 'pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com',
     port: process.env.REDIS_PORT || 12873 || 6379,
-    ttl: 1800,
+    ttl: 3600,
     pass: process.env.REDIS_PASSWORD || 'mastersigma92' || '',
     cookie: {
-      maxAge: 6 * 60 * 60 * 1000
+      maxAge: 1 * 60 * 60 * 1000
     }
   },
   /***************************************************************************

@@ -55,6 +55,7 @@ module.exports = {
   },
   logout: function(req,res){
     sails.log.debug('+ AUTH.LOGOUT');
+    if(!_.isUndefined(req.session))
     req.session.destroy(function(err) {
       sails.log.debug('+ AUTH.SESSION.DESTROY');
       req.logOut();

@@ -113,17 +113,17 @@ module.exports = {
 
 	if(program.rhostdb){ 
 		process.env['REDIS_HOST'] = program.hostdb;
-    	redis.host = program.hostdb;
+    	redis.host = program.rhostdb;
     }
 
 	if(program.rportdb){
 		process.env['REDIS_PORT'] = program.portdb;
-    	redis.port = program.portdb;	
+    	redis.port = program.rportdb;	
 	}
 
 	if(program.rpassdb){
 		process.env['REDIS_PASSWORD'] = program.passdb;
-    	redis.pass = program.passdb;	
+    	redis.pass = program.rpassdb;	
 	}
 
 

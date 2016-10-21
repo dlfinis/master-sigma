@@ -77,7 +77,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
         return done(null, user);
       } else {
         var data = {
-          provider: profile.provider,
+          provider: profile.provider || 'facebook',
           uid: profile.id,
           name: profile.displayName || profile.name
         };
@@ -87,7 +87,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
         }
 
         if (profile.name && (profile.name.givenName || profile.first_name)) {
-          data.firstname = (profile.name.givenName || profile.first_name) + profile.middle_name;
+          data.firstname = (profile.name.givenName || profile.first_name) + ' ' +(profile.middle_name || '');
         }
         if (profile.name && (profile.name.familyName || profile.last_name)) {
           data.lastname = profile.name.familyName || profile.last_name;
