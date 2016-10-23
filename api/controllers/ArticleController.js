@@ -4,7 +4,7 @@
  * @description :: Server-side logic for managing article
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-/*global Article Like ArticleService ArticleQueryService ArticleFBService UserService UploadFileService*/
+/*global Article Like ArticleService ArticleQueryService  UserService UploadFileService*/
 var Promise = require('bluebird');
 
 
@@ -256,73 +256,6 @@ module.exports = {
     });
 
   },
-  havelike : function(req,res){
-    var articleID = req.param('articleID');
-    var userID = UserService.me(req).id;
-
-    Like.findOne({article:articleID,user:userID})
-    .exec(function foundRecord(err, record) {
-      if(err)
-      {
-        sails.log(err);
-        return res.ok(false);
-      }
-      return res.ok(record);
-    });
-  },
-  setshare : function(req,res){
-    var shareSID = req.param('shareSID');
-    var articleID = req.param('articleID');
-    var messageShare = req.param('messageShare');
-    var userID = UserService.me(req).id;
-
-    if(!shareSID || !articleID)
-      return res.badRequest();
-
-    sails.log.debug('+ SHARE init to add in DB');
-
-    if(shareSID && articleID)
-      ArticleFBService.share.set(shareSID,articleID,userID,messageShare)
-      .then(function (response) {
-        sails.log.debug('+ SHARE success by adding at DB');
-        return res.json(200,response);
-      })
-      .catch(function (err) {
-        sails.log.debug('+ SHARE failed to add ');
-        return res.json(400,err);
-      });
-  },
-  setlike : function(req,res){
-    var articleID = req.param('articleID');
-    var articleURL = req.param('articleURL');
-    var userID = UserService.me(req).id;
-
-    sails.log.debug('+ LIKE init to add in DB ',articleID,articleURL,userID);
-    ArticleFBService.like.set(articleID,articleURL,userID)
-    .then(function (response) {
-      if(response.created) sails.log.debug('+ LIKE success by adding at DB');
-      return res.json(response);
-    })
-    .catch(function (err) {
-      sails.log.debug('+ LIKE failed to add ');
-      return res.json(400,err);
-    });
-
-  },
-  deletelike : function(req,res){
-    var sid = req.param('likeSid');
-    sails.log.debug('+ LIKE init to delete');
-    ArticleFBService.like.delete(sid)
-    .then(function (response) {
-      sails.log.debug('+ LIKE success in delete');
-      return res.json(response);
-    })
-    .catch(function (err) {
-      sails.log.debug('+ LIKE failed to delete ');
-      if(req.session.user.origin === 'fb') return res.redirect(302,'/')
-      return res.json(400,err);
-    });
-  },
   filetype : function (req,res) {
     var mime = require('mime-types');
     var reqfast = require('req-fast');
@@ -400,7 +333,7 @@ module.exports = {
       return res.badRequest({err:'invalidAttributes'});
     }
   },
-  updt: function (req,res){
+  updat: function (req,res){
     var article = {};
     try{
       article = {

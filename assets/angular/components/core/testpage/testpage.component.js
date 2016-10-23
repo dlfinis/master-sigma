@@ -37,6 +37,37 @@
     // as it would if this was a "standalone" controller
     // console.log('$scope.data: '+ $scope.data);
 
+    // $scope.$on('fb.auth.authResponseChange', function() {
+    //   console.log('Change');
+    // $scope.status = $facebook.isConnected();
+    // if($scope.status) {
+    //   $facebook.api('/me').then(function(user) {
+    //     $scope.user = user;
+    //   });
+    // }
+    // });
+  //   $scope.status = $facebook.isConnected();
+  //   if($scope.status) {
+  //     $facebook.api('/me').then(function(user) {
+  //       $scope.user = user;
+  //     });
+  //   }
+  //   $scope.login = function () {
+  //       $facebook.login().then(function (response) {
+  //         console.log(response);
+  //       })
+  //       .catch(function (err) {
+  //         console.log(err);
+  //       });
+  //   };
+  //   $scope.loginToggle = function() {
+  //    if($scope.status) {
+  //      $facebook.logout();
+  //    } else {
+  //      $scope.login();
+  //    }
+  //  };
+
     $scope.params = function () {
       return $route.current.params;
     };

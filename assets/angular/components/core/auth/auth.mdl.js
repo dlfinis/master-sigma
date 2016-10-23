@@ -37,7 +37,16 @@
           })
           .catch(function(err){
             $log.debug('+ NOT Data User');
-            deferred.resolve(false);
+            if($Session.get()){
+              authService.logout().then(function (response) {
+                if(response)
+                 deferred.resolve(false);
+              });
+            }
+            else {
+              $Session.destroy();
+              deferred.resolve(false);
+            }
           });
 
       return deferred.promise;
@@ -45,22 +54,16 @@
 
     authService.isAuthenticated = function () {
       var deferred = $q.defer();
-      if(!$Session.get())
-      {
-        authService.login().then(function (response) {
-          if(response)
-          {
-            deferred.resolve($Session.get().user);
-          }
-          else {
-            deferred.resolve(false);
-          }
-        });
-      }
-      else {
-        deferred.resolve(true);
-      }
-
+      authService.login().then(function (response) {
+        if(response)
+        {
+          //deferred.resolve($Session.get().user);
+          deferred.resolve(true);
+        }
+        else {
+          deferred.resolve(false);
+        }
+      });
       return deferred.promise;
     };
 
@@ -90,7 +93,7 @@
           deferred.resolve(false);
         }
       });
-      
+
 
       return deferred.promise;
 
@@ -105,11 +108,17 @@
     };
 
     authService.logout = function () {
+      var deferred = $q.defer();
       $log.debug('+ LOGOUT');
       $http.get('auth/logout').then(function () {
         $Session.destroy();
-        $location.path('/');
+        deferred.resolve(true);
+      })
+      .catch(function (err) {
+        $log.error(err);
+        deferred.resolve(false);
       });
+      return deferred.promise;
     };
 
     return authService;

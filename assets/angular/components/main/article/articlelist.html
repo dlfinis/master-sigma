@@ -1,10 +1,6 @@
-<!-- <pre> {{$articlelist.data | json}}</pre> -->
-<div class="container fade-ng-cloak" ng-if="$articlelist.ok">
+<div class="fade-ng-cloak" ng-if="$articlelist.ok" ng-init="$articlelist.init()">
   <div class="col-sm-12">
-  <div ng-if="$articlelist.error.login"><a ng-href="#/wall">Debe volver a iniciar sesión </a></div>
-  <div ng-if="error.login"><a ng-href="#/wall">Debe volver a iniciar sesión </a></div>
     <div rbutton-add class="fade-ng-cloak" ng-if="$articlelist.user.status === 'editor'"></div>
-    <!--<p>{{$articlelist.user}}</p>-->
     <div class="advanced-search" advanced-search
     source="$articlelist.data"
     queryParams="$articlelist.queryParams"
@@ -88,12 +84,12 @@
            ng-href="{{::article.url}}"
            ng-click="$articlelist.setVisit(article)"
            target="_blank">
-<!--         <img class="image"
+        <!-- <img class="image"
         ng-src="/images/spinner.gif"
         lazy-img="{{::$articlelist.getTrustedResource(article.image) ||'/images/submarine.png' }}"
         alt=""/> -->
         <img class="image"
-        ng-src="{{::$articlelist.getTrustedResource(article.image) ||'/images/submarine.png' }}"
+        ng-src="{{::$articlelist.getTrustedResource(article.image)}}" err-src="/images/submarine.png"
         alt=""/>
         </a>
         <div control

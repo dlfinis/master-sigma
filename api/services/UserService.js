@@ -16,6 +16,7 @@ module.exports = {
   },
   me : function (req) {
     if(!req) return _user;
+    sails.log.debug('+ Get user',req.session.user);
     return req.session.user || req.user;
   }
 };

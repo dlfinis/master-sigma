@@ -11,8 +11,10 @@
       if(stats.alive)
         $control.source.stats = stats;
       else {
-        $log.debug('+ Dead > ' + $control.source.id);
-        $scope.list.splice($scope.list.indexOf($control.source), 1);
+
+        $log.warning('- Not get info stats of  > ',$control.source.id,$control.source.url);
+        // $log.debug('+ Dead > ' + $control.source.id);
+        // $scope.list.splice($scope.list.indexOf($control.source), 1);
       }
 
     });

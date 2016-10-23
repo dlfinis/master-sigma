@@ -28,6 +28,7 @@ module.exports = {
 	program.option('--hostname [HostName]');
 	program.option('--fbid [FBId]');
 	program.option('--fbsecret [FBSecret]');
+	program.option('--fbapp [FBAppName]');
 	program.option('--subhostname [SubHostName]');
 	program.option('--port [Port]');
 	program.option('--db [DB]');
@@ -39,19 +40,19 @@ module.exports = {
 	program.option('--rportdb [rportDb]');
 	program.option('--rpassdb [rpassworDb]');
 	program.option('--scport [scraperPort]');
-	
-	
+
+
     program.parse(process.argv);
 
 	var db = {}, redis ={};
 
 
-	if(program.www){ 
+	if(program.www){
 		config.hooks = { grunt : false};
 	}
 
 	if(program.host){
-		process.env['NODE_HOST'] = program.host;		
+		process.env['NODE_HOST'] = program.host;
 		config.host = program.host;
 	}
 
@@ -71,74 +72,78 @@ module.exports = {
 		process.env['FB_SECRET'] = program.fbsecret;
 	}
 
+	if(program.fbapp){
+		process.env['FB_APPNAME'] = program.fbapp;
+	}
+
 	if(program.port){
-		process.env['NODE_PORT'] = program.port;		
+		process.env['NODE_PORT'] = program.port;
 		config.port = program.port;
 	}
 
 
   /***************************************************************************
-   * Set the default database connection 
+   * Set the default database connection
    ***************************************************************************/
 
-	if(program.db){	
+	if(program.db){
 		process.env['DB_NAME'] = program.db;
-    	db.database = program.db;	
+    	db.database = program.db;
 	}
 
-	if(program.hostdb){ 
+	if(program.hostdb){
 		process.env['DB_HOST'] = program.hostdb;
     	db.host = program.hostdb;
     }
 
 	if(program.portdb){
 		process.env['DB_PORT'] = program.portdb;
-    	db.port = program.portdb;	
+    	db.port = program.portdb;
 	}
 
 	if(program.userdb){
 		process.env['DB_USER'] = program.userdb;
-    	db.user = program.userdb;	
+    	db.user = program.userdb;
 	}
 
 	if(program.passdb){
 		process.env['DB_PASSWORD'] = program.passdb;
-    	db.password = program.passdb;	
+    	db.password = program.passdb;
 	}
 
 
   /***************************************************************************
-   * Set the default redis session connection 
+   * Set the default redis session connection
    ***************************************************************************/
 
-	if(program.rhostdb){ 
+	if(program.rhostdb){
 		process.env['REDIS_HOST'] = program.hostdb;
     	redis.host = program.rhostdb;
     }
 
 	if(program.rportdb){
 		process.env['REDIS_PORT'] = program.portdb;
-    	redis.port = program.rportdb;	
+    	redis.port = program.rportdb;
 	}
 
 	if(program.rpassdb){
 		process.env['REDIS_PASSWORD'] = program.passdb;
-    	redis.pass = program.rpassdb;	
+    	redis.pass = program.rpassdb;
 	}
 
 
   /***************************************************************************
-   * Set the default scraper connection 
+   * Set the default scraper connection
    ***************************************************************************/
 
-	if(program.scport) 
-	{	
+	if(program.scport)
+	{
 		process.env['SCRAPER_PORT'] = program.scport;
 	}
-	
+
 
 	if(!isEmpty(db))
-	{ 	
+	{
 		db.adapter = 'sails-mysql';
 		config.connections = { sigmaDB: db };
 		config.models = { connection: 'sigmaDB',migrate: 'safe' };
@@ -146,7 +151,7 @@ module.exports = {
 
 	if(!isEmpty(redis))
 	{
-		config.session = redis;			
+		config.session = redis;
 	}
 
 	console.log(config);

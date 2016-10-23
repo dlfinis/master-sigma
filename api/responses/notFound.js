@@ -40,6 +40,11 @@ module.exports = function notFound (data, options) {
     data = undefined;
   }
 
+console.log(sails.config.hooks.views);
+  if (sails.config.hooks.views === false ) {
+	sails.log.verbose('Render file respond',res.statusCode);
+	return res.sendfile(sails.config.paths.public + '/error.html');
+  }
 
   // If the user-agent wants JSON, always respond with JSON
   if (req.wantsJSON) {
@@ -51,7 +56,7 @@ module.exports = function notFound (data, options) {
 	sails.log.verbose('Render file respond',res.statusCode);
 	return res.sendfile(sails.config.paths.public + '/error.html');
   }
- 
+
 
   // If second argument is a string, we take that to mean it refers to a view.
   // If it was omitted, use an empty object (`{}`)
@@ -98,4 +103,3 @@ module.exports = function notFound (data, options) {
   });
 
 };
-

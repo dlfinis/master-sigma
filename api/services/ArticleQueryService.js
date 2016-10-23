@@ -1,10 +1,10 @@
 /**
- * ArticleFBService
+ * 
  *
  * @description :: Server-side logic for managing your account
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
- /*global Article User Like Share ArticleFBService ArticleQueryService ArticleService UserService*/
+ /*global Article User Like Share  ArticleQueryService ArticleService UserService*/
  /*eslint no-unused-vars: 0*/
 
 var Promise = require('bluebird');

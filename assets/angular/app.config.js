@@ -21,7 +21,7 @@
       )
       .constant(
         'FB',{
-          'clientID' : 1267766483237355,
+          'clientID' : 1545700372110630,
           'permissions': 'email,user_birthday,user_friends,publish_actions'
         }
       )

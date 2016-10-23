@@ -21,6 +21,8 @@ module.exports.http = {
     var express = require('../node_modules/sails/node_modules/express');
     var path = require('path');
 
+
+    app.set('tz', 'UTC-5');
     app.use('/website/static', express.static(path.resolve(__dirname, '../web-scraper/public')));
     app.use('/content/image', express.static(path.resolve(__dirname, '../content/image')));
 
@@ -68,12 +70,13 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
 
     // Debug of information returned by Facebook
     sails.log.debug('+ Profile Facebook >',profile);
-    require ('fbgraph').setAccessToken(token);
+
     User.findOne({ uid: profile.id }, function (err, user) {
 
       try{
       if (user) {
         // sails.log.debug(user);
+        user.token = token;
         return done(null, user);
       } else {
         var data = {
@@ -81,17 +84,22 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
           uid: profile.id,
           name: profile.displayName || profile.name
         };
-        
-	if ( profile._json || profile.email || profile.emails[0]) {
+
+        if ( profile._json || profile.email || profile.emails[0]) {
           data.email =  profile.email || profile.emails[0].value || profile._json.email;
         }
 
         if (profile.name && (profile.name.givenName || profile.first_name)) {
-          data.firstname = (profile.name.givenName || profile.first_name) + ' ' +(profile.middle_name || '');
+          data.firstname = (profile.name.givenName || profile.first_name);
         }
         if (profile.name && (profile.name.familyName || profile.last_name)) {
           data.lastname = profile.name.familyName || profile.last_name;
         }
+
+        if(_.isUndefined(data.name) || _.isEmpty(data.name)){
+          data.name = data.firstname+' '+ (profile.middle_name || '')+ data.lastname;
+        }
+
         if (profile.gender) {
           data.gender = profile.gender;
         }
@@ -110,7 +118,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
       }
     }
       catch(e){
-        sails.log.warn(e);
+        sails.log.warn('Passport Facebook',e);
       }
     });
   });

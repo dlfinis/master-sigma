@@ -1,14 +1,13 @@
 (function(){
   'use strict';
 
-  function ArticleListCtrl($scope,$q,$sce,$log,$element,$timeout,ArticleListFactory,ModalBaseFactory)
+  function ArticleListCtrl($scope,$q,$sce,$log,$element,$timeout,$Session,ArticleListFactory,ModalBaseFactory)
   {
 
     var $articlelist = this;
 
-    $q.when(ArticleListFactory.getUser()).then(function (user) {
-      $articlelist.user = user;
-    });
+    if($Session.get() && $Session.get() !== null)
+      $articlelist.user = $Session.get().user;
 
     $articlelist.data = [];
     $articlelist.error = {};
@@ -242,8 +241,9 @@
     };
 
     // Load data, init scope, etc.
-    (function init() {
+    $articlelist.init = (function init() {
 
+      if($Session.get())
       $q.when(ArticleListFactory._source_init(),function success(response) {
         $articlelist.setPagination(
             response.articlelist.results,

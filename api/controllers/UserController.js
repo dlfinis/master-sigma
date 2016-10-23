@@ -8,13 +8,19 @@
 module.exports = {
   me: function(req, res) {
     if ( !req.isAuthenticated() ) return res.json(403,{});
-    return res.json({ user: {
-      id: req.session.user.id,
-      uid: req.session.user.uid,
-      name: req.session.user.name,
-      status: req.session.user.status,
-      origin: req.session.origin
+    else{
+      sails.log.debug('Set token of access');
+      if(!require ('fbgraph').getAccessToken() && !_.isUndefined(req.session.user.token))
+        require ('fbgraph').setAccessToken(req.session.user.token);
+      
+      return res.json(200,{ user: {
+        id: req.session.user.id,
+        uid: req.session.user.uid,
+        name: req.session.user.name,
+        status: req.session.user.status,
+        origin: req.session.origin
+      }
+      });
     }
-    });
   }
 };

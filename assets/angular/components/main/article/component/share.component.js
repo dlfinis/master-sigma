@@ -4,12 +4,11 @@
   function ShareFactory($http,$rootScope,$q,$timeout,$Session)
   {
     return {
-      setshare: function(shareSID,articleID,messageShare)
+      setshare: function(shareSID,articleID)
       {
-        return $http.post('api/article/setshare',{
+        return $http.post('api/share/set',{
           shareSID : shareSID,
-          articleID : articleID,
-          messageShare : messageShare
+          articleID : articleID
         }, {
           ignoreLoadingBar: true
         });
@@ -26,11 +25,10 @@
         //           }
         //         };
         //
-        //         return $http.get('/share',{ params:prms });
         //       }
         // });
         if($Session.get()) // From Begin Login User
-              {
+        {
           var prms = {
             where : {
               article: articleID,
@@ -64,7 +62,7 @@
       return ShareFactory.testshare();
     };
     $share.setShare = function(shareSID,articleID,messageShare) {
-      ShareFactory.setshare(shareSID,articleID,messageShare);
+      return ShareFactory.setshare(shareSID,articleID,messageShare);
     };
     $share.changeLoader = function (value) {
       $share.loader = value;
@@ -74,7 +72,7 @@
   angular.module('app.main.article.share', [])
          .factory('ShareFactory',ShareFactory)
          .controller('ShareCtrl',ShareCtrl)
-         .directive('share', function($log,$facebook,partial,$Session){
+         .directive('share', function($log,partial,$facebook, $timeout,$Session){
            return {
              restrict: 'EA',
              scope: {
@@ -85,38 +83,54 @@
              controller: 'ShareCtrl',
              controllerAs: '$share',
              templateUrl: partial.main.article+'tpl/share.cmp.html',
-             link: function(scope, element, attr,controller) {
+             link: function(scope, element, attr, controller) {
                scope.setShare = function () {
                  scope.loader = true;
-                 $log.debug('+ Click Share Button');
-                 $facebook.ui(
-                   {
-                     method: 'share',
-                     href: scope.source.url
-                   })
-                   .then(function(response){
-                      if(response && !response.error_code)
-                      {
-                        var user = $Session.get().user;
-                        $log.debug('+ FB Share user ',user);
-                        $log.debug('+ FB Share user.uid ',user.uid);
-                        var completeSID = user.uid+'_'+response.post_id;
-                        $log.debug('+ FB Share Complete ID',completeSID);
-                        $facebook.api('/'+completeSID)
-                            .then(function(share){
-                              if(share){
-                                $log.debug('+ Share success by adding in DB');
-                                controller.setShare(share.id,scope.source.id,share.message);
-                                scope.loader = false;
-                                scope.stats = scope.stats+1;
-                              }
-                            });
-                      }
-                    })
-                    .catch(function () {
+
+                 $timeout(function() {
+                   scope.loader = false; //cancel loader when timed out
+                 }, 3750); //3750ms
+
+                 $timeout(function(){
+                   $log.debug('+ Click Share Button');
+                   $facebook.ui(
+                     {
+                       method: 'share',
+                       href: scope.source.url,
+                       title: scope.source.title,
+                       description: scope.source.description,
+                       image: scope.source.image
+                     })
+                     .then(function(response){
+                       $log.debug(response);
+                        if(response && !response.error_code)
+                        {
+                          var user = $Session.get().user;
+                          $log.debug('+ FB Share user.uid ',user.uid);
+                          $log.debug('+ Adding Share in DB ');
+
+                          controller.setShare(response.post_id,scope.source.id)
+                          .then(function(response){
+                            if(response.status <= 210)
+                            {
+                              $log.debug('+ Added new Share in DB ');
+                              scope.loader = false;
+                              scope.stats = scope.stats+1;
+                            }
+                          })
+                          .catch(function (err) {
+                            $log.error(err);
+                            scope.loader = false;
+                          });
+                        }
+                     })
+                    .catch(function (err) {
+                      $log.error(err);
                       scope.loader = false;
                     });
-              };
+                 });
+                 scope.loader = false;
+               };
              }
            };
          });
