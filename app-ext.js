@@ -28,6 +28,8 @@ module.exports = {
 	program.option('--hostname [HostName]');
 	program.option('--fbid [FBId]');
 	program.option('--fbsecret [FBSecret]');
+	program.option('--fbidg [FBIdGeneral]');
+	program.option('--fbsecretg [FBSecretGeneral]');
 	program.option('--fbapp [FBAppName]');
 	program.option('--subhostname [SubHostName]');
 	program.option('--port [Port]');
@@ -70,6 +72,14 @@ module.exports = {
 
 	if(program.fbsecret){
 		process.env['FB_SECRET'] = program.fbsecret;
+	}
+
+  if(program.fbidg){
+		process.env['FB_ID_GENERAL'] = program.fbidg;
+	}
+
+	if(program.fbsecretg){
+		process.env['FB_SECRET_GENERAL'] = program.fbsecretg;
 	}
 
 	if(program.fbapp){
