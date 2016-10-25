@@ -15,6 +15,17 @@ var passport = require('passport'),
 
 module.exports.http = {
 
+  middleware: {
+    400: function ( req, res, next ) {
+      res.badRequest();
+    },
+    404: function ( req, res, next ) {
+        res.notFound();
+    },
+    500: function ( req, res, next ) {
+        res.serverError();
+    }
+  },
   customMiddleware: function (app) {
     sails.log.debug('+ Init Express Midleware');
 
@@ -23,6 +34,7 @@ module.exports.http = {
 
 
     app.set('tz', 'UTC-5');
+    app.use('/', express.static(path.resolve(sails.config.paths.public)));
     app.use('/website/static', express.static(path.resolve(__dirname, '../web-scraper/public')));
     app.use('/content/image', express.static(path.resolve(__dirname, '../content/image')));
 

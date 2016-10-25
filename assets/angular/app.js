@@ -99,11 +99,11 @@
     // cfpLoadingBarProvider.spinnerTemplate = '<div style="margin:20% 0 0 50%;"><span class="fa fa-spinner fa-pulse fa-3x"></div>';
     // cfpLoadingBarProvider.spinnerTemplate = '<div style="text-align: center; left: 0px; height: 100%; width: 100%; z-index: 1050; color: rgb(52, 69, 87); top: 0px; background: rgb(52, 69, 87) none repeat scroll 0% 0%; opacity: 0.45; position: fixed;"><img style="width: 100%;" src="/images/spinner.gif"></div>';
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-    var body = document.body, html = document.documentElement;
-    var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    // var body = document.body, html = document.documentElement;
+    // var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
     cfpLoadingBarProvider.spinnerTemplate = '<div id="loading-bar" \
     style="position: absolute; top: 0px; left: 0px; background-color: rgb(52, 69, 87); \
-    color: #EAEAEA; height: '+(height || 5000) +'px; width: 100%; z-index: 1050; vertical-align: middle; \
+    color: #EAEAEA; height: '+(5000) +'px; width: 100%; z-index: 1040; vertical-align: middle; \
     opacity: 0.55; text-align: center; padding-top: 5px;">\
     <span class="fa fa-refresh fa-spin fa-3x fa-fw" style="vertical-align: middle;"></span>\
     <div style="text-align: center; color: rgb(255, 245, 245); font-weight: bold; display: inline-block;">\
@@ -120,6 +120,10 @@
     $routeProvider.when('/registry/content/:id?', { template: '<rcontent></rcontent>',secure:true});
     $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>',secure:true});
     $routeProvider.when('/testpage/:tid?', { template: '<testpage></testpage>' });
+    $routeProvider.when('/testpage/:tid?', { template: '<testpage></testpage>' });
+    $routeProvider.when('/404', { templateUrl: '404.html' });
+    $routeProvider.when('/500', { templateUrl: '500.html' });
+    $routeProvider.when('/error', { templateUrl: 'error.html' });
     // $routeProvider.when('/login', {
     //   resolve: {
     //     load: function ($facebook) {

@@ -15,8 +15,9 @@
         facebookJS.id = 'facebook-jssdk';
 
         // Set the new script's source to the source of the Facebook JS SDK
-        // facebookJS.src = '//connect.facebook.net/es_LA/sdk.js';
-        facebookJS.src = '//connect.facebook.net/es_LA/sdk/debug.js';
+        facebookJS.src = '//connect.facebook.net/es_LA/sdk.js';
+        // Debug script
+        // facebookJS.src = '//connect.facebook.net/es_LA/sdk/debug.js';
 
         // Insert the Facebook JS SDK into the DOM
         firstScriptElement.parentNode.insertBefore(facebookJS, firstScriptElement);

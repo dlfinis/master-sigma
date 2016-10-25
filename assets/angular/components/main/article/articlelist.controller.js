@@ -241,15 +241,18 @@
     };
 
     // Load data, init scope, etc.
-    $articlelist.init = (function init() {
+    $articlelist.init = function init() {
 
-      if($Session.get())
+      $log.debug('+ Init component articlelist');
+      // if($Session.get())
       $q.when(ArticleListFactory._source_init(),function success(response) {
         $articlelist.setPagination(
             response.articlelist.results,
             response.articlelist.size,
             ArticleListFactory._params().perPage
           );
+
+        $log.debug('+ Show component articlelist');
           //Hide Loader
         $articlelist.ok = true;
 
@@ -257,12 +260,16 @@
         $articlelist.mcategories = response.categories.results;
 
       },function error(e) {
+        // if(!$Session.get()) return;
         $log.error('- Error get contents',e);
         $articlelist.ok = true;
         $articlelist.error.init = true;
       });
 
-    })();
+    };
+
+    $articlelist.init();
+
 
 
   }

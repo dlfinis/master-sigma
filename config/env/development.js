@@ -13,8 +13,8 @@ module.exports = {
   grunt: {
     _hookTimeout: 60000
   },
-  errors:{
-    global: false
+  error:{
+    global: true
   },
   application_auth: {
     enableLocalAuth: true,
@@ -62,6 +62,6 @@ module.exports = {
     url: 'http://'+ (process.env.NODE_HOST || '127.0.0.1') +':'+ process.env.SCRAPER_PORT || 3100
   },
   log: {
-    level: 'debug'
+    level: 'verbose'
   }
 };

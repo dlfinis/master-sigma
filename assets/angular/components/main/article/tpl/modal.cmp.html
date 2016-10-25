@@ -13,8 +13,8 @@
   <div class="loader" ng-hide="siteError" ng-class="{fadeInOut: sitePath}" >
     <img class="" src="/images/spinner-2.gif"/>
   </div>
-  <iframe ng-hide="siteError" class="embed-responsive-item" sandbox="allow-scripts allow-popups"
-  ng-src="{{::sitePath}}" ng-onload="hello">
+  <iframe id="site" ng-hide="siteError" class="embed-responsive-item" sandbox="allow-same-origin allow-scripts allow-popups"
+  ng-src="{{::sitePath}}" ng-onload="hello"  err-src="">
     <p>Tu navegador no soporta iframes.</p>
   </iframe>
   <div ng-if="siteError" >
@@ -27,7 +27,10 @@
 <div class="modal-footer">
   <div class="note">
     Si no se visualiza adecuadamente.
-    Por favor pulsa en  <em><i class="fa fa-external-link"></i>Abrir Página</em>
+    Por favor pulsa en <em>
+      <a ng-href="{{::article.url}}" ng-click="close()" target="_blank">
+        <i class="fa fa-external-link"></i>Abrir Página
+      </em></a>
   </div>
   <div class="post">
     <div class="social-bar" >
