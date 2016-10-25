@@ -5,10 +5,10 @@
     //the provider recipe for services require you specify a $get function
     this.$get = ['localStorageService',function (localStorageService){
       return {
-        create : function (userInfo) {
-          localStorageService.set('me',userInfo);
+        create : function (info) {
+          localStorageService.set('me',info.user);
         },
-        get : function () {
+        getUser : function () {
           return localStorageService.get('me');
         },
         destroy : function () {
@@ -37,7 +37,7 @@
           })
           .catch(function(err){
             $log.debug('+ NOT Data User');
-            if($Session.get()){
+            if($Session.getUser()){
               authService.logout().then(function (response) {
                 if(response)
                  deferred.resolve(false);
@@ -57,7 +57,7 @@
       authService.login().then(function (response) {
         if(response)
         {
-          //deferred.resolve($Session.get().user);
+          //deferred.resolve($Session.getUser());
           deferred.resolve(true);
         }
         else {
@@ -69,34 +69,16 @@
 
     authService.getUser = function () {
       var deferred = $q.defer();
-      // if(!$Session.get())
-      // {
-      //   authService.login().then(function (response) {
-      //     if(response)
-      //     {
-      //       deferred.resolve($Session.get().user);
-      //     }
-      //     else {
-      //       deferred.resolve(false);
-      //     }
-      //   });
-      // }
-      // else {
-      //   deferred.resolve($Session.get().user);
-      // }
       authService.login().then(function (response) {
         if(response)
         {
-          deferred.resolve($Session.get().user);
+          deferred.resolve($Session.getUser());
         }
         else {
           deferred.resolve(false);
         }
       });
-
-
       return deferred.promise;
-
     };
 
     authService.isAuthorized = function (authorizedRoles) {

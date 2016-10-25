@@ -88,7 +88,22 @@
     //Set Facebook API configuration
     // $facebookProvider.setAppId(FB.clientID);
     // $facebookProvider.setVersion('v2.5');
-    $facebookProvider.setAppId(FB.clientID).setPermissions(FB.permissions);
+    $facebookProvider.setPermissions(FB.permissions);
+    console.log(document.location.pathname);
+    switch (document.location.pathname) {
+      case '/zeus/':
+        $facebookProvider.setAppId(FB.clientID.zeus);
+        break;
+      case '/ares/':
+        $facebookProvider.setAppId(FB.clientID.ares);
+        break;
+      case '/apolo/':
+        $facebookProvider.setAppId(FB.clientID.apolo);
+        break;
+      default: $facebookProvider.setAppId(FB.clientID.general);
+
+    }
+    // $facebookProvider.setAppId(FB.clientID);
     $facebookProvider.setCustomInit({
       cookie : true, // enable cookies to allow the server to access the session
       xfbml  : false,  // parse XFBML

@@ -27,12 +27,12 @@
         //
         //       }
         // });
-        if($Session.get()) // From Begin Login User
+        if($Session.getUser()) // From Begin Login User
         {
           var prms = {
             where : {
               article: articleID,
-              user: $Session.get().uid
+              user: $Session.getUser().uid
             }
           };
 
@@ -105,7 +105,7 @@
                        $log.debug(response);
                         if(response && !response.error_code)
                         {
-                          var user = $Session.get().user;
+                          var user = $Session.getUser();
                           $log.debug('+ FB Share user.uid ',user.uid);
                           $log.debug('+ Adding Share in DB ');
 

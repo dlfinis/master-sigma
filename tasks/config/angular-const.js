@@ -20,7 +20,12 @@ module.exports = function(grunt) {
       },
       constants: {
         FB:{
-          'clientID'  : process.env.FB_ID,
+          'clientID'  :{
+            'general': process.env.FB,
+            'zeus': process.env.FB_ID_ZEUS,
+            'ares': process.env.FB_ID_ARES,
+            'apolo': process.env.FB_ID_APOLO
+          },
           'permissions': 'email,user_birthday,user_friends,publish_actions'
         }
       },

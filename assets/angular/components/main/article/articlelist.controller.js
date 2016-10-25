@@ -6,8 +6,8 @@
 
     var $articlelist = this;
 
-    if($Session.get() && $Session.get() !== null)
-      $articlelist.user = $Session.get().user;
+    if($Session.getUser() && $Session.getUser() !== null)
+      $articlelist.user = $Session.getUser();
 
     $articlelist.data = [];
     $articlelist.error = {};
@@ -244,7 +244,7 @@
     $articlelist.init = function init() {
 
       $log.debug('+ Init component articlelist');
-      // if($Session.get())
+      // if($Session.getUser())
       $q.when(ArticleListFactory._source_init(),function success(response) {
         $articlelist.setPagination(
             response.articlelist.results,
@@ -260,7 +260,7 @@
         $articlelist.mcategories = response.categories.results;
 
       },function error(e) {
-        // if(!$Session.get()) return;
+        // if(!$Session.getUser()) return;
         $log.error('- Error get contents',e);
         $articlelist.ok = true;
         $articlelist.error.init = true;

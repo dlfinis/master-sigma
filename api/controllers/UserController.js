@@ -12,7 +12,7 @@ module.exports = {
       sails.log.debug('Set token of access');
       if(!require ('fbgraph').getAccessToken() && !_.isUndefined(req.session.user.token))
         require ('fbgraph').setAccessToken(req.session.user.token);
-      
+
       return res.json(200,{ user: {
         id: req.session.user.id,
         uid: req.session.user.uid,
