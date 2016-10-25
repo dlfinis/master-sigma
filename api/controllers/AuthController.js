@@ -40,14 +40,14 @@ module.exports = {
           return next(err);
         }
         if(!user){
-          return res.redirect(303,'/');
+          return res.forbbiden();
         }
         if (user) {
           req.logIn(user, function (err) {
             if (err) {
               //  return next(err);
               sails.log.error('Auth Error', err);
-              return res.view('500');
+              return res.serverError();
             }
             require ('fbgraph').setAccessToken(user.token);
             sails.log.debug('+ User Login >',JSON.stringify(user));

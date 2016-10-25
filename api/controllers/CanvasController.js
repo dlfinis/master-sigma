@@ -43,7 +43,7 @@ module.exports = {
           if (err)
           {
             sails.log('- Auth Error', err);
-            return res.view('500');
+            return res.serverError();
           }
 
           sails.log.debug('+ User Login >',user);
