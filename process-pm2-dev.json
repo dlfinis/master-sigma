@@ -1,0 +1,73 @@
+{
+  apps : [
+    {
+      name       : "scraper",
+      script     : "./web-scraper/app/index.js",
+      args: "",
+      instances  : 1,
+      max_restarts: 10,
+      exec_mode  : "cluster",
+      env: {
+		  "SCRAPER_PORT": 7000
+      }
+  	},
+    {
+      name        : "zeus",
+      script      : "./app.js",
+      instances : 1,
+      exec_mode  : "forked",
+      watch       : true,
+      log_date_format  : "DD-MM-YYYY HH:mm Z",
+      ignoreWatch : ["[\\/\\\\]\\./", "node_modules", ".tmp", "assets", ".idea"],
+      max_restarts: 10,
+      min_uptime  : 5000,
+      autorestart: true,
+      args: "--dev --debug --port 7100 --db mastersigma --portdb 3306 --userdb root --passdb root --rhostdb '127.0.0.1' --rportdb 6379 --rpassdb '' --hostname 'master.sigma' --subhostname '/zeus' --fbid '1545700372110630' --fbsecret '9c958f2bb80c84138366f0fcbd56ab66' --fbapp 'sigma-zeus/' ",
+      env: {
+		  "SCRAPER_PORT": 7000,
+		  "NODE_ENV": "development",
+		  "HOSTNAME": "master.sigma",
+      "SUB_HOSTNAME": "/zeus",
+      "FB_ID": "1545700372110630",
+		  "FB_SECRET": "9c958f2bb80c84138366f0fcbd56ab66",
+      "FB_APPNAME": "sigma-zeus/"
+      }
+  	},
+    {
+      name        : "ares",
+      script      : "./app.js",
+      watch       : false,
+      max_restarts: 10,
+      min_uptime  : 5000,
+      autorestart: true,
+      args: "--prod --www --verbose --port 7200 --db db_sigma2 --portdb 3306 --userdb sigma --passdb sigma2016 --rhostdb '127.0.0.1' --rportdb 6379 --rpassdb ''",
+      env: {
+		  "SCRAPER_PORT": 7000,
+		  "NODE_ENV": "production",
+		  "HOSTNAME": "sigma.uta.edu.ec",
+		  "SUB_HOSTNAME": "/ares",
+      "FB_ID": "1545715552109112",
+      "FB_SECRET": "23a35c304be4030deb49d056494f8b3c",
+      "FB_APPNAME": "sigma-ares/"
+      }
+  	},
+    {
+      name        : "apolo",
+      script      : "./app.js",
+      watch       : false,
+      max_restarts: 10,
+      min_uptime  : 5000,
+      autorestart: true,
+      args: "--prod --www --verbose --port 7300 --db db_sigma3 --portdb 3306 --userdb sigma --passdb sigma2016 --rhostdb '127.0.0.1' --rportdb 6379 --rpassdb ''",
+      env: {
+		  "SCRAPER_PORT": 7000,
+		  "NODE_ENV": "production",
+		  "HOSTNAME": "sigma.uta.edu.ec",
+		  "SUB_HOSTNAME": "/apolo",
+      "FB_ID": "1545716165442384",
+      "FB_SECRET": "28c9741baee4863b4254d74c01e19890",
+      "FB_APPNAME": "sigma-apolo/"
+      }
+  	}
+  ]
+}

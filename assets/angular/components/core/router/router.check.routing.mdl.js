@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function CheckRoutingFactory ($q, $log, $rootScope, $location,$http,AuthFactory ) {
+  function CheckRoutingFactory ($q, $log, $rootScope, $location, $window,$http,AuthFactory ) {
     return {
       isAuth: function()
              {
@@ -9,7 +9,7 @@
           return true;
         } else {
           var deferred = $q.defer();
-          $http.post(me)
+          $http.post('me')
                          .success(function (response) {
                            if(response.auth)
                                {
@@ -76,7 +76,7 @@
           }
         }
       },
-      notAuth : function(){
+      notAuth : function(event){
         $log.debug('+ Location current abs url ',$location.absUrl());
         if($location.absUrl().indexOf('facebook') >-1)
           $location.path('/auth/facebook/canvas');

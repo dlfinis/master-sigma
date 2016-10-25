@@ -241,13 +241,11 @@ module.exports = {
       reqfast(URI, function(err, resp) // Http request
                    {
         if(err){
-          sails.log.warn(err.reason || 'Error of access');
-
-          Article.update({'url': _URI_OLD},{'state':'disable'}) //Set Dead Article
-                        .then(function (updated) {
-                          sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);
-                        });
-
+          sails.log.warn(err.reason || 'Warning about get stats:',URI);
+          // Article.update({'url': _URI_OLD},{'state':'disable'}) //Set Dead Article
+          //               .then(function (updated) {
+          //                 sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);
+          //               });
           resolve(stats);
         }
 

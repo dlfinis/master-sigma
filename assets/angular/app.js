@@ -26,8 +26,8 @@
             '$logProvider',
             '$SessionProvider',
             '$compileProvider',
-            'lazyImgConfigProvider',
             '$facebookProvider',
+            'lazyImgConfigProvider',
             'cfpLoadingBarProvider',
   function( INIT,
             FB,
@@ -37,8 +37,8 @@
             $logProvider,
             $SessionProvider,
             $compileProvider,
-            lazyImgConfigProvider,
             $facebookProvider,
+            lazyImgConfigProvider,
             cfpLoadingBarProvider ) {
 
     //Config enviroments
@@ -73,8 +73,8 @@
     $httpProvider.interceptors.push('apiInterceptor');
 
     lazyImgConfigProvider.setOptions({
-      // offset: 100, // how early you want to load image (default = 100)
-      errorClass: 'error', // in case of loading image failure what class should be added (default = null)
+      // offset: 250, // how early you want to load image (default = 100)
+      // errorClass: 'error', // in case of loading image failure what class should be added (default = null)
       // successClass: 'success', // in case of loading image success what class should be added (default = null)
       onError: function(image){
         console.log('- Img not found:',image.src);
@@ -86,19 +86,24 @@
     });
 
     //Set Facebook API configuration
-    $facebookProvider.setAppId(FB.clientID);
-    $facebookProvider.setPermissions(FB.permissions);
-
+    // $facebookProvider.setAppId(FB.clientID);
+    // $facebookProvider.setVersion('v2.5');
+    $facebookProvider.setAppId(FB.clientID).setPermissions(FB.permissions);
+    $facebookProvider.setCustomInit({
+      cookie : true, // enable cookies to allow the server to access the session
+      xfbml  : false,  // parse XFBML
+      version    : 'v2.5'
+    });
     // Remove loading bar spinner
     // cfpLoadingBarProvider.includeSpinner = false;
     // cfpLoadingBarProvider.spinnerTemplate = '<div style="margin:20% 0 0 50%;"><span class="fa fa-spinner fa-pulse fa-3x"></div>';
     // cfpLoadingBarProvider.spinnerTemplate = '<div style="text-align: center; left: 0px; height: 100%; width: 100%; z-index: 1050; color: rgb(52, 69, 87); top: 0px; background: rgb(52, 69, 87) none repeat scroll 0% 0%; opacity: 0.45; position: fixed;"><img style="width: 100%;" src="/images/spinner.gif"></div>';
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
-    var body = document.body, html = document.documentElement;
-    var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    // var body = document.body, html = document.documentElement;
+    // var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
     cfpLoadingBarProvider.spinnerTemplate = '<div id="loading-bar" \
     style="position: absolute; top: 0px; left: 0px; background-color: rgb(52, 69, 87); \
-    color: #EAEAEA; height: '+height+'px; width: 100%; z-index: 1050; vertical-align: middle; \
+    color: #EAEAEA; height: '+(5000) +'px; width: 100%; z-index: 1040; vertical-align: middle; \
     opacity: 0.55; text-align: center; padding-top: 5px;">\
     <span class="fa fa-refresh fa-spin fa-3x fa-fw" style="vertical-align: middle;"></span>\
     <div style="text-align: center; color: rgb(255, 245, 245); font-weight: bold; display: inline-block;">\
@@ -108,26 +113,36 @@
     //Define routes
     $routeProvider.when('/',{template:'<home></home>'});
     $routeProvider.when('/home', {template:'<home></home>'});
-    $routeProvider.when('/wall',{template:'<articlelist></articlelist>'});
+    $routeProvider.when('/wall',{template:'<wall><wall/>',secure:true});
     $routeProvider.when('/legal/policy',{template:'<policy></policy>'});
     $routeProvider.when('/legal/terms',{template:'<terms></terms>'});
-    $routeProvider.when('/registry/list', { template: '<rcontent-list></rcontent-list>' });
-    $routeProvider.when('/registry/content/:id?', { template: '<rcontent></rcontent>' });
-    $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>' });
+    $routeProvider.when('/registry/list', { template: '<rcontent-list></rcontent-list>',secure:true});
+    $routeProvider.when('/registry/content/:id?', { template: '<rcontent></rcontent>',secure:true});
+    $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>',secure:true});
     $routeProvider.when('/testpage/:tid?', { template: '<testpage></testpage>' });
-    $routeProvider.when('/login', {
-      resolve: {
-        load: function ($facebook) {
-          return $facebook.login().then(function(response) {
-            console.log(response);
-          });
-        }
-      }
-    });
+    $routeProvider.when('/testpage/:tid?', { template: '<testpage></testpage>' });
+    $routeProvider.when('/404', { templateUrl: '404.html' });
+    $routeProvider.when('/500', { templateUrl: '500.html' });
+    $routeProvider.when('/error', { templateUrl: 'error.html' });
+    // $routeProvider.when('/login', {
+    //   resolve: {
+    //     load: function ($facebook) {
+    //       return $facebook.login().then(function(response) {
+    //         console.log(response);
+    //       });
+    //     }
+    //   }
+    // });
     $routeProvider.when('/logout', {
       resolve: {
-        load: function (AuthFactory) {
-          return AuthFactory.logout();
+        load: function ($log,AuthFactory,CheckRoutingFactory) {
+          return AuthFactory.logout().then(function (response) {
+            if(response)
+              CheckRoutingFactory.notAuth();
+          })
+          .catch(function (err) {
+            $log.error(err);
+          });
         }
       }
     });
@@ -143,7 +158,7 @@
 
     //Set dimensions on Canvas
     $rootScope.$on('fb.load', function(e, FB) {
-      $log.debug('+ Init FB');
+      $log.debug('+ Load FB');
       FB.Canvas.setAutoGrow();
       FB.Canvas.setSize({height:800});
       setTimeout('FB.Canvas.setAutoGrow()',700);
@@ -155,52 +170,91 @@
     // Start loading bar for app loading
     //cfpLoadingBar.start();
 
-
     //Define enable routes without logging
-    var enableRoutes = [
-      '',
-      '/',
-      '/home',
-      '/registry/category',
-      '/logout',
-      '/testpage',
-      '/testpage/',
-      '/legal/policy',
-      '/legal/terms'];
+    // var enableRoutes = [
+    //   '',
+    //   '/',
+    //   '/home',
+    //   '/registry/category',
+    //   '/logout',
+    //   '/testpage',
+    //   '/testpage/',
+    //   '/legal/policy',
+    //   '/legal/terms'];
+    //
+    //   var initRoutes = [
+    //     '/',
+    //     '/home'
+    //   ];
 
-      var initRoutes = [
-        '/',
-        '/home'
-      ];
-
-    $rootScope.$on('$routeChangeStart', function (event) {
+    $rootScope.$on('$routeChangeStart', function (event,next) {
       $rootScope.isAppLoading = true;
       $rootScope.startTime = new Date();
-      // App is loading, so set isAppLoading to true and start a timer
-      // Prev and Next route
-      var path = $location.path();
-      if(enableRoutes.indexOf(path) === -1)
-      {
+
+      if (next && next.$$route && next.$$route.secure) {
         $log.debug('+ Check Policie >',$location.path());
         $rootScope.isReadyPref = false;
 
         AuthFactory.isAuthenticated().then(function (response) {
-          $log.debug('+ IS AUTH',response);
+          $log.debug('+ IS AUTH',!!response);
           if(!response)
           {
-            CheckRoutingFactory.notAuth();
-            $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-            event.preventDefault();
-          }else{
+            $rootScope.$evalAsync(function () {
+              CheckRoutingFactory.notAuth();
+              $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+              // event.preventDefault();
+            });
+          }
+          else{
             return;
           }
+        })
+        .catch(function (err) {
+          $log.error(err);
+          $rootScope.$evalAsync(function () {
+            CheckRoutingFactory.notAuth();
+            $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+            // event.preventDefault();
+            // return;
+          });
         });
-      }
-      else {
-        if(initRoutes.indexOf(path) > -1) AuthFactory.logout();
+      }else{
         $rootScope.isReadyPref = true;
         $log.debug('+ Enable route ',$location.path());
+        // return;
       }
+
+
+      // // App is loading, so set isAppLoading to true and start a timer
+      // // Prev and Next route
+      // var path = $location.path();
+      // if(enableRoutes.indexOf(path) === -1)
+      // {
+      //   $log.debug('+ Check Policie >',$location.path());
+      //   $rootScope.isReadyPref = false;
+      //
+      //   AuthFactory.isAuthenticated().then(function (response) {
+      //     $log.debug('+ IS AUTH',response);
+      //     if(!response)
+      //     {
+      //       CheckRoutingFactory.notAuth();
+      //       $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+      //       event.preventDefault();
+      //     }else{
+      //       return;
+      //     }
+      //   }).catch(function (err) {
+      //     $log.error(err);
+      //     CheckRoutingFactory.notAuth(event);
+      //     $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+      //     event.preventDefault();
+      //   });
+      // }
+      // else {
+      //   // if(initRoutes.indexOf(path) > -1) AuthFactory.logout(); //Clean session in initRoutes
+      //   $rootScope.isReadyPref = true;
+      //   $log.debug('+ Enable route ',$location.path());
+      // }
     });
   })
   .directive('resolveLoader', function($rootScope, $timeout) {

@@ -8,19 +8,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema mastersigma
+-- Schema db_sigma
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mastersigma
+-- Schema db_sigma
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mastersigma` DEFAULT CHARACTER SET utf8 ;
-USE `mastersigma` ;
+CREATE SCHEMA IF NOT EXISTS `db_sigma` DEFAULT CHARACTER SET utf8 ;
+USE `db_sigma` ;
 
 -- -----------------------------------------------------
--- Table `mastersigma`.`user`
+-- Table `db_sigma`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mastersigma`.`user` (
+CREATE TABLE IF NOT EXISTS `db_sigma`.`user` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `provider` VARCHAR(15) NULL DEFAULT NULL,
   `uid` VARCHAR(50) NOT NULL,
@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `mastersigma`.`user` (
   `birthday` VARCHAR(10) NULL,
   `profileUrl` VARCHAR(150) NULL DEFAULT NULL COMMENT 'URL Link to the profile ',
   `password` VARCHAR(50) NULL DEFAULT NULL,
-  `createdAt` DATETIME NULL DEFAULT current_timestamp,
-  `updatedAt` DATETIME NULL DEFAULT current_timestamp,
+  `createdAt` TIMESTAMP NULL DEFAULT current_timestamp,
+  `updatedAt` TIMESTAMP NULL ,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uid_UNIQUE` (`uid` ASC))
 ENGINE = InnoDB
@@ -43,9 +43,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `mastersigma`.`article`
+-- Table `db_sigma`.`article`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mastersigma`.`article` (
+CREATE TABLE IF NOT EXISTS `db_sigma`.`article` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(255) NOT NULL,
   `description` LONGTEXT NOT NULL,
@@ -55,14 +55,14 @@ CREATE TABLE IF NOT EXISTS `mastersigma`.`article` (
   `state` VARCHAR(15) NOT NULL DEFAULT 'create' COMMENT 'State: create/edit/disable',
   `kind` VARCHAR(15) NOT NULL DEFAULT 'article' COMMENT 'Kind of article : article/file/sound/video',
   `creator` INT(10) UNSIGNED NULL COMMENT 'User who created the registry',
-  `createdAt` DATETIME NULL DEFAULT current_timestamp,
-  `updatedAt` DATETIME NULL DEFAULT current_timestamp,
+  `createdAt` TIMESTAMP NULL DEFAULT current_timestamp,
+  `updatedAt` TIMESTAMP NULL ,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `url_UNIQUE` (`url` ASC),
   INDEX `fk_article_user1_idx` (`creator` ASC),
   CONSTRAINT `fk_article_creator`
     FOREIGN KEY (`creator`)
-    REFERENCES `mastersigma`.`user` (`id`)
+    REFERENCES `db_sigma`.`user` (`id`)
     ON DELETE SET NULL
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -71,14 +71,14 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `mastersigma`.`category`
+-- Table `db_sigma`.`category`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mastersigma`.`category` (
+CREATE TABLE IF NOT EXISTS `db_sigma`.`category` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `description` VARCHAR(255) NULL,
-  `createdAt` DATETIME NULL DEFAULT current_timestamp,
-  `updatedAt` DATETIME NULL DEFAULT current_timestamp,
+  `createdAt` TIMESTAMP NULL DEFAULT current_timestamp,
+  `updatedAt` TIMESTAMP NULL ,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB
@@ -87,9 +87,9 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `mastersigma`.`article_categories__category_articles`
+-- Table `db_sigma`.`article_categories__category_articles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mastersigma`.`article_categories__category_articles` (
+CREATE TABLE IF NOT EXISTS `db_sigma`.`article_categories__category_articles` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `category_articles` INT(10) UNSIGNED NOT NULL,
   `article_categories` INT(10) UNSIGNED NOT NULL,
@@ -98,12 +98,12 @@ CREATE TABLE IF NOT EXISTS `mastersigma`.`article_categories__category_articles`
   INDEX `fk_article_categories__category_articles_category1_idx` (`category_articles` ASC),
   CONSTRAINT `fk_article_categories`
     FOREIGN KEY (`category_articles`)
-    REFERENCES `mastersigma`.`category` (`id`)
+    REFERENCES `db_sigma`.`category` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_category_articles`
     FOREIGN KEY (`article_categories`)
-    REFERENCES `mastersigma`.`article` (`id`)
+    REFERENCES `db_sigma`.`article` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -112,25 +112,25 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `mastersigma`.`article_related`
+-- Table `db_sigma`.`article_related`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mastersigma`.`article_related` (
+CREATE TABLE IF NOT EXISTS `db_sigma`.`article_related` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `main` INT(10) UNSIGNED NOT NULL,
   `related` INT(10) UNSIGNED NOT NULL,
-  `createdAt` DATETIME NULL DEFAULT current_timestamp,
+  `createdAt` TIMESTAMP NULL DEFAULT current_timestamp,
   PRIMARY KEY (`id`, `related`, `main`),
   UNIQUE INDEX `article_UNIQUE` (`main` ASC, `related` ASC),
   INDEX `fk_main_article_idx` (`main` ASC),
   INDEX `fk_related_article_idx` (`related` ASC),
   CONSTRAINT `fk_main_article`
     FOREIGN KEY (`main`)
-    REFERENCES `mastersigma`.`article` (`id`)
+    REFERENCES `db_sigma`.`article` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_related_article`
     FOREIGN KEY (`related`)
-    REFERENCES `mastersigma`.`article` (`id`)
+    REFERENCES `db_sigma`.`article` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -138,26 +138,26 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `mastersigma`.`like`
+-- Table `db_sigma`.`like`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mastersigma`.`like` (
+CREATE TABLE IF NOT EXISTS `db_sigma`.`like` (
   `id` INT(10) UNSIGNED NOT NULL,
   `sid` VARCHAR(50) NOT NULL,
   `article` INT(10) UNSIGNED NOT NULL,
   `user` INT(10) UNSIGNED NOT NULL,
-  `createdAt` DATETIME NULL DEFAULT current_timestamp,
+  `createdAt` TIMESTAMP NULL DEFAULT current_timestamp,
   PRIMARY KEY (`id`, `article`, `user`),
   UNIQUE INDEX `sid_UNIQUE` (`sid` ASC),
   INDEX `fk_like_article1_idx` (`article` ASC),
   INDEX `fk_like_user1_idx` (`user` ASC),
   CONSTRAINT `fk_like_article1`
     FOREIGN KEY (`article`)
-    REFERENCES `mastersigma`.`article` (`id`)
+    REFERENCES `db_sigma`.`article` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_like_user1`
     FOREIGN KEY (`user`)
-    REFERENCES `mastersigma`.`user` (`id`)
+    REFERENCES `db_sigma`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -166,27 +166,27 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `mastersigma`.`share`
+-- Table `db_sigma`.`share`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mastersigma`.`share` (
+CREATE TABLE IF NOT EXISTS `db_sigma`.`share` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `sid` VARCHAR(50) NOT NULL,
   `message` TEXT NULL,
   `user` INT(10) UNSIGNED NOT NULL,
   `article` INT(10) UNSIGNED NOT NULL,
-  `createdAt` DATETIME NULL DEFAULT current_timestamp,
+  `createdAt` TIMESTAMP NULL DEFAULT current_timestamp,
   PRIMARY KEY (`id`, `user`, `article`),
   UNIQUE INDEX `sid_UNIQUE` (`sid` ASC),
   INDEX `fk_share_user1_idx` (`user` ASC),
   INDEX `fk_share_article1_idx` (`article` ASC),
   CONSTRAINT `fk_share_article1`
     FOREIGN KEY (`article`)
-    REFERENCES `mastersigma`.`article` (`id`)
+    REFERENCES `db_sigma`.`article` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_share_user1`
     FOREIGN KEY (`user`)
-    REFERENCES `mastersigma`.`user` (`id`)
+    REFERENCES `db_sigma`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -194,25 +194,25 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `mastersigma`.`visit`
+-- Table `db_sigma`.`visit`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mastersigma`.`visit` (
+CREATE TABLE IF NOT EXISTS `db_sigma`.`visit` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user` INT(10) UNSIGNED NOT NULL,
   `article` INT(10) UNSIGNED NOT NULL,
   `time` FLOAT NOT NULL COMMENT 'Time in Seconds.\n1 = Direct open\n',
-  `createdAt` DATETIME NULL DEFAULT current_timestamp,
+  `createdAt` TIMESTAMP NULL DEFAULT current_timestamp,
   PRIMARY KEY (`id`, `user`, `article`),
   INDEX `fk_visita_article_idx` (`article` ASC),
   INDEX `fk_visita_user_idx` (`user` ASC),
   CONSTRAINT `fk_visita_article`
     FOREIGN KEY (`article`)
-    REFERENCES `mastersigma`.`article` (`id`)
+    REFERENCES `db_sigma`.`article` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_visita_user`
     FOREIGN KEY (`user`)
-    REFERENCES `mastersigma`.`user` (`id`)
+    REFERENCES `db_sigma`.`user` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB

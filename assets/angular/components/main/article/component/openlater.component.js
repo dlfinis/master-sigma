@@ -1,7 +1,40 @@
 (function () {
   'use strict';
+  function findString(arr,str){
+      var value = false;
+        arr.forEach(function(item){
+           if(str.indexOf(item) > -1)
+            value = true;
+        });
+
+        return value;
+  }
+
+  function NotScraper(url){
+    var types = [
+      'pdf','txt','png','jpeg','jpg','bmp','doc','docx'
+    ];
+
+    var sites = [
+      'youtube.com','vimeo.com','daily','imgur','books.google','/url?','facebook.com','instagram.com','twitter.com'
+    ];
+
+      if(findString(types,url) || findString(sites,url))
+      {
+        return true;
+      }else{
+        return false;
+      }
+
+  }
   function ScraperFactory($log,$resource){
-    return $resource('scraper/?url=:url', {url:'@url'});
+    return $resource('scraper/?url=:url', {url:'@url'},{
+    query: {
+      method: 'GET',
+      isArray: true,
+      ignoreLoadingBar: true
+    }
+  });
   }
   function ModalBaseFactory($http,$log){
     return {
@@ -10,7 +43,7 @@
         var prms = {};
         prms.articleID = article.id;
         prms.visitTime = time;
-        $http.post('api/visit/create',prms)
+        $http.post('api/visit/create',prms,{ ignoreLoadingBar : true }  )
         .then(function(record)
         {
           $log.debug(record.data);
@@ -40,7 +73,7 @@
   }
 
 
-  function ModalCtrl($scope,$log,$q,$sce,$timeout,$uibModalInstance,ScraperFactory,ModalBaseFactory,article){
+  function ModalCtrl($scope,$log,$location,$q,$sce,$timeout,$uibModalInstance,ScraperFactory,ModalBaseFactory,article){
     var $modal = $scope;
 
     $modal.article = article;
@@ -48,9 +81,11 @@
     $modal.visit = 0;
     $modal.sitePath;
 
-    $q.when(ScraperFactory.get({'url':article.url}).$promise,
+    $q.when(ScraperFactory.get({'url':encodeURI(article.url)}).$promise,
       function(response){
-        $modal.sitePath = $sce.trustAsResourceUrl('/website'+response.previewPath);
+        $log.debug('+ Get Scraper',article.url,response);
+        $modal.sitePath = $sce.trustAsResourceUrl('website'+response.previewPath);
+        // $modal.sitePath = document.location.origin+document.location.pathname+'website'+response.previewPath;
       },
       function(err){
         $log.warn(err);
@@ -66,7 +101,7 @@
 
 
     $uibModalInstance.closed.then(function(){
-      $log.debug('- Close Modal');
+      $log.debug('+ Close Modal');
       $uibModalInstance.dismiss('close');
     });
 
@@ -76,21 +111,34 @@
     };
 
     $modal.close = function(){
-      $log.debug($modal.diffTime());
+      $log.debug('+ Time:',$modal.diffTime());
       if($modal.diffTime() > 15)
       {
-        $log.debug('Time:',$modal.diffTime());
+        $log.debug('+ Diff Time:',$modal.diffTime());
         ModalBaseFactory.setVisit(article,$modal.diffTime());
-        $uibModalInstance.close({visit:true,article:article.id});
         article.visits = article.visits + 1;
+        $uibModalInstance.close({visit:true,article:article.id});
       }
       $uibModalInstance.dismiss('cancel');
     };
   }
 
-  function OpenLaterCtrl($log,$window,ScraperFactory,ModalFactory)
+  function OpenLaterCtrl($log,$window,ScraperFactory,ModalFactory,ModalBaseFactory)
   {
     var $openlater = this;
+
+    $openlater.openDirect = function(article){
+      if(NotScraper(article.url))
+      {
+        ModalBaseFactory.setVisit(article,1);
+        article.visits = article.visits + 1;
+        return true;
+      }else
+      {
+        return false;
+      }
+    };
+
     $openlater.openModal = function (article)
     {
       var $modalInstance = ModalFactory.getModal(article);
@@ -139,7 +187,7 @@
          .factory('ModalFactory',ModalFactory)
          .controller('ModalCtrl',ModalCtrl)
          .controller('OpenLaterCtrl',OpenLaterCtrl)
-         .directive('openlater', function( partial,$log){
+         .directive('openlater', function( partial,$log,$window){
            return {
              restrict: 'AE',
              scope: {
@@ -151,9 +199,25 @@
              templateUrl: partial.main.article+'tpl/openlater.cmp.html',
              link : function (scope, element, attrs, controller) {
                element.bind('click', function(event){
-                 $log.debug('+ Open Site');
-                 $log.debug(scope.source);
-                 controller.openModal(scope.source);
+                  $window.predirect = function (obj,event){
+                    var message = '\u2022Va a salir de la aplicaci\xf3n.\u2022\n\xBFDesea visualizar el recurso externamente?';
+                    if (confirm(message) === true) {
+                      $window.focus();
+                      $window.open(obj.href, '_blank');
+                    }
+                  };
+
+                if(controller.openDirect(scope.source))
+                {
+                 $log.debug('+ Redirect to different type of Site');
+                 $window.focus();
+                 $window.open(scope.source.url, '_blank');
+                }
+                else{
+                  $log.debug('+ Open Site');
+                  $log.debug(scope.source);
+                  controller.openModal(scope.source);
+                }
                });
              }
            };

@@ -19,12 +19,6 @@
           notAuthorized: 'auth-not-authorized'
         }
       )
-      // .constant(
-      //   'FB',{
-      //     'clientID' : 1267766483237355,
-      //     'permissions': 'email,user_birthday,user_friends,publish_actions'
-      //   }
-      // )
       .constant(
         'partial',{
           'main' : {
@@ -35,6 +29,7 @@
             'rcontent' : 'angular/components/main/registry/rcontent/',
             'rcategory' : 'angular/components/main/registry/rcategory/'
           },
+
           'core' : {
             'origin' : 'angular/components/core/',
             'page' : 'angular/components/core/page/',

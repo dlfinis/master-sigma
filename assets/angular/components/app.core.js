@@ -4,6 +4,7 @@
     'app.core.fontloader',
     'app.core.fb',
     'app.core.http.interceptor',
+    'app.core.img.errSrc',
     'app.core.legal.policy',
     'app.core.legal.terms',
     'app.core.router.check',

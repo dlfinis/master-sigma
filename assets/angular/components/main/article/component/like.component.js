@@ -5,7 +5,7 @@
     return {
       havelike: function(articleID)
       {
-        return $http.get('api/article/havelike',
+        return $http.get('api/like/have',
           {
             params : { articleID: articleID },
             ignoreLoadingBar : true
@@ -13,7 +13,8 @@
       },
       setlike: function(articleID,articleURL)
       {
-        return $http.post('api/article/setlike',
+        if(articleID && articleURL)
+        return $http.post('api/like/set',
           {
             articleID:articleID ,
             articleURL:articleURL
@@ -21,14 +22,19 @@
           {
             ignoreLoadingBar: true
           });
+        else
+          return false;
       },
       deletelike: function(likeSid)
       {
-        return $http.delete('api/article/deletelike',
+        if(likeSid)
+        return $http.delete('api/like/delete',
           {
             params : { likeSid:likeSid },
             ignoreLoadingBar : true
           });
+        else
+          return false;
       },
       testlike: function(){
         var timer = $q.defer();
@@ -63,7 +69,7 @@
   angular.module('app.main.article.like',['app.config'])
          .factory('LikeFactory',LikeFactory)
          .controller('LikeCtrl',LikeCtrl)
-         .directive('like', function( partial,$log){
+         .directive('like', function( partial,$log,$timeout){
            return {
              restrict: 'EA',
              scope: {
@@ -86,15 +92,21 @@
                scope.doLike = function(){
                  scope.loader = true;
 
+                 $timeout(function() {
+                   scope.loader = false; //cancel loader when timed out
+                 }, 3750); //3750ms
+
+                $timeout(function(){
                  if(scope.likeSid)
                    scope.checkstate = true;
 
-                 if((!scope.checkstate))
-                   {
+                 if((!scope.checkstate)){
+                   $log.debug('+ Adding LIKE in DB');
                    controller.setLike(scope.source.id,scope.source.url)
                                 .then(function (response){
-                                  if(response.data.created) // created,record
+                                  if(response.status <=210) // created,record
                                   {
+                                    $log.debug('+ Added LIKE in DB');
                                     scope.likeSid = response.data.record.sid;
                                     scope.checkstate = true;
                                     scope.loader = false;
@@ -104,13 +116,16 @@
                                 .catch(function(err){
                                   $log.error(err);
                                   scope.loader = false;
+                                  // $rootScope.$error = { login : true};
                                 });
                  }
                  else {
+                  $log.debug('+ Deleting LIKE of DB');
                    controller.deleteLike(scope.likeSid)
                                .then(function(response){
                                  if(response.data)
                                  {
+                                   $log.debug('+ Deleted LIKE of DB');
                                    scope.checkstate = false;
                                    scope.stats = scope.stats - 1;
                                    scope.loader = false;
@@ -122,6 +137,7 @@
                                  scope.loader = false;
                                });
                  }
+               });
                };
              }
            };

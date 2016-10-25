@@ -1,0 +1,15 @@
+
+#!/bin/bash
+
+clear
+
+        if [ "$1" = "node" ]; then
+         echo 'Node Development Deploy'
+	 node app.js --dev --debug --port 7100 --db mastersigma --portdb 3306 --userdb root --passdb root --rhostdb '127.0.0.1' --rportdb 6379 --rpassdb '' --hostname 'master.sigma' --subhostname '/zeus' --fbid '1545700372110630' --fbsecret '9c958f2bb80c84138366f0fcbd56ab66' --fbapp 'sigma-zeus/'  --scport 3100
+        elif [ "$1" = "pm2" ]
+        then 
+                echo 'Pm2 Dev Deploy'
+		pm2 start process-pm2-dev.json --only zeus
+		pm2 logs zeus
+        fi
+

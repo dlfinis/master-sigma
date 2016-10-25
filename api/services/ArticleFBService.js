@@ -57,6 +57,7 @@
           });
     },
     delFBLike : function(sid){
+      sails.log.debug(sid);
       return new Promise(
         function (resolve,reject){
           graph.del(sid,
@@ -76,6 +77,7 @@
        });
      },
      set : function (articleID,articleURL,userID) {
+      if(!_.isUndefined(articleURL))
        return self.setFBLike(articleURL)
            .then(function(reslike){ return [reslike]; })
            .spread(function (reslike) {
@@ -105,6 +107,7 @@
            });
      },
      delete : function (sid) {
+       if(!_.isUndefined(sid))
        return self.delFBLike(sid)
             .then(function(resdel){ return [resdel]; })
             .spread(function (resdel) {
@@ -118,11 +121,11 @@
                           sails.log.warn(err);
                           return ({deleted:false,err : err});
                         });
-            })
-            .catch(function(err){
-              sails.log.warn(err);
-              throw 'Share: Not set share err';
             });
+            // .catch(function(err){
+            //   sails.log.warn(err);
+            //   throw 'Like: Not set like err';
+            // });
 
      }
    },

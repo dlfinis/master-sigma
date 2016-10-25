@@ -23,11 +23,12 @@ module.exports = {
     sails.log('+ SCRAPER');
 
     var _url = req.param('url');
+    console.log(_url);
     if(!_url)
       return res.badRequest();
 
     var _path_scraper = '/sites/check/?url=';
-    var URI = sails.config.scraper.url+_path_scraper+_url;
+    var URI = sails.config.scraper.url+_path_scraper+encodeURI(_url);
 
     reqfast(URI, function(err, resp) // Https request
     {

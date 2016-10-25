@@ -30,6 +30,20 @@
         // On request failure
         requestError: function (rejection) {
           // console.log(rejection); // Contains the data about the error on the request.
+          switch(rejection.status){
+          case 401:
+          //  $location.path('/login');
+          $log.debug('- Is necessary login');
+           break;
+         case 404:
+           $location.path('/404');
+           break;
+         case 500:
+           $location.path('/500');
+           break;
+         default:
+           $location.path('/error');
+       }
 
           // Return the promise rejection.
           return $q.reject(rejection);
