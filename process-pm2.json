@@ -27,6 +27,7 @@
 		  "HOSTNAME": "sigma.uta.edu.ec",
       "SUB_HOSTNAME": "/zeus",
       "FB_ID": "1545700372110630",
+      "FB_ID_ZEUS": "1545700372110630",
 		  "FB_SECRET": "9c958f2bb80c84138366f0fcbd56ab66",
       "FB_APPNAME": "sigma-zeus/"
       }
@@ -45,6 +46,7 @@
 		  "HOSTNAME": "sigma.uta.edu.ec",
 		  "SUB_HOSTNAME": "/ares",
       "FB_ID": "1545715552109112",
+      "FB_ID_ARES": "1545715552109112",
       "FB_SECRET": "23a35c304be4030deb49d056494f8b3c",
       "FB_APPNAME": "sigma-ares/"
       }
@@ -63,6 +65,7 @@
 		  "HOSTNAME": "sigma.uta.edu.ec",
 		  "SUB_HOSTNAME": "/apolo",
       "FB_ID": "1545716165442384",
+      "FB_ID_APOLO": "1545716165442384",
       "FB_SECRET": "28c9741baee4863b4254d74c01e19890",
       "FB_APPNAME": "sigma-apolo/"
       }
