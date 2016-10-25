@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+
+8888888888     ,a8888a,       ,a8888a,
+88           ,8P"'  `"Y8,   ,8P"'  `"Y8,
+88  ____    ,8P        Y8, ,8P        Y8,
+88a8PPPP8b, 88          88 88          88
+PP"     `8b 88          88 88          88
+d8 `8b        d8' `8b        d8'
+Y8a     a8P  `8ba,  ,ad8'   `8ba,  ,ad8'
+"Y88888P"     "Y8888P"       "Y8888P"
+
+  This is the default "500: Server Error" page.
+  User agents that don't "Accept" HTML will see a JSON version instead.
+  You can customize the control logic for your needs in `config/500.js`
+
+  Sails considers a request in a "500: Server Error" state when
+  your app throws a catchable error (not inside of an asynchronous callback).
+
+  You can also trigger this response from one of your controllers or policies with:
+  `return res.serverError( e );`
+  (where `e` is an optional message, error, or array of errors to include in the response)
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <title>Dificultades en el servidor</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu+Condensed" rel="stylesheet">
+    <style>
+    html,body{text-align:left;font-size:1em;font-family: "Open Sans",Arial,sans-serif;}html,body,img,form,textarea,input,fieldset,div,p,div,ul,li,ol,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,code{margin:0;padding:0}ul,li{list-style:none}img{display:block}a img{border:0}a{text-decoration:none;font-weight:normal;font-family:inherit}*:active,*:focus{outline:0;-moz-outline-style:none}h1,h2,h3,h4,h5,h6,h7{font-weight:normal;font-size:1em}.clearfix:after{clear:both;content:".";display:block;font-size:0;height:0;line-height:0;visibility:hidden} .ocean{ background: #f4fbff no-repeat center bottom;height:315px}.fivehundred .ocean img{margin-right:auto;margin-left:auto}.fivehundred .waves{display:block;padding-top:25px;margin-right:auto;margin-left:auto}.fivehundred .main{display:block;margin-top: 1em90px}.fivehundred .logo{width:250px;margin-top:3.5em;margin-left:auto;margin-right:auto}.fivehundred octopus{display:block;padding-top:27px}.fivehundred .help{padding-top:2em}.fivehundred h1{font-family:"Open Sans","Ubuntu Condensed",Arial,sans-serif;font-weight:bold;font-size:1.7em;color:#001c20;text-align:center}.fivehundred h2{font-family:"Open Sans","Ubuntu Condensed",Arial,sans-serif;font-weight:300;font-size:1.5em;color:#001c20;text-align:center}.fivehundred p{font-family:"Open Sans","Ubuntu Condensed",Arial,sans-serif;font-size:1.25em;color:#001c20;text-align:center}.fivehundred a{color:#2A6AA9}.fivehundred a:hover{color:#10467c}
+    .fivehundred .logo{margin:1em auto;width:100%;text-align: center;}
+    .fivehundred .message{margin: 1.5em;text-align: center;font-size: 1.5em;}
+    .fivehundred .sea-bass{ margin:1em; font-family: "Ubuntu Condensed";text-align: center; font-weight: 700;font-style: italic}
+    .logo .sigma{display: inline-block;font-weight: bold;color: #2A6AA9;font-size: 2.2em;}
+    .logo .sigma img{height: 50px; display: inline-block;vertical-align: top;}
+    </style>
+  </head>
+  <body>
+
+    <div class="fivehundred">
+      <div class="ocean">
+        <img class="whale" src="./images/whale.png">
+      </div>
+
+      <div class="main">
+        <h1>
+            Error en el servidor.
+        </h1>
+      <p class="sea-bass">
+        El equipo altamente entrenado de la embarcación "Sigma" está trabajando en este mismo momento.</br>
+      </p>
+      <p class="message">
+         Si el problema persiste, por favor <a href="mailto://you@your-domain.com">contacta con el administrador de sistemas</a>
+       </br>Informarle de las veces que se produjo el error, y cualquier cosa que podría haber hecho que puede haber causado el error.
+       </p>
+
+        <p class="help">
+          <a href="https://es.wikipedia.org/wiki/HTTP_500">¿Por qué</a> esta sucediendo esto?
+        </p>
+      </div>
+
+      <div class="logo">
+        <a class="sigma" href="">
+          Sigma
+          <img src="./images/sigma-logo.png">
+        </a>
+      </div>
+    </div>
+
+  </body>
+</html>

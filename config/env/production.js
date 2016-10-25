@@ -34,7 +34,7 @@ module.exports = {
    * environment (see config/connections.js and config/models.js )           *
    ***************************************************************************/
   errors:{
-    global: true
+    global: false
   },
   paths: {
     public: 'www'

@@ -1,67 +1,71 @@
 <!DOCTYPE html>
+<!--
+
+
+88888888888
+88
+88
+88aaaaa     8b,dPPYba, 8b,dPPYba,  ,adPPYba,  8b,dPPYba,
+88"""""     88P'   "Y8 88P'   "Y8 a8"     "8a 88P'   "Y8
+88          88         88         8b       d8 88
+88          88         88         "8a,   ,a8" 88
+88888888888 88         88          `"YbbdP"'  88
+
+
+This is a page when is activate the global variable
+of show an unique page of error.
+
+-->
 <html>
   <head>
-    <title>Test</title>
-
-    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-    <!--
-        Stylesheets and Preprocessors
-        ==============================
-
-        You can always bring in CSS files manually with `<link>` tags, or asynchronously
-        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage
-        of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-        By default, stylesheets from your `assets/styles` folder are included
-        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
-        are supported. In production, your styles will be minified and concatenated into
-        a single file.
-
-        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-        For example, here are a few things you could do:
-
-            + Change the order of your CSS files
-            + Import stylesheets from other directories
-            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
-    -->
-
-    <!--STYLES-->
-    <link rel="stylesheet" href="min/production.min.css">
-    <!--STYLES END-->
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <title>Ocurrió una dificultad</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu+Condensed" rel="stylesheet">
+    <style>
+      html,body{text-align:left;font-size:1em;font-family: "Open Sans",Arial,sans-serif;}html,body,img,form,textarea,input,fieldset,div,p,div,ul,li,ol,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,code{margin:0;padding:0}ul,li{list-style:none}img{display:block}a img{border:0}a{text-decoration:none;font-weight:normal;font-family:inherit}*:active,*:focus{outline:0;-moz-outline-style:none}h1,h2,h3,h4,h5,h6,h7{font-weight:normal;font-size:1em}.clearfix:after{clear:both;content:".";display:block;font-size:0;height:0;line-height:0;visibility:hidden}.error .ocean{ background: #f4fbff no-repeat center bottom;height:315px}.error .ocean img{margin-right:auto;margin-left:auto}.error .waves{display:block;padding-top:25px;margin-right:auto;margin-left:auto}.error .main{display:block;margin-top:90px}.error .logo{width:250px;margin-top:3.5em;margin-left:auto;margin-right:auto}.error octopus{display:block;padding-top:27px}.error .help{padding-top:2em}.error h1{font-family:"Open Sans","Ubuntu Condensed",Arial,sans-serif;font-weight:bold;font-size:1.7em;color:#001c20;text-align:center}.error h2{font-family:"Open Sans","Ubuntu Condensed",Arial,sans-serif;font-weight:300;font-size:1.5em;color:#001c20;text-align:center}.error p{font-family:"Open Sans","Ubuntu Condensed",Arial,sans-serif;font-size:1.25em;color:#001c20;text-align:center}.error a{color:#2A6AA9}.error a:hover{color:#10467c}
+      .error .logo{margin:1em auto;width:100%;text-align: center;}
+      .error .message{margin: 1.5em;text-align: center;font-size: 1.5em;}
+      .error .sea-bass{ margin:1em; font-family: "Ubuntu Condensed";text-align: center; font-weight: 700;font-style: italic}
+      .logo .sigma{display: inline-block;font-weight: bold;color: #2A6AA9;font-size: 2.2em;}
+      .logo .sigma img{height: 50px; display: inline-block;vertical-align: top;}
+    </style>
   </head>
-
   <body>
 
-	<h1> Error HTML</h1>
+    <div class="error">
+      <div class="ocean">
+        <img class="octopus" src="./images/octopus4.png">
+      </div>
 
-    <!--
+      <div class="main">
+        <h1>
+          <i>
+            Algo ha sucedido aquí.
+          </i>
+        </h1>
+      <p class="sea-bass">
+        El equipo altamente entrenado de la embarcación "Sigma" está trabajando en este mismo momento.</br>
+      </p>
+      <p class="message">
+         Si el problema persiste, por favor <a href="mailto://you@your-domain.com">contacta con el administrador de sistemas</a>
+       </br>Informarle de las veces que se produjo el error, y cualquier cosa que podría haber hecho que puede haber causado el error.
+       </p>
 
-      Client-side Javascript
-      ========================
+        <p class="help">
+          <a href="https://es.wikipedia.org/wiki/Anexo:C%C3%B3digos_de_estado_HTTP">¿Por qué</a> esta sucediendo esto?
+        </p>
+      </div>
 
-      You can always bring in JS files manually with `script` tags, or asynchronously
-      on the client using a solution like AMD (RequireJS).  Or, if you like, you can
-      take advantage of Sails' conventional asset pipeline (boilerplate Gruntfile).
+      <div class="logo">
+        <a class="sigma" href="">
+          Sigma
+          <img src="./images/sigma-logo.png">
+        </a>
+      </div>
+    </div>
 
-      By default, files in your `assets/js` folder are included here
-      automatically (between SCRIPTS and SCRIPTS END).  Both JavaScript (.js) and
-      CoffeeScript (.coffee) are supported. In production, your scripts will be minified
-      and concatenated into a single file.
-
-      To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-      For example, here are a few things you could do:
-
-          + Change the order of your scripts
-          + Import scripts from other directories
-          + Use a different preprocessor, like TypeScript
-
-    -->
-
-    <!--SCRIPTS-->
-    <script src="min/production.min.js"></script>
-    <!--SCRIPTS END-->
   </body>
 </html>

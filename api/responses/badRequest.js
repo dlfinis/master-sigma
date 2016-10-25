@@ -43,10 +43,14 @@ module.exports = function badRequest(data, options) {
     return res.jsonx(data);
   }
 
-  // If error glaba is true, render the error file
-  if (sails.config.errors.global === true || sails.config.hooks.views === false ) {
-	sails.log.verbose('Render file respond',res.statusCode);
-	return res.sendfile(sails.config.paths.public + '/error.html');
+  if (sails.config.hooks.views === false && sails.config.error.global) {
+    sails.log.verbose('Render error file respond',res.statusCode);
+    return res.sendfile(sails.config.paths.public + '/error.html');
+  }
+
+  if (sails.config.hooks.views === false && !sails.config.error.global) {
+    sails.log.verbose('Render file respond',res.statusCode);
+    return res.sendfile(sails.config.paths.public + '/'+res.statusCode+'.html');
   }
 
 
@@ -79,4 +83,3 @@ module.exports = function badRequest(data, options) {
   });
 
 };
-

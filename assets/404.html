@@ -1,16 +1,74 @@
 <!DOCTYPE html>
+<!--
+            ,d8      ,a8888a,            ,d8
+          ,d888    ,8P"'  `"Y8,        ,d888
+        ,d8" 88   ,8P        Y8,     ,d8" 88
+      ,d8"   88   88          88   ,d8"   88
+    ,d8"     88   88          88 ,d8"     88
+    8888888888888 `8b        d8' 8888888888888
+             88    `8ba,  ,ad8'           88
+             88      "Y8888P"             88
+
+  This is the default "404: Not Found" page.
+  User agents that don't "Accept" HTML will see a JSON version instead.
+  You can customize the control logic for your needs in `config/404.js`
+
+  Sails considers a request to be in a "404: Not Found" state when a user
+  requests a URL which doesn't match any of your app's routes or blueprints.
+
+  You can also trigger this response from one of your controllers or policies with:
+  `return res.notFound();`
+
+-->
 <html>
   <head>
-    <title>Test</title>
-
-    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <title>Página o recurso inexistente</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu+Condensed" rel="stylesheet">
+    <style>
+      html,body{text-align:left;font-size:1em;font-family: "Open Sans",Arial,sans-serif;}html,body,img,form,textarea,input,fieldset,div,p,div,ul,li,ol,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,code{margin:0;padding:0}ul,li{list-style:none}img{display:block}a img{border:0}a{text-decoration:none;font-weight:normal;font-family:inherit}*:active,*:focus{outline:0;-moz-outline-style:none}h1,h2,h3,h4,h5,h6,h7{font-weight:normal;font-size:1em}.clearfix:after{clear:both;content:".";display:block;font-size:0;height:0;line-height:0;visibility:hidden}.fourohfour .ocean{background:url('./images/waves.png') #f4fbff no-repeat center bottom;height:315px}.fourohfour .ocean img{margin-right:auto;margin-left:auto}.fourohfour .waves{display:block;padding-top:25px;margin-right:auto;margin-left:auto}.fourohfour .main{display:block;margin-top:90px}.fourohfour .logo{width:250px;margin-top:3.5em;margin-left:auto;margin-right:auto}.fourohfour .fishy{display:block;padding-top:27px}.fourohfour .help{padding-top:2em}.fourohfour h1{font-family:"Open Sans","Ubuntu Condensed",Arial,sans-serif;font-weight:bold;font-size:1.7em;color:#001c20;text-align:center}.fourohfour h2{font-family:"Open Sans","Ubuntu Condensed",Arial,sans-serif;font-weight:300;font-size:1.5em;color:#001c20;text-align:center}.fourohfour p{font-family:"Open Sans","Ubuntu Condensed",Arial,sans-serif;font-size:1.25em;color:#001c20;text-align:center}.fourohfour a{color:#2A6AA9}.fourohfour a:hover{color:#10467c}
+      .fourohfour .logo{margin:1em auto;width:100%;text-align: center;}
+      .fourohfour .message{margin: 1.5em;text-align: center;font-size: 1.25em;}
+      .fourohfour .sea-bass{ margin:1em; font-family: "Ubuntu Condensed";text-align: center; font-weight: 700;font-style: italic}
+      .logo .sigma{display: inline-block;font-weight: bold;color: #2A6AA9;font-size: 2.2em;}
+      .logo .sigma img{height: 50px; display: inline-block;vertical-align: top;}
 
+    </style>
   </head>
-
   <body>
 
-	<h1> 404 HTML</h1>
+    <div class="fourohfour">
+      <div class="ocean">
+        <img class="fishy" src="./images/fishy4.png">
+      </div>
+
+      <div class="main">
+        <h1>
+          <i>
+            Algo se ha pescado aquí.
+          </i>
+        </h1>
+        <p class="sea-bass">
+          Estamos experimentando dificultades.
+        </p>
+        <p class="message">
+          La página o el recurso solicitado no existe, o no se encuentra disponible por el momento.
+        </p>
+        <p class="help">
+          <a href="http://es.wikipedia.org/wiki/HTTP_404">¿Por qué</a> esta sucediendo esto?
+        </p>
+      </div>
+
+      <div class="logo">
+        <a class="sigma" href="">
+          Sigma
+          <img src="./images/sigma-logo.png">
+        </a>
+      </div>
+    </div>
 
   </body>
 </html>

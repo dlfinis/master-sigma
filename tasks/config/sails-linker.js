@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 				appRoot: '.tmp/public'
 			},
 			files: {
-				'.tmp/public/**/*.html': require('../pipeline').jsFilesToInject,
+				'.tmp/public/**/index.html': require('../pipeline').jsFilesToInject,
 				'assets/index.html': require('../pipeline').jsFilesToInject
 			}
 		},
@@ -36,7 +36,7 @@ module.exports = function(grunt) {
 				relative: true
 			},
 			files: {
-				'.tmp/public/**/*.html': require('../pipeline').jsFilesToInject,
+				'.tmp/public/**/index.html': require('../pipeline').jsFilesToInject,
 				'assets/index.html': require('../pipeline').jsFilesToInject
 			}
 		},
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
 				appRoot: '.tmp/public'
 			},
 			files: {
-				'.tmp/public/**/*.html': ['.tmp/public/min/production.min.js'],
+				'.tmp/public/**/index.html': ['.tmp/public/min/production.min.js'],
 				'assets/index.html': ['.tmp/public/min/production.min.js']
 			}
 		},
@@ -63,7 +63,7 @@ module.exports = function(grunt) {
 				relative: true
 			},
 			files: {
-				'.tmp/public/**/*.html': ['.tmp/public/min/production.min.js'],
+				'.tmp/public/**/index.html': ['.tmp/public/min/production.min.js'],
 				'assets/index.html': ['.tmp/public/min/production.min.js']
 			}
 		},
@@ -77,7 +77,7 @@ module.exports = function(grunt) {
 			},
 
 			files: {
-				'.tmp/public/**/*.html': require('../pipeline').cssFilesToInject,
+				'.tmp/public/**/index.html': require('../pipeline').cssFilesToInject,
 				'assets/index.html': require('../pipeline').cssFilesToInject
 			}
 		},
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
 			},
 
 			files: {
-				'.tmp/public/**/*.html': require('../pipeline').cssFilesToInject,
+				'.tmp/public/**/index.html': require('../pipeline').cssFilesToInject,
 				'assets/index.html': require('../pipeline').cssFilesToInject
 			}
 		},
