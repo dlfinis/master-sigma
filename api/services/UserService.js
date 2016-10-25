@@ -9,17 +9,10 @@ module.exports = {
   current: function(user,origin,request) {
     if(user) _user = user;
 
-    if(
-     !_.isUndefined(request.session.user)
-     && !_.isUndefined(request.session.user.token)
-     && !require ('fbgraph').getAccessToken()){
-      sails.log.debug('Set token of access');
-      require ('fbgraph').setAccessToken(request.session.user.token);
-    }
-
     if(request && origin && user && request.session){
-      sails.log.debug('+ Get user',request
-      .session.user);
+      sails.log.debug('+ Get user /current',request.session.user);
+      sails.log.debug('+ Set token');
+      require ('fbgraph').setAccessToken(request.session.user.token || request.user.token);
       request.session.authenticated = true;
       request.session.origin = origin;
       request.session.user = user;
@@ -28,13 +21,10 @@ module.exports = {
   me : function (req) {
     if(!req) return _user;
 
-    sails.log.debug('+ Get user',req.session.user);
-    if(
-    !_.isUndefined(req.session.user)
-    && !_.isUndefined(req.session.user.token)
-    && !require ('fbgraph').getAccessToken()){
-      sails.log.debug('Set token of access');
-      require ('fbgraph').setAccessToken(req.session.user.token);
+    if(req.session && req.session.user && req.session.user.token){
+      sails.log.debug('+ Get user /me',req.session.user);
+      sails.log.debug('+ Set token');
+      require ('fbgraph').setAccessToken(req.session.user.token || req.user.token);
     }
 
     return req.session.user || req.user;
