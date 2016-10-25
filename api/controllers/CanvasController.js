@@ -17,7 +17,6 @@ module.exports = {
     if(req.session && req.session.user && req.session.user.token){
       sails.log('+ .CANVAS TOKEN PRESENT');
       UserService.current(req.session.user,'fb',req);
-      require ('fbgraph').setAccessToken(req.session.user.token);
       return res.redirect(process.env.SUB_HOSTNAME+'/#/wall');
     }
 
@@ -51,7 +50,6 @@ module.exports = {
           sails.log.debug('+ ORIGIN FB');
 
           UserService.current(user,'fb',req);
-          require ('fbgraph').setAccessToken(user.token);
           return res.redirect(process.env.SUB_HOSTNAME+'/#/wall');
 
         });
