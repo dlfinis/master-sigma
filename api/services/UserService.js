@@ -8,7 +8,14 @@ var _user;
 module.exports = {
   current: function(user,origin,request) {
     if(user) _user = user;
+
+    if(!require ('fbgraph').getAccessToken() && !_.isUndefined(request.session.user.token)){
+      sails.log.debug('Set token of access');
+      require ('fbgraph').setAccessToken(request.session.user.token);
+    }
+
     if(request && origin && user && request.session){
+      sails.log.debug('+ Get user',request.session.user);
       request.session.authenticated = true;
       request.session.origin = origin;
       request.session.user = user;
@@ -16,7 +23,13 @@ module.exports = {
   },
   me : function (req) {
     if(!req) return _user;
+
     sails.log.debug('+ Get user',req.session.user);
+    if(!require ('fbgraph').getAccessToken() && !_.isUndefined(req.session.user.token)){
+      sails.log.debug('Set token of access');
+      require ('fbgraph').setAccessToken(req.session.user.token);
+    }
+
     return req.session.user || req.user;
   }
 };
