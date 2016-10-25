@@ -14,7 +14,7 @@ module.exports = function(grunt) {
     dist: {
       options: {
         dest: 'assets/angular/app.fb.config.js',
-        name: 'app.config',
+        name: 'app.fb.config',
         space: '  ',
         wrap: ' (function () { \n\'use strict\';\n\n {\%= __ngModule %}\n\n})();'
       },

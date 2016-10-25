@@ -16,7 +16,8 @@
                          'ngImgCrop',
                          'app.core',
                          'app.main',
-                         'app.config'
+                         'app.config',
+                         'app.fb.config'
                        ])
   .config([ 'INIT',
             'FB',
