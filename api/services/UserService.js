@@ -9,10 +9,10 @@ module.exports = {
   current: function(user,origin,request) {
     if(user) _user = user;
 
-    if(request && origin && user && request.session){
+    if(request && origin && user ){
       sails.log.debug('+ Get user /current',request.session.user);
       sails.log.debug('+ Set token');
-      require ('fbgraph').setAccessToken(request.session.user.token || request.user.token);
+      require ('fbgraph').setAccessToken(user.token);
       request.session.authenticated = true;
       request.session.origin = origin;
       request.session.user = user;
