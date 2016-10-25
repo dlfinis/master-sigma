@@ -19,12 +19,12 @@
           notAuthorized: 'auth-not-authorized'
         }
       )
-      .constant(
-        'FB',{
-          'clientID' : 1267766483237355,
-          'permissions': 'email,user_birthday,user_friends,publish_actions'
-        }
-      )
+      // .constant(
+      //   'FB',{
+      //     'clientID' : 1267766483237355,
+      //     'permissions': 'email,user_birthday,user_friends,publish_actions'
+      //   }
+      // )
       .constant(
         'partial',{
           'main' : {

@@ -57,6 +57,7 @@ var jsFilesToInject = [
 
   //Load Angular app
   'angular/app.config.js',
+  'angular/app.fb.config.js',
   'angular/components/core/**/*.js',
   'angular/components/main/**/*.js',
   'angular/components/*.js',
