@@ -21,8 +21,8 @@ module.exports = {
   me : function (req) {
     if(!req) return _user;
 
-    if(req.session && req.session.user && req.session.user.token){
-      sails.log.debug('+ Get user /me',req.session.user);
+    if(req.session && req.session.user && req.session.user.token
+      && !require ('fbgraph').getAccessToken()){
       sails.log.debug('+ Set token');
       require ('fbgraph').setAccessToken(req.session.user.token || req.user.token);
     }
