@@ -18,10 +18,9 @@ module.exports = {
     },
     name: 'STRING',
     email: 'STRING',
-    //consumer/editor
     status:{
       type: 'STRING',
-      defaultsTo: 'consumer',
+      defaultsTo: 'consumer', //consumer/editor
       size: '15'
     },
     firstname: 'STRING',
@@ -49,18 +48,4 @@ module.exports = {
       via: 'user'
     }
   }
-  // ,beforeCreate : function(values, next){
-  //   sails.log('+ Before Create User ',JSON.stringify(values));
-  //
-  //   require('fbgraph').get('me?fields=birthday,link,email', function(err, response) {
-  //     if(err) sails.log.error(err);
-  //
-  //     sails.log('+ User Additional ',JSON.stringify(response));
-  //     // if( response.email )
-  //     //   values.email = response.email;
-  //     // values.birthday = response.birthday;
-  //     next();
-  //   });
-  //
-  // }
 };

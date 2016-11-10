@@ -48,11 +48,10 @@ module.exports = {
   getOwnLike : function(likes){
     var like = _.find(
                       likes,function(element)
-                              {
+                      {
                         return element.user === UserService.me().id;
                       }
                   );
-
     return like;
   },
   getLikes : function(article){
@@ -147,86 +146,6 @@ module.exports = {
     });
   },
   getStats: function(URI){
-
-    return new Promise(function(resolve,reject){
-      var reqfast = require('req-fast');
-      var _URI_OLD = URI;
-      URI = String(URI).indexOf('http') === 0 ? URI : 'http://'+URI;
-      var _URI = String(URI).replace('http://','https://');
-
-      var stats ={
-        alive : false,
-        secure : false,
-        reading : {}
-      };
-
-      reqfast(_URI, function(err, resp) // Https request
-        {
-
-        if(err || resp.statusCode >= 400)
-          {
-          sails.log.warn(_URI);
-          sails.log.warn(err.code || err);
-
-          if(err.code !== 'ENOTFOUND' || err )
-              {
-            reqfast(URI, function(err, resp) // Http request
-                 {
-              if(err){
-                sails.log.warn(err.reason || err);
-
-                Article.update({'url': _URI_OLD},{'state':'disable'}) //Set Dead Article
-                      .then(function (updated) {
-                        sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);
-                      });
-
-                resolve(stats);
-              }
-
-              if(resp && resp.statusCode && !(resp.statusCode >= 200 && resp.statusCode <=208))
-                resolve(stats); // Other Error Status Secure site
-
-              if(resp && resp.statusCode && resp.statusCode >= 200 && resp.statusCode <=208)
-                      {
-                stats.alive = true;
-                ArticleService.getReadingTime(URI,resp.body)
-                          .then(function (reading) {
-                            stats.reading = reading;
-                            resolve(stats); // Alive site
-                          })
-                          .catch(function (err) {
-                            reject(err);
-                          });
-              }
-            });
-
-          }else {
-            Article.update({'url': _URI_OLD},{'state':'disable'})
-                .then(function (updated) {
-                  sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);
-                });
-            resolve(stats); // DEAD Site
-          }
-        }
-
-        if(resp && resp.statusCode && resp.statusCode >= 200 && resp.statusCode <=208)
-          {
-          stats.alive = true;
-          stats.secure = true;
-          ArticleService.getReadingTime(URI,resp.body)
-                .then(function (reading) {
-                  stats.reading = reading;
-                  resolve(stats); // Secure site
-                });
-        }
-
-      });
-
-
-    });
-
-  },
-  _getStats: function(URI){
     return new Promise(function(resolve,reject){
       var reqfast = require('req-fast');
       var _URI_OLD = URI;
@@ -242,6 +161,7 @@ module.exports = {
                    {
         if(err){
           sails.log.warn(err.reason || 'Warning about get stats:',URI);
+          // Define like dead/disable an article
           // Article.update({'url': _URI_OLD},{'state':'disable'}) //Set Dead Article
           //               .then(function (updated) {
           //                 sails.log.debug('+Set dead >'+updated[0].id+'>>'+updated[0].title);

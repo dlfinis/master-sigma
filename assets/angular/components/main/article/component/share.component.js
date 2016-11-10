@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function ShareFactory($http,$rootScope,$q,$timeout,$Session)
+  function ShareFactory($http,$rootScope,$q,$timeout)
   {
     return {
       setshare: function(shareSID,articleID)
@@ -12,33 +12,6 @@
         }, {
           ignoreLoadingBar: true
         });
-      },
-      getShareListInfo: function(articleID)
-      {
-        // return $http.get('/user/get_user').then(function (user) {
-        //       if(user)
-        //       {
-        //         var prms = {
-        //           where : {
-        //             article: articleID,
-        //             user: user.id
-        //           }
-        //         };
-        //
-        //       }
-        // });
-        if($Session.getUser()) // From Begin Login User
-        {
-          var prms = {
-            where : {
-              article: articleID,
-              user: $Session.getUser().uid
-            }
-          };
-
-          return $http.get('api/share',{ params:prms });
-        }
-
       },
       testshare : function() {
         var timer = $q.defer();
@@ -104,7 +77,7 @@
                      .then(function(response){
                        $log.debug(response);
                         if(response && !response.error_code)
-                        {
+                      {
                           var user = $Session.getUser();
                           $log.debug('+ FB Share user.uid ',user.uid);
                           $log.debug('+ Adding Share in DB ');

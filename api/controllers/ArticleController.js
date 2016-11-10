@@ -209,7 +209,7 @@ module.exports = {
    */
   stats: function (req,res) {
     var URI = req.param('uri');
-    ArticleService._getStats(URI).then(function (response) {
+    ArticleService.getStats(URI).then(function (response) {
       return res.ok(response);
     })
     .catch(function (err) {

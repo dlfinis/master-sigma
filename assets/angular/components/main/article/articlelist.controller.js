@@ -269,9 +269,6 @@
     };
 
     $articlelist.init();
-
-
-
   }
 
   angular.module('app.main.article')

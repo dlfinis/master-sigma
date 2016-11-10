@@ -1,5 +1,5 @@
 /**
- * 
+ *
  *
  * @description :: Server-side logic for managing your account
  * @help        :: See http://links.sailsjs.org/docs/controllers
@@ -237,16 +237,10 @@ module.exports = {
     return new Promise(function(resolve){
       var articlesList = [];
 
-      // sails.log.debug('-->Original Size of Elements:',articleListData.length);
-      // articleListData = _.filter(articleListData,function (article,index) {
-      //   if(article.state === 'disable')
-      //     sails.log.debug('-Disable id:',article.id,'>:',article.success || article.title,'+:',article.updatedAt);
-      //   return article.state !== 'disable';
-      // });
-
       sails.log.debug('-->Total Original Size of Elements:',config._totalSize,'>',
       'Total Size of Elements Found:',articleListData.length);
       articleListData.some(function (article,index) {
+        //   if(article.state !== 'disable')
         if(!_.isUndefined(article)){
           sails.log.debug('-i:',index+1,'id:',article.id,'>:',article.success || article.title,'+:',article.updatedAt);
           articlesList.push(ArticleService.getArticleStructure(article));

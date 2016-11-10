@@ -1,12 +1,9 @@
 (function (module) {
 
-  function RButtonAddCtrl($location,$element){
-
+  function RButtonAddCtrl($location){
     var $rbtnAdd = this;
 
-
     $rbtnAdd.redirect = {
-
       create : function (){
         $location.path('/registry/content');
       },
@@ -14,7 +11,6 @@
         $location.path('/registry/list');
       }
     };
-
   }
 
   module.controller('RButtonAddCtrl',RButtonAddCtrl);

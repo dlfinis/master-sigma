@@ -2,7 +2,7 @@
 
   function RCategoryCtrl($scope,RCategoryFactory){
 
-    $registry = this;
+    var $registry = this;
     $registry.category = {};
 
     $registry.reset = function(){

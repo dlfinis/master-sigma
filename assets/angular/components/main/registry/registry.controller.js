@@ -1,6 +1,6 @@
 (function () {
 
-  function RegistryCtrl($scope,RegistryFactory){
+  function RegistryCtrl($scope,$log,RegistryFactory){
 
     var $registry = this;
     $registry.article = {};
@@ -20,22 +20,16 @@
     };
 
     $registry.save = function(){
-      if(JSON.stringify($registry.article) === '{}')
-        {
-        console.log('Not article info');
+      if(JSON.stringify($registry.article) === '{}'){
+        $log.debug('+ Not article info');
       }else{
         RegistryFactory.saveArticle($registry.article).then(function(response){
-          if(response.status == 201)
-            {
+          if(response.status <= 210){
             $registry.reset();
           }
         });
-          // console.log(delta );
       }
     };
-
-    // $registry.article.categories = {};
-
   }
 
   angular.module('app.main.registry')

@@ -1,3 +1,4 @@
+/*global moment*/
 (function () {
   'use strict';
 
@@ -100,7 +101,7 @@
 
   }
 
-  function PeriodCtrl($scope)
+  function PeriodCtrl()
   {
     var $period = this;
     $period.getPeriodInfo = function(date){
@@ -110,7 +111,7 @@
 
   angular.module('app.main.article.period',['app.config'])
          .controller('PeriodCtrl',PeriodCtrl)
-         .directive('period', function(partial,$q){
+         .directive('period', function(){
            return {
              restrict: 'EA',
              scope: {
@@ -124,5 +125,4 @@
              }
            };
          });
-
 })();

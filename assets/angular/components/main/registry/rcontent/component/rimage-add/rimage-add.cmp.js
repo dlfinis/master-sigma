@@ -43,7 +43,7 @@
           scope.croppedDataUrl = '';
           scope.form.image.$error = {};
           element.querySelectorAll('.viewImage').css({
-          'background-image': 'none'
+            'background-image': 'none'
           });
         });
 

@@ -20,7 +20,7 @@
       if($route.current.params.id){
         RContentFactory.getContent($route.current.params.id).then(function (response) {
           $rcontent.getFileImage(response.image);
-          response.categories = response.categories.map(function(currentValue, index, arr)
+          response.categories = response.categories.map(function(currentValue)
           {
             return currentValue.name;
           });
@@ -69,12 +69,12 @@
     $rcontent.focusInvalid = function () {
       var input = angular.element(document.getElementById('contentForm')).find('input');
       angular.forEach( input, function(item) {
-          if(angular.element(item).hasClass('ng-invalid'))
-          {
-            $log.warn('Invalid params',item);
-            $window.scrollTo(0, item.offsetTop);
-            return false;
-          }
+        if(angular.element(item).hasClass('ng-invalid'))
+        {
+          $log.warn('- Invalid params',item);
+          $window.scrollTo(0, item.offsetTop);
+          return false;
+        }
       });
     };
 
@@ -120,19 +120,19 @@
     };
 
     $rcontent.update = function (tmpContent) {
-      $log.debug('Update content');
+      $log.debug('+ Update content');
       var contentUpdate = RContentFactory.findDiff($rcontent.contentOriginal,$rcontent.content);
-      console.log('Update',contentUpdate);
+      console.log('+ Update',contentUpdate);
       RContentFactory.updateContent($route.current.params.id,contentUpdate).then(function (response) {
-          $log.debug('Update ok',response);
-          if(response && response.status < 299)
-          {
-            $rcontent.reset();
-            $rcontent.contentUpdated = true;
-          }else {
-            $rcontent.contentInvalid = true;
-            $rcontent.content = angular.copy(tmpContent);
-          }
+        $log.debug('+ Update ok',response);
+        if(response && response.status < 299)
+        {
+          $rcontent.reset();
+          $rcontent.contentUpdated = true;
+        }else {
+          $rcontent.contentInvalid = true;
+          $rcontent.content = angular.copy(tmpContent);
+        }
       }).catch(function (err) {
         $rcontent.contentInvalid = true;
         $rcontent.focusHeading();

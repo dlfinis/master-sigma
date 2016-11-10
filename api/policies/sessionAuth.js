@@ -8,10 +8,8 @@
  *
  */
 module.exports = function (req, res, next) {
-
   // User is allowed, proceed to the next policy,
   // or if this is the last policy, the controller
-
   if (req.isAuthenticated()) {
     if(!_.isUndefined(req.session.user) && req.session.passport && req.session.passport.user)
     {
@@ -23,8 +21,6 @@ module.exports = function (req, res, next) {
     return next();
   }
 
-
-
   // User is not allowed
   // (default res.forbidden() behavior can be overridden in `config/403.js`)
   var redirect =
@@ -34,14 +30,15 @@ module.exports = function (req, res, next) {
   sails.log.debug('+ URL ORIGIN ' ,req.url);
   // return res.forbidden();
   // return res.redirect('/login');
+
   // If this is not an HTML-wanting browser, e.g. AJAX/sockets/cURL/etc.,
   // send a 401 response letting the user agent know they need to login to
   // access this endpoint.
-   if (req.wantsJSON) {
-     return res.send(403,{message:'Dont user init session'});
-   }
+  if (req.wantsJSON) {
+    return res.send(403,{message:'Dont user init session'});
+  }
 
-   sails.log.debug('+ REDIRECT POLICIE ',redirect);
+  sails.log.debug('+ REDIRECT POLICIE ',redirect);
   return res.redirect(303,redirect);
 
 };

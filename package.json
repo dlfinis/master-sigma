@@ -40,7 +40,7 @@
     "passport-facebook": "^2.0.0",
     "passport-facebook-canvas": "0.0.3",
     "passport-local": "^1.0.0",
-    "pmx": "^0.3.9",
+    "pmx": "^0.3.31",
     "randomstring": "^1.1.5",
     "rc": "~0.5.0",
     "read-art": "^0.4.9-alpha",

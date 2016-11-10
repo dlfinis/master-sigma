@@ -15,5 +15,5 @@
     };
   }
   angular.module('app.core.fontloader', [])
-                .factory('FontLoader',FontLoaderFactory);
+         .factory('FontLoader',FontLoaderFactory);
 })();

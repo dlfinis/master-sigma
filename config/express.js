@@ -17,17 +17,17 @@ module.exports.http = {
 
   middleware: {
     400: function ( req, res, next ) {
-      res.badRequest();
+      return res.badRequest();
     },
     404: function ( req, res, next ) {
-        res.notFound();
+      return res.notFound();
     },
     500: function ( req, res, next ) {
-        res.serverError();
+      return res.serverError();
     }
   },
   customMiddleware: function (app) {
-    sails.log.debug('+ Init Express Midleware');
+    sails.log.debug('+ Init Sails Midleware');
 
     var express = require('../node_modules/sails/node_modules/express');
     var path = require('path');
@@ -42,14 +42,7 @@ module.exports.http = {
       clientID: sails.config.application_auth.facebookClientID,
       clientSecret: sails.config.application_auth.facebookClientSecret,
       callbackURL: sails.config.application_auth.facebookCallbackURL,
-      profileFields: [  'id',
-                        'displayName',
-                        'name',
-                        'gender',
-                        'emails',
-                        'birthday',
-                        'about',
-                        'profileUrl'],
+      profileFields: sails.config.application_auth.facebookAppProfileField,
       enableProof: true
     }, verifyHandler));
 
@@ -81,7 +74,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
     // sails.log.debug('=> verifyHandler with ', token, tokenSecret);
 
     // Debug of information returned by Facebook
-    sails.log.debug('+ Profile Facebook >',profile);
+    // sails.log.debug('+ Profile Facebook >',profile);
 
     User.findOne({ uid: profile.id }, function (err, user) {
 
@@ -123,14 +116,14 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
         }
 
         User.create(data, function (err, user) {
-          sails.log.debug('+ User create',JSON.stringify(user));
+          sails.log.debug('+ User create',user);
           return done(err, user);
         });
 
       }
-    }
+      }
       catch(e){
-        sails.log.warn('Passport Facebook',e);
+        sails.log.warn('- Passport Facebook',e);
       }
     });
   });

@@ -1,6 +1,6 @@
 (function () {
   angular.module('app.main.registry', ['app.config'])
-  .directive('registry',function (partial) {
+  .directive('registry',function () {
     return {
       restrict: 'E',
       scope: {},

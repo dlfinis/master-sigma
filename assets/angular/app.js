@@ -90,26 +90,27 @@
     // $facebookProvider.setAppId(FB.clientID);
     // $facebookProvider.setVersion('v2.5');
     $facebookProvider.setPermissions(FB.permissions);
-    console.log(document.location.pathname);
+    console.log('Location:',document.location.pathname);
     switch (document.location.pathname) {
-      case '/zeus/':
-        $facebookProvider.setAppId(FB.clientID.zeus);
-        break;
-      case '/ares/':
-        $facebookProvider.setAppId(FB.clientID.ares);
-        break;
-      case '/apolo/':
-        $facebookProvider.setAppId(FB.clientID.apolo);
-        break;
-      default: $facebookProvider.setAppId(FB.clientID.general);
-
+    case '/zeus/':
+      $facebookProvider.setAppId(FB.clientID.zeus);
+      break;
+    case '/ares/':
+      $facebookProvider.setAppId(FB.clientID.ares);
+      break;
+    case '/apolo/':
+      $facebookProvider.setAppId(FB.clientID.apolo);
+      break;
+    default: $facebookProvider.setAppId(FB.clientID.general);
     }
+
     // $facebookProvider.setAppId(FB.clientID);
     $facebookProvider.setCustomInit({
       cookie : true, // enable cookies to allow the server to access the session
       xfbml  : false,  // parse XFBML
       version    : 'v2.5'
     });
+
     // Remove loading bar spinner
     // cfpLoadingBarProvider.includeSpinner = false;
     // cfpLoadingBarProvider.spinnerTemplate = '<div style="margin:20% 0 0 50%;"><span class="fa fa-spinner fa-pulse fa-3x"></div>';
@@ -119,7 +120,7 @@
     // var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
     cfpLoadingBarProvider.spinnerTemplate = '<div id="loading-bar" \
     style="position: absolute; top: 0px; left: 0px; background-color: rgb(52, 69, 87); \
-    color: #EAEAEA; height: '+(5000) +'px; width: 100%; z-index: 1040; vertical-align: middle; \
+    color: #EAEAEA; height: 5000px; width: 100%; z-index: 1040; vertical-align: middle; \
     opacity: 0.55; text-align: center; padding-top: 5px;">\
     <span class="fa fa-refresh fa-spin fa-3x fa-fw" style="vertical-align: middle;"></span>\
     <div style="text-align: center; color: rgb(255, 245, 245); font-weight: bold; display: inline-block;">\
@@ -135,7 +136,6 @@
     $routeProvider.when('/registry/list', { template: '<rcontent-list></rcontent-list>',secure:true});
     $routeProvider.when('/registry/content/:id?', { template: '<rcontent></rcontent>',secure:true});
     $routeProvider.when('/registry/category', { template: '<rcategory></rcategory>',secure:true});
-    $routeProvider.when('/testpage/:tid?', { template: '<testpage></testpage>' });
     $routeProvider.when('/testpage/:tid?', { template: '<testpage></testpage>' });
     $routeProvider.when('/404', { templateUrl: '404.html' });
     $routeProvider.when('/500', { templateUrl: '500.html' });
@@ -186,23 +186,6 @@
     // Start loading bar for app loading
     //cfpLoadingBar.start();
 
-    //Define enable routes without logging
-    // var enableRoutes = [
-    //   '',
-    //   '/',
-    //   '/home',
-    //   '/registry/category',
-    //   '/logout',
-    //   '/testpage',
-    //   '/testpage/',
-    //   '/legal/policy',
-    //   '/legal/terms'];
-    //
-    //   var initRoutes = [
-    //     '/',
-    //     '/home'
-    //   ];
-
     $rootScope.$on('$routeChangeStart', function (event,next) {
       $rootScope.isAppLoading = true;
       $rootScope.startTime = new Date();
@@ -240,41 +223,9 @@
         // return;
       }
 
-
-      // // App is loading, so set isAppLoading to true and start a timer
-      // // Prev and Next route
-      // var path = $location.path();
-      // if(enableRoutes.indexOf(path) === -1)
-      // {
-      //   $log.debug('+ Check Policie >',$location.path());
-      //   $rootScope.isReadyPref = false;
-      //
-      //   AuthFactory.isAuthenticated().then(function (response) {
-      //     $log.debug('+ IS AUTH',response);
-      //     if(!response)
-      //     {
-      //       CheckRoutingFactory.notAuth();
-      //       $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-      //       event.preventDefault();
-      //     }else{
-      //       return;
-      //     }
-      //   }).catch(function (err) {
-      //     $log.error(err);
-      //     CheckRoutingFactory.notAuth(event);
-      //     $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-      //     event.preventDefault();
-      //   });
-      // }
-      // else {
-      //   // if(initRoutes.indexOf(path) > -1) AuthFactory.logout(); //Clean session in initRoutes
-      //   $rootScope.isReadyPref = true;
-      //   $log.debug('+ Enable route ',$location.path());
-      // }
     });
   })
   .directive('resolveLoader', function($rootScope, $timeout) {
-
     return {
       restrict: 'E',
       replace: true,
@@ -283,11 +234,9 @@
 
         $rootScope.$on('$routeChangeStart', function(event, currentRoute, previousRoute) {
           if (previousRoute) return;
-
           $timeout(function() {
             element.removeClass('ng-hide');
           });
-
         });
 
         $rootScope.$on('$routeChangeSuccess', function() {

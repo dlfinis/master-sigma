@@ -6,10 +6,6 @@
 
     <legend id="heading">Registro de Contenidos</legend>
     <div class="lbl-list-content"><a ng-href="#/registry/list">Lista de contenidos creados</a></div>
-    <!-- <button type="button" class="btn btn-default btn-sm" ng-click="$rcontent.test()">
-      Test
-    </button> -->
-    <!-- <div id="alert-create" class="alert alert-success" ng-show="$rcontent.contentForm.$submitted && $rcontent.content === '{}'"> -->
     <div id="alert-create" class="alert alert-sm alert-success fade-in"
       dismiss-on-timeout="2000"
       ng-if="$rcontent.contentCreated">
@@ -87,14 +83,10 @@
         <span class="notf notf-alert" ng-show="$rcontent.contentForm.$dirty && $rcontent.contentForm.$invalid">
           <i ng-show="$rcontent.contentForm.categories.$error.required">Es un párametro requerido</i>
         </span>
-        <!-- <pre>{{$rcontent.content.categories | json}}</pre> -->
-        <!-- <pre>{{$rcontent.contentForm.categories | json}}</pre> -->
       </div>
       <br /><br />
       <input type="button" ng-click="$rcontent.reset()" value="Limpiar" />
       <input type="submit" ng-click="$rcontent.save()" value="Guardar" />
     </form>
-
-    <!-- <pre>content = {{$rcontent.content | json}}</pre> -->
   </div>
 </div>
