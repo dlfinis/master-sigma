@@ -21,8 +21,8 @@ module.exports = {
 
     // Get your keys from https://developers.facebook.com/apps/
     enableFacebookAuth: true,
-    facebookClientID: process.env.FB_ID || process.env.FB_ID_GENERAL || '1267766483237355',
-    facebookClientSecret: process.env.FB_SECRET || process.env.FB.SECRET_GENERAL || 'a2f5e3a27b74a64bc0d1ecc2d3a9ec31',
+    facebookClientID: process.env.FB_ID || process.env.FB_ID_GENERAL,
+    facebookClientSecret: process.env.FB_SECRET || process.env.FB.SECRET_GENERAL,
     facebookAppProfileField:[ 'id','displayName','name','gender','emails','birthday','about','profileUrl'],
     facebookAppScopeString: 'email,user_birthday,user_friends,publish_actions',
     facebookAppScope: [ 'email,user_birthday','user_friends','publish_actions'],
@@ -42,11 +42,11 @@ module.exports = {
   },
   connections: {
     sigmaDB: {
-      adapter: 'sails-mysql',
-      host: process.env.DB_HOST || 'localhost',
-      user: process.env.DB_USER || 'sigma',
-      password: process.env.DB_PASSWORD || 'sigma2016',
-      database: process.env.DB  || 'db_sigma'
+      adapter: process.env.DB_ADAPTER,
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME
     }
   },
   models: {
@@ -56,12 +56,12 @@ module.exports = {
   },
   session: {
     adapter: 'redis',
-    host: process.env.REDIS_HOST || 'pub-redis-12873.us-east-1-1.2.ec2.garantiadata.com',
-    port: process.env.REDIS_PORT || 12873 || 6379,
-    ttl: 1.7 * 60 * 60,
-    pass: process.env.REDIS_PASSWORD || 'mastersigma92' || '',
+    host: process.env.REDIS_HOST || '127.0.0.1',
+    port: process.env.REDIS_PORT || 6379,
+    ttl: 1.75 * 60 * 60,
+    pass: process.env.REDIS_PASSWORD || '',
     cookie: {
-      maxAge: 1.7 * 60 * 60 * 1000
+      maxAge: 1.75 * 60 * 60 * 1000
     }
   },
   /***************************************************************************
@@ -81,7 +81,7 @@ module.exports = {
    * Set the log level in production environment to 'silent'/'verbose'/'silly'*
    ***************************************************************************/
   log: {
-    level: 'silent'
+    level: process.env.LOG_ENV || 'silent'
   }
 
 };

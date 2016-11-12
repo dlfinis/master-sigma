@@ -33,7 +33,8 @@ module.exports = {
 	program.option('--fbapp [FBAppName]');
 	program.option('--subhostname [SubHostName]');
 	program.option('--port [Port]');
-	program.option('--db [DB]');
+	program.option('--adapterdb [adapterDb]');
+	program.option('--namedb [nameDb]');
 	program.option('--hostdb [hostDb]');
 	program.option('--portdb [portDb]');
 	program.option('--userdb [userDb]');
@@ -44,13 +45,13 @@ module.exports = {
 	program.option('--scport [scraperPort]');
 
 
-    program.parse(process.argv);
+  program.parse(process.argv);
 
 	var db = {}, redis ={};
 
 
 	if(program.www){
-		config.hooks = { grunt : false};
+		config.hooks = { grunt : false };
 	}
 
 	if(program.host){
@@ -66,7 +67,22 @@ module.exports = {
 		process.env['SUB_HOSTNAME'] = program.subhostname;
 	}
 
-	if(program.fbid){
+	if(program.port){
+		process.env['NODE_PORT'] = program.port;
+		config.port = program.port;
+	}
+
+  if(program.logenv){
+		process.env['LOG_ENV'] = program.logenv;
+		config.log = { level: program.logenv};
+	}
+
+  /***************************************************************************
+   * Set the default facebook connection
+   ***************************************************************************/
+
+
+  if(program.fbid){
 		process.env['FB_ID'] = program.fbid;
 	}
 
@@ -86,19 +102,18 @@ module.exports = {
 		process.env['FB_APPNAME'] = program.fbapp;
 	}
 
-	if(program.port){
-		process.env['NODE_PORT'] = program.port;
-		config.port = program.port;
-	}
-
-
   /***************************************************************************
    * Set the default database connection
    ***************************************************************************/
 
-	if(program.db){
-		process.env['DB_NAME'] = program.db;
-    	db.database = program.db;
+  if(program.adapterdb){
+ 		process.env['DB_ADAPTER'] = program.adapterdb;
+     	db.adapter = program.adapterdb;
+ 	}
+
+	if(program.namedb){
+		process.env['DB_NAME'] = program.namedb;
+    	db.database = program.namedb;
 	}
 
 	if(program.hostdb){
@@ -154,9 +169,8 @@ module.exports = {
 
 	if(!isEmpty(db))
 	{
-		db.adapter = 'sails-mysql';
 		config.connections = { sigmaDB: db };
-		config.models = { connection: 'sigmaDB',migrate: 'safe' };
+		config.models = { connection: 'sigmaDB', migrate: 'safe' };
 	}
 
 	if(!isEmpty(redis))
@@ -164,7 +178,7 @@ module.exports = {
 		config.session = redis;
 	}
 
-	console.log(config);
+	console.log('+ Init config',config);
 	return config;
 
 	},
