@@ -111,7 +111,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
           name: profile.displayName || profile.name
         };
 
-        if ( profile._json || profile.email || profile.emails[0]) {
+        if ( (profile._json && profile._json.email) || profile.email || profile.emails[0]) {
           data.email =  profile.email || profile.emails[0].value || profile._json.email;
         }
 
@@ -123,13 +123,13 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
         }
 
         if(_.isUndefined(data.name) || _.isEmpty(data.name)){
-          data.name = data.firstname+' '+ (profile.middle_name || '')+ data.lastname;
+          data.name = data.firstname+' '+ (profile.middle_name || '')+ (data.lastname || '');
         }
 
         if (profile.gender) {
           data.gender = profile.gender;
         }
-        if (profile.birthday || profile._json) {
+        if (profile.birthday || (profile._json && profile._json.birthday)) {
           data.birthday = profile.birthday || profile._json.birthday;
         }
         if (profile.profileUrl || profile.link  ) {
