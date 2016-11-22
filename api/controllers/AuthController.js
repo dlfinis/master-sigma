@@ -35,8 +35,8 @@ module.exports = {
       {
         // sails.log.debug("Facebook Auth Response error=", err, "user=", user);
         if(err) {
-          sails.log.error(err);
-          return next(err);
+          sails.log.error('- Passport Error',err);
+          return res.serverError();
         }
         if(!user){
           return res.forbbiden();

@@ -32,8 +32,8 @@ module.exports = {
     {
       if(err)
       {
-        sails.log.error('- Facebook Auth Response error=', err, 'user=', user);
-        return next(err);
+        sails.log.error('- Passport Auth Error','user=', user, err);
+        return res.serverError();
       }
 
       sails.log('+ CANVAS LOGIN ');
