@@ -24,7 +24,7 @@ module.exports = {
       sails.log('+ Exist FB Code');
       // passport.authenticate('facebook-canvas',{ failureRedirect:'/',sucessRedirect:process.env.SUB_HOSTNAME+'/#/wall'});
       req.query.code ='';
-      return res.redirect('/auth/facebook/canvas');
+      return res.redirect((process.env.SUB_HOSTNAME || '')+'/auth/facebook/canvas');
     }
 
     passport.authenticate('facebook-canvas',{
