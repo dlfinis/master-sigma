@@ -26,6 +26,10 @@ module.exports = {
       // passport.authenticate('facebook-canvas',{ failureRedirect:'/',sucessRedirect:process.env.SUB_HOSTNAME+'/#/wall'});
     }
 
+    if(req.query && req.query.error){
+      sails.log('+ Exist FB Error Code');
+    }
+
     passport.authenticate('facebook-canvas',{
       scope: sails.config.application_auth.facebookAppScope
     },
