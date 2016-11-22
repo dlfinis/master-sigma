@@ -76,14 +76,35 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
     // Debug of information returned by Facebook
     // sails.log.debug('+ Profile Facebook >',profile);
 
-    User.findOne({ uid: profile.id }, function (err, user) {
+    User.findOne({ or: [
+      { uid: profile.id },
+      { name: profile.displayName || profile.name ,
+        email: profile.email || profile.emails[0].value || profile._json.email }
+      ]}, function (err, user) {
 
       try{
       if (user) {
         // sails.log.debug(user);
+
         user.token = token;
-        return done(null, user);
+        if(user.uid !== profile.id)
+        {
+          User.update({id: user.id },{uid: profile.id}).exec(function(err,updated){
+            if(err){
+              return done(err,null);
+            }
+            sails.log('+ Update info of user',updated)
+            user.uid = profile.id;
+            return done(null, user);
+          });
+
+        }else{
+          return done(null, user);
+        }
+
+
       } else {
+
         var data = {
           provider: profile.provider || 'facebook',
           uid: profile.id,
