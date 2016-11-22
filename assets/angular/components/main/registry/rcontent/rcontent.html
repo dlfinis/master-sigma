@@ -5,8 +5,10 @@
     </div>
 
     <legend id="heading">Registro de Contenidos</legend>
-    <div class="lbl-area-content"><a ng-href="#/wall">Área de contenidos</a></div>
-    <div class="lbl-list-content"><a ng-href="#/registry/list">Lista de contenidos creados</a></div>
+    <div style="width:100%">
+      <a class="lbl-area-content" ng-href="#/wall">Área de contenidos</a>
+      <a class="lbl-list-content" ng-href="#/registry/list">Lista de contenidos creados</a>
+    </div>
     <div id="alert-create" class="alert alert-sm alert-success fade-in"
       dismiss-on-timeout="2000"
       ng-if="$rcontent.contentCreated">
