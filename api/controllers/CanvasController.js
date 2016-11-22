@@ -23,8 +23,42 @@ module.exports = {
     if(req.query && req.query.code){
       sails.log('+ Exist FB Code');
       // passport.authenticate('facebook-canvas',{ failureRedirect:'/',sucessRedirect:process.env.SUB_HOSTNAME+'/#/wall'});
-      req.query.code ='';
-      return res.redirect((process.env.SUB_HOSTNAME || '')+'/auth/facebook/canvas');
+      // req.query.code ='';
+      // return res.redirect((process.env.SUB_HOSTNAME || '')+'/auth/facebook/canvas');
+      passport.authenticate('facebook-canvas',{
+        scope: sails.config.application_auth.facebookAppScope
+      },
+      function (err, user)
+      {
+        if(err)
+        {
+          sails.log.error('- Passport Auth Error','user=', user, err);
+          return res.serverError();
+        }
+
+        sails.log('+ CANVAS LOGIN ');
+        if (user) {
+          req.logIn(user, function (err) {
+            if (err)
+            {
+              sails.log('- Auth Error', err);
+              return res.serverError();
+            }
+
+            sails.log.debug('+ User Login >',user);
+            sails.log.debug('+ REDIRECT TO ','/#/wall');
+            sails.log.debug('+ ORIGIN FB');
+
+            UserService.current(user,'fb',req);
+            return res.redirect((process.env.SUB_HOSTNAME || '')+'/#/wall');
+
+          });
+        }else {
+          //return res.redirect('/auth/canvas/autologin');
+          return res.redirect((process.env.SUB_HOSTNAME || '')+'/auth/canvas/autologin');
+        }
+      });
+
     }
 
     passport.authenticate('facebook-canvas',{
