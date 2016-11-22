@@ -93,7 +93,7 @@ var verifyHandler = function (token, tokenSecret, profile, done) {
             if(err){
               return done(err,null);
             }
-            sails.log('+ Update info of user',updated)
+            sails.log('+ Update info of user',updated); 
             user.uid = profile.id;
             return done(null, user);
           });
