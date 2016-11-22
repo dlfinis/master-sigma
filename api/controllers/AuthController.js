@@ -27,7 +27,7 @@ module.exports = {
     if(req.session && req.session.user && req.session.user.token){
       sails.log('+ AUTH.FACEBOOK TOKEN PRESENT');
       UserService.current(req.session.user,'web',req);
-      return res.redirect(process.env.SUB_HOSTNAME+'/#/wall');
+      return res.redirect((process.env.SUB_HOSTNAME || '')+'/#/wall');
     }
 
     passport.authenticate('facebook-canvas',{},
@@ -50,13 +50,13 @@ module.exports = {
             }
             require ('fbgraph').setAccessToken(user.token);
             sails.log.debug('+ User Login >',JSON.stringify(user));
-            sails.log.debug('+ REDIRECT TO ',process.env.SUB_HOSTNAME+'/#/wall');
+            sails.log.debug('+ REDIRECT TO ',(process.env.SUB_HOSTNAME || '')+'/#/wall');
             sails.log.debug('+ ORIGIN WEB');
 
             UserService.current(user,'web',req);
 
             if (req.xhr || req.wantsJSON) { return res.json({ id: req.user.id }); }
-            return res.redirect(process.env.SUB_HOSTNAME+'/#/wall');
+            return res.redirect((process.env.SUB_HOSTNAME || '')+'/#/wall');
           });
         }
       }
@@ -68,7 +68,7 @@ module.exports = {
     req.session.destroy(function(err) {
       sails.log.debug('+ AUTH.SESSION.DESTROY');
       req.logOut();
-      return res.redirect(process.env.SUB_HOSTNAME+'/');
+      return res.redirect((process.env.SUB_HOSTNAME || '')+'/');
     });
   }
 };

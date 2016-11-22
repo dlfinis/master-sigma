@@ -17,12 +17,14 @@ module.exports = {
     if(req.session && req.session.user && req.session.user.token){
       sails.log('+ .CANVAS TOKEN PRESENT');
       UserService.current(req.session.user,'fb',req);
-      return res.redirect(process.env.SUB_HOSTNAME+'/#/wall');
+      return res.redirect((process.env.SUB_HOSTNAME || '') +'/#/wall');
     }
 
     if(req.query && req.query.code){
       sails.log('+ Exist FB Code');
-      passport.authenticate('facebook-canvas',{ failureRedirect:'/',sucessRedirect:process.env.SUB_HOSTNAME+'/#/wall'});
+      // passport.authenticate('facebook-canvas',{ failureRedirect:'/',sucessRedirect:process.env.SUB_HOSTNAME+'/#/wall'});
+      req.query.code ='';
+      return res.redirect('/auth/facebook/canvas');
     }
 
     passport.authenticate('facebook-canvas',{
@@ -50,12 +52,12 @@ module.exports = {
           sails.log.debug('+ ORIGIN FB');
 
           UserService.current(user,'fb',req);
-          return res.redirect(process.env.SUB_HOSTNAME+'/#/wall');
+          return res.redirect((process.env.SUB_HOSTNAME || '')+'/#/wall');
 
         });
       } else {
         //return res.redirect('/auth/canvas/autologin');
-        return res.redirect(process.env.SUB_HOSTNAME+'/auth/canvas/autologin');
+        return res.redirect((process.env.SUB_HOSTNAME || '')+'/auth/canvas/autologin');
       }
     }
     )(req, res, next);
