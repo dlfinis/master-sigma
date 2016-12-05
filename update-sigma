@@ -1,0 +1,6 @@
+
+#!/bin/bash
+clear
+git pull origin development
+pm2 start process-pm2.json
+

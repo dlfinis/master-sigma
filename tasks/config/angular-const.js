@@ -21,10 +21,10 @@ module.exports = function(grunt) {
       constants: {
         FB:{
           'clientID'  :{
-            'general': 1267766483237355,
-            'zeus': 1545700372110630,
-            'ares': 1545715552109112,
-            'apolo': 1545716165442384
+            'general': 198981923884649,
+            'zeus': 199021257214049,
+            'ares': 199027387213436,
+            'apolo': 199030457213129
           },
           'permissions': 'email,user_birthday,user_friends,publish_actions'
         }

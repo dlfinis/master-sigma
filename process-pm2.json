@@ -40,7 +40,7 @@
       "FB_SECRET_GENERAL": "5ea92338f2ab86c54057af312c207500",
       "FB_ID": "199021257214049",
 		  "FB_SECRET": "992d8fb3aaf2648736589b0220b8681d",
-      "FB_APPNAME": "sigma-zeus/"
+      "FB_APPNAME": "sg-zeus/"
       }
   	},
     {
@@ -70,7 +70,7 @@
         "FB_SECRET_GENERAL": "5ea92338f2ab86c54057af312c207500",
         "FB_ID": "199027387213436",
   		  "FB_SECRET": "50e6798442bc07e87155135c45307a21",
-        "FB_APPNAME": "sigma-ares/"
+        "FB_APPNAME": "sg-ares/"
       }
   	},
     {
@@ -100,7 +100,7 @@
         "FB_SECRET_GENERAL": "5ea92338f2ab86c54057af312c207500",
         "FB_ID": "199030457213129",
   		  "FB_SECRET": "af108e050ba65a999c43f302b9059830",
-        "FB_APPNAME": "sigma-apolo/"
+        "FB_APPNAME": "sg-apolo/"
       }
   	}
   ]
